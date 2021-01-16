@@ -1,0 +1,28 @@
+package com.easemob.im.server.model;
+
+public enum OperationUserEvent {
+    registerUser,
+    batchRegisterUser,
+    getUser,
+    batchGetUser,
+    deleteUser,
+    batchDeleteUser,
+    modifyUserPassword,
+    setUserPushNickname,
+    setNotificationDisplayStyle,
+    setNotificationNoDisturbing,
+    cancelNotificationNoDisturbing,
+    addContact,
+    removeContact,
+    getContactList,
+    getBlockList,
+    addBlock,
+    removeBlock,
+    getUserStatus,
+    batchGetUserStatus,
+    getUserOfflineMessageCount,
+    getOfflineMessageStatus,
+    deactivateUser,
+    activateUser,
+    disconnect,
+}
