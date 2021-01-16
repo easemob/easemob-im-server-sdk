@@ -12,7 +12,6 @@ import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
 
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public class RecallMessageApi {
 
@@ -28,6 +27,18 @@ public class RecallMessageApi {
         this.allocator = allocator;
     }
 
+    /**
+     * 消息撤回
+     *
+     * 撤回单条消息，可以撤回已经发送出去的消息，接收消息的用户将看不到此条消息
+     *
+     * 由于该功能是增值功能，确保使用前已经开通此功能
+     *
+     * @param messageId  需要撤回的消息id
+     * @param to         接收消息方（用户id或者群组id）
+     * @param type       消息类型（单聊或者群组消息）
+     * @return JsonNode
+     */
     public JsonNode recallMessage(String messageId, String to, ChatType type) {
         verifyMessageId(messageId);
         verifyTo(to);
@@ -35,7 +46,7 @@ public class RecallMessageApi {
         ObjectNode msg = this.mapper.createObjectNode();
         msg.put("msg_id", messageId);
         msg.put("to", to);
-        msg.put("chat_type", String.valueOf(type.chat));
+        msg.put("chat_type", String.valueOf(type));
 
         ArrayNode msgArray = this.mapper.createArrayNode();
         msgArray.add(msg);
@@ -43,18 +54,24 @@ public class RecallMessageApi {
         ObjectNode request = this.mapper.createObjectNode();
         request.set("msg", msgArray);
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper);
-        return response;
+        return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper);
     }
 
+    /**
+     * 消息撤回
+     *
+     * 撤回多条消息
+     *
+     * @param messages 需要撤回多条消息的集合
+     * @return  JsonNode
+     */
     public JsonNode recallMessage(Set<RecallMessage> messages) {
         verifyMessage(messages);
 
         ObjectNode request = this.mapper.createObjectNode();
         request.set("msg", this.mapper.valueToTree(messages));
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper);
-        return response;
+        return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper);
     }
 
     private void verifyMessage(Set<RecallMessage> messages) {

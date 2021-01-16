@@ -418,7 +418,7 @@ public class ChatRoomsApi {
      *
      * @param roomId   需要移除禁言的聊天室 ID
      * @param member   需要移除禁言的用户 ID
-     * @return
+     * @return JsonNode
      */
     public JsonNode removeMute(String roomId, String member) {
         verifyRoomId(roomId);
