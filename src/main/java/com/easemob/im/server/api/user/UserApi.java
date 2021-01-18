@@ -26,6 +26,8 @@ public class UserApi {
 
     private static final Pattern VALID_DISPLAY_STYLE_PATTERN = Pattern.compile("[0-1]");
 
+    private static final Pattern VALID_MESSAGE_ID_PATTERN = Pattern.compile("[1-9][0-9]+");
+
     private static final Pattern VALID_NO_DISTURBING_START_PATTERN = Pattern.compile("^1[0-9]$|^2[0-4]$|^[0-9]$");
 
     private static final Pattern VALID_NO_DISTURBING_END_PATTERN = Pattern.compile("^1[0-9]$|^2[0-4]$|^[0-9]$");
@@ -662,7 +664,7 @@ public class UserApi {
 
     // 验证 message id
     private void verifyMessageId(String messageId) {
-        if (messageId == null || messageId.isEmpty()) {
+        if (messageId == null || !VALID_MESSAGE_ID_PATTERN.matcher(messageId).matches()) {
             throw new UserException("Bad Request invalid messageId");
         }
     }

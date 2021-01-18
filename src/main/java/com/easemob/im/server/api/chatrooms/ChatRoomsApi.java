@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 public class ChatRoomsApi {
     private static final Pattern VALID_CHAT_ROOM_USERNAME_PATTERN = Pattern.compile("[A-Za-z-0-9]{1,64}");
 
+    private static final Pattern VALID_CHAT_ROOM_ID_PATTERN = Pattern.compile("[1-9][0-9]+");
+
     private final HttpClient http;
 
     private final ObjectMapper mapper;
@@ -529,7 +531,7 @@ public class ChatRoomsApi {
 
     // 验证 roomId
     private void verifyRoomId(String roomId) {
-        if (roomId == null || roomId.isEmpty()) {
+        if (roomId == null || !VALID_CHAT_ROOM_ID_PATTERN.matcher(roomId).matches()) {
             throw new ChatRoomsException("Bad Request invalid roomId");
         }
     }

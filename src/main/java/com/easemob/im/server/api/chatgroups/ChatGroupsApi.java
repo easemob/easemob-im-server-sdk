@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 
 public class ChatGroupsApi {
 
+    private static final Pattern VALID_CHAT_GROUP_ID_PATTERN = Pattern.compile("[1-9][0-9]+");
+
     private static final Pattern VALID_CHAT_GROUP_USERNAME_PATTERN = Pattern.compile("[A-Za-z-0-9]{1,64}");
 
     private final HttpClient http;
@@ -785,7 +787,7 @@ public class ChatGroupsApi {
 
     // 验证 groupId
     private void verifyGroupId(String groupId) {
-        if (groupId == null || groupId.isEmpty()) {
+        if (groupId == null || !VALID_CHAT_GROUP_ID_PATTERN.matcher(groupId).matches()) {
             throw new ChatGroupsException("Bad Request invalid groupId");
         }
     }
