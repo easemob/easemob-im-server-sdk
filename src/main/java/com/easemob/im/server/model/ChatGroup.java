@@ -3,26 +3,18 @@ package com.easemob.im.server.model;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-import java.util.Map;
-
-@Data
 @Builder
-public class User {
+@Data
+public class ChatGroup {
     /**
-     * 操作用户的事件
+     * 群组id
      */
-    private OperationUserEvent event;
+    private String groupId;
 
     /**
-     * 用户名
+     * 返回的群组信息
      */
-    private String username;
-
-    /**
-     * 返回的用户信息
-     */
-    private List<Map<String, Object>> entities;
+    private Object data;
 
     /**
      * 游标

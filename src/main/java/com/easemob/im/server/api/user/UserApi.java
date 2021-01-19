@@ -698,7 +698,7 @@ public class UserApi {
         return status;
     }
 
-    // 操作用户返回结果转成 User 对象
+    // 操作用户的返回结果转成 User 对象
     private User responseToUserObject(OperationUserEvent event, String username, JsonNode response) {
         ArrayNode entities = (ArrayNode) response.get("entities");
         if (entities == null || entities.size() < 1) {

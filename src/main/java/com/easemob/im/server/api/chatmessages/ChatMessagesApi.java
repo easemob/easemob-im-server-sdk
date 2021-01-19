@@ -63,7 +63,6 @@ public class ChatMessagesApi {
         }
     }
 
-
     /**
      * 指定路径自动下载历史消息文件
      * @param time       获取历史消息的时间

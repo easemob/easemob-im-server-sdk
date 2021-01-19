@@ -1,7 +1,9 @@
 package com.easemob.im.server.api.chatgroups;
 
 import com.easemob.im.server.api.chatgroups.exception.ChatGroupsException;
+import com.easemob.im.server.model.ChatGroup;
 import com.easemob.im.server.utils.HttpUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -40,9 +42,9 @@ public class ChatGroupsApi {
      *
      * @param limit   要获取的群组数量
      * @param cursor  游标
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getAppAllChatGroup(int limit, String cursor) {
+    public ChatGroup getAppAllChatGroup(int limit, String cursor) {
         verifyLimit(limit);
 
         String uri;
@@ -54,7 +56,8 @@ public class ChatGroupsApi {
             uri = "/chatgroups?limit=" + limit;
         }
 
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(null, response);
     }
 
     /**
@@ -65,12 +68,13 @@ public class ChatGroupsApi {
      * 根据用户名称获取该用户加入的全部群组接口
      *
      * @param username  需要获取的 IM 用户名
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getUserJoinAllChatGroup(String username) {
+    public ChatGroup getUserJoinAllChatGroup(String username) {
         verifyUsername(username);
         String uri = "/users/" + username + "/joined_chatgroups";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(null, response);
     }
 
     /**
@@ -81,9 +85,9 @@ public class ChatGroupsApi {
      * 获取多个群组的详情。当获取多个群组的详情时，会返回所有存在的群组的详情，对于不存在的群组，response body内返回“group id doesn't exist”
      *
      * @param groupIds  需要获取的群组 ID列表
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getChatGroupDetails(Set<String> groupIds) {
+    public ChatGroup getChatGroupDetails(Set<String> groupIds) {
         if (groupIds == null) {
             throw new ChatGroupsException("Bad Request groupIds is null");
         }
@@ -94,7 +98,8 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + splitGroupId.substring(0, splitGroupId.length() - 1);
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(null, response);
     }
 
     /**
@@ -103,10 +108,11 @@ public class ChatGroupsApi {
      * @param groupId  需要获取的群组 ID
      * @return JsonNode
      */
-    public JsonNode getChatGroupDetails(String groupId) {
+    public ChatGroup getChatGroupDetails(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId;
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -126,9 +132,9 @@ public class ChatGroupsApi {
      *                      注：如果允许了群成员邀请用户进群（allowinvites为true），那么就不需要群主或群管理员审批了
      * @param owner         群组的管理员，此属性为必须的
      * @param members       群组成员，此属性为可选的，但是如果加了此项，数组元素至少一个（注：群主user1不需要写入到members里面）
-     * @return JsonNode
+     * @return String groupId
      */
-    public JsonNode createChatGroup(String groupName, String description, Boolean isPublic, Integer maxUsers,
+    public String createChatGroup(String groupName, String description, Boolean isPublic, Integer maxUsers,
                                     Boolean allowInvites, Boolean membersOnly, String owner, Set<String> members) {
         if (groupName == null) {
             throw new ChatGroupsException("Bad Request groupName is null");
@@ -178,7 +184,18 @@ public class ChatGroupsApi {
             request.set("members", this.mapper.valueToTree(members));
         }
 
-        return HttpUtils.execute(this.http, HttpMethod.POST, "/chatgroups", request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/chatgroups", request ,this.allocator, this.mapper);
+        JsonNode data = response.get("data");
+        if (data != null) {
+            JsonNode groupId = data.get("groupid");
+            if (groupId != null) {
+                return groupId.asText();
+            } else {
+                throw new ChatGroupsException("response groupId is null");
+            }
+        } else {
+            throw new ChatGroupsException("response data is null");
+        }
     }
 
     /**
@@ -194,9 +211,9 @@ public class ChatGroupsApi {
      * @param maxUsers      群组成员最大数（包括群主）
      * @param membersOnly   加入群组是否需要群主或者群管理员审批。true：是，false：否
      * @param allowInvites  是否允许群成员邀请别人加入此群。 true：允许群成员邀请人加入此群，false：只有群主才可以往群里加人
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode modifyChatGroupInfo(String groupId, String groupName, String description, Integer maxUsers, Boolean membersOnly, Boolean allowInvites) {
+    public ChatGroup modifyChatGroupInfo(String groupId, String groupName, String description, Integer maxUsers, Boolean membersOnly, Boolean allowInvites) {
         verifyGroupId(groupId);
 
         if (maxUsers != null) {
@@ -227,7 +244,8 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId;
-        return HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -238,12 +256,13 @@ public class ChatGroupsApi {
      * 删除一个群组的接口
      *
      * @param groupId  需要删除的群组 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode deleteChatGroup(String groupId) {
+    public ChatGroup deleteChatGroup(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -254,12 +273,13 @@ public class ChatGroupsApi {
      * 获取指定群组id的群组公告
      *
      * @param groupId  需要获取群组公告的群组 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getChatGroupAnnouncement(String groupId) {
+    public ChatGroup getChatGroupAnnouncement(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId + "/announcement";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -271,9 +291,9 @@ public class ChatGroupsApi {
      *
      * @param groupId       需要修改群组公告的群组 ID
      * @param announcement  要修改的群组公告内容
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode modifyChatGroupAnnouncement(String groupId, String announcement) {
+    public ChatGroup modifyChatGroupAnnouncement(String groupId, String announcement) {
         verifyGroupId(groupId);
         if (announcement == null || announcement.length() > 512) {
             throw new ChatGroupsException("Bad Request invalid announcement");
@@ -283,7 +303,8 @@ public class ChatGroupsApi {
         request.put("announcement", announcement);
 
         String uri = "/chatgroups/" + groupId + "/announcement";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -297,9 +318,9 @@ public class ChatGroupsApi {
      * @param groupId   需要获取群组共享文件的群组 ID
      * @param pageNum   要获取第几页，默认是从第1页开始获取
      * @param pageSize  每页获取多少条，每页最多可以获取1000条
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getChatGroupShareFile(String groupId, Integer pageNum, Integer pageSize) {
+    public ChatGroup getChatGroupShareFile(String groupId, Integer pageNum, Integer pageSize) {
         verifyGroupId(groupId);
         if (pageNum == null || pageNum < 0) {
             throw new ChatGroupsException("Bad Request invalid pageNum");
@@ -309,14 +330,21 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId + "/share_files?pagenum=" + pageNum + "&pagesize=" + pageSize;
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
-    public JsonNode getChatGroupShareFile(String groupId) {
+    /**
+     * 获取单个群组共享文件
+     * @param groupId  需要获取群组共享文件的群组 ID
+     * @return ChatGroup
+     */
+    public ChatGroup getChatGroupShareFile(String groupId) {
         verifyGroupId(groupId);
 
         String uri = "/chatgroups/" + groupId + "/share_files";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -328,9 +356,9 @@ public class ChatGroupsApi {
      *
      * @param groupId  需要上传群组共享文件的群组 ID
      * @param file     需要上传的共享文件（文件可以包括图片，语音，视频，文件）
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode uploadChatGroupShareFile(String groupId, File file) {
+    public ChatGroup uploadChatGroupShareFile(String groupId, File file) {
         verifyGroupId(groupId);
 
         HttpClient client;
@@ -339,7 +367,8 @@ public class ChatGroupsApi {
         });
 
         String uri = "/chatgroups/" + groupId + "/share_files";
-        return HttpUtils.upload(client, uri, file, this.mapper);
+        JsonNode response = HttpUtils.upload(client, uri, file, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -351,9 +380,9 @@ public class ChatGroupsApi {
      * @param fileId                        fileId下载群组共享文件，fileId是通过 "获取群组共享文件" 接口获取到的
      * @param assignDownloadAttachmentPath  指定群组共享文件要下载到的路径，例如 /xx/.../file/
      * @param assignDownloadAttachmentName  指定下载群组共享文件的名称，要加后缀，比如下载的图片就是 imageName.jpg , imageName.png
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode downloadChatGroupShareFile(String groupId, String fileId, String assignDownloadAttachmentPath, String assignDownloadAttachmentName) {
+    public ChatGroup downloadChatGroupShareFile(String groupId, String fileId, String assignDownloadAttachmentPath, String assignDownloadAttachmentName) {
         verifyGroupId(groupId);
         verifyFileId(fileId);
         verifyAssignDownloadPath(assignDownloadAttachmentPath);
@@ -364,7 +393,8 @@ public class ChatGroupsApi {
         });
 
         String uri = "/chatgroups/" + groupId + "/share_files/" + fileId;
-        return HttpUtils.download(client, uri, assignDownloadAttachmentPath, assignDownloadAttachmentName, this.mapper);
+        JsonNode response = HttpUtils.download(client, uri, assignDownloadAttachmentPath, assignDownloadAttachmentName, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -376,16 +406,17 @@ public class ChatGroupsApi {
      *
      * @param groupId  需要删除群组共享文件的群组 ID
      * @param fileId   需要删除群组共享文件 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode deleteChatGroupShareFile(String groupId, String fileId) {
+    public ChatGroup deleteChatGroupShareFile(String groupId, String fileId) {
         verifyGroupId(groupId);
         if (fileId == null || fileId.length() < 1) {
             throw new ChatGroupsException("Bad Request invalid fileId");
         }
 
         String uri = "/chatgroups/" + groupId + "/share_files/" + fileId;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -398,9 +429,9 @@ public class ChatGroupsApi {
      * @param groupId   需要获取的群组 ID
      * @param pageNum   要获取第几页
      * @param pageSize  每页获取多少条
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getChatGroupMembers(String groupId, Integer pageNum, Integer pageSize) {
+    public ChatGroup getChatGroupMembers(String groupId, Integer pageNum, Integer pageSize) {
         verifyGroupId(groupId);
         if (pageNum == null || pageNum < 0) {
             throw new ChatGroupsException("Bad Request invalid pageNum");
@@ -410,7 +441,8 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId + "/users?pagenum=" + pageNum + "&pagesize=" + pageSize;
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -422,14 +454,15 @@ public class ChatGroupsApi {
      *
      * @param groupId   需要添加的群成员的群组 ID
      * @param username  需要添加的 IM 用户名
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode addChatGroupMember(String groupId, String username) {
+    public ChatGroup addChatGroupMember(String groupId, String username) {
         verifyGroupId(groupId);
         verifyUsername(username);
 
         String uri = "/chatgroups/" + groupId + "/users/" + username;
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -441,9 +474,9 @@ public class ChatGroupsApi {
      *
      * @param groupId    需要添加的群组 ID
      * @param usernames  需要添加到群组的用户ID列表
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode batchAddChatGroupMember(String groupId, Set<String> usernames) {
+    public ChatGroup batchAddChatGroupMember(String groupId, Set<String> usernames) {
         verifyGroupId(groupId);
         verifyUsernames(usernames);
         for (String username : usernames) {
@@ -454,7 +487,8 @@ public class ChatGroupsApi {
         request.set("usernames", this.mapper.valueToTree(usernames));
 
         String uri = "/chatgroups/" + groupId + "/users";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -466,14 +500,15 @@ public class ChatGroupsApi {
      *
      * @param groupId   需要移除用户的群组 ID
      * @param username  需要移除的 IM 用户名
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode deleteChatGroupMember(String groupId, String username) {
+    public ChatGroup deleteChatGroupMember(String groupId, String username) {
         verifyGroupId(groupId);
         verifyUsername(username);
 
         String uri = "/chatgroups/" + groupId + "/users/" + username;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -483,14 +518,15 @@ public class ChatGroupsApi {
      *
      * @param groupId   需要移除用户的群组 ID
      * @param members  需要移除的 IM 用户列表
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode batchDeleteChatGroupMember(String groupId, Set<String> members) {
+    public ChatGroup batchDeleteChatGroupMember(String groupId, Set<String> members) {
         verifyGroupId(groupId);
         String splitMember = verifySplitUsernames(members);
 
         String uri = "/chatgroups/" + groupId + "/users/" + splitMember;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -499,12 +535,13 @@ public class ChatGroupsApi {
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8
      *
      * @param groupId  需要获取的群组 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getChatGroupAdminList(String groupId) {
+    public ChatGroup getChatGroupAdminList(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId + "/admin";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -516,9 +553,9 @@ public class ChatGroupsApi {
      *
      * @param groupId   需要添加管理员的群组 ID
      * @param newAdmin  需要添加为管理员的用户 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode addChatGroupAdmin(String groupId, String newAdmin) {
+    public ChatGroup addChatGroupAdmin(String groupId, String newAdmin) {
         verifyGroupId(groupId);
         verifyUsername(newAdmin);
 
@@ -526,7 +563,8 @@ public class ChatGroupsApi {
         request.put("newadmin", newAdmin);
 
         String uri = "/chatgroups/" + groupId + "/admin";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -538,14 +576,15 @@ public class ChatGroupsApi {
      *
      * @param groupId   需要移除的管理员所在群组 ID
      * @param oldAdmin  需要移除的管理员的用户 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode removeChatGroupAdmin(String groupId, String oldAdmin) {
+    public ChatGroup removeChatGroupAdmin(String groupId, String oldAdmin) {
         verifyGroupId(groupId);
         verifyUsername(oldAdmin);
 
         String uri = "/chatgroups/" + groupId + "/admin/" + oldAdmin;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -557,9 +596,9 @@ public class ChatGroupsApi {
      *
      * @param groupId   需要转让的群组 ID
      * @param newOwner  被转让群主的用户 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode transferChatGroupAdmin(String groupId, String newOwner) {
+    public ChatGroup transferChatGroupAdmin(String groupId, String newOwner) {
         verifyGroupId(groupId);
         verifyUsername(newOwner);
 
@@ -567,7 +606,8 @@ public class ChatGroupsApi {
         request.put("newowner", newOwner);
 
         String uri = "/chatgroups/" + groupId;
-        return HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -578,13 +618,14 @@ public class ChatGroupsApi {
      * 查询一个群组黑名单中的用户列表。位于黑名单中的用户查看不到该群组的信息，也无法收到该群组的消息
      *
      * @param groupId  需要查询的群组 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getChatGroupBlocks(String groupId) {
+    public ChatGroup getChatGroupBlocks(String groupId) {
         verifyGroupId(groupId);
 
         String uri = "/chatgroups/" + groupId + "/blocks/users";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -596,14 +637,15 @@ public class ChatGroupsApi {
      *
      * @param groupId   需要添加黑名单的群组 ID
      * @param username  要添加的 IM 用户名
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode addUserToChatGroupBlocks(String groupId, String username) {
+    public ChatGroup addUserToChatGroupBlocks(String groupId, String username) {
         verifyGroupId(groupId);
         verifyUsername(username);
 
         String uri = "/chatgroups/" + groupId + "/blocks/users/" + username;
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -615,9 +657,9 @@ public class ChatGroupsApi {
      *
      * @param groupId    需要添加黑名单的群组 ID
      * @param usernames  要添加的 IM 用户列表
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode batchAddUserToChatGroupBlocks(String groupId, Set<String> usernames) {
+    public ChatGroup batchAddUserToChatGroupBlocks(String groupId, Set<String> usernames) {
         verifyGroupId(groupId);
         verifyUsernames(usernames);
         for (String username : usernames) {
@@ -628,7 +670,8 @@ public class ChatGroupsApi {
         request.set("usernames", this.mapper.valueToTree(usernames));
 
         String uri = "/chatgroups/" + groupId + "/blocks/users";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -640,14 +683,15 @@ public class ChatGroupsApi {
      *
      * @param groupId   需要移除黑名单的群组 ID
      * @param username  要移除的 IM 用户名
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode removeUserToChatGroupBlocks(String groupId, String username) {
+    public ChatGroup removeUserToChatGroupBlocks(String groupId, String username) {
         verifyGroupId(groupId);
         verifyUsername(username);
 
         String uri = "/chatgroups/" + groupId + "/blocks/users/" + username;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -659,14 +703,15 @@ public class ChatGroupsApi {
      *
      * @param groupId    需要移除黑名单的群组 ID
      * @param usernames  要移除的 IM 用户列表
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode batchRemoveUserToChatGroupBlocks(String groupId, Set<String> usernames) {
+    public ChatGroup batchRemoveUserToChatGroupBlocks(String groupId, Set<String> usernames) {
         verifyGroupId(groupId);
         String splitUsername = verifySplitUsernames(usernames);
 
         String uri = "/chatgroups/" + groupId + "/blocks/users/" + splitUsername;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -679,9 +724,9 @@ public class ChatGroupsApi {
      * @param groupId       需要添加禁言的群组 ID
      * @param username      要被禁言的 IM 用户名
      * @param muteDuration  禁言的时间，单位毫秒，如果是“-1”代表永久（实际的到期时间为当前时间戳加上Long最大值）
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode addMute(String groupId, String username, Long muteDuration) {
+    public ChatGroup addMute(String groupId, String username, Long muteDuration) {
         verifyGroupId(groupId);
         verifyUsername(username);
 
@@ -690,7 +735,8 @@ public class ChatGroupsApi {
         request.put("mute_duration", muteDuration);
 
         String uri = "/chatgroups/" + groupId + "/mute";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -699,9 +745,9 @@ public class ChatGroupsApi {
      * @param groupId    需要添加禁言的群组 ID
      * @param usernames  要添加禁言的 IM 用户列表
      * @param muteDuration  禁言的时间，单位毫秒，如果是“-1”代表永久（实际的到期时间为当前时间戳加上Long最大值）
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode addMute(String groupId, Set<String> usernames, Long muteDuration) {
+    public ChatGroup addMute(String groupId, Set<String> usernames, Long muteDuration) {
         verifyGroupId(groupId);
         if (usernames == null || usernames.size() < 1) {
             throw new ChatGroupsException("Bad Request invalid usernames");
@@ -712,7 +758,8 @@ public class ChatGroupsApi {
         request.put("mute_duration", muteDuration);
 
         String uri = "/chatgroups/" + groupId + "/mute";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -724,14 +771,15 @@ public class ChatGroupsApi {
      *
      * @param groupId  需要移除禁言的群组 ID
      * @param member   需要移除禁言的用户 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode removeMute(String groupId, String member) {
+    public ChatGroup removeMute(String groupId, String member) {
         verifyGroupId(groupId);
         verifyUsername(member);
 
         String uri = "/chatgroups/" + groupId + "/mute/" + member;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -739,9 +787,9 @@ public class ChatGroupsApi {
      *
      * @param groupId  需要移除禁言的群组 ID
      * @param members  需要移除禁言的用户 ID列表
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode removeMute(String groupId, Set<String> members) {
+    public ChatGroup removeMute(String groupId, Set<String> members) {
         verifyGroupId(groupId);
         if (members == null || members.size() < 1) {
             throw new ChatGroupsException("Bad Request invalid members");
@@ -754,7 +802,8 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId + "/mute/" + splitMember.substring(0, splitMember.length() - 1);
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     /**
@@ -763,12 +812,13 @@ public class ChatGroupsApi {
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%A6%81%E8%A8%80%E5%88%97%E8%A1%A8
      *
      * @param groupId  需要添加禁言列表的群组 ID
-     * @return JsonNode
+     * @return ChatGroup
      */
-    public JsonNode getMuteList(String groupId) {
+    public ChatGroup getMuteList(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId + "/mute";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        return responseToChatGroupObject(groupId, response);
     }
 
     // 验证 username
@@ -837,6 +887,50 @@ public class ChatGroupsApi {
         if (assignDownloadName == null || assignDownloadName.isEmpty()) {
             throw new ChatGroupsException("Bad Request invalid assignDownloadName");
         }
+    }
+
+    // 操作群组的返回结果转成 ChatGroup 对象
+    private ChatGroup responseToChatGroupObject(String groupId, JsonNode response) {
+        JsonNode data = response.get("data");
+        if (data == null || data.size() < 1) {
+            throw new ChatGroupsException("data is null");
+        }
+
+        Object dataObject;
+        try {
+            dataObject = this.mapper.treeToValue(data, Object.class);
+        } catch (JsonProcessingException e) {
+            throw new ChatGroupsException("data to object fail " + e);
+        }
+
+        Long timestamp;
+        if (response.get("timestamp") != null) {
+            timestamp = response.get("timestamp").asLong();
+        } else {
+            timestamp = null;
+        }
+
+        String cursor;
+        Integer count;
+
+        if (response.get("cursor") != null) {
+            cursor = response.get("cursor").asText();
+        } else {
+            cursor = null;
+        }
+
+        if (response.get("count") != null) {
+            count = response.get("count").asInt();
+        } else {
+            count = null;
+        }
+        return ChatGroup.builder()
+                .groupId(groupId)
+                .data(dataObject)
+                .cursor(cursor)
+                .count(count)
+                .timeStamp(timestamp)
+                .build();
     }
 
 }
