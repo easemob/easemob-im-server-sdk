@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.chatmessages;
 
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.chatfiles.exception.ChatFilesException;
 import com.easemob.im.server.api.chatmessages.exception.ChatMessagesException;
 import com.easemob.im.server.api.message.exception.MessageException;
@@ -7,6 +8,7 @@ import com.easemob.im.server.utils.HttpUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.handler.codec.http.HttpMethod;
 
 import reactor.netty.http.client.HttpClient;
@@ -20,9 +22,15 @@ public class ChatMessagesApi {
 
     private final ObjectMapper mapper;
 
-    public ChatMessagesApi(HttpClient http, ObjectMapper mapper) {
+    private final EMProperties properties;
+
+    private final Cache<String, String> tokenCache;
+
+    public ChatMessagesApi(HttpClient http, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
         this.http = http;
         this.mapper = mapper;
+        this.properties = properties;
+        this.tokenCache = tokenCache;
     }
 
     /**
@@ -44,7 +52,7 @@ public class ChatMessagesApi {
         verifyTime(time);
 
         String uri = "/chatmessages/" + time;
-        JsonNode result = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode result = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
 
         if (result != null) {
             ArrayNode data = (ArrayNode) result.get("data");
@@ -74,14 +82,14 @@ public class ChatMessagesApi {
         verifyFileLocalPath(localPath);
 
         String uri = "/chatmessages/" + time;
-        JsonNode result = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode result = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
 
         if (result != null) {
             ArrayNode data = (ArrayNode) result.get("data");
             if (data != null && data.size() > 0) {
                 JsonNode url = data.get(0).get("url");
                 if (url != null) {
-                    return HttpUtils.download(this.http, url.asText(), localPath, String.format("%s.gz", time.toString()), this.mapper);
+                    return HttpUtils.download(this.http, url.asText(), localPath, String.format("%s.gz", time.toString()), this.mapper, this.properties, this.tokenCache);
                 } else {
                     throw new ChatMessagesException("result url is null");
                 }

@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.recallmessage;
 
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.recallmessage.exception.RecallMessageException;
 import com.easemob.im.server.model.RecallMessage;
 import com.easemob.im.server.utils.HttpUtils;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
@@ -21,10 +23,16 @@ public class RecallMessageApi {
 
     private final ByteBufAllocator allocator;
 
-    public RecallMessageApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator) {
+    private final EMProperties properties;
+
+    private final Cache<String, String> tokenCache;
+
+    public RecallMessageApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator, EMProperties properties, Cache<String, String> tokenCache) {
         this.http = http;
         this.mapper = mapper;
         this.allocator = allocator;
+        this.properties = properties;
+        this.tokenCache = tokenCache;
     }
 
     /**
@@ -44,17 +52,17 @@ public class RecallMessageApi {
         verifyTo(to);
 
         ObjectNode msg = this.mapper.createObjectNode();
-        msg.put("msg_id", messageId);
         msg.put("to", to);
+        msg.put("msg_id", messageId);
         msg.put("chat_type", String.valueOf(type));
 
         ArrayNode msgArray = this.mapper.createArrayNode();
         msgArray.add(msg);
 
         ObjectNode request = this.mapper.createObjectNode();
-        request.set("msg", msgArray);
+        request.set("msgs", msgArray);
 
-        return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper);
+        return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper, this.properties, this.tokenCache);
     }
 
     /**
@@ -69,9 +77,9 @@ public class RecallMessageApi {
         verifyMessage(messages);
 
         ObjectNode request = this.mapper.createObjectNode();
-        request.set("msg", this.mapper.valueToTree(messages));
+        request.set("msgs", this.mapper.valueToTree(messages));
 
-        return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper);
+        return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper, this.properties, this.tokenCache);
     }
 
     private void verifyMessage(Set<RecallMessage> messages) {

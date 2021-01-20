@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.message;
 
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.message.exception.MessageException;
 import com.easemob.im.server.model.Message;
 import com.easemob.im.server.utils.HttpUtils;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
@@ -27,10 +29,16 @@ public class MessageApi {
 
     private final ByteBufAllocator allocator;
 
-    public MessageApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator) {
+    private final EMProperties properties;
+
+    private final Cache<String, String> tokenCache;
+
+    public MessageApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator, EMProperties properties, Cache<String, String> tokenCache) {
         this.http = http;
         this.mapper = mapper;
         this.allocator = allocator;
+        this.properties = properties;
+        this.tokenCache = tokenCache;
     }
 
     /**
@@ -296,7 +304,7 @@ public class MessageApi {
             request.set("ext", extJsonNode);
         }
 
-        JsonNode result = HttpUtils.execute(this.http, HttpMethod.POST, "/messages", request, this.allocator, this.mapper);
+        JsonNode result = HttpUtils.execute(this.http, HttpMethod.POST, "/messages", request, this.allocator, this.mapper, this.properties, this.tokenCache);
         JsonNode data;
         if(result != null) {
             if (result.get("data") != null) {

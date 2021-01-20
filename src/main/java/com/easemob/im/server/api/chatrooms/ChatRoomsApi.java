@@ -1,11 +1,16 @@
 package com.easemob.im.server.api.chatrooms;
 
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.chatgroups.exception.ChatGroupsException;
 import com.easemob.im.server.api.chatrooms.exception.ChatRoomsException;
+import com.easemob.im.server.model.ChatGroup;
+import com.easemob.im.server.model.ChatRoom;
 import com.easemob.im.server.utils.HttpUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
@@ -24,10 +29,16 @@ public class ChatRoomsApi {
 
     private final ByteBufAllocator allocator;
 
-    public ChatRoomsApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator) {
+    private final EMProperties properties;
+
+    private final Cache<String, String> tokenCache;
+
+    public ChatRoomsApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator, EMProperties properties, Cache<String, String> tokenCache) {
         this.http = http;
         this.mapper = mapper;
         this.allocator = allocator;
+        this.properties = properties;
+        this.tokenCache = tokenCache;
     }
 
     /**
@@ -35,10 +46,11 @@ public class ChatRoomsApi {
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96_app_%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4
      *
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode getAppAllChatRoom() {
-        return HttpUtils.execute(this.http, HttpMethod.GET, "/chatrooms", this.mapper);
+    public ChatRoom getAppAllChatRoom() {
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, "/chatrooms", this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(null, response);
     }
 
     /**
@@ -49,13 +61,14 @@ public class ChatRoomsApi {
      * 根据用户名称获取该用户加入的全部聊天室接口
      *
      * @param username  需要获取的 IM 用户名
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode getUserJoinedChatRoom(String username) {
+    public ChatRoom getUserJoinedChatRoom(String username) {
         verifyUsername(username);
 
         String uri = "/users/" + username + "/joined_chatrooms";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(null, response);
     }
 
     /**
@@ -66,9 +79,9 @@ public class ChatRoomsApi {
      * 可以获取多个聊天室的详情。当获取多个聊天室的详情时，会返回所有存在的聊天室的详情，对于不存在的聊天室，response body内返回“chatroom id doesn't exist”
      *
      * @param roomIds  需要获取的聊天室 ID列表
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode getChatRoomDetails(Set<String> roomIds) {
+    public ChatRoom getChatRoomDetails(Set<String> roomIds) {
         if (roomIds == null || roomIds.size() < 1) {
             throw new ChatGroupsException("Bad Request invalid roomIds");
         }
@@ -79,19 +92,21 @@ public class ChatRoomsApi {
         }
 
         String uri = "/chatrooms/" + splitRoomId.substring(0, splitRoomId.length() - 1);
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(null, response);
     }
 
     /**
      * 获取单个聊天室详情
      *
      * @param roomId  需要获取的聊天室 ID
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode getChatRoomDetails(String roomId) {
+    public ChatRoom getChatRoomDetails(String roomId) {
         verifyRoomId(roomId);
         String uri = "/chatrooms/" + roomId;
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -106,9 +121,9 @@ public class ChatRoomsApi {
      * @param maxUsers      聊天室成员最大数（包括聊天室创建者），值为数值类型，默认值200，最大值5000，此属性为可选的
      * @param owner         聊天室的管理员，此属性为必须的
      * @param members       聊天室成员，此属性为可选的，但是如果加了此项，数组元素至少一个
-     * @return JsonNode
+     * @return String roomId
      */
-    public JsonNode createChatRoom(String roomName, String description, Integer maxUsers, String owner, Set<String> members) {
+    public String createChatRoom(String roomName, String description, Integer maxUsers, String owner, Set<String> members) {
         if (roomName == null) {
             throw new ChatRoomsException("Bad Request groupName is null");
         }
@@ -147,7 +162,18 @@ public class ChatRoomsApi {
             request.set("members", this.mapper.valueToTree(members));
         }
 
-        return HttpUtils.execute(this.http, HttpMethod.POST, "/chatrooms", request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/chatrooms", request ,this.allocator, this.mapper, this.properties, this.tokenCache);
+        JsonNode data = response.get("data");
+        if (data != null) {
+            JsonNode roomId = data.get("id");
+            if (roomId != null) {
+                return roomId.asText();
+            } else {
+                throw new ChatRoomsException("response roomId is null");
+            }
+        } else {
+            throw new ChatRoomsException("response data is null");
+        }
     }
 
     /**
@@ -161,9 +187,9 @@ public class ChatRoomsApi {
      * @param roomName      聊天室名称
      * @param description   聊天室描述
      * @param maxUsers      聊天室成员最大数
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode modifyChatRoomInfo(String roomId, String roomName, String description, Integer maxUsers) {
+    public ChatRoom modifyChatRoomInfo(String roomId, String roomName, String description, Integer maxUsers) {
         verifyRoomId(roomId);
 
         if (maxUsers != null) {
@@ -186,7 +212,8 @@ public class ChatRoomsApi {
         }
 
         String uri = "/chatrooms/" + roomId;
-        return HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -197,12 +224,13 @@ public class ChatRoomsApi {
      * 删除单个聊天室。如果被删除的聊天室不存在，会返回错误
      *
      * @param roomId  需要删除的聊天室 ID
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode deleteChatRoom(String roomId) {
+    public ChatRoom deleteChatRoom(String roomId) {
         verifyRoomId(roomId);
         String uri = "/chatrooms/" + roomId;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -215,9 +243,9 @@ public class ChatRoomsApi {
      * @param roomId   需要获取的聊天室 ID
      * @param pageNum   要获取第几页
      * @param pageSize  每页获取多少条
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode getChatRoomMembers(String roomId, Integer pageNum, Integer pageSize) {
+    public ChatRoom getChatRoomMembers(String roomId, Integer pageNum, Integer pageSize) {
         verifyRoomId(roomId);
         if (pageNum == null || pageNum < 0) {
             throw new ChatRoomsException("Bad Request invalid pageNum");
@@ -227,7 +255,8 @@ public class ChatRoomsApi {
         }
 
         String uri = "/chatrooms/" + roomId + "/users?pagenum=" + pageNum + "&pagesize=" + pageSize;
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -239,14 +268,15 @@ public class ChatRoomsApi {
      *
      * @param roomId   需要添加的聊天室成员的群组 ID
      * @param username  需要添加的 IM 用户名
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode addChatRoomMember(String roomId, String username) {
+    public ChatRoom addChatRoomMember(String roomId, String username) {
         verifyRoomId(roomId);
         verifyUsername(username);
 
         String uri = "/chatrooms/" + roomId + "/users/" + username;
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -258,9 +288,9 @@ public class ChatRoomsApi {
      *
      * @param roomId    需要添加的聊天室 ID
      * @param usernames  需要添加到聊天室的用户ID列表
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode batchAddChatRoomMember(String roomId, Set<String> usernames) {
+    public ChatRoom batchAddChatRoomMember(String roomId, Set<String> usernames) {
         verifyRoomId(roomId);
         verifyUsernames(usernames);
         for (String username : usernames) {
@@ -271,7 +301,8 @@ public class ChatRoomsApi {
         request.set("usernames", this.mapper.valueToTree(usernames));
 
         String uri = "/chatrooms/" + roomId + "/users";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -283,14 +314,15 @@ public class ChatRoomsApi {
      *
      * @param roomId   需要移除用户的聊天室 ID
      * @param username  需要移除的 IM 用户名
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode deleteChatRoomMember(String roomId, String username) {
+    public ChatRoom deleteChatRoomMember(String roomId, String username) {
         verifyRoomId(roomId);
         verifyUsername(username);
 
         String uri = "/chatrooms/" + roomId + "/users/" + username;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -300,14 +332,15 @@ public class ChatRoomsApi {
      *
      * @param roomId   需要移除用户的聊天室 ID
      * @param members  需要移除的 IM 用户列表
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode batchDeleteChatRoomMember(String roomId, Set<String> members) {
+    public ChatRoom batchDeleteChatRoomMember(String roomId, Set<String> members) {
         verifyRoomId(roomId);
         String splitMember = verifySplitUsernames(members);
 
         String uri = "/chatrooms/" + roomId + "/users/" + splitMember;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -318,10 +351,11 @@ public class ChatRoomsApi {
      * @param roomId  需要获取的聊天室 ID
      * @return JsonNode
      */
-    public JsonNode getChatRoomAdminList(String roomId) {
+    public ChatRoom getChatRoomAdminList(String roomId) {
         verifyRoomId(roomId);
         String uri = "/chatrooms/" + roomId + "/admin";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -333,9 +367,9 @@ public class ChatRoomsApi {
      *
      * @param roomId   需要添加管理员的群组 ID
      * @param newAdmin  需要添加为管理员的用户 ID
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode addChatGroupAdmin(String roomId, String newAdmin) {
+    public ChatRoom addChatGroupAdmin(String roomId, String newAdmin) {
         verifyRoomId(roomId);
         verifyUsername(newAdmin);
 
@@ -343,7 +377,8 @@ public class ChatRoomsApi {
         request.put("newadmin", newAdmin);
 
         String uri = "/chatrooms/" + roomId + "/admin";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -357,12 +392,13 @@ public class ChatRoomsApi {
      * @param oldAdmin  需要移除的管理员的用户 ID
      * @return JsonNode
      */
-    public JsonNode removeChatRoomAdmin(String roomId, String oldAdmin) {
+    public ChatRoom removeChatRoomAdmin(String roomId, String oldAdmin) {
         verifyRoomId(roomId);
         verifyUsername(oldAdmin);
 
         String uri = "/chatrooms/" + roomId + "/admin/" + oldAdmin;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -375,9 +411,9 @@ public class ChatRoomsApi {
      * @param roomId        需要添加禁言的聊天室 ID
      * @param username      要被禁言的 IM 用户名
      * @param muteDuration  禁言的时间，单位毫秒，如果是“-1”代表永久（实际的到期时间为当前时间戳加上Long最大值）
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode addMute(String roomId, String username, Long muteDuration) {
+    public ChatRoom addMute(String roomId, String username, Long muteDuration) {
         verifyRoomId(roomId);
         verifyUsername(username);
 
@@ -386,7 +422,8 @@ public class ChatRoomsApi {
         request.put("mute_duration", muteDuration);
 
         String uri = "/chatrooms/" + roomId + "/mute";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -395,9 +432,9 @@ public class ChatRoomsApi {
      * @param roomId    需要添加禁言的聊天室 ID
      * @param usernames  要被禁言的 IM 用户列表
      * @param muteDuration  禁言的时间，单位毫秒，如果是“-1”代表永久（实际的到期时间为当前时间戳加上Long最大值）
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode addMute(String roomId, Set<String> usernames, Long muteDuration) {
+    public ChatRoom addMute(String roomId, Set<String> usernames, Long muteDuration) {
         verifyRoomId(roomId);
         if (usernames == null || usernames.size() < 1) {
             throw new ChatRoomsException("Bad Request invalid usernames");
@@ -408,7 +445,8 @@ public class ChatRoomsApi {
         request.put("mute_duration", muteDuration);
 
         String uri = "/chatrooms/" + roomId + "/mute";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -420,14 +458,15 @@ public class ChatRoomsApi {
      *
      * @param roomId   需要移除禁言的聊天室 ID
      * @param member   需要移除禁言的用户 ID
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode removeMute(String roomId, String member) {
+    public ChatRoom removeMute(String roomId, String member) {
         verifyRoomId(roomId);
         verifyUsername(member);
 
         String uri = "/chatrooms/" + roomId + "/mute/" + member;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -435,9 +474,9 @@ public class ChatRoomsApi {
      *
      * @param roomId   需要移除禁言的聊天室 ID
      * @param members  需要移除禁言的用户 ID列表
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode removeMute(String roomId, Set<String> members) {
+    public ChatRoom removeMute(String roomId, Set<String> members) {
         verifyRoomId(roomId);
         if (members == null || members.size() < 1) {
             throw new ChatRoomsException("Bad Request invalid members");
@@ -450,7 +489,8 @@ public class ChatRoomsApi {
         }
 
         String uri = "/chatrooms/" + roomId + "/mute/" + splitMember.substring(0, splitMember.length() - 1);
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -459,12 +499,13 @@ public class ChatRoomsApi {
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E7%A6%81%E8%A8%80%E5%88%97%E8%A1%A8
      *
      * @param roomId  需要添加禁言列表的聊天室 ID
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode getMuteList(String roomId) {
+    public ChatRoom getMuteList(String roomId) {
         verifyRoomId(roomId);
         String uri = "/chatrooms/" + roomId + "/mute";
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(roomId, response);
     }
 
     /**
@@ -474,9 +515,9 @@ public class ChatRoomsApi {
      *
      * @param pageNum   要获取第几页
      * @param pageSize  每页获取多少条
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode getChatRoomSuperAdminList(Integer pageNum, Integer pageSize) {
+    public ChatRoom getChatRoomSuperAdminList(Integer pageNum, Integer pageSize) {
         if (pageNum == null || pageNum < 0) {
             throw new ChatRoomsException("Bad Request invalid pageNum");
         }
@@ -485,7 +526,8 @@ public class ChatRoomsApi {
         }
 
         String uri = "/chatrooms/super_admin?pagenum=" + pageNum + "&pagesize=" + pageSize;
-        return HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(null, response);
     }
 
     /**
@@ -496,16 +538,17 @@ public class ChatRoomsApi {
      * 给用户添加聊天室超级管理员身份
      *
      * @param username  添加为超级管理员的 IM 用户名
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode addChatRoomSuperAdmin(String username) {
+    public ChatRoom addChatRoomSuperAdmin(String username) {
         verifyUsername(username);
 
         ObjectNode request = this.mapper.createObjectNode();
         request.put("superadmin", username);
 
         String uri = "/chatrooms/super_admin";
-        return HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(null, response);
     }
 
     /**
@@ -514,12 +557,13 @@ public class ChatRoomsApi {
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98
      *
      * @param username  需要移除的 IM 用户名
-     * @return JsonNode
+     * @return ChatRoom
      */
-    public JsonNode removeChatRoomSuperAdmin(String username) {
+    public ChatRoom removeChatRoomSuperAdmin(String username) {
         verifyUsername(username);
         String uri = "/chatrooms/super_admin/" + username;
-        return HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        return responseToChatRoomObject(null, response);
     }
 
     // 验证 username
@@ -553,6 +597,50 @@ public class ChatRoomsApi {
             splitUsername.append(username).append(",");
         }
         return splitUsername.substring(0, splitUsername.length() - 1);
+    }
+
+    // 操作聊天室的返回结果转成 ChatRoom 对象
+    private ChatRoom responseToChatRoomObject(String roomId, JsonNode response) {
+        JsonNode data = response.get("data");
+        if (data == null) {
+            throw new ChatRoomsException("data is null");
+        }
+
+        Object dataObject;
+        try {
+            dataObject = this.mapper.treeToValue(data, Object.class);
+        } catch (JsonProcessingException e) {
+            throw new ChatRoomsException("data to object fail " + e);
+        }
+
+        Long timestamp;
+        if (response.get("timestamp") != null) {
+            timestamp = response.get("timestamp").asLong();
+        } else {
+            timestamp = null;
+        }
+
+        String cursor;
+        Integer count;
+
+        if (response.get("cursor") != null) {
+            cursor = response.get("cursor").asText();
+        } else {
+            cursor = null;
+        }
+
+        if (response.get("count") != null) {
+            count = response.get("count").asInt();
+        } else {
+            count = null;
+        }
+        return ChatRoom.builder()
+                .roomId(roomId)
+                .data(dataObject)
+                .cursor(cursor)
+                .count(count)
+                .timeStamp(timestamp)
+                .build();
     }
 
 }

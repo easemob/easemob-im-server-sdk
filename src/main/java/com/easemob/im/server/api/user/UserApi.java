@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.user;
 
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.user.exception.*;
 import com.easemob.im.server.model.OperationUserEvent;
 import com.easemob.im.server.model.User;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
@@ -39,10 +41,16 @@ public class UserApi {
 
     private final ByteBufAllocator allocator;
 
-    public UserApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator) {
+    private final EMProperties properties;
+
+    private final Cache<String, String> tokenCache;
+
+    public UserApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator, EMProperties properties, Cache<String, String> tokenCache) {
         this.http = http;
         this.mapper = mapper;
         this.allocator = allocator;
+        this.properties = properties;
+        this.tokenCache = tokenCache;
     }
 
     /**
@@ -73,7 +81,7 @@ public class UserApi {
             request.put("nickname", nickname);
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/users", request, this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/users", request, this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.registerUser, username, response);
     }
 
@@ -98,7 +106,7 @@ public class UserApi {
             request.addPOJO(user);
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/users", request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/users", request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.batchRegisterUser, null, response);
     }
 
@@ -114,7 +122,7 @@ public class UserApi {
      */
     public User getUser(String username) {
         verifyUsername(username);
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, "/users/" + username, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, "/users/" + username, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.getUser, username, response);
     }
 
@@ -144,7 +152,7 @@ public class UserApi {
             uri = "/users?limit=" + limit;
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.batchGetUser, null, response);
     }
 
@@ -161,7 +169,7 @@ public class UserApi {
     public User deleteUser(String username) {
         verifyUsername(username);
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.deleteUser, username, response);
     }
 
@@ -189,7 +197,7 @@ public class UserApi {
             uri = "/users?limit=" + limit;
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.batchDeleteUser, null, response);
     }
 
@@ -212,7 +220,7 @@ public class UserApi {
         request.put("newpassword", newPassword);
 
         String uri = "/users/" + username + "/password";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
 
         Map<String, Object> result = new HashMap<>();
         result.put("username", username);
@@ -241,7 +249,7 @@ public class UserApi {
         request.put("nickname", nickname);
 
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.setUserPushNickname, username, response);
     }
 
@@ -264,7 +272,7 @@ public class UserApi {
         request.put("notification_display_style", String.valueOf(displayStyle));
 
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.setNotificationDisplayStyle, username, response);
     }
 
@@ -291,7 +299,7 @@ public class UserApi {
         request.put("notification_no_disturbing_end", String.valueOf(end));
 
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.setNotificationNoDisturbing, username, response);
     }
 
@@ -310,7 +318,7 @@ public class UserApi {
         request.put("notification_no_disturbing", false);
 
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.cancelNotificationNoDisturbing, username, response);
     }
 
@@ -330,7 +338,7 @@ public class UserApi {
         verifyUsername(friendUsername);
 
         String uri = "/users/" + ownerUsername + "/contacts/users/" + friendUsername;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.addContact, ownerUsername, response);
     }
 
@@ -350,7 +358,7 @@ public class UserApi {
         verifyUsername(friendUsername);
 
         String uri = "/users/" + ownerUsername + "/contacts/users/" + friendUsername;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.removeContact, ownerUsername, response);
     }
 
@@ -367,7 +375,7 @@ public class UserApi {
     public List<String> getContactList(String ownerUsername) {
         verifyUsername(ownerUsername);
         String uri = "/users/" + ownerUsername + "/contacts/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return jsonDataToArrayList(response);
     }
 
@@ -384,7 +392,7 @@ public class UserApi {
     public List<String> getBlockList(String ownerUsername) {
         verifyUsername(ownerUsername);
         String uri = "/users/" + ownerUsername + "/blocks/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return jsonDataToArrayList(response);
     }
 
@@ -415,7 +423,7 @@ public class UserApi {
         request.set("usernames", usernameArray);
 
         String uri = "/users/" + ownerUsername + "/blocks/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request, this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
 
         return jsonDataToArrayList(response);
     }
@@ -436,7 +444,7 @@ public class UserApi {
         verifyUsername(blockUsername);
 
         String uri = "/users/" + ownerUsername + "/blocks/users/" + blockUsername;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.removeBlock, ownerUsername, response);
     }
 
@@ -453,7 +461,7 @@ public class UserApi {
     public String getUserStatus(String username) {
         verifyUsername(username);
         String uri = "/users/" + username + "/status";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return jsonDataToString(username, response);
     }
 
@@ -480,7 +488,7 @@ public class UserApi {
         request.set("usernames", this.mapper.valueToTree(usernames));
 
         String uri = "/users/batch/status";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request, this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
         return jsonDataToArrayList(response);
     }
 
@@ -498,7 +506,7 @@ public class UserApi {
         verifyUsername(username);
 
         String uri = "/users/" + username + "/offline_msg_count";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
 
         JsonNode data = response.get("data");
         int offlineMsgCount;
@@ -531,7 +539,7 @@ public class UserApi {
         verifyMessageId(messageId);
 
         String uri = "/users/" + username + "/offline_msg_status/" + messageId;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return jsonDataToString(messageId, response);
     }
 
@@ -548,7 +556,7 @@ public class UserApi {
     public User deactivateUser(String username) {
         verifyUsername(username);
         String uri = "/users/" + username + "/deactivate";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
         return responseToUserObject(OperationUserEvent.deactivateUser, username, response);
     }
 
@@ -566,7 +574,7 @@ public class UserApi {
         verifyUsername(username);
 
         String uri = "/users/" + username + "/activate";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
 
         Map<String, Object> result = new HashMap<>();
         result.put("username", username);
@@ -590,7 +598,7 @@ public class UserApi {
         verifyUsername(username);
 
         String uri = "/users/" + username + "/disconnect";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
 
         JsonNode data = response.get("data");
         boolean isDisconnect;

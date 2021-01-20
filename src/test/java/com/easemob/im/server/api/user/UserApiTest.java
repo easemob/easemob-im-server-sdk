@@ -2,55 +2,18 @@ package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.EMClient;
 import com.easemob.im.server.EMProperties;
-import com.easemob.im.server.api.user.exception.UserException;
+import com.easemob.im.server.api.message.TargetType;
+import com.easemob.im.server.model.Message;
 import com.easemob.im.server.model.User;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.handler.codec.http.HttpMethod;
-import org.junit.Before;
+
 import org.junit.Test;
-import org.mockito.Mock;
-import static org.mockito.Mockito.when;
-
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
-
-import java.nio.charset.Charset;
 import java.util.*;
 
-import static org.junit.Assert.*;
 
 public class UserApiTest {
 
-    @Mock
-    private EMProperties properties;
-
-    @Mock
-    private ObjectMapper mapper;
-
-    @Mock
-    private HttpClient client;
-
-    @Mock
-    private ByteBufAllocator allocator;
-
-    private UserApi userApi;
-
-    @Before
-    public void initMocks() {
-        userApi = new UserApi(client, mapper, allocator);
-        MockitoAnnotations.initMocks(this);
-    }
-
     @Test
-    public void registerUserException(){
+    public void registerUser(){
 
 //        ObjectNode request = this.mapper.createObjectNode();
 //        request.put("username", "testuser0005");
@@ -64,15 +27,12 @@ public class UserApiTest {
 //                .response(()) // 模拟线上返回的结果 {duration:80}
 
 //        JsonNode jsonNode = new JsonNode(); //预期的结果
-        UserApi mock = Mockito.mock(UserApi.class);
+//        UserApi mock = Mockito.mock(UserApi.class);
 //        when(mock.register("用户名", null, null).thenThrow(new UserException("Bad Request 用户名 invalid username"));
 
+        User result = EMClient.getInstance().user().register("testuser0001", "1", null);
+        System.out.println("result " + result);
     }
-
-    @Test
-    public void registerUserResponse401(){
-    }
-
 
     @Test
     public void batchRegisterUser(){
@@ -92,6 +52,11 @@ public class UserApiTest {
 
     @Test
     public void getUser(){
+        EMClient.instance(new EMProperties("62242102#fudonghai89",
+                "YXA66v11wCkrEeWC1yHU2wRelQ",
+                "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0",
+                "http://a1.easemob.com"));
+
         User result = EMClient.getInstance().user().getUser("testuser0001");
         System.out.println("result " + result);
     }

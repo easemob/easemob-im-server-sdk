@@ -1,5 +1,9 @@
 package com.easemob.im.server;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 配置app的参数，包括appKey，clientId，clientSecret，baseUri
  *
@@ -13,28 +17,17 @@ package com.easemob.im.server;
  * 如果是vip集群的客户，请与对应的环信商务联系索要域名
  *
  */
+@Setter
+@Getter
+@AllArgsConstructor
 public class EMProperties {
-    private final String appKey = "62242102#fudonghai89";
-    private final String clientId = "YXA66v11wCkrEeWC1yHU2wRelQ";
-    private final String clientSecret = "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0";
-    private final String baseUri = "https://a1.easemob.com";
-    private String basePath;
+    private final String appKey;
 
-    public String getAppKey() {
-        return appKey;
-    }
+    private final String clientId;
 
-    public String getClientId() {
-        return clientId;
-    }
+    private final String clientSecret;
 
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    public String getBaseUri() {
-        return baseUri;
-    }
+    private final String baseUri;
 
     public String getBasePath() {
         String[] splitKey = this.appKey.split("#");

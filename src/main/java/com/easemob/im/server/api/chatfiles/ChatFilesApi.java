@@ -1,11 +1,13 @@
 package com.easemob.im.server.api.chatfiles;
 
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.chatfiles.exception.ChatFilesException;
 import com.easemob.im.server.model.ChatFile;
 import com.easemob.im.server.utils.HttpUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.github.benmanes.caffeine.cache.Cache;
 import reactor.netty.http.client.HttpClient;
 
 import java.io.*;
@@ -16,9 +18,15 @@ public class ChatFilesApi {
 
     private final ObjectMapper mapper;
 
-    public ChatFilesApi(HttpClient http, ObjectMapper mapper) {
+    private final EMProperties properties;
+
+    private final Cache<String, String> tokenCache;
+
+    public ChatFilesApi(HttpClient http, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
         this.http = http;
         this.mapper = mapper;
+        this.properties = properties;
+        this.tokenCache = tokenCache;
     }
 
     /**
@@ -118,13 +126,13 @@ public class ChatFilesApi {
             h.add("restrict-access", "true");
         });
 
-        return HttpUtils.upload(client, "/chatfiles", file, this.mapper);
+        return HttpUtils.upload(client, "/chatfiles", file, this.mapper, this.properties, this.tokenCache);
     }
 
     // 下载附件请求
     private JsonNode downloadAttachmentRequest(HttpClient client, String uuid, String assignDownloadPath, String assignDownloadName) {
         String uri = "/chatfiles/" + uuid;
-        return HttpUtils.download(client, uri, assignDownloadPath, assignDownloadName, this.mapper);
+        return HttpUtils.download(client, uri, assignDownloadPath, assignDownloadName, this.mapper, this.properties, this.tokenCache);
     }
 
     // 上传附件返回结果转成 ChatFile 对象

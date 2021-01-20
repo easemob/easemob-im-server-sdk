@@ -15,7 +15,7 @@ public class RecallMessageApiTest {
 
     @Test
     public void recallMessage() {
-        JsonNode result = EMClient.getInstance().recall().recallMessage("829573059890387008", "testuser0003", ChatType.chat);
+        JsonNode result = EMClient.getInstance().recall().recallMessage("831373505038649392", "testuser0001", ChatType.chat);
         System.out.println("result " + result);
     }
 
@@ -23,8 +23,8 @@ public class RecallMessageApiTest {
     public void testRecallMessage() {
 
         RecallMessage message = RecallMessage.builder()
-                .messageId("829572799466047628")
-                .to("testuser0002")
+                .messageId("831373815832385584")
+                .to("testuser0001")
                 .chatType(ChatType.chat)
                 .build();
 

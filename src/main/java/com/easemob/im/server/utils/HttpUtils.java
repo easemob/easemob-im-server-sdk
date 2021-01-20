@@ -1,10 +1,13 @@
 package com.easemob.im.server.utils;
 
+import com.easemob.im.server.EMClient;
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.ApiException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
@@ -17,11 +20,11 @@ import java.nio.charset.StandardCharsets;
 
 public class HttpUtils {
 
-    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ObjectMapper mapper) {
-        return execute(http, method, uri, null, null, mapper);
+    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
+        return execute(http, method, uri, null, null, mapper, properties, tokenCache);
     }
 
-    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ContainerNode request, ByteBufAllocator allocator, ObjectMapper mapper) {
+    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ContainerNode request, ByteBufAllocator allocator, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
         Mono<ByteBuf> buf;
         if (request == null && allocator == null) {
             buf = Mono.empty();
@@ -31,7 +34,14 @@ public class HttpUtils {
             buf = Mono.just(bb);
         }
 
-        ObjectNode response = http
+        HttpClient client;
+        if (properties == null && tokenCache == null) {
+            client = http;
+        } else {
+            client = http.headers(h -> h.add("Authorization", "Bearer " + getCacheToken(properties, tokenCache)));
+        }
+
+        ObjectNode response = client
                 .request(method)
                 .uri(uri)
                 .send(buf)
@@ -55,13 +65,13 @@ public class HttpUtils {
         } else {
             throw new ApiException("response is null");
         }
-
     }
 
     // 上传附件请求
-    public static JsonNode upload(HttpClient client, String uri, File file, ObjectMapper mapper) {
+    public static JsonNode upload(HttpClient client, String uri, File file, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
 
         ObjectNode response = client
+                .headers(h -> h.add("Authorization", "Bearer " + getCacheToken(properties, tokenCache)))
                 .request(HttpMethod.POST)
                 .uri(uri)
                 .sendForm((t,u) -> u.multipart(true).file("file", file))
@@ -88,7 +98,7 @@ public class HttpUtils {
     }
 
     // 下载附件请求
-    public static JsonNode download(HttpClient client, String uri, String assignDownloadPath, String assignDownloadName, ObjectMapper mapper) {
+    public static JsonNode download(HttpClient client, String uri, String assignDownloadPath, String assignDownloadName, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
         String filePath;
         if (assignDownloadPath.endsWith("/")) {
             filePath = assignDownloadPath + assignDownloadName;
@@ -96,7 +106,9 @@ public class HttpUtils {
             filePath = assignDownloadPath + "/" + assignDownloadName;
         }
 
-        return client.request(HttpMethod.GET)
+        return client
+                .headers(h -> h.add("Authorization", "Bearer " + getCacheToken(properties, tokenCache)))
+                .request(HttpMethod.GET)
                 .uri(uri)
                 .responseSingle((r, b) -> {
                     if (!r.status().equals(HttpResponseStatus.OK) && r.status().code() != 200 && r.status().code() != 302) {
@@ -143,6 +155,18 @@ public class HttpUtils {
         } else {
             return result;
         }
+    }
+
+    private static String getCacheToken(EMProperties properties, Cache<String, String> tokenCache) {
+        String key = properties.getAppKey();
+        String cachedToken = tokenCache.getIfPresent(key);
+        if (cachedToken != null) {
+            return cachedToken;
+        }
+
+        String token = EMClient.getInstance().token().getToken();
+        tokenCache.put(key, token);
+        return token;
     }
 
 }

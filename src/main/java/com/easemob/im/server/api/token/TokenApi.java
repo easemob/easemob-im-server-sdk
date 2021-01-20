@@ -55,7 +55,7 @@ public class TokenApi {
 
         HttpClient httpClient = HttpClient.create()
                 .baseUrl(this.properties.getBasePath());
-        JsonNode result = HttpUtils.execute(httpClient, HttpMethod.POST, "/token", request, this.allocator, this.mapper);
+        JsonNode result = HttpUtils.execute(httpClient, HttpMethod.POST, "/token", request, this.allocator, this.mapper, null, null);
         if (result == null) {throw new TokenException("get token result is null");}
 
         String accessToken = result.get("access_token").asText();

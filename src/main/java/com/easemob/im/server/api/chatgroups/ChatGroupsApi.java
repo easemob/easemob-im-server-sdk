@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.chatgroups;
 
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.chatgroups.exception.ChatGroupsException;
 import com.easemob.im.server.model.ChatGroup;
 import com.easemob.im.server.utils.HttpUtils;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
@@ -27,10 +29,16 @@ public class ChatGroupsApi {
 
     private final ByteBufAllocator allocator;
 
-    public ChatGroupsApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator) {
+    private final EMProperties properties;
+
+    private final Cache<String, String> tokenCache;
+
+    public ChatGroupsApi(HttpClient http, ObjectMapper mapper, ByteBufAllocator allocator, EMProperties properties, Cache<String, String> tokenCache) {
         this.http = http;
         this.mapper = mapper;
         this.allocator = allocator;
+        this.properties = properties;
+        this.tokenCache = tokenCache;
     }
 
     /**
@@ -56,7 +64,7 @@ public class ChatGroupsApi {
             uri = "/chatgroups?limit=" + limit;
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(null, response);
     }
 
@@ -73,7 +81,7 @@ public class ChatGroupsApi {
     public ChatGroup getUserJoinAllChatGroup(String username) {
         verifyUsername(username);
         String uri = "/users/" + username + "/joined_chatgroups";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(null, response);
     }
 
@@ -98,7 +106,7 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + splitGroupId.substring(0, splitGroupId.length() - 1);
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(null, response);
     }
 
@@ -111,7 +119,7 @@ public class ChatGroupsApi {
     public ChatGroup getChatGroupDetails(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -132,6 +140,7 @@ public class ChatGroupsApi {
      *                      注：如果允许了群成员邀请用户进群（allowinvites为true），那么就不需要群主或群管理员审批了
      * @param owner         群组的管理员，此属性为必须的
      * @param members       群组成员，此属性为可选的，但是如果加了此项，数组元素至少一个（注：群主user1不需要写入到members里面）
+     * @throws
      * @return String groupId
      */
     public String createChatGroup(String groupName, String description, Boolean isPublic, Integer maxUsers,
@@ -184,7 +193,7 @@ public class ChatGroupsApi {
             request.set("members", this.mapper.valueToTree(members));
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/chatgroups", request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/chatgroups", request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         JsonNode data = response.get("data");
         if (data != null) {
             JsonNode groupId = data.get("groupid");
@@ -244,7 +253,7 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -261,7 +270,7 @@ public class ChatGroupsApi {
     public ChatGroup deleteChatGroup(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -278,7 +287,7 @@ public class ChatGroupsApi {
     public ChatGroup getChatGroupAnnouncement(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId + "/announcement";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -303,7 +312,7 @@ public class ChatGroupsApi {
         request.put("announcement", announcement);
 
         String uri = "/chatgroups/" + groupId + "/announcement";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -330,7 +339,7 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId + "/share_files?pagenum=" + pageNum + "&pagesize=" + pageSize;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -343,7 +352,7 @@ public class ChatGroupsApi {
         verifyGroupId(groupId);
 
         String uri = "/chatgroups/" + groupId + "/share_files";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -367,7 +376,7 @@ public class ChatGroupsApi {
         });
 
         String uri = "/chatgroups/" + groupId + "/share_files";
-        JsonNode response = HttpUtils.upload(client, uri, file, this.mapper);
+        JsonNode response = HttpUtils.upload(client, uri, file, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -380,9 +389,9 @@ public class ChatGroupsApi {
      * @param fileId                        fileId下载群组共享文件，fileId是通过 "获取群组共享文件" 接口获取到的
      * @param assignDownloadAttachmentPath  指定群组共享文件要下载到的路径，例如 /xx/.../file/
      * @param assignDownloadAttachmentName  指定下载群组共享文件的名称，要加后缀，比如下载的图片就是 imageName.jpg , imageName.png
-     * @return ChatGroup
+     * @return JsonNode
      */
-    public ChatGroup downloadChatGroupShareFile(String groupId, String fileId, String assignDownloadAttachmentPath, String assignDownloadAttachmentName) {
+    public JsonNode downloadChatGroupShareFile(String groupId, String fileId, String assignDownloadAttachmentPath, String assignDownloadAttachmentName) {
         verifyGroupId(groupId);
         verifyFileId(fileId);
         verifyAssignDownloadPath(assignDownloadAttachmentPath);
@@ -393,8 +402,7 @@ public class ChatGroupsApi {
         });
 
         String uri = "/chatgroups/" + groupId + "/share_files/" + fileId;
-        JsonNode response = HttpUtils.download(client, uri, assignDownloadAttachmentPath, assignDownloadAttachmentName, this.mapper);
-        return responseToChatGroupObject(groupId, response);
+        return HttpUtils.download(client, uri, assignDownloadAttachmentPath, assignDownloadAttachmentName, this.mapper, this.properties, this.tokenCache);
     }
 
     /**
@@ -415,7 +423,7 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId + "/share_files/" + fileId;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -441,7 +449,7 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId + "/users?pagenum=" + pageNum + "&pagesize=" + pageSize;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -461,7 +469,7 @@ public class ChatGroupsApi {
         verifyUsername(username);
 
         String uri = "/chatgroups/" + groupId + "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -487,7 +495,7 @@ public class ChatGroupsApi {
         request.set("usernames", this.mapper.valueToTree(usernames));
 
         String uri = "/chatgroups/" + groupId + "/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -507,7 +515,7 @@ public class ChatGroupsApi {
         verifyUsername(username);
 
         String uri = "/chatgroups/" + groupId + "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -525,7 +533,7 @@ public class ChatGroupsApi {
         String splitMember = verifySplitUsernames(members);
 
         String uri = "/chatgroups/" + groupId + "/users/" + splitMember;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -540,7 +548,7 @@ public class ChatGroupsApi {
     public ChatGroup getChatGroupAdminList(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId + "/admin";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -563,7 +571,7 @@ public class ChatGroupsApi {
         request.put("newadmin", newAdmin);
 
         String uri = "/chatgroups/" + groupId + "/admin";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -583,7 +591,7 @@ public class ChatGroupsApi {
         verifyUsername(oldAdmin);
 
         String uri = "/chatgroups/" + groupId + "/admin/" + oldAdmin;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -606,7 +614,7 @@ public class ChatGroupsApi {
         request.put("newowner", newOwner);
 
         String uri = "/chatgroups/" + groupId;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -624,7 +632,7 @@ public class ChatGroupsApi {
         verifyGroupId(groupId);
 
         String uri = "/chatgroups/" + groupId + "/blocks/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -644,7 +652,7 @@ public class ChatGroupsApi {
         verifyUsername(username);
 
         String uri = "/chatgroups/" + groupId + "/blocks/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -670,7 +678,7 @@ public class ChatGroupsApi {
         request.set("usernames", this.mapper.valueToTree(usernames));
 
         String uri = "/chatgroups/" + groupId + "/blocks/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -690,7 +698,7 @@ public class ChatGroupsApi {
         verifyUsername(username);
 
         String uri = "/chatgroups/" + groupId + "/blocks/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -710,7 +718,7 @@ public class ChatGroupsApi {
         String splitUsername = verifySplitUsernames(usernames);
 
         String uri = "/chatgroups/" + groupId + "/blocks/users/" + splitUsername;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -735,7 +743,7 @@ public class ChatGroupsApi {
         request.put("mute_duration", muteDuration);
 
         String uri = "/chatgroups/" + groupId + "/mute";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -758,7 +766,7 @@ public class ChatGroupsApi {
         request.put("mute_duration", muteDuration);
 
         String uri = "/chatgroups/" + groupId + "/mute";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -778,7 +786,7 @@ public class ChatGroupsApi {
         verifyUsername(member);
 
         String uri = "/chatgroups/" + groupId + "/mute/" + member;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -802,7 +810,7 @@ public class ChatGroupsApi {
         }
 
         String uri = "/chatgroups/" + groupId + "/mute/" + splitMember.substring(0, splitMember.length() - 1);
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -817,7 +825,7 @@ public class ChatGroupsApi {
     public ChatGroup getMuteList(String groupId) {
         verifyGroupId(groupId);
         String uri = "/chatgroups/" + groupId + "/mute";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper);
+        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
         return responseToChatGroupObject(groupId, response);
     }
 
@@ -892,7 +900,7 @@ public class ChatGroupsApi {
     // 操作群组的返回结果转成 ChatGroup 对象
     private ChatGroup responseToChatGroupObject(String groupId, JsonNode response) {
         JsonNode data = response.get("data");
-        if (data == null || data.size() < 1) {
+        if (data == null) {
             throw new ChatGroupsException("data is null");
         }
 
