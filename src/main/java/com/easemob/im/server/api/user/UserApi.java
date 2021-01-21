@@ -1,8 +1,8 @@
 package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.user.exception.*;
-import com.easemob.im.server.model.OperationUserEvent;
 import com.easemob.im.server.model.User;
 import com.easemob.im.server.utils.HttpUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,8 +66,9 @@ public class UserApi {
      *                 并不是用户个人信息的昵称，环信目前是不保存用户昵称，头像等个人信息的，
      *                 需要自己服务器保存并与给自己用户注册的 IM 用户名绑定，长度不可超过100个字符
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User register(String username, String password, String nickname) {
+    public User register(String username, String password, String nickname) throws UserException {
         verifyUsername(username);
         verifyPassword(password);
         if (nickname != null) {
@@ -81,8 +82,13 @@ public class UserApi {
             request.put("nickname", nickname);
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/users", request, this.allocator, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.registerUser, username, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.POST, "/users", request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(username, response);
     }
 
     /**
@@ -92,8 +98,9 @@ public class UserApi {
      *
      * @param users 注册用户信息对象的数组，建议每次请求传入数组用户对象的数量不要超过20个
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User batchRegister(Set<BatchRegisterUser> users) {
+    public User batchRegister(Set<BatchRegisterUser> users) throws UserException {
         if (users == null || users.size() < 1) {
             throw new UserException("Bad Request invalid users");
         }
@@ -106,8 +113,13 @@ public class UserApi {
             request.addPOJO(user);
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, "/users", request ,this.allocator, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.batchRegisterUser, null, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.POST, "/users", request ,this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(null, response);
     }
 
     /**
@@ -119,11 +131,18 @@ public class UserApi {
      *
      * @param username 用户的username
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User getUser(String username) {
+    public User getUser(String username) throws UserException {
         verifyUsername(username);
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, "/users/" + username, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.getUser, username, response);
+
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.GET, "/users/" + username, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(username, response);
     }
 
     /**
@@ -139,8 +158,9 @@ public class UserApi {
      * @param limit   要获取的用户数量
      * @param cursor  游标
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User batchGetUser(int limit, String cursor) {
+    public User batchGetUser(int limit, String cursor) throws UserException {
         verifyLimit(limit);
 
         String uri;
@@ -152,8 +172,13 @@ public class UserApi {
             uri = "/users?limit=" + limit;
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.batchGetUser, null, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(null, response);
     }
 
     /**
@@ -165,12 +190,19 @@ public class UserApi {
      *
      * @param username 用户的username
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User deleteUser(String username) {
+    public User deleteUser(String username) throws UserException {
         verifyUsername(username);
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.deleteUser, username, response);
+
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(username, response);
     }
 
     /**
@@ -184,8 +216,9 @@ public class UserApi {
      * @param limit  要删除的用户数量
      * @param cursor 游标
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User batchDeleteUser(int limit, String cursor) {
+    public User batchDeleteUser(int limit, String cursor) throws UserException {
         verifyLimit(limit);
 
         String uri;
@@ -197,8 +230,13 @@ public class UserApi {
             uri = "/users?limit=" + limit;
         }
 
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.batchDeleteUser, null, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(null, response);
     }
 
     /**
@@ -211,8 +249,9 @@ public class UserApi {
      * @param username     用户的username
      * @param newPassword  新密码
      * @return Map<String, Object>
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public Map<String, Object> modifyUserPassword(String username, String newPassword) {
+    public Map<String, Object> modifyUserPassword(String username, String newPassword) throws UserException {
         verifyUsername(username);
         verifyPassword(newPassword);
 
@@ -220,7 +259,13 @@ public class UserApi {
         request.put("newpassword", newPassword);
 
         String uri = "/users/" + username + "/password";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
 
         Map<String, Object> result = new HashMap<>();
         result.put("username", username);
@@ -240,8 +285,9 @@ public class UserApi {
      * @param username  用户的username
      * @param nickname  用户的推送昵称
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User setUserPushNickname(String username, String nickname) {
+    public User setUserPushNickname(String username, String nickname) throws UserException {
         verifyUsername(username);
         verifyNickname(nickname);
 
@@ -249,8 +295,13 @@ public class UserApi {
         request.put("nickname", nickname);
 
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.setUserPushNickname, username, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(username, response);
     }
 
     /**
@@ -263,8 +314,9 @@ public class UserApi {
      * @param username      用户的username
      * @param displayStyle  客户端手机通知栏展示消息的样式 "0"仅通知(默认是"您有一条新消息")，"1"通知以及消息详情(展示消息内容)
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User setNotificationDisplayStyle(String username, int displayStyle) {
+    public User setNotificationDisplayStyle(String username, int displayStyle) throws UserException {
         verifyUsername(username);
         verifyDisplayStyle(String.valueOf(displayStyle));
 
@@ -272,8 +324,13 @@ public class UserApi {
         request.put("notification_display_style", String.valueOf(displayStyle));
 
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.setNotificationDisplayStyle, username, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(username, response);
     }
 
     /**
@@ -287,8 +344,9 @@ public class UserApi {
      * @param start         免打扰起始时间，单位是小时
      * @param end           免打扰结束时间，单位是小时
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User setNotificationNoDisturbing(String username, int start, int end) {
+    public User setNotificationNoDisturbing(String username, int start, int end) throws UserException {
         verifyNickname(username);
         verifyNoDisturbingStart(String.valueOf(start));
         verifyNoDisturbingEnd(String.valueOf(end));
@@ -299,8 +357,13 @@ public class UserApi {
         request.put("notification_no_disturbing_end", String.valueOf(end));
 
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.setNotificationNoDisturbing, username, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(username, response);
     }
 
     /**
@@ -310,16 +373,22 @@ public class UserApi {
      *
      * @param username  用户的username
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User cancelNotificationNoDisturbing(String username) {
+    public User cancelNotificationNoDisturbing(String username) throws UserException {
         verifyUsername(username);
 
         ObjectNode request = this.mapper.createObjectNode();
         request.put("notification_no_disturbing", false);
 
         String uri = "/users/" + username;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.cancelNotificationNoDisturbing, username, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.PUT, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(username, response);
     }
 
     /**
@@ -332,14 +401,20 @@ public class UserApi {
      * @param ownerUsername   要添加好友的用户名
      * @param friendUsername  好友用户名
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User addContact(String ownerUsername, String friendUsername) {
+    public User addContact(String ownerUsername, String friendUsername) throws UserException {
         verifyUsername(ownerUsername);
         verifyUsername(friendUsername);
 
         String uri = "/users/" + ownerUsername + "/contacts/users/" + friendUsername;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.addContact, ownerUsername, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(ownerUsername, response);
     }
 
     /**
@@ -352,14 +427,20 @@ public class UserApi {
      * @param ownerUsername   要添加好友的用户名
      * @param friendUsername  好友用户名
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User removeContact(String ownerUsername, String friendUsername) {
+    public User removeContact(String ownerUsername, String friendUsername) throws UserException {
         verifyUsername(ownerUsername);
         verifyUsername(friendUsername);
 
         String uri = "/users/" + ownerUsername + "/contacts/users/" + friendUsername;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.removeContact, ownerUsername, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(ownerUsername, response);
     }
 
     /**
@@ -371,11 +452,18 @@ public class UserApi {
      *
      * @param ownerUsername  获取好友列表的用户名
      * @return List<String>
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public List<String> getContactList(String ownerUsername) {
+    public List<String> getContactList(String ownerUsername) throws UserException {
         verifyUsername(ownerUsername);
+
         String uri = "/users/" + ownerUsername + "/contacts/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
         return jsonDataToArrayList(response);
     }
 
@@ -388,11 +476,18 @@ public class UserApi {
      *
      * @param ownerUsername  获取黑名单的用户名
      * @return List<String>
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public List<String> getBlockList(String ownerUsername) {
+    public List<String> getBlockList(String ownerUsername) throws UserException {
         verifyUsername(ownerUsername);
+
         String uri = "/users/" + ownerUsername + "/blocks/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
         return jsonDataToArrayList(response);
     }
 
@@ -405,8 +500,9 @@ public class UserApi {
      *
      * @param ownerUsername  要添加黑名单的用户名
      * @return List<String>
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public List<String> addBlock(String ownerUsername, Set<String> usernames) {
+    public List<String> addBlock(String ownerUsername, Set<String> usernames) throws UserException {
         verifyUsername(ownerUsername);
 
         if (usernames == null || usernames.size() < 1) {
@@ -423,8 +519,12 @@ public class UserApi {
         request.set("usernames", usernameArray);
 
         String uri = "/users/" + ownerUsername + "/blocks/users";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
-
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
         return jsonDataToArrayList(response);
     }
 
@@ -438,14 +538,20 @@ public class UserApi {
      * @param ownerUsername  要移除黑名单的用户名
      * @param blockUsername  黑名单中的用户名
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User removeBlock(String ownerUsername, String blockUsername) {
+    public User removeBlock(String ownerUsername, String blockUsername) throws UserException {
         verifyUsername(ownerUsername);
         verifyUsername(blockUsername);
 
         String uri = "/users/" + ownerUsername + "/blocks/users/" + blockUsername;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.removeBlock, ownerUsername, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.DELETE, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(ownerUsername, response);
     }
 
     /**
@@ -457,11 +563,18 @@ public class UserApi {
      *
      * @param username  要获取在线状态的用户名
      * @return String  -> offline 或者 online
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public String getUserStatus(String username) {
+    public String getUserStatus(String username) throws UserException {
         verifyUsername(username);
+
         String uri = "/users/" + username + "/status";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
         return jsonDataToString(username, response);
     }
 
@@ -474,8 +587,9 @@ public class UserApi {
      *
      * @param usernames  需要查询状态的用户名以数组方式提交，最多不能超过100个
      * @return  "offline"代表离线，"online"在表用户当前在线
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public List<Map<String, String>> batchGetUserStatus(Set<String> usernames) {
+    public List<Map<String, String>> batchGetUserStatus(Set<String> usernames) throws UserException {
         if (usernames == null || usernames.size() < 1 || usernames.size() > 100) {
             throw new UserException("Bad Request invalid usernames");
         }
@@ -488,7 +602,12 @@ public class UserApi {
         request.set("usernames", this.mapper.valueToTree(usernames));
 
         String uri = "/users/batch/status";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
         return jsonDataToArrayList(response);
     }
 
@@ -501,12 +620,18 @@ public class UserApi {
      *
      * @param username  要获取离线消息数的用户名
      * @return int
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public int getUserOfflineMessageCount(String username) {
+    public int getUserOfflineMessageCount(String username) throws UserException {
         verifyUsername(username);
 
         String uri = "/users/" + username + "/offline_msg_count";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
 
         JsonNode data = response.get("data");
         int offlineMsgCount;
@@ -533,13 +658,19 @@ public class UserApi {
      * @param username   要获取离线消息状态的用户名
      * @param messageId  要查看离线消息状态的消息ID
      * @return String  -> delivered 或 undelivered
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public String getOfflineMessageStatus(String username, String messageId) {
+    public String getOfflineMessageStatus(String username, String messageId) throws UserException {
         verifyUsername(username);
         verifyMessageId(messageId);
 
         String uri = "/users/" + username + "/offline_msg_status/" + messageId;
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
         return jsonDataToString(messageId, response);
     }
 
@@ -552,12 +683,19 @@ public class UserApi {
      *
      * @param username  要禁用的用户名
      * @return User
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public User deactivateUser(String username) {
+    public User deactivateUser(String username) throws UserException {
         verifyUsername(username);
+
         String uri = "/users/" + username + "/deactivate";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
-        return responseToUserObject(OperationUserEvent.deactivateUser, username, response);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
+        return responseToUserObject(username, response);
     }
 
     /**
@@ -569,12 +707,18 @@ public class UserApi {
      *
      * @param username  要解禁的用户名
      * @return Map<String, Object>
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public Map<String, Object> activateUser(String username) {
+    public Map<String, Object> activateUser(String username) throws UserException {
         verifyUsername(username);
 
         String uri = "/users/" + username + "/activate";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.POST, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
 
         Map<String, Object> result = new HashMap<>();
         result.put("username", username);
@@ -593,12 +737,18 @@ public class UserApi {
      *
      * @param username  要强制下线的用户名
      * @return boolean  -> true 或 false
+     * @throws UserException 调用管理用户方法会抛出的异常
      */
-    public boolean disconnect(String username) {
+    public boolean disconnect(String username) throws UserException {
         verifyUsername(username);
 
         String uri = "/users/" + username + "/disconnect";
-        JsonNode response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode response;
+        try {
+            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new UserException(e.getMessage());
+        }
 
         JsonNode data = response.get("data");
         boolean isDisconnect;
@@ -615,69 +765,69 @@ public class UserApi {
     }
 
     // 验证 username
-    private void verifyUsername(String username) {
+    private void verifyUsername(String username) throws UserException {
         if (username == null || !VALID_USERNAME_PATTERN.matcher(username).matches()) {
             throw new UserException(String.format("Bad Request %s invalid username", username));
         }
     }
 
     // 验证 password
-    private void verifyPassword(String password) {
+    private void verifyPassword(String password) throws UserException {
         if (password == null || !VALID_PASSWORD_PATTERN.matcher(password).matches()) {
             throw new UserException(String.format("Bad Request %s invalid password", password));
         }
     }
 
     // 验证 nickname
-    private void verifyNickname(String nickname) {
+    private void verifyNickname(String nickname) throws UserException {
         if (!VALID_NICKNAME_PATTERN.matcher(nickname).matches()) {
             throw new UserException(String.format("Bad Request %s invalid nickname", nickname));
         }
     }
 
     // 验证 limit
-    private void verifyLimit(int limit) {
+    private void verifyLimit(int limit) throws UserException {
         if (limit < 1) {
             throw new UserException("Bad Request invalid limit");
         }
     }
 
     // 验证 cursor
-    private void verifyCursor(String cursor) {
+    private void verifyCursor(String cursor) throws UserException {
         if (cursor == null || cursor.isEmpty()) {
             throw new UserException("Bad Request invalid cursor");
         }
     }
 
     // 验证 notification display style
-    private void verifyDisplayStyle(String style) {
+    private void verifyDisplayStyle(String style) throws UserException {
         if (style == null || !VALID_DISPLAY_STYLE_PATTERN.matcher(style).matches()) {
             throw new UserException(String.format("Bad Request %s invalid style", style));
         }
     }
 
     // 验证 no disturbing start
-    private void verifyNoDisturbingStart(String start) {
+    private void verifyNoDisturbingStart(String start) throws UserException {
         if (start == null || !VALID_NO_DISTURBING_START_PATTERN.matcher(start).matches()) {
             throw new UserException(String.format("Bad Request %s invalid start time", start));
         }
     }
 
     // 验证 no disturbing end
-    private void verifyNoDisturbingEnd(String end) {
+    private void verifyNoDisturbingEnd(String end) throws UserException {
         if (end == null || !VALID_NO_DISTURBING_END_PATTERN.matcher(end).matches()) {
             throw new UserException(String.format("Bad Request %s invalid end time", end));
         }
     }
 
     // 验证 message id
-    private void verifyMessageId(String messageId) {
+    private void verifyMessageId(String messageId) throws UserException {
         if (messageId == null || !VALID_MESSAGE_ID_PATTERN.matcher(messageId).matches()) {
             throw new UserException("Bad Request invalid messageId");
         }
     }
 
-    private <T> List<T> jsonDataToArrayList(JsonNode response) {
+    private <T> List<T> jsonDataToArrayList(JsonNode response) throws UserException {
         List<T> resultList;
         if (response.get("data") != null) {
             try {
@@ -691,7 +841,7 @@ public class UserApi {
         return resultList;
     }
 
-    private String jsonDataToString(String name, JsonNode response) {
+    private String jsonDataToString(String name, JsonNode response) throws UserException {
         JsonNode data = response.get("data");
         String status;
         if (data != null) {
@@ -707,7 +857,7 @@ public class UserApi {
     }
 
     // 操作用户的返回结果转成 User 对象
-    private User responseToUserObject(OperationUserEvent event, String username, JsonNode response) {
+    private User responseToUserObject(String username, JsonNode response) throws UserException {
         ArrayNode entities = (ArrayNode) response.get("entities");
         if (entities == null || entities.size() < 1) {
             throw new UserException("entities is null");
@@ -727,35 +877,26 @@ public class UserApi {
             timestamp = null;
         }
 
-        if (event == OperationUserEvent.batchGetUser || event == OperationUserEvent.batchDeleteUser) {
-            String cursor;
-            Integer count;
+        String cursor;
+        Integer count;
 
-            if (response.get("cursor") != null) {
-                cursor = response.get("cursor").asText();
-            } else {
-                cursor = null;
-            }
+        if (response.get("cursor") != null) {
+            cursor = response.get("cursor").asText();
+        } else {
+            cursor = null;
+        }
 
-            if (response.get("count") != null) {
-                count = response.get("count").asInt();
-            } else {
-                count = null;
-            }
-            return User.builder()
-                    .event(event)
-                    .username(username)
-                    .entities(entitiesList)
-                    .cursor(cursor)
-                    .count(count)
-                    .timeStamp(timestamp)
-                    .build();
+        if (response.get("count") != null) {
+            count = response.get("count").asInt();
+        } else {
+            count = null;
         }
 
         return User.builder()
-                .event(event)
                 .username(username)
                 .entities(entitiesList)
+                .cursor(cursor)
+                .count(count)
                 .timeStamp(timestamp)
                 .build();
     }

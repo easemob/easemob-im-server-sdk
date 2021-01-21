@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.chatfiles;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.chatfiles.exception.ChatFilesException;
 import com.easemob.im.server.model.ChatFile;
 import com.easemob.im.server.utils.HttpUtils;
@@ -37,14 +38,18 @@ public class ChatFilesApi {
      * 默认上传文件大小不能超过 10M，超过会上传失败
      *
      * @param fileLocalPath  传附件的本地路径
-     * @return JsonNode
+     * @return ChatFile
+     * @throws ChatFilesException 调用附件方法会抛出的异常
      */
-    public ChatFile uploadAttachment(String fileLocalPath) {
+    public ChatFile uploadAttachment(String fileLocalPath) throws ChatFilesException {
         verifyFileLocalPath(fileLocalPath);
 
         File file = new File(fileLocalPath);
-        JsonNode response = uploadRequest(file);
+        if (!file.exists()) {
+            throw new ChatFilesException("invalid fileLocalPath");
+        }
 
+        JsonNode response = uploadRequest(file);
         return responseToChatFileObject(file, response);
     }
 
@@ -56,9 +61,10 @@ public class ChatFilesApi {
      * 默认上传文件大小不能超过 10M，超过会上传失败
      *
      * @param file  传文件
-     * @return JsonNode
+     * @return ChatFile
+     * @throws ChatFilesException 调用附件方法会抛出的异常
      */
-    public ChatFile uploadAttachment(File file) {
+    public ChatFile uploadAttachment(File file) throws ChatFilesException {
         if (file == null || !file.exists()) {
             throw new ChatFilesException("invalid file");
         }
@@ -76,8 +82,9 @@ public class ChatFilesApi {
      * @param assignDownloadAttachmentPath  指定附件要下载到的路径，例如 /xx/.../file/
      * @param assignDownloadAttachmentName  指定下载附件的名称，要加后缀，比如下载的图片就是 imageName.jpg , imageName.png
      * @return JsonNode
+     * @throws ChatFilesException 调用附件方法会抛出的异常
      */
-    public JsonNode downloadAttachment(String shareSecret, String uuid, String assignDownloadAttachmentPath, String assignDownloadAttachmentName) {
+    public JsonNode downloadAttachment(String shareSecret, String uuid, String assignDownloadAttachmentPath, String assignDownloadAttachmentName) throws ChatFilesException {
         verifyShareSecret(shareSecret);
         verifyUuid(uuid);
         verifyAssignDownloadPath(assignDownloadAttachmentPath);
@@ -104,8 +111,9 @@ public class ChatFilesApi {
      * @param assignDownloadThumbnailPath  指定缩略图要下载到的路径，例如 /xx/.../file/
      * @param assignDownloadThumbnailName  指定下载缩略图的名称，要加后缀，比如下载的图片就是 imageName.jpg , imageName.png
      * @return JsonNode
+     * @throws ChatFilesException 调用附件方法会抛出的异常
      */
-    public JsonNode downloadThumbnail(String shareSecret, String uuid, String assignDownloadThumbnailPath, String assignDownloadThumbnailName) {
+    public JsonNode downloadThumbnail(String shareSecret, String uuid, String assignDownloadThumbnailPath, String assignDownloadThumbnailName) throws ChatFilesException {
         verifyShareSecret(shareSecret);
         verifyUuid(uuid);
         verifyAssignDownloadPath(assignDownloadThumbnailPath);
@@ -121,22 +129,28 @@ public class ChatFilesApi {
     }
 
     // 上传附件请求
-    private JsonNode uploadRequest(File file) {
-        HttpClient client = this.http.headers(h -> {
-            h.add("restrict-access", "true");
-        });
-
-        return HttpUtils.upload(client, "/chatfiles", file, this.mapper, this.properties, this.tokenCache);
+    private JsonNode uploadRequest(File file) throws ChatFilesException {
+        HttpClient client = this.http.headers(h -> h.add("restrict-access", "true"));
+        try {
+            return HttpUtils.upload(client, "/chatfiles", file, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new ChatFilesException(e.getMessage());
+        }
     }
 
     // 下载附件请求
-    private JsonNode downloadAttachmentRequest(HttpClient client, String uuid, String assignDownloadPath, String assignDownloadName) {
+    private JsonNode downloadAttachmentRequest(HttpClient client, String uuid, String assignDownloadPath, String assignDownloadName) throws ChatFilesException {
         String uri = "/chatfiles/" + uuid;
-        return HttpUtils.download(client, uri, assignDownloadPath, assignDownloadName, this.mapper, this.properties, this.tokenCache);
+        try {
+            return HttpUtils.download(client, uri, assignDownloadPath, assignDownloadName, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new ChatFilesException(e.getMessage());
+        }
     }
 
     // 上传附件返回结果转成 ChatFile 对象
-    private ChatFile responseToChatFileObject(File file, JsonNode response) {
+    private ChatFile responseToChatFileObject(File file, JsonNode response) throws ChatFilesException {
+        String url;
         String uuid;
         String shareSecret;
 
@@ -153,44 +167,51 @@ public class ChatFilesApi {
             throw new ChatFilesException("entities is null");
         }
 
+        if (response.get("uri") != null) {
+            url = response.get("uri").asText() + "/" + uuid;
+        } else {
+            throw new ChatFilesException("response uri is null");
+        }
+
         return ChatFile.builder()
                 .attachmentName(file.getName())
                 .uuid(uuid)
                 .shareSecret(shareSecret)
+                .url(url)
                 .timestamp(response.get("timestamp").asLong())
                 .build();
     }
 
     // 验证 file local path
-    private void verifyFileLocalPath(String localPath) {
+    private void verifyFileLocalPath(String localPath) throws ChatFilesException {
         if (localPath == null || localPath.isEmpty()) {
             throw new ChatFilesException("Bad Request invalid localPath");
         }
     }
 
     // 验证 share secret
-    private void verifyShareSecret(String shareSecret) {
+    private void verifyShareSecret(String shareSecret) throws ChatFilesException {
         if (shareSecret == null || shareSecret.isEmpty()) {
             throw new ChatFilesException("Bad Request invalid shareSecret");
         }
     }
 
     // 验证 share secret
-    private void verifyUuid(String uuid) {
+    private void verifyUuid(String uuid) throws ChatFilesException {
         if (uuid == null || uuid.isEmpty()) {
             throw new ChatFilesException("Bad Request invalid uuid");
         }
     }
 
     // 验证 assign download path
-    private void verifyAssignDownloadPath(String assignDownloadPath) {
+    private void verifyAssignDownloadPath(String assignDownloadPath) throws ChatFilesException {
         if (assignDownloadPath == null || assignDownloadPath.isEmpty()) {
             throw new ChatFilesException("Bad Request invalid assignDownloadPath");
         }
     }
 
     // 验证 assign download name
-    private void verifyAssignDownLoadName(String assignDownloadName) {
+    private void verifyAssignDownLoadName(String assignDownloadName) throws ChatFilesException {
         if (assignDownloadName == null || assignDownloadName.isEmpty()) {
             throw new ChatFilesException("Bad Request invalid assignDownloadName");
         }

@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.recallmessage;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.recallmessage.exception.RecallMessageException;
 import com.easemob.im.server.model.RecallMessage;
 import com.easemob.im.server.utils.HttpUtils;
@@ -46,8 +47,9 @@ public class RecallMessageApi {
      * @param to         接收消息方（用户id或者群组id）
      * @param type       消息类型（单聊或者群组消息）
      * @return JsonNode
+     * @throws RecallMessageException 调用撤回消息方法会抛出的异常
      */
-    public JsonNode recallMessage(String messageId, String to, ChatType type) {
+    public JsonNode recallMessage(String messageId, String to, ChatType type) throws RecallMessageException {
         verifyMessageId(messageId);
         verifyTo(to);
 
@@ -62,7 +64,11 @@ public class RecallMessageApi {
         ObjectNode request = this.mapper.createObjectNode();
         request.set("msgs", msgArray);
 
-        return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        try {
+            return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new RecallMessageException(e.getMessage());
+        }
     }
 
     /**
@@ -72,8 +78,9 @@ public class RecallMessageApi {
      *
      * @param messages 需要撤回多条消息的集合
      * @return  JsonNode
+     * @throws RecallMessageException 调用撤回消息方法会抛出的异常
      */
-    public JsonNode recallMessage(Set<RecallMessage> messages) {
+    public JsonNode recallMessage(Set<RecallMessage> messages) throws RecallMessageException {
         verifyMessage(messages);
 
         ObjectNode request = this.mapper.createObjectNode();
@@ -82,19 +89,19 @@ public class RecallMessageApi {
         return HttpUtils.execute(this.http, HttpMethod.POST, "/messages/recall", request, this.allocator, this.mapper, this.properties, this.tokenCache);
     }
 
-    private void verifyMessage(Set<RecallMessage> messages) {
+    private void verifyMessage(Set<RecallMessage> messages) throws RecallMessageException {
         if (messages == null || messages.size() < 1) {
             throw new RecallMessageException("Bad Request invalid messages");
         }
     }
 
-    private void verifyMessageId(String messageId) {
+    private void verifyMessageId(String messageId) throws RecallMessageException {
         if (messageId == null || messageId.isEmpty()) {
             throw new RecallMessageException("Bad Request invalid messageId");
         }
     }
 
-    private void verifyTo(String to) {
+    private void verifyTo(String to) throws RecallMessageException {
         if (to == null || to.isEmpty()) {
             throw new RecallMessageException("Bad Request invalid to");
         }

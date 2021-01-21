@@ -1,6 +1,5 @@
 package com.easemob.im.server;
 
-import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.chatfiles.ChatFilesApi;
 import com.easemob.im.server.api.chatgroups.ChatGroupsApi;
 import com.easemob.im.server.api.chatmessages.ChatMessagesApi;
@@ -32,9 +31,7 @@ public class EMClient {
 
     private static volatile EMClient instance;
 
-    public EMClient() {
-        // TODO: 在这里实例化：
-
+    public EMClient() throws EMClientException {
         //  - cache token
         this.tokenCache = Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.DAYS).build();
         //  - BufferAllocator
@@ -55,12 +52,12 @@ public class EMClient {
         if (properties != null) {
             this.httpClient = HttpClient.create().baseUrl(properties.getBasePath());
         } else {
-            throw new ApiException("Please execute EMClient initializeProperties() method");
+            throw new EMClientException("Please execute EMClient initializeProperties() method");
         }
     }
 
     // 单例
-    public static EMClient getInstance() {
+    public static EMClient getInstance() throws EMClientException {
         if (instance == null) {
             synchronized (EMClient.class) {
                 if (instance == null) {

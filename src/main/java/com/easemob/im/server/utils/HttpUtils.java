@@ -3,6 +3,7 @@ package com.easemob.im.server.utils;
 import com.easemob.im.server.EMClient;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.ApiException;
+import com.easemob.im.server.api.token.exception.TokenException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ContainerNode;
@@ -20,11 +21,11 @@ import java.nio.charset.StandardCharsets;
 
 public class HttpUtils {
 
-    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
+    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) throws ApiException {
         return execute(http, method, uri, null, null, mapper, properties, tokenCache);
     }
 
-    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ContainerNode request, ByteBufAllocator allocator, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
+    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ContainerNode request, ByteBufAllocator allocator, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) throws ApiException {
         Mono<ByteBuf> buf;
         if (request == null && allocator == null) {
             buf = Mono.empty();
@@ -68,10 +69,9 @@ public class HttpUtils {
     }
 
     // 上传附件请求
-    public static JsonNode upload(HttpClient client, String uri, File file, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
-
-        ObjectNode response = client
-                .headers(h -> h.add("Authorization", "Bearer " + getCacheToken(properties, tokenCache)))
+    public static JsonNode upload(HttpClient client, String uri, File file, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) throws ApiException {
+        HttpClient httpClient = client.headers(h -> h.add("Authorization", "Bearer " + getCacheToken(properties, tokenCache)));
+        ObjectNode response = httpClient
                 .request(HttpMethod.POST)
                 .uri(uri)
                 .sendForm((t,u) -> u.multipart(true).file("file", file))
@@ -98,7 +98,7 @@ public class HttpUtils {
     }
 
     // 下载附件请求
-    public static JsonNode download(HttpClient client, String uri, String assignDownloadPath, String assignDownloadName, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) {
+    public static JsonNode download(HttpClient client, String uri, String assignDownloadPath, String assignDownloadName, ObjectMapper mapper, EMProperties properties, Cache<String, String> tokenCache) throws ApiException {
         String filePath;
         if (assignDownloadPath.endsWith("/")) {
             filePath = assignDownloadPath + assignDownloadName;
@@ -106,8 +106,13 @@ public class HttpUtils {
             filePath = assignDownloadPath + "/" + assignDownloadName;
         }
 
-        return client
-                .headers(h -> h.add("Authorization", "Bearer " + getCacheToken(properties, tokenCache)))
+        File file = new File(filePath);
+        if (!file.exists()) {
+            throw new ApiException("invalid filePath");
+        }
+
+        HttpClient httpClient = client.headers(h -> h.add("Authorization", "Bearer " + getCacheToken(properties, tokenCache)));
+        return httpClient
                 .request(HttpMethod.GET)
                 .uri(uri)
                 .responseSingle((r, b) -> {
@@ -118,7 +123,6 @@ public class HttpUtils {
 
                     return b.asInputStream()
                             .map(s -> {
-                                File file = new File(filePath);
                                 try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
                                     byte[] buffer = new byte[8192];
                                     int len;
@@ -133,13 +137,13 @@ public class HttpUtils {
                                 response.put("code", r.status().code());
                                 response.put("path", filePath);
                                 response.put("result", "download attachment success");
-
                                 return response;
                             });
                 }).block();
     }
 
-    private static JsonNode verifyResponse(ObjectNode response) {
+    // 验证 response
+    private static JsonNode verifyResponse(ObjectNode response) throws ApiException{
         JsonNode result = response.get("result");
         JsonNode statusCode = response.get("statusCode");
         if (statusCode.asInt() != 200) {
@@ -157,7 +161,8 @@ public class HttpUtils {
         }
     }
 
-    private static String getCacheToken(EMProperties properties, Cache<String, String> tokenCache) {
+    // 获取 token
+    private static String getCacheToken(EMProperties properties, Cache<String, String> tokenCache) throws TokenException {
         String key = properties.getAppKey();
         String cachedToken = tokenCache.getIfPresent(key);
         if (cachedToken != null) {

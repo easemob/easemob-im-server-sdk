@@ -1,9 +1,8 @@
 package com.easemob.im.server.api.chatmessages;
 
 import com.easemob.im.server.EMProperties;
-import com.easemob.im.server.api.chatfiles.exception.ChatFilesException;
+import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.chatmessages.exception.ChatMessagesException;
-import com.easemob.im.server.api.message.exception.MessageException;
 import com.easemob.im.server.utils.HttpUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,12 +46,18 @@ public class ChatMessagesApi {
      *             因为历史记录文件生成需要一定时间，建议用户在取得历史记录时要间隔一个小时，
      *             例如2016/12/10 09:00之后，可以开始下载2016/12/10 07:00 ～ 08:00的消息历史记录。
      * @return String
+     * @throws ChatMessagesException 调用下载历史消息方法会抛出的异常
      */
-    public String getHistoryMessage(Long time) {
+    public String getHistoryMessage(Long time) throws ChatMessagesException {
         verifyTime(time);
 
         String uri = "/chatmessages/" + time;
-        JsonNode result = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode result;
+        try {
+            result = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new ChatMessagesException(e.getMessage());
+        }
 
         if (result != null) {
             ArrayNode data = (ArrayNode) result.get("data");
@@ -76,20 +81,30 @@ public class ChatMessagesApi {
      * @param time       获取历史消息的时间
      * @param localPath  指定下载历史消息文件的路径
      * @return JsonNode
+     * @throws ChatMessagesException 调用下载历史消息方法会抛出的异常
      */
-    public JsonNode getHistoryMessageAndAutoDownloadFile(Long time, String localPath) {
+    public JsonNode getHistoryMessageAndAutoDownloadFile(Long time, String localPath) throws ChatMessagesException {
         verifyTime(time);
         verifyFileLocalPath(localPath);
 
         String uri = "/chatmessages/" + time;
-        JsonNode result = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        JsonNode result;
+        try {
+            result = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new ChatMessagesException(e.getMessage());
+        }
 
         if (result != null) {
             ArrayNode data = (ArrayNode) result.get("data");
             if (data != null && data.size() > 0) {
                 JsonNode url = data.get(0).get("url");
                 if (url != null) {
-                    return HttpUtils.download(this.http, url.asText(), localPath, String.format("%s.gz", time.toString()), this.mapper, this.properties, this.tokenCache);
+                    try {
+                        return HttpUtils.download(this.http, url.asText(), localPath, String.format("%s.gz", time.toString()), this.mapper, this.properties, this.tokenCache);
+                    } catch (ApiException e) {
+                        throw new ChatMessagesException(e.getMessage());
+                    }
                 } else {
                     throw new ChatMessagesException("result url is null");
                 }
@@ -102,16 +117,16 @@ public class ChatMessagesApi {
     }
 
     // 验证时间
-    private void verifyTime(Long time) {
+    private void verifyTime(Long time) throws ChatMessagesException {
         if (time == null || !VALID_TIME_PATTERN.matcher(String.valueOf(time)).matches()) {
-            throw new MessageException(String.format("Bad Request %s invalid time", time));
+            throw new ChatMessagesException(String.format("Bad Request %s invalid time", time));
         }
     }
 
     // 验证 file local path
-    private void verifyFileLocalPath(String localPath) {
+    private void verifyFileLocalPath(String localPath) throws ChatMessagesException {
         if (localPath == null || localPath.isEmpty()) {
-            throw new ChatFilesException("Bad Request invalid localPath");
+            throw new ChatMessagesException("Bad Request invalid localPath");
         }
     }
 }

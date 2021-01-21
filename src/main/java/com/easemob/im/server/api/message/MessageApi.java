@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.message;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.message.exception.MessageException;
 import com.easemob.im.server.model.Message;
 import com.easemob.im.server.utils.HttpUtils;
@@ -58,8 +59,9 @@ public class MessageApi {
      * @param from            表示消息发送者
      * @param ext             扩展属性，由APP自己定义
      * @return Message
+     * @throws MessageException 调用发送消息方法会抛出的异常
      */
-    public Message sendTextMessage(TargetType targetType, Set<String> target, String messageContent, String from, Map<String, Object> ext) {
+    public Message sendTextMessage(TargetType targetType, Set<String> target, String messageContent, String from, Map<String, Object> ext) throws MessageException {
         ObjectNode msg = this.mapper.createObjectNode();
         msg.put("type", "txt");
         msg.put("msg", messageContent);
@@ -86,8 +88,9 @@ public class MessageApi {
      * @param from           表示消息发送者
      * @param ext            扩展属性，由APP自己定义
      * @return Message
+     * @throws MessageException 调用发送消息方法会抛出的异常
      */
-    public Message sendImageMessage(TargetType targetType, Set<String> target, String imageUrl, String imageFileName, String secret, Long imageWidth, Long imageHeight,String from, Map<String, Object> ext) {
+    public Message sendImageMessage(TargetType targetType, Set<String> target, String imageUrl, String imageFileName, String secret, Long imageWidth, Long imageHeight,String from, Map<String, Object> ext) throws MessageException {
         verifyUrl(imageUrl);
         verifySecret(secret);
 
@@ -133,8 +136,9 @@ public class MessageApi {
      * @param from           表示消息发送者
      * @param ext            扩展属性，由APP自己定义
      * @return Message
+     * @throws MessageException 调用发送消息方法会抛出的异常
      */
-    public Message sendAudioMessage(TargetType targetType, Set<String> target, String audioUrl, String audioFileName, String secret, Integer audioLength,String from, Map<String, Object> ext) {
+    public Message sendAudioMessage(TargetType targetType, Set<String> target, String audioUrl, String audioFileName, String secret, Integer audioLength,String from, Map<String, Object> ext) throws MessageException {
         verifyUrl(audioUrl);
         verifySecret(secret);
 
@@ -169,8 +173,9 @@ public class MessageApi {
      * @param from                 表示消息发送者
      * @param ext                  扩展属性，由APP自己定义
      * @return Message
+     * @throws MessageException 调用发送消息方法会抛出的异常
      */
-    public Message sendVideoMessage(TargetType targetType, Set<String> target, String videoUrl, String videoFileName, String secret, Integer videoPlaybackLength, Long videoFileLength, String thumbUrl, String thumbSecret, String from, Map<String, Object> ext) {
+    public Message sendVideoMessage(TargetType targetType, Set<String> target, String videoUrl, String videoFileName, String secret, Integer videoPlaybackLength, Long videoFileLength, String thumbUrl, String thumbSecret, String from, Map<String, Object> ext) throws MessageException {
         verifyUrl(videoUrl);
         verifySecret(secret);
         verifyThumbUrl(thumbUrl);
@@ -203,8 +208,9 @@ public class MessageApi {
      * @param from        表示消息发送者
      * @param ext         扩展属性，由APP自己定义
      * @return Message
+     * @throws MessageException 调用发送消息方法会抛出的异常
      */
-    public Message sendLocationMessage(TargetType targetType, Set<String> target, String longitude, String latitude, String address, String from, Map<String, Object> ext) {
+    public Message sendLocationMessage(TargetType targetType, Set<String> target, String longitude, String latitude, String address, String from, Map<String, Object> ext) throws MessageException {
         verifyLongitude(longitude);
         verifyLatitude(latitude);
 
@@ -230,8 +236,9 @@ public class MessageApi {
      * @param from        表示消息发送者
      * @param ext         扩展属性，由APP自己定义
      * @return Message
+     * @throws MessageException 调用发送消息方法会抛出的异常
      */
-    public Message sendCmdMessage(TargetType targetType, Set<String> target, String action, String from, Map<String, Object> ext) {
+    public Message sendCmdMessage(TargetType targetType, Set<String> target, String action, String from, Map<String, Object> ext) throws MessageException {
         ObjectNode msg = this.mapper.createObjectNode();
         msg.put("type", "cmd");
         msg.put("action", action);
@@ -253,8 +260,9 @@ public class MessageApi {
      * @param from         表示消息发送者
      * @param ext          扩展属性，由APP自己定义
      * @return Message
+     * @throws MessageException 调用发送消息方法会抛出的异常
      */
-    public Message sendCustomMessage(TargetType targetType, Set<String> target, String customEvent, Map<String, Object> customExts, String from, Map<String, Object> ext) {
+    public Message sendCustomMessage(TargetType targetType, Set<String> target, String customEvent, Map<String, Object> customExts, String from, Map<String, Object> ext) throws MessageException {
         verifyCustomEvent(customEvent);
 
         ObjectNode customExtJsonNode;
@@ -278,7 +286,8 @@ public class MessageApi {
         return buildMessage(targetType, target, msg, from, ext);
     }
 
-    public Message buildMessage(TargetType targetType, Set<String> target, ObjectNode msg, String from, Map<String, Object> ext) {
+    // 构建消息
+    private Message buildMessage(TargetType targetType, Set<String> target, ObjectNode msg, String from, Map<String, Object> ext) throws MessageException {
         verifyUsername(from);
         if (target == null || target.size() < 1 | target.size() > 1000) {
             throw new MessageException("Bad Request invalid targets");
@@ -304,7 +313,13 @@ public class MessageApi {
             request.set("ext", extJsonNode);
         }
 
-        JsonNode result = HttpUtils.execute(this.http, HttpMethod.POST, "/messages", request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        JsonNode result;
+        try {
+            result = HttpUtils.execute(this.http, HttpMethod.POST, "/messages", request, this.allocator, this.mapper, this.properties, this.tokenCache);
+        } catch (ApiException e) {
+            throw new MessageException(e.getMessage());
+        }
+
         JsonNode data;
         if(result != null) {
             if (result.get("data") != null) {
@@ -341,63 +356,63 @@ public class MessageApi {
     }
 
     // 验证 username
-    private void verifyUsername(String username) {
+    private void verifyUsername(String username) throws MessageException {
         if (username == null || !VALID_USERNAME_PATTERN.matcher(username).matches()) {
             throw new MessageException(String.format("Bad Request %s invalid username", username));
         }
     }
 
     // 验证发送的目标
-    private void verifyTargetUsername(String targetUsername) {
+    private void verifyTargetUsername(String targetUsername) throws MessageException {
         if (targetUsername == null || !VALID_USERNAME_PATTERN.matcher(targetUsername).matches()) {
             throw new MessageException(String.format("Bad Request %s invalid target username", targetUsername));
         }
     }
 
     // 验证附件类型消息的url
-    private void verifyUrl(String url) {
+    private void verifyUrl(String url) throws MessageException {
         if (url == null || url.isEmpty()) {
             throw new MessageException("Bad Request invalid url");
         }
     }
 
     // 验证附件类型消息的secret
-    private void verifySecret(String secret) {
+    private void verifySecret(String secret) throws MessageException {
         if (secret == null || secret.isEmpty()) {
             throw new MessageException("Bad Request invalid secret");
         }
     }
 
     // 验证视频消息的thumbUrl
-    private void verifyThumbUrl(String thumbUrl) {
+    private void verifyThumbUrl(String thumbUrl) throws MessageException {
         if (thumbUrl == null || thumbUrl.isEmpty()) {
             throw new MessageException("Bad Request invalid thumbUrl");
         }
     }
 
     // 验证视频消息的thumbSecret
-    private void verifyThumbSecret(String thumbSecret) {
+    private void verifyThumbSecret(String thumbSecret) throws MessageException {
         if (thumbSecret == null || thumbSecret.isEmpty()) {
             throw new MessageException("Bad Request invalid thumbSecret");
         }
     }
 
     // 验证位置消息的lng
-    private void verifyLongitude(String longitude) {
+    private void verifyLongitude(String longitude) throws MessageException {
         if (longitude == null || longitude.isEmpty()) {
             throw new MessageException("Bad Request invalid longitude");
         }
     }
 
     // 验证位置消息的lat
-    private void verifyLatitude(String latitude) {
+    private void verifyLatitude(String latitude) throws MessageException {
         if (latitude == null || latitude.isEmpty()) {
             throw new MessageException("Bad Request invalid latitude");
         }
     }
 
     // 验证自定义类型消息的CustomEvent
-    private void verifyCustomEvent(String customEvent) {
+    private void verifyCustomEvent(String customEvent) throws MessageException {
         if (customEvent == null || !VALID_CUSTOM_EVENT_PATTERN.matcher(customEvent).matches()) {
             throw new MessageException(String.format("Bad Request %s invalid customEvent", customEvent));
         }

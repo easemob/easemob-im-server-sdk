@@ -10,11 +10,6 @@ import java.util.Map;
 @Builder
 public class User {
     /**
-     * 操作用户的事件
-     */
-    private OperationUserEvent event;
-
-    /**
      * 用户名
      */
     private String username;

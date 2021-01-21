@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.token;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.token.exception.TokenException;
 import com.easemob.im.server.utils.HttpUtils;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,6 +11,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
+
 
 public class TokenApi {
 
@@ -36,9 +38,10 @@ public class TokenApi {
      * 环信提供的 REST API 需要权限才能访问，权限通过发送 HTTP 请求时携带 token 来体现，下面描述获取 token 的方式。
      * 说明：API 描述的时候使用到的 {APP 的 client_id} 之类的这种参数需要替换成具体的值。
      *
-     * @return  token
+     * @return String -> token
+     * @throws TokenException 调用获取管理员token方法会抛出的异常
      */
-    public String getToken() {
+    public String getToken() throws TokenException {
         String key = this.properties.getAppKey();
 
         if (this.properties.getClientId() == null || this.properties.getClientId().isEmpty()) {
@@ -55,7 +58,13 @@ public class TokenApi {
 
         HttpClient httpClient = HttpClient.create()
                 .baseUrl(this.properties.getBasePath());
-        JsonNode result = HttpUtils.execute(httpClient, HttpMethod.POST, "/token", request, this.allocator, this.mapper, null, null);
+
+        JsonNode result;
+        try {
+            result = HttpUtils.execute(httpClient, HttpMethod.POST, "/token", request, this.allocator, this.mapper, null, null);
+        } catch (ApiException e) {
+            throw new TokenException(e.getMessage());
+        }
         if (result == null) {throw new TokenException("get token result is null");}
 
         String accessToken = result.get("access_token").asText();

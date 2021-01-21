@@ -22,6 +22,11 @@ public class ChatFile {
     private String shareSecret;
 
     /**
+     * 附件的 url
+     */
+    private String url;
+
+    /**
      * 附件的上传或下载时间
      */
     private Long timestamp;
