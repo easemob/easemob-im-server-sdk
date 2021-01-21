@@ -52,10 +52,10 @@ public class EMClient {
 //        .secure(t -> {
 //            t.sslContext(sslContext);
 //        });
-        if (this.properties != null) {
-            this.httpClient = HttpClient.create().baseUrl(this.properties.getBasePath());
+        if (properties != null) {
+            this.httpClient = HttpClient.create().baseUrl(properties.getBasePath());
         } else {
-            throw new ApiException("Please execute EMClient instance() method");
+            throw new ApiException("Please execute EMClient initializeProperties() method");
         }
     }
 
@@ -72,7 +72,7 @@ public class EMClient {
     }
 
     // 初始化配置
-    public static void instance(EMProperties property) {
+    public static void initializeProperties(EMProperties property) {
         if (properties == null) {
             synchronized (EMClient.class) {
                 if (properties == null) {
@@ -84,41 +84,41 @@ public class EMClient {
 
     // token模块
     public TokenApi token() {
-        return new TokenApi(this.tokenCache, this.properties, this.objectMapper, this.allocator);
+        return new TokenApi(this.tokenCache, properties, this.objectMapper, this.allocator);
     }
 
     // 用户模块
     public UserApi user() {
-        return new UserApi(this.httpClient, this.objectMapper, this.allocator, this.properties, this.tokenCache);
+        return new UserApi(this.httpClient, this.objectMapper, this.allocator, properties, this.tokenCache);
     }
 
     // 消息模块
     public MessageApi message() {
-        return new MessageApi(this.httpClient, this.objectMapper, this.allocator, this.properties, this.tokenCache);
+        return new MessageApi(this.httpClient, this.objectMapper, this.allocator, properties, this.tokenCache);
     }
 
     // 群组模块
     public ChatGroupsApi chatGroups() {
-        return new ChatGroupsApi(this.httpClient, this.objectMapper, this.allocator, this.properties, this.tokenCache);
+        return new ChatGroupsApi(this.httpClient, this.objectMapper, this.allocator, properties, this.tokenCache);
     }
 
     // 聊天室模块
     public ChatRoomsApi chatRooms() {
-        return new ChatRoomsApi(this.httpClient, this.objectMapper, this.allocator, this.properties, this.tokenCache);
+        return new ChatRoomsApi(this.httpClient, this.objectMapper, this.allocator, properties, this.tokenCache);
     }
 
     // 聊天记录模块
     public ChatMessagesApi chatMessages() {
-        return new ChatMessagesApi(this.httpClient, this.objectMapper, this.properties, this.tokenCache);
+        return new ChatMessagesApi(this.httpClient, this.objectMapper, properties, this.tokenCache);
     }
 
     // 文件上传下载模块
     public ChatFilesApi chatFiles() {
-        return new ChatFilesApi(this.httpClient, this.objectMapper, this.properties, this.tokenCache);
+        return new ChatFilesApi(this.httpClient, this.objectMapper, properties, this.tokenCache);
     }
 
     // 撤回消息模块
     public RecallMessageApi recall() {
-        return new RecallMessageApi(this.httpClient, this.objectMapper, this.allocator, this.properties, this.tokenCache);
+        return new RecallMessageApi(this.httpClient, this.objectMapper, this.allocator, properties, this.tokenCache);
     }
 }

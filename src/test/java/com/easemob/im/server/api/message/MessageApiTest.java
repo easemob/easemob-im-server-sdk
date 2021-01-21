@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.message;
 
 import com.easemob.im.server.EMClient;
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.model.Message;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
@@ -16,6 +17,10 @@ public class MessageApiTest {
 
     @Test
     public void sendTextMessage() {
+        EMClient.initializeProperties(new EMProperties("62242102#fudonghai89",
+                "YXA66v11wCkrEeWC1yHU2wRelQ",
+                "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0",
+                "http://a1.easemob.com"));
         Set<String> usernames = new HashSet<>();
         usernames.add("testuser0002");
         usernames.add("testuser0003");
@@ -32,6 +37,10 @@ public class MessageApiTest {
 
     @Test
     public void sendImageMessage() {
+        EMClient.initializeProperties(new EMProperties("62242102#fudonghai89",
+                "YXA66v11wCkrEeWC1yHU2wRelQ",
+                "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0",
+                "http://a1.easemob.com"));
         Set<String> usernames = new HashSet<>();
         usernames.add("testuser0002");
 
@@ -45,6 +54,10 @@ public class MessageApiTest {
 
     @Test
     public void sendAudioMessage() {
+        EMClient.initializeProperties(new EMProperties("62242102#fudonghai89",
+                "YXA66v11wCkrEeWC1yHU2wRelQ",
+                "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0",
+                "http://a1.easemob.com"));
         Set<String> usernames = new HashSet<>();
         usernames.add("testuser0002");
 
@@ -56,6 +69,10 @@ public class MessageApiTest {
 
     @Test
     public void sendVideoMessage() {
+        EMClient.initializeProperties(new EMProperties("62242102#fudonghai89",
+                "YXA66v11wCkrEeWC1yHU2wRelQ",
+                "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0",
+                "http://a1.easemob.com"));
         Set<String> usernames = new HashSet<>();
         usernames.add("testuser0002");
 
@@ -69,6 +86,10 @@ public class MessageApiTest {
 
     @Test
     public void sendLocationMessage() {
+        EMClient.initializeProperties(new EMProperties("62242102#fudonghai89",
+                "YXA66v11wCkrEeWC1yHU2wRelQ",
+                "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0",
+                "http://a1.easemob.com"));
         Set<String> usernames = new HashSet<>();
         usernames.add("testuser0002");
 
@@ -78,6 +99,10 @@ public class MessageApiTest {
 
     @Test
     public void sendCmdMessage() {
+        EMClient.initializeProperties(new EMProperties("62242102#fudonghai89",
+                "YXA66v11wCkrEeWC1yHU2wRelQ",
+                "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0",
+                "http://a1.easemob.com"));
         Set<String> usernames = new HashSet<>();
         usernames.add("testuser0002");
 
@@ -87,6 +112,10 @@ public class MessageApiTest {
 
     @Test
     public void sendCustomMessage() {
+        EMClient.initializeProperties(new EMProperties("62242102#fudonghai89",
+                "YXA66v11wCkrEeWC1yHU2wRelQ",
+                "YXA6PhaHtRWPtfVQeiL-kEvVx4mktl0",
+                "http://a1.easemob.com"));
         Set<String> usernames = new HashSet<>();
         usernames.add("testuser0002");
 
