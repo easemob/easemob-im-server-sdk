@@ -355,6 +355,13 @@ public class MessageApi {
                 .build();
     }
 
+    // 验证 target type
+    private void verifyTargetType(TargetType type) throws MessageException {
+        if (type == null) {
+            throw new MessageException("Bad Request targetType is null");
+        }
+    }
+
     // 验证 username
     private void verifyUsername(String username) throws MessageException {
         if (username == null || !VALID_USERNAME_PATTERN.matcher(username).matches()) {

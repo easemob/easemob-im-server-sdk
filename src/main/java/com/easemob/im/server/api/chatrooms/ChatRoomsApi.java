@@ -2,7 +2,6 @@ package com.easemob.im.server.api.chatrooms;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.ApiException;
-import com.easemob.im.server.api.chatgroups.exception.ChatGroupsException;
 import com.easemob.im.server.api.chatrooms.exception.ChatRoomsException;
 import com.easemob.im.server.model.ChatRoom;
 import com.easemob.im.server.utils.HttpUtils;
@@ -96,12 +95,12 @@ public class ChatRoomsApi {
      */
     public ChatRoom getChatRoomDetails(Set<String> roomIds) throws ChatRoomsException {
         if (roomIds == null || roomIds.size() < 1) {
-            throw new ChatGroupsException("Bad Request invalid roomIds");
+            throw new ChatRoomsException("Bad Request invalid roomIds");
         }
 
         StringBuilder splitRoomId = new StringBuilder();
-        for (String groupId : roomIds) {
-            splitRoomId.append(groupId).append(",");
+        for (String roomId : roomIds) {
+            splitRoomId.append(roomId).append(",");
         }
 
         String uri = "/chatrooms/" + splitRoomId.substring(0, splitRoomId.length() - 1);
@@ -151,7 +150,7 @@ public class ChatRoomsApi {
      */
     public String createChatRoom(String roomName, String description, Integer maxUsers, String owner, Set<String> members) throws ChatRoomsException {
         if (roomName == null) {
-            throw new ChatRoomsException("Bad Request groupName is null");
+            throw new ChatRoomsException("Bad Request roomName is null");
         }
 
         if (description == null) {
@@ -313,11 +312,11 @@ public class ChatRoomsApi {
     /**
      * 添加单个聊天室成员
      *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98
+     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98
      *
      * 一次给聊天室添加一个成员，不同重复添加同一个成员。如果用户已经是聊天室成员，将添加失败，并返回错误
      *
-     * @param roomId   需要添加的聊天室成员的群组 ID
+     * @param roomId   需要添加的聊天室成员的聊天室 ID
      * @param username  需要添加的 IM 用户名
      * @return ChatRoom
      * @throws ChatRoomsException 调用聊天室方法会抛出的异常
@@ -395,9 +394,9 @@ public class ChatRoomsApi {
     }
 
     /**
-     * 批量移除群组成员
+     * 批量移除聊天室成员
      *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E6%89%B9%E9%87%8F%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98
+     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/chatroom#%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98
      *
      * @param roomId   需要移除用户的聊天室 ID
      * @param members  需要移除的 IM 用户列表
@@ -446,12 +445,12 @@ public class ChatRoomsApi {
      *
      * 将一个聊天室成员角色提升为聊天室管理员
      *
-     * @param roomId   需要添加管理员的群组 ID
+     * @param roomId   需要添加管理员的聊天室 ID
      * @param newAdmin  需要添加为管理员的用户 ID
      * @return ChatRoom
      * @throws ChatRoomsException 调用聊天室方法会抛出的异常
      */
-    public ChatRoom addChatGroupAdmin(String roomId, String newAdmin) throws ChatRoomsException {
+    public ChatRoom addChatRoomAdmin(String roomId, String newAdmin) throws ChatRoomsException {
         verifyRoomId(roomId);
         verifyUsername(newAdmin);
 
@@ -471,7 +470,7 @@ public class ChatRoomsApi {
     /**
      * 移除聊天室管理员
      *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98
+     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%AE%A1%E7%90%86%E5%91%98
      *
      * 将用户的角色从聊天室管理员降为普通聊天室成员
      *
@@ -495,7 +494,7 @@ public class ChatRoomsApi {
     }
 
     /**
-     * 添加禁言
+     * 添加单个用户禁言
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80
      *
@@ -555,7 +554,7 @@ public class ChatRoomsApi {
     }
 
     /**
-     * 移除单个禁言
+     * 移除单个用户禁言
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E7%A6%81%E8%A8%80
      *

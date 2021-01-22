@@ -15,8 +15,13 @@ import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
 
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class RecallMessageApi {
+
+    private static final Pattern VALID_RECALL_TO_PATTERN = Pattern.compile("[A-Za-z-0-9]{1,64}");
+
+    private static final Pattern VALID_RECALL_MESSAGE_ID_PATTERN = Pattern.compile("[1-9][0-9]+");
 
     private final HttpClient http;
 
@@ -52,6 +57,7 @@ public class RecallMessageApi {
     public JsonNode recallMessage(String messageId, String to, ChatType type) throws RecallMessageException {
         verifyMessageId(messageId);
         verifyTo(to);
+        verifyChatType(type);
 
         ObjectNode msg = this.mapper.createObjectNode();
         msg.put("to", to);
@@ -92,18 +98,34 @@ public class RecallMessageApi {
     private void verifyMessage(Set<RecallMessage> messages) throws RecallMessageException {
         if (messages == null || messages.size() < 1) {
             throw new RecallMessageException("Bad Request invalid messages");
+        } else {
+            for (RecallMessage message : messages) {
+                if (message != null) {
+                    verifyMessageId(message.getMessageId());
+                    verifyTo(message.getTo());
+                    verifyChatType(message.getChatType());
+                } else {
+                    throw new RecallMessageException("Bad Request invalid RecallMessage");
+                }
+            }
         }
     }
 
     private void verifyMessageId(String messageId) throws RecallMessageException {
-        if (messageId == null || messageId.isEmpty()) {
+        if (messageId == null || !VALID_RECALL_MESSAGE_ID_PATTERN.matcher(messageId).matches()) {
             throw new RecallMessageException("Bad Request invalid messageId");
         }
     }
 
     private void verifyTo(String to) throws RecallMessageException {
-        if (to == null || to.isEmpty()) {
+        if (to == null || !VALID_RECALL_TO_PATTERN.matcher(to).matches()) {
             throw new RecallMessageException("Bad Request invalid to");
+        }
+    }
+
+    private void verifyChatType(ChatType type) throws RecallMessageException {
+        if (type == null) {
+            throw new RecallMessageException("Bad Request ChatType is null");
         }
     }
 

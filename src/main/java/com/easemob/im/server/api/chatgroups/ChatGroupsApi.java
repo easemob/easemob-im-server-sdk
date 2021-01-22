@@ -896,7 +896,7 @@ public class ChatGroupsApi {
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80
      *
-     * 将一个或多个用户禁言。用户被禁言后，将无法在群中发送消息
+     * 将多个用户禁言。用户被禁言后，将无法在群中发送消息
      *
      * @param groupId       需要添加禁言的群组 ID
      * @param username      要被禁言的 IM 用户名
@@ -952,7 +952,7 @@ public class ChatGroupsApi {
     }
 
     /**
-     * 移除单个禁言
+     * 移除单个用户禁言
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E7%A6%81%E8%A8%80
      *
