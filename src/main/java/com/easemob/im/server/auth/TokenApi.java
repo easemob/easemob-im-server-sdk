@@ -1,8 +1,8 @@
-package com.easemob.im.server.api.token;
+package com.easemob.im.server.auth;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.ApiException;
-import com.easemob.im.server.api.token.exception.TokenException;
+import com.easemob.im.server.auth.exception.TokenException;
 import com.easemob.im.server.utils.HttpUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +11,6 @@ import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
-
 
 public class TokenApi {
 
@@ -32,9 +31,9 @@ public class TokenApi {
 
     /**
      * 获取管理员权限
-     *
+     * <p>
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E7%AE%A1%E7%90%86%E5%91%98%E6%9D%83%E9%99%90
-     *
+     * <p>
      * 环信提供的 REST API 需要权限才能访问，权限通过发送 HTTP 请求时携带 token 来体现，下面描述获取 token 的方式。
      * 说明：API 描述的时候使用到的 {APP 的 client_id} 之类的这种参数需要替换成具体的值。
      *
@@ -57,7 +56,7 @@ public class TokenApi {
         request.put("client_secret", this.properties.getClientSecret());
 
         HttpClient httpClient = HttpClient.create()
-                .baseUrl(this.properties.getBaseUri());
+            .baseUrl(this.properties.getBaseUri());
 
         JsonNode result;
         try {
@@ -65,7 +64,9 @@ public class TokenApi {
         } catch (ApiException e) {
             throw new TokenException(e.getMessage());
         }
-        if (result == null) {throw new TokenException("get token result is null");}
+        if (result == null) {
+            throw new TokenException("get token result is null");
+        }
 
         String accessToken = result.get("access_token").asText();
         if (accessToken != null) {
