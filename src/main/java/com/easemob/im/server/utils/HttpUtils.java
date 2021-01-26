@@ -163,7 +163,8 @@ public class HttpUtils {
 
     // 获取 token
     private static String getCacheToken(EMProperties properties, Cache<String, String> tokenCache) throws TokenException {
-        String key = properties.getAppKey();
+        // TODO: 我们支持多个Appkey吗？如果只有一个Appkey，为什么用Appkey做缓存的key呢？
+        String key = properties.getAppkey();
         String cachedToken = tokenCache.getIfPresent(key);
         if (cachedToken != null) {
             return cachedToken;

@@ -42,7 +42,7 @@ public class TokenApi {
      * @throws TokenException 调用获取管理员token方法会抛出的异常
      */
     public String getToken() throws TokenException {
-        String key = this.properties.getAppKey();
+        String key = this.properties.getAppkey();
 
         if (this.properties.getClientId() == null || this.properties.getClientId().isEmpty()) {
             throw new TokenException("invalid clientId");
@@ -57,7 +57,7 @@ public class TokenApi {
         request.put("client_secret", this.properties.getClientSecret());
 
         HttpClient httpClient = HttpClient.create()
-                .baseUrl(this.properties.getBasePath());
+                .baseUrl(this.properties.getBaseUri());
 
         JsonNode result;
         try {

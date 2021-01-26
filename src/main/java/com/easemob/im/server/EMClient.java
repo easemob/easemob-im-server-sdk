@@ -31,7 +31,7 @@ public class EMClient {
 
     private static volatile EMClient instance;
 
-    public EMClient() throws EMClientException {
+    public EMClient() throws EMException {
         //  - cache token
         this.tokenCache = Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.DAYS).build();
         //  - BufferAllocator
@@ -50,14 +50,14 @@ public class EMClient {
 //            t.sslContext(sslContext);
 //        });
         if (properties != null) {
-            this.httpClient = HttpClient.create().baseUrl(properties.getBasePath());
+            this.httpClient = HttpClient.create().baseUrl(properties.getBaseUri());
         } else {
-            throw new EMClientException("Please execute EMClient initializeProperties() method");
+            throw new EMException("Please execute EMClient initializeProperties() method");
         }
     }
 
     // 单例
-    public static EMClient getInstance() throws EMClientException {
+    public static EMClient getInstance() throws EMException {
         if (instance == null) {
             synchronized (EMClient.class) {
                 if (instance == null) {
