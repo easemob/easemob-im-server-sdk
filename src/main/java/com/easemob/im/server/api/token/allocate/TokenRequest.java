@@ -1,4 +1,4 @@
-package com.easemob.im.server.auth.token;
+package com.easemob.im.server.api.token.allocate;
 
 /**
  * Marker interface

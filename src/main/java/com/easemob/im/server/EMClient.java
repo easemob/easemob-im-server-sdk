@@ -7,7 +7,7 @@ import com.easemob.im.server.api.chatrooms.ChatRoomsApi;
 import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.recallmessage.RecallMessageApi;
 import com.easemob.im.server.api.user.UserApi;
-import com.easemob.im.server.auth.TokenApi;
+import com.easemob.im.server.api.token.TokenApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;

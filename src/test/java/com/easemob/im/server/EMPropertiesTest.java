@@ -10,7 +10,7 @@ public class EMPropertiesTest {
     @Test
     public void testBuildEMPropertiesSuccessfully() {
         EMProperties properties = EMProperties.builder()
-            .withBaseUri("https://a1.easemob.com")
+            .baseUri("https://a1.easemob.com")
             .withAppkey("easemob#demo")
             .withClientId("id")
             .withClientSecret("secret")
@@ -24,7 +24,7 @@ public class EMPropertiesTest {
     @Test
     public void testTrimmingBaseUri() {
         EMProperties properties = EMProperties.builder()
-            .withBaseUri("https://a1.easemob.com/")
+            .baseUri("https://a1.easemob.com/")
             .withAppkey("easemob#demo")
             .withClientId("id")
             .withClientSecret("secret")
@@ -37,12 +37,12 @@ public class EMPropertiesTest {
 
     @Test
     public void testInvalidBaseUriOfEmpty() {
-        assertThrows(EMInvalidArgumentException.class, () -> EMProperties.builder().withBaseUri(""));
+        assertThrows(EMInvalidArgumentException.class, () -> EMProperties.builder().baseUri(""));
     }
 
     @Test
     public void testInvalidBaseUriOfNull() {
-        assertThrows(EMInvalidArgumentException.class, () -> EMProperties.builder().withBaseUri(null));
+        assertThrows(EMInvalidArgumentException.class, () -> EMProperties.builder().baseUri(null));
     }
 
 
@@ -90,7 +90,7 @@ public class EMPropertiesTest {
     @Test
     public void testNotSettingAppkey() {
         assertThrows(EMInvalidStateException.class, () -> EMProperties.builder()
-            .withBaseUri("https://a1.easemob.com")
+            .baseUri("https://a1.easemob.com")
             .withClientId("id")
             .withClientSecret("secret")
             .build());
@@ -99,7 +99,7 @@ public class EMPropertiesTest {
     @Test
     public void testNotSettingClientId() {
         assertThrows(EMInvalidStateException.class, () -> EMProperties.builder()
-            .withBaseUri("https://a1.easemob.com")
+            .baseUri("https://a1.easemob.com")
             .withAppkey("easemob#demo")
             .withClientSecret("secret")
             .build());
@@ -108,7 +108,7 @@ public class EMPropertiesTest {
     @Test
     public void testNotSettingClientSecret() {
         assertThrows(EMInvalidStateException.class, () -> EMProperties.builder()
-            .withBaseUri("https://a1.easemob.com")
+            .baseUri("https://a1.easemob.com")
             .withAppkey("easemob#demo")
             .withClientId("id")
             .build());

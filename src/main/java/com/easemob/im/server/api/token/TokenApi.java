@@ -1,8 +1,8 @@
-package com.easemob.im.server.auth;
+package com.easemob.im.server.api.token;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.ApiException;
-import com.easemob.im.server.auth.exception.TokenException;
+import com.easemob.im.server.api.token.exception.TokenException;
 import com.easemob.im.server.utils.HttpUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +12,10 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.netty.http.client.HttpClient;
 
+@Deprecated
+/*
+TokenApi is deprecated, user should use TokenApiGroup instead
+ */
 public class TokenApi {
 
     private final Cache<String, String> tokenCache;

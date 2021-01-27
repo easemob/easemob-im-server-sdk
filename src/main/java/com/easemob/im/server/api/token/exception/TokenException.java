@@ -1,4 +1,4 @@
-package com.easemob.im.server.auth.exception;
+package com.easemob.im.server.api.token.exception;
 
 import com.easemob.im.server.api.ApiException;
 

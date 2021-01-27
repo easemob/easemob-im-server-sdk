@@ -3,7 +3,7 @@ package com.easemob.im.server.utils;
 import com.easemob.im.server.EMClient;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.ApiException;
-import com.easemob.im.server.auth.exception.TokenException;
+import com.easemob.im.server.api.token.exception.TokenException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ContainerNode;

@@ -1,9 +1,9 @@
-package com.easemob.im.server.auth.gettoken;
+package com.easemob.im.server.api.token.gettoken;
 
 import com.easemob.im.server.EMClient;
 import com.easemob.im.server.EMClientException;
 import com.easemob.im.server.EMProperties;
-import com.easemob.im.server.auth.exception.TokenException;
+import com.easemob.im.server.api.token.exception.TokenException;
 
 public class Application {
 

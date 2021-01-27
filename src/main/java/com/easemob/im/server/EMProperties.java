@@ -23,6 +23,7 @@ public class EMProperties {
     private final String appkey;
     private final String clientId;
     private final String clientSecret;
+    private final int httpConnectionPoolSize;
 
     public static Builder builder() {
         return new Builder();
@@ -44,20 +45,26 @@ public class EMProperties {
         return this.clientSecret;
     }
 
-    private EMProperties(String baseUri, String appkey, String clientId, String clientSecret) {
+    public int getHttpConnectionPoolSize() {
+        return this.httpConnectionPoolSize;
+    }
+
+    private EMProperties(String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize) {
         String[] tokens = appkey.split("#");
         this.baseUri = String.format("%s/%s/%s", baseUri, tokens[0], tokens[1]);
         this.appkey = appkey;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.httpConnectionPoolSize = httpConnectionPoolSize;
     }
 
     public static class Builder {
-
+        private static final int DEFAULT_HTTP_CONNECTION_POOL_SIZE = 10;
         private String appkey;
         private String clientId;
         private String clientSecret;
         private String baseUri;
+        private int httpConnectionPoolSize = DEFAULT_HTTP_CONNECTION_POOL_SIZE;
 
         /**
          * 设置Appkey，可以到环信Console查询该值。
@@ -125,7 +132,7 @@ public class EMProperties {
          * @param baseUri baseUri
          * @return the {@code Builder}
          */
-        public Builder withBaseUri(String baseUri) {
+        public Builder baseUri(String baseUri) {
             if (baseUri == null || baseUri.isEmpty()) {
                 throw new EMInvalidArgumentException("baseUri must not be null or empty");
             }
@@ -136,6 +143,15 @@ public class EMProperties {
                 this.baseUri = baseUri;
             }
 
+            return this;
+        }
+
+        public Builder httpConnectionPoolSize(int httpConnectionPoolSize) {
+            if (httpConnectionPoolSize < 0) {
+                throw new EMInvalidArgumentException("httpConnectionPoolSize must not be negative");
+            }
+
+            this.httpConnectionPoolSize = httpConnectionPoolSize;
             return this;
         }
 
@@ -156,7 +172,8 @@ public class EMProperties {
             if (this.clientSecret == null) {
                 throw new EMInvalidStateException("clientSecret not set");
             }
-            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret);
+
+            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret, this.httpConnectionPoolSize);
         }
 
     }

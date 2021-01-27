@@ -1,4 +1,4 @@
-package com.easemob.im.server.auth.token;
+package com.easemob.im.server.api.token.allocate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

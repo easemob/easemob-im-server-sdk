@@ -1,9 +1,10 @@
-package com.easemob.im.server.auth.token;
+package com.easemob.im.server.api.token.allocate;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMJsonException;
 import com.easemob.im.server.exception.EMUnknownException;
+import com.easemob.im.server.model.EMToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
@@ -16,9 +17,8 @@ import reactor.netty.http.client.HttpClient;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class DefaultTokenProvider implements AppTokenProvider, UserTokenProvider {
+public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
 
     private final EMProperties properties;
 
@@ -26,7 +26,7 @@ public class DefaultTokenProvider implements AppTokenProvider, UserTokenProvider
 
     private final ObjectMapper json;
 
-    private Mono<Token> appToken;
+    private Mono<EMToken> appToken;
 
     public DefaultTokenProvider(EMProperties properties, HttpClient http, ObjectMapper json) {
         this.properties = properties;
@@ -36,12 +36,12 @@ public class DefaultTokenProvider implements AppTokenProvider, UserTokenProvider
     }
 
     @Override
-    public Mono<Token> fetchAppToken() {
+    public Mono<EMToken> fetchAppToken() {
         return this.appToken;
     }
 
     @Override
-    public Mono<Token> fetchUserToken(String username, String password) {
+    public Mono<EMToken> fetchUserToken(String username, String password) {
         return fetchToken(UserTokenRequest.of(username, password));
     }
 
@@ -60,7 +60,7 @@ public class DefaultTokenProvider implements AppTokenProvider, UserTokenProvider
         System.out.println("DefaultTokenProvider initialized");
     }
 
-    private Mono<Token> fetchToken(TokenRequest tokenRequest) {
+    private Mono<EMToken> fetchToken(TokenRequest tokenRequest) {
         ByteBuf tokenRequestBuffer = Unpooled.buffer();
         try {
             byte[] bytes = this.json.writeValueAsBytes(tokenRequest);
