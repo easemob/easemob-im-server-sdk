@@ -7,11 +7,18 @@ import java.util.Objects;
 public class EMUser {
     private final String username;
 
+    private final boolean restricted;
+
     public EMUser(String username) {
+        this(username, false);
+    }
+
+    public EMUser(String username, boolean restricted) {
         if (username == null || username.isEmpty()) {
             throw new EMInvalidArgumentException("username must not be null or empty");
         }
         this.username = username;
+        this.restricted = restricted;
     }
 
     public String getUsername() {

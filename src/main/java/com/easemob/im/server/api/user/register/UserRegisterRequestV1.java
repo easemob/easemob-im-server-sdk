@@ -3,7 +3,7 @@ package com.easemob.im.server.api.user.register;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserRegisterRequest {
+public class UserRegisterRequestV1 {
     @JsonProperty("username")
     private String username;
 
@@ -11,8 +11,8 @@ public class UserRegisterRequest {
     private String password;
 
     @JsonCreator
-    public UserRegisterRequest(@JsonProperty("username") String username,
-                               @JsonProperty("password") String password) {
+    public UserRegisterRequestV1(@JsonProperty("username") String username,
+                                 @JsonProperty("password") String password) {
         this.username = username;
         this.password = password;
     }

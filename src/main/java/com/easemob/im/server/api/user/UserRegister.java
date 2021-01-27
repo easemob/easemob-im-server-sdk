@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.api.user.register.UserRegisterRequest;
+import com.easemob.im.server.api.user.register.UserRegisterRequestV1;
 import com.easemob.im.server.api.user.register.UserRegisterResponse;
 import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.EMUser;
@@ -25,7 +25,7 @@ public class UserRegister {
      * @param request
      * @return
      */
-    public Mono<EMUser> single(UserRegisterRequest request) {
+    public Mono<EMUser> single(UserRegisterRequestV1 request) {
         return Mono.from(register(Mono.just(request)));
     }
 
@@ -34,11 +34,11 @@ public class UserRegister {
      * @param requests
      * @return
      */
-    public Flux<EMUser> each(Flux<UserRegisterRequest> requests) {
-        return Flux.from(register(requests));
+    public Flux<EMUser> each(Flux<UserRegisterRequestV1> requests) {
+        return Flux.from(register(requests)).limitRate(1);
     }
 
-    private Publisher<EMUser> register(Publisher<UserRegisterRequest> requests) {
+    private Publisher<EMUser> register(Publisher<UserRegisterRequestV1> requests) {
         return Flux.from(requests)
             .concatMap(req -> this.context.getHttpClient()
                 .headersWhen(this.context.getBearerAuthorization())

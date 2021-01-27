@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -16,11 +17,13 @@ import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 public class MockingHttpServer {
+    private static final ByteBuf EMPTY_OBJECT = Unpooled.wrappedBuffer(new byte[]{'{','}'});
 
     private final ObjectMapper objectMapper = new ObjectMapper()
         .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
@@ -33,14 +36,14 @@ public class MockingHttpServer {
             .host("localhost")
             .port(0)
             .handle((req, rsp) -> {
-                String path = String.format("%s %s", req.method().toString(), req.fullPath());
-
+                String path = String.format("%s %s", req.method().toString(), req.uri());
                 if (!handlers.containsKey(path)) {
                     return rsp.status(HttpResponseStatus.NOT_FOUND).send();
                 }
 
                 Function<JsonNode, JsonNode> handler = handlers.get(path);
                 return req.receive().aggregate()
+                    .switchIfEmpty(Mono.just(EMPTY_OBJECT))
                     .flatMap(buf -> {
                         int length = buf.readableBytes();
                         byte[] array;
