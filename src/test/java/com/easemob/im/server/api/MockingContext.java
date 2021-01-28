@@ -9,6 +9,8 @@ import reactor.netty.http.client.HttpClient;
 
 public class MockingContext implements Context {
 
+    private EMProperties properties;
+
     private HttpClient httpClient;
 
     private TokenProvider tokenProvider;
@@ -17,12 +19,22 @@ public class MockingContext implements Context {
 
     private Codec codec;
 
+    private ErrorMapper errorMapper;
+
     public MockingContext(EMProperties properties) {
+        this.properties = properties;
         this.httpClient = HttpClient.newConnection().baseUrl(properties.getBaseUri());
         this.tokenProvider = new MockingTokenProvider();
         this.bearerAuthorization = new BearerAuthorization(tokenProvider);
         this.codec = new JsonCodec();
+        this.errorMapper = new DefaultErrorMapper();
     }
+
+    @Override
+    public EMProperties getProperties() {
+        return this.properties;
+    }
+
     @Override
     public HttpClient getHttpClient() {
         return this.httpClient;
@@ -38,8 +50,14 @@ public class MockingContext implements Context {
         return this.bearerAuthorization;
     }
 
+    @Override
     public Codec getCodec() {
         return this.codec;
+    }
+
+    @Override
+    public ErrorMapper getErrorMapper() {
+        return this.errorMapper;
     }
 
     public void setHttpClient(HttpClient httpClient) {
@@ -56,5 +74,9 @@ public class MockingContext implements Context {
 
     public void setCodec(Codec codec) {
         this.codec = codec;
+    }
+
+    public void setErrorMapper(ErrorMapper errorMapper) {
+        this.errorMapper = errorMapper;
     }
 }

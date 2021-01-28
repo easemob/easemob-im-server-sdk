@@ -69,22 +69,6 @@ public class UserGetTest {
         }
     }
 
-    @Test
-    public void testUserGetAll300EachTime() {
-        UserGet userGet = new UserGet(this.context);
-        assertThrows(EMInvalidArgumentException.class, () -> {
-            userGet.all(300);
-        });
-    }
-
-    @Test
-    public void testUserGetAllNegativeEachTime() {
-        UserGet userGet = new UserGet(this.context);
-        assertThrows(EMInvalidArgumentException.class, () -> {
-            userGet.all(-1);
-        });
-    }
-
     private JsonNode handleUserGetSingle(JsonNode req) {
         ObjectNode user = this.objectMapper.createObjectNode();
         user.put("username", "username");

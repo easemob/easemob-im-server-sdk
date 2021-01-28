@@ -6,6 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
 
+// TODO: factor BearerAuthorization to be an implementation of HttpHeaderCustomizer
 public class BearerAuthorization implements Function<HttpHeaders, Mono<? extends HttpHeaders>> {
 
     private TokenProvider tokenProvider;

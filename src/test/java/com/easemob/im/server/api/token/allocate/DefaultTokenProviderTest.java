@@ -1,12 +1,12 @@
 package com.easemob.im.server.api.token.allocate;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.MockingContext;
 import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.model.EMToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
 
@@ -19,21 +19,18 @@ public class DefaultTokenProviderTest {
         .addHandler("POST /easemob/demo/tokens", this::handlePostToken)
         .build();
 
+    private EMProperties properties = EMProperties.builder()
+        .baseUri(server.uri())
+        .appkey("easemob#demo")
+        .clientId("id")
+        .clientSecret("secret")
+        .build();
 
+    private MockingContext context = new MockingContext(properties);
 
     @Test
     public void testFetchAppToken() {
-
-        EMProperties properties = EMProperties.builder()
-            .baseUri(server.uri())
-            .appkey("easemob#demo")
-            .clientId("id")
-            .clientSecret("secret")
-            .build();
-
-        HttpClient httpClient = HttpClient.create().baseUrl(properties.getBaseUri());
-
-        DefaultTokenProvider tokenProvider = new DefaultTokenProvider(properties, httpClient, this.objectMapper);
+        DefaultTokenProvider tokenProvider = new DefaultTokenProvider(this.context.getProperties(), this.context.getHttpClient(), this.context.getCodec(), this.context.getErrorMapper());
 
         EMToken appToken = tokenProvider.fetchAppToken().block(Duration.ofSeconds(3));
         assertEquals("access_token", appToken.getValue());
@@ -48,16 +45,7 @@ public class DefaultTokenProviderTest {
 
     @Test
     public void testFetchUserToken() {
-
-        EMProperties properties = EMProperties.builder()
-            .baseUri(server.uri())
-            .appkey("easemob#demo")
-            .clientId("id")
-            .clientSecret("secret")
-            .build();
-
-        HttpClient httpClient = HttpClient.create().baseUrl(properties.getBaseUri());
-        DefaultTokenProvider tokenProvider = new DefaultTokenProvider(properties, httpClient, this.objectMapper);
+        DefaultTokenProvider tokenProvider = new DefaultTokenProvider(this.context.getProperties(), this.context.getHttpClient(), this.context.getCodec(), this.context.getErrorMapper());
 
         EMToken appToken = tokenProvider.fetchUserToken("username", "password").block(Duration.ofSeconds(3));
         assertEquals("access_token", appToken.getValue());

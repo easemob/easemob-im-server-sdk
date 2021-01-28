@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.user.get;
+package com.easemob.im.server.api.user.unregister;
 
 import com.easemob.im.server.api.user.UserResource;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-class UserGetResponse {
-
+public class UserUnregisterResponse {
     @JsonProperty("entities")
     private List<UserResource> entities;
 
@@ -15,8 +14,8 @@ class UserGetResponse {
     private String cursor;
 
     @JsonCreator
-    public UserGetResponse(@JsonProperty("entities") List<UserResource> entities,
-                           @JsonProperty("cursor") String cursor) {
+    public UserUnregisterResponse(@JsonProperty("entities") List<UserResource> entities,
+                                  @JsonProperty("cursor") String cursor) {
         this.entities = entities;
         this.cursor = cursor;
     }

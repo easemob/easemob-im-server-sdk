@@ -2,9 +2,9 @@ package com.easemob.im.server.exception;
 
 import com.easemob.im.server.EMException;
 
-public class EMInvalidRequestException extends EMException {
+public class EMBadGatewayException extends EMException {
 
-    public EMInvalidRequestException(String message) {
+    public EMBadGatewayException(String message) {
         super(message);
     }
 

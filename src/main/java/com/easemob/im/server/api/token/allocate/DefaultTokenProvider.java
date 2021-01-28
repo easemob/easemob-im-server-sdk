@@ -1,6 +1,9 @@
 package com.easemob.im.server.api.token.allocate;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.Codec;
+import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMJsonException;
 import com.easemob.im.server.exception.EMUnknownException;
@@ -23,18 +26,21 @@ import java.time.Instant;
 public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
     private static final Logger LOG = LogManager.getLogger();
 
-    private final EMProperties properties;
+    private EMProperties properties;
 
-    private final HttpClient http;
+    private HttpClient httpClient;
 
-    private final ObjectMapper json;
+    private Codec codec;
+
+    private ErrorMapper errorMapper;
 
     private Mono<EMToken> appToken;
 
-    public DefaultTokenProvider(EMProperties properties, HttpClient http, ObjectMapper json) {
+    public DefaultTokenProvider(EMProperties properties, HttpClient httpClient, Codec codec, ErrorMapper errorMapper) {
         this.properties = properties;
-        this.http = http;
-        this.json = json;
+        this.httpClient = httpClient;
+        this.codec = codec;
+        this.errorMapper = errorMapper;
         initialize();
     }
 
@@ -63,33 +69,12 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
     }
 
     private Mono<EMToken> fetchToken(TokenRequest tokenRequest) {
-        ByteBuf tokenRequestBuffer = Unpooled.buffer();
-        try {
-            byte[] bytes = this.json.writeValueAsBytes(tokenRequest);
-            tokenRequestBuffer.writeBytes(bytes);
-        } catch (JsonProcessingException e) {
-            LOG.warn("failed to request token, json encoding error: {}", e.getMessage());
-            throw new EMJsonException(String.format("%s", e.getMessage()));
-        }
-
-        return this.http.request(HttpMethod.POST)
+        return this.httpClient
+            .post()
             .uri("/tokens")
-            .send(Mono.just(tokenRequestBuffer))
-            .responseSingle((resp, buf) -> {
-                if (resp.status().equals(HttpResponseStatus.OK)) {
-                    return buf.asByteArray();
-                } else {
-                    LOG.warn("failed to request token, received non-200 response: {}", resp.status());
-                    // TODO: Need some error mapper here
-                    return Mono.error(new EMUnknownException(String.format("%s", resp.status().toString())));
-                }
-            }).map(bytes -> {
-                try {
-                    return this.json.readValue(bytes, TokenResponse.class);
-                } catch (IOException e) {
-                    LOG.warn("failed to request token, json decoding error: {}", e.getMessage());
-                    throw new EMUnknownException(String.format("%s", e.getMessage()));
-                }
-            }).map(TokenResponse::asToken);
+            .send(Mono.just(this.codec.encode(tokenRequest)))
+            .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
+            .map(buf -> this.codec.decode(buf, TokenResponse.class))
+            .map(TokenResponse::asToken);
     }
 }

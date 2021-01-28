@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.user;
+package com.easemob.im.server.api.user.register;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.user.register.UserRegisterRequestV1;
@@ -18,9 +18,10 @@ import reactor.core.publisher.Mono;
 public class UserRegister {
     private static final Logger log = LogManager.getLogger();
 
+    // TODO: factor context into actual dependencies
     private Context context;
 
-    UserRegister(Context context) {
+    public UserRegister(Context context) {
         this.context = context;
     }
 
@@ -49,12 +50,8 @@ public class UserRegister {
                 .post()
                 .uri("/users")
                 .send(Mono.just(this.context.getCodec().encode(req)))
-                .responseSingle((rsp, buf) -> {
-                    if (!rsp.status().equals(HttpResponseStatus.OK)) {
-                        return Mono.error(new EMUnknownException(rsp.toString()));
-                    }
-                    return buf;
-                }).map(buf -> this.context.getCodec().decode(buf, UserRegisterResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, UserRegisterResponse.class))
                 .map(responseIgnored -> new EMUser(req.getUsername())));
     }
 
