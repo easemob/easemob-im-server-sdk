@@ -2,6 +2,8 @@ package com.easemob.im.server;
 
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Loggers;
 
 /**
  * 配置app的参数，包括appKey，clientId，clientSecret，baseUri
@@ -18,7 +20,7 @@ import com.easemob.im.server.exception.EMInvalidStateException;
  */
 
 public class EMProperties {
-
+    private final EMLog.Level logLevel;
     private final String baseUri;
     private final String appkey;
     private final String clientId;
@@ -27,6 +29,10 @@ public class EMProperties {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public EMLog.Level getLogLevel() {
+        return this.logLevel;
     }
 
     public String getBaseUri() {
@@ -49,7 +55,8 @@ public class EMProperties {
         return this.httpConnectionPoolSize;
     }
 
-    private EMProperties(String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize) {
+    private EMProperties(EMLog.Level logLevel, String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize) {
+        this.logLevel = logLevel;
         String[] tokens = appkey.split("#");
         this.baseUri = String.format("%s/%s/%s", baseUri, tokens[0], tokens[1]);
         this.appkey = appkey;
@@ -59,12 +66,17 @@ public class EMProperties {
     }
 
     public static class Builder {
-        private static final int DEFAULT_HTTP_CONNECTION_POOL_SIZE = 10;
+        private EMLog.Level logLevel = EMLog.Level.INFO;
         private String appkey;
         private String clientId;
         private String clientSecret;
         private String baseUri;
-        private int httpConnectionPoolSize = DEFAULT_HTTP_CONNECTION_POOL_SIZE;
+        private int httpConnectionPoolSize = 10;
+
+        public Builder logLevel(EMLog.Level logLevel) {
+            this.logLevel = logLevel;
+            return this;
+        }
 
         /**
          * 设置Appkey，可以到环信Console查询该值。
@@ -72,7 +84,7 @@ public class EMProperties {
          * @param appkey
          * @return {@code Builder}
          */
-        public Builder withAppkey(String appkey) {
+        public Builder appkey(String appkey) {
             if (appkey == null || appkey.isEmpty()) {
                 throw new EMInvalidArgumentException("appkey must not be null or empty");
             }
@@ -95,13 +107,13 @@ public class EMProperties {
         }
 
         /**
-         * 设置App认证id，可以到环信Console查询该值。
+         * 设置App认证id。
          * 该信息应该安全的保存在受信任的环境中。
          *
          * @param clientId     认证id
          * @return {@code Builder}
          */
-        public Builder withClientId(String clientId) {
+        public Builder clientId(String clientId) {
             if (clientId == null || clientId.isEmpty()) {
                 throw new EMInvalidArgumentException("clientId must not be null or empty");
             }
@@ -111,13 +123,13 @@ public class EMProperties {
         }
 
         /**
-         * 设置App认证secret，可以到环信Console查询该值。
+         * 设置App认证secret。
          * 该信息应该安全的保存在受信任的环境中。
          *
          * @param clientSecret 认证密码
          * @return {@code Builder}
          */
-        public Builder withClientSecret(String clientSecret) {
+        public Builder clientSecret(String clientSecret) {
             if (clientSecret == null || clientSecret.isEmpty()) {
                 throw new EMInvalidArgumentException("clientSecret must not be null or empty");
             }
@@ -173,7 +185,7 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret, this.httpConnectionPoolSize);
+            return new EMProperties(this.logLevel, this.baseUri, this.appkey, this.clientId, this.clientSecret, this.httpConnectionPoolSize);
         }
 
     }

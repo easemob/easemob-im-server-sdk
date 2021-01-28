@@ -11,6 +11,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
@@ -19,6 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
+    private static final Logger LOG = LogManager.getLogger();
 
     private final EMProperties properties;
 
@@ -50,14 +53,13 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
         this.appToken = fetchToken(appTokenRequest).flatMap(token -> {
             Duration ttl = Duration.between(Instant.now(), token.getExpireTimestamp());
             if (ttl.isNegative()) {
-                // TODO: logging
-                System.out.println("token already expired");
+                LOG.error("token already expired");
                 return Mono.error(new EMInvalidStateException("token already expired"));
             }
             return Mono.just(token).cache(ttl.dividedBy(2));
         });
-        // TODO: logging
-        System.out.println("DefaultTokenProvider initialized");
+
+        LOG.info("token provider initialized");
     }
 
     private Mono<EMToken> fetchToken(TokenRequest tokenRequest) {
@@ -66,7 +68,8 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
             byte[] bytes = this.json.writeValueAsBytes(tokenRequest);
             tokenRequestBuffer.writeBytes(bytes);
         } catch (JsonProcessingException e) {
-            throw new EMJsonException(String.format("could not serialize token request: %s", e.getMessage()));
+            LOG.warn("failed to request token, json encoding error: {}", e.getMessage());
+            throw new EMJsonException(String.format("%s", e.getMessage()));
         }
 
         return this.http.request(HttpMethod.POST)
@@ -76,17 +79,16 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
                 if (resp.status().equals(HttpResponseStatus.OK)) {
                     return buf.asByteArray();
                 } else {
-                    // TODO: replace System.out.println with logging
-                    System.out.println(String.format("failed to request token, server replied: %s", resp.status().toString()));
+                    LOG.warn("failed to request token, received non-200 response: {}", resp.status());
                     // TODO: Need some error mapper here
-                    return Mono.error(new EMUnknownException(String.format("failed to request token, server replied: %s", resp.status().toString())));
+                    return Mono.error(new EMUnknownException(String.format("%s", resp.status().toString())));
                 }
             }).map(bytes -> {
                 try {
                     return this.json.readValue(bytes, TokenResponse.class);
                 } catch (IOException e) {
-                    System.out.println(String.format("could not deserialize token response: %s", e.getMessage()));
-                    throw new EMUnknownException(String.format("could not deserialize token response: %s", e.getMessage()));
+                    LOG.warn("failed to request token, json decoding error: {}", e.getMessage());
+                    throw new EMUnknownException(String.format("%s", e.getMessage()));
                 }
             }).map(TokenResponse::asToken);
     }

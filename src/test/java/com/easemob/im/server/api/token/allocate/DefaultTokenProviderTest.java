@@ -5,13 +5,9 @@ import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.model.EMToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
-import java.nio.charset.Charset;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,9 +26,9 @@ public class DefaultTokenProviderTest {
 
         EMProperties properties = EMProperties.builder()
             .baseUri(server.uri())
-            .withAppkey("easemob#demo")
-            .withClientId("id")
-            .withClientSecret("secret")
+            .appkey("easemob#demo")
+            .clientId("id")
+            .clientSecret("secret")
             .build();
 
         HttpClient httpClient = HttpClient.create().baseUrl(properties.getBaseUri());
@@ -55,9 +51,9 @@ public class DefaultTokenProviderTest {
 
         EMProperties properties = EMProperties.builder()
             .baseUri(server.uri())
-            .withAppkey("easemob#demo")
-            .withClientId("id")
-            .withClientSecret("secret")
+            .appkey("easemob#demo")
+            .clientId("id")
+            .clientSecret("secret")
             .build();
 
         HttpClient httpClient = HttpClient.create().baseUrl(properties.getBaseUri());

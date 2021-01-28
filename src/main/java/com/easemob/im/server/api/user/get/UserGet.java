@@ -25,9 +25,10 @@ public class UserGet {
             .uri(String.format("/users/%s", username))
             .responseSingle((rsp, buf) -> {
                 if (!rsp.status().equals(HttpResponseStatus.OK)) {
+
                     return Mono.error(new EMUnknownException(rsp.toString()));
                 }
-                return buf.log();
+                return buf;
             }).map(buf -> this.context.getCodec().decode(buf, UserGetResponse.class))
             .map(response -> {
                 if (response.getEntities().isEmpty()) {

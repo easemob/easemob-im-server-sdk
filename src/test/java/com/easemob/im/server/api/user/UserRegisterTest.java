@@ -26,9 +26,9 @@ public class UserRegisterTest {
 
     private EMProperties properties = EMProperties.builder()
         .baseUri(this.server.uri())
-        .withAppkey("easemob#demo")
-        .withClientId("clientId")
-        .withClientSecret("clientSecret")
+        .appkey("easemob#demo")
+        .clientId("clientId")
+        .clientSecret("clientSecret")
         .build();
 
     private MockingContext context = new MockingContext(properties);
