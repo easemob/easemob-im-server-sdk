@@ -2,6 +2,7 @@ package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.user.get.UserGet;
+import com.easemob.im.server.api.user.password.UserPassword;
 import com.easemob.im.server.api.user.register.UserRegister;
 import com.easemob.im.server.api.user.unregister.UserUnregister;
 
@@ -13,10 +14,13 @@ public class UserApiGroupV1 {
 
     private UserUnregister unregister;
 
+    private UserPassword password;
+
     public UserApiGroupV1(Context context) {
         this.get = new UserGet(context);
         this.register = new UserRegister(context);
         this.unregister = new UserUnregister(context);
+        this.password = new UserPassword(context);
     }
 
     public UserGet get() {
@@ -29,5 +33,9 @@ public class UserApiGroupV1 {
 
     public UserUnregister unregister() {
         return this.unregister;
+    }
+
+    public UserPassword password() {
+        return this.password;
     }
 }

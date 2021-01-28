@@ -58,10 +58,10 @@ public class DefaultErrorMapper implements ErrorMapper {
 
     public Mono<HttpClientResponse> apply(HttpClientResponse response) {
         int code = response.status().code();
-        Class<? extends EMException> errorClass = this.mappers.get(code);
+        Class<? extends EMException> errorClass = this.mappers.get(response.status());
 
         if (errorClass == null) {
-            return Mono.empty();
+            return Mono.just(response);
         }
 
         Constructor[] ctors = errorClass.getConstructors();

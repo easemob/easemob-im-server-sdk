@@ -3,6 +3,7 @@ package com.easemob.im.server.api.user.unregister;
 import com.easemob.im.server.api.user.UserResource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
