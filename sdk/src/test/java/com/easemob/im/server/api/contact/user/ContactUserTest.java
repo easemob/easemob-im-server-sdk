@@ -48,10 +48,13 @@ public class ContactUserTest {
         ContactUser contactUser = new ContactUser(this.context, "alice");
         List<String> contacts = contactUser.list().collectList().block(Duration.ofSeconds(3));
         assertEquals(3, contacts.size());
+        assertTrue(contacts.contains("queen"));
+        assertTrue(contacts.contains("madhat"));
+        assertTrue(contacts.contains("rabbit"));
     }
 
     private JsonNode handleContactUserList(JsonNode jsonNode) {
-        JsonNode contacts = this.objectMapper.createArrayNode().add("bob").add("madhat").add("rabbit");
+        JsonNode contacts = this.objectMapper.createArrayNode().add("queen").add("madhat").add("rabbit");
         JsonNode response = this.objectMapper.createObjectNode().set("data", contacts);
         return response;
     }

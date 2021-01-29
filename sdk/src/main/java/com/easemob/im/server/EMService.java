@@ -2,6 +2,7 @@ package com.easemob.im.server;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
+import com.easemob.im.server.api.block.BlockApiV1;
 import com.easemob.im.server.api.notification.NotificationV1;
 import com.easemob.im.server.api.token.TokenApiGroup;
 import com.easemob.im.server.api.user.UserApiGroupV1;
@@ -18,14 +19,20 @@ public class EMService {
 
     private final NotificationV1 notificationV1;
 
+    private final BlockApiV1 blockV1;
+
     public EMService(EMProperties properties) {
         printBanner();
+
         log.debug("EMService version: {}", EMVersion.getVersion());
         log.debug("EMService properties: {}", properties);
+
         Context context = new DefaultContext(properties);
+
         this.tokenApiGroup = new TokenApiGroup(context);
         this.userApiGroupV1 = new UserApiGroupV1(context);
         this.notificationV1 = new NotificationV1(context);
+        this.blockV1 = new BlockApiV1(context);
     }
 
     public TokenApiGroup tokenV1() {
@@ -38,6 +45,10 @@ public class EMService {
 
     public NotificationV1 notificationV1() {
         return this.notificationV1;
+    }
+
+    public BlockApiV1 blockV1() {
+        return this.blockV1();
     }
 
     private void printBanner() {
