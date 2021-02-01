@@ -9,6 +9,8 @@ import com.easemob.im.server.api.user.unregister.UserUnregister;
 
 public class UserApiGroupV1 {
 
+    private Context context;
+
     private UserGet get;
 
     private UserRegister register;
@@ -20,6 +22,7 @@ public class UserApiGroupV1 {
     private UserForceLogout forceLogout;
 
     public UserApiGroupV1(Context context) {
+        this.context = context;
         this.get = new UserGet(context);
         this.register = new UserRegister(context);
         this.unregister = new UserUnregister(context);
@@ -46,4 +49,5 @@ public class UserApiGroupV1 {
     public UserForceLogout forceLogout() {
         return this.forceLogout;
     }
+
 }

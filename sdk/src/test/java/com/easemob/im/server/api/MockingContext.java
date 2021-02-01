@@ -1,6 +1,7 @@
 package com.easemob.im.server.api;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.EMVersion;
 import com.easemob.im.server.api.codec.JsonCodec;
 import com.easemob.im.server.api.token.allocate.TokenProvider;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -24,7 +25,7 @@ public class MockingContext implements Context {
     public MockingContext(EMProperties properties) {
         this.properties = properties;
         this.httpClient = HttpClient.newConnection().baseUrl(properties.getBaseUri())
-            .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", getClass().getPackage().getImplementationVersion())));
+            .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())));
         this.tokenProvider = new MockingTokenProvider();
         this.bearerAuthorization = new BearerAuthorization(tokenProvider);
         this.codec = new JsonCodec();
