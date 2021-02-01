@@ -43,63 +43,6 @@ public class ChatGroupsApi {
     }
 
     /**
-     * 获取App中所有的群组
-     *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96app%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%BE%A4%E7%BB%84_%E5%8F%AF%E5%88%86%E9%A1%B5
-     *
-     * 分页获取应用下全部的群组信息的接口
-     *
-     * @param limit   要获取的群组数量
-     * @param cursor  游标
-     * @return ChatGroup
-     * @throws ChatGroupsException 调用群组方法会抛出的异常
-     */
-    public ChatGroup getAppAllChatGroup(int limit, String cursor) throws ChatGroupsException {
-        verifyLimit(limit);
-
-        String uri;
-        // 第一次删除不需要传cursor
-        if (cursor != null) {
-            verifyCursor(cursor);
-            uri = "/chatgroups?limit=" + limit + "&cursor=" + cursor;
-        } else {
-            uri = "/chatgroups?limit=" + limit;
-        }
-
-        JsonNode response;
-        try {
-            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
-        } catch (ApiException e) {
-            throw new ChatGroupsException(e.getMessage());
-        }
-        return responseToChatGroupObject(null, response);
-    }
-
-    /**
-     * 获取一个用户参与的所有群组
-     *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E7%94%A8%E6%88%B7%E5%8F%82%E4%B8%8E%E7%9A%84%E6%89%80%E6%9C%89%E7%BE%A4%E7%BB%84
-     *
-     * 根据用户名称获取该用户加入的全部群组接口
-     *
-     * @param username  需要获取的 IM 用户名
-     * @return ChatGroup
-     * @throws ChatGroupsException 调用群组方法会抛出的异常
-     */
-    public ChatGroup getUserJoinAllChatGroup(String username) throws ChatGroupsException {
-        verifyUsername(username);
-
-        String uri = "/users/" + username + "/joined_chatgroups";
-        JsonNode response;
-        try {
-            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
-        } catch (ApiException e) {
-            throw new ChatGroupsException(e.getMessage());
-        }
-        return responseToChatGroupObject(null, response);
-    }
-
-    /**
      * 获取群组详情
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E8%AF%A6%E6%83%85

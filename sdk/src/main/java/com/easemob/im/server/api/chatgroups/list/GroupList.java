@@ -43,4 +43,19 @@ public class GroupList {
             .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
             .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class));
     }
+
+    /**
+     * List groups user joined.
+     *
+     * @param username the user's username
+     * @return A {@code Flux} which emits {@code EMGroup} if successful
+     */
+    public Flux<EMGroup> userJoined(String username) {
+        return this.context.getHttpClient()
+            .get()
+            .uri(String.format("/users/%s/joined_chatgroups", username))
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
+            .flatMapIterable(GroupListResponse::getGroups);
+    }
 }

@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.chatgroups.list;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.model.EMGroup;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -19,7 +20,10 @@ public class GroupListTest extends AbstractApiTest {
         this.server.addHandler("GET /easemob/demo/chatgroups?limit=10", this::handleGroupListRequest1);
         this.server.addHandler("GET /easemob/demo/chatgroups?limit=10&cursor=1", this::handleGroupListRequest2);
         this.server.addHandler("GET /easemob/demo/chatgroups?limit=10&cursor=2", this::handleGroupListRequest3);
+        this.server.addHandler("GET /easemob/demo/users/alice/joined_chatgroups", this::handleGroupListUserJoined);
     }
+
+
 
     @Test
     public void testGroupListHighLevelApi() {
@@ -41,6 +45,18 @@ public class GroupListTest extends AbstractApiTest {
             .verify(Duration.ofSeconds(3));
     }
 
+    @Test
+    public void testGroupListUserJoined() {
+        GroupList groupList = new GroupList(this.context);
+
+        groupList.userJoined("alice")
+            .as(StepVerifier::create)
+            .expectNext(new EMGroup("aliceGroup"))
+            .expectNext(new EMGroup("rabbitGroup"))
+            .expectComplete()
+            .verify(Duration.ofSeconds(3));
+    }
+
 
     private JsonNode handleGroupListRequest1(JsonNode jsonNode) {
         return buildResponse(10, "1");
@@ -54,6 +70,21 @@ public class GroupListTest extends AbstractApiTest {
         return buildResponse(5, null);
     }
 
+    private JsonNode handleGroupListUserJoined(JsonNode jsonNode) {
+        ArrayNode data = this.objectMapper.createArrayNode();
+
+        ObjectNode group1 = this.objectMapper.createObjectNode();
+        group1.put("groupId", "aliceGroup");
+        data.add(group1);
+
+        ObjectNode group2 = this.objectMapper.createObjectNode();
+        group2.put("groupId", "rabbitGroup");
+        data.add(group2);
+
+        ObjectNode rsp = this.objectMapper.createObjectNode();
+        rsp.set("data", data);
+        return rsp;
+    }
 
     private ObjectNode buildResponse(int count, String cursor) {
         ArrayNode data = this.objectMapper.createArrayNode();
