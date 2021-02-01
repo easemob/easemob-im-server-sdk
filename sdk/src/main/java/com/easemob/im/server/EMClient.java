@@ -6,7 +6,6 @@ import com.easemob.im.server.api.chatmessages.ChatMessagesApi;
 import com.easemob.im.server.api.chatrooms.ChatRoomsApi;
 import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.recallmessage.RecallMessageApi;
-import com.easemob.im.server.api.user.UserApi;
 import com.easemob.im.server.api.token.TokenApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -82,11 +81,6 @@ public class EMClient {
     // token模块
     public TokenApi token() {
         return new TokenApi(this.tokenCache, properties, this.objectMapper, this.allocator);
-    }
-
-    // 用户模块
-    public UserApi user() {
-        return new UserApi(this.httpClient, this.objectMapper, this.allocator, properties, this.tokenCache);
     }
 
     // 消息模块
