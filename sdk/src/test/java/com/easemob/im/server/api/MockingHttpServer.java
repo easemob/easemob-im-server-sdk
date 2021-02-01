@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 public class MockingHttpServer {
@@ -31,18 +32,22 @@ public class MockingHttpServer {
 
     private final DisposableServer http;
 
+    private Map<String, Function<JsonNode, JsonNode>> handlers;
+
     private MockingHttpServer(Map<String, Function<JsonNode, JsonNode>> handlers) {
+        this.handlers = new ConcurrentHashMap<>(handlers);
+
         this.http = HttpServer.create()
             .host("localhost")
             .port(0)
             .wiretap(true)
             .handle((req, rsp) -> {
                 String path = String.format("%s %s", req.method().toString(), req.uri());
-                if (!handlers.containsKey(path)) {
+                if (!this.handlers.containsKey(path)) {
                     return rsp.status(HttpResponseStatus.NOT_FOUND).send();
                 }
 
-                Function<JsonNode, JsonNode> handler = handlers.get(path);
+                Function<JsonNode, JsonNode> handler = this.handlers.get(path);
                 return req.receive().aggregate()
                     .switchIfEmpty(Mono.just(EMPTY_OBJECT))
                     .flatMap(buf -> {
@@ -78,6 +83,14 @@ public class MockingHttpServer {
                     });
             })
             .bindNow();
+    }
+
+    public void addHandler(String path, Function<JsonNode, JsonNode> handler) {
+        this.handlers.put(path, handler);
+    }
+
+    public void removeHandler(String path) {
+        this.handlers.remove(path);
     }
 
     public String uri() {
