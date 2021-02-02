@@ -43,57 +43,6 @@ public class ChatGroupsApi {
     }
 
     /**
-     * 获取群组详情
-     *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E8%AF%A6%E6%83%85
-     *
-     * 获取多个群组的详情。当获取多个群组的详情时，会返回所有存在的群组的详情，对于不存在的群组，response body内返回“group id doesn't exist”
-     *
-     * @param groupIds  需要获取的群组 ID列表
-     * @return ChatGroup
-     * @throws ChatGroupsException 调用群组方法会抛出的异常
-     */
-    public ChatGroup getChatGroupDetails(Set<String> groupIds) throws ChatGroupsException {
-        if (groupIds == null) {
-            throw new ChatGroupsException("Bad Request groupIds is null");
-        }
-
-        StringBuilder splitGroupId = new StringBuilder();
-        for (String groupId : groupIds) {
-            splitGroupId.append(groupId).append(",");
-        }
-
-        String uri = "/chatgroups/" + splitGroupId.substring(0, splitGroupId.length() - 1);
-        JsonNode response;
-        try {
-            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
-        } catch (ApiException e) {
-            throw new ChatGroupsException(e.getMessage());
-        }
-        return responseToChatGroupObject(null, response);
-    }
-
-    /**
-     * 获取单个群组详情
-     *
-     * @param groupId  需要获取的群组 ID
-     * @return ChatGroup
-     * @throws ChatGroupsException 调用群组方法会抛出的异常
-     */
-    public ChatGroup getChatGroupDetails(String groupId) throws ChatGroupsException {
-        verifyGroupId(groupId);
-
-        String uri = "/chatgroups/" + groupId;
-        JsonNode response;
-        try {
-            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
-        } catch (ApiException e) {
-            throw new ChatGroupsException(e.getMessage());
-        }
-        return responseToChatGroupObject(groupId, response);
-    }
-
-    /**
      * 创建一个群组
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84

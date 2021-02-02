@@ -1,5 +1,9 @@
 package com.easemob.im.server.model;
 
+import com.easemob.im.server.api.chatgroups.detail.GroupDetailResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 import java.util.Objects;
 
 public class EMGroup {
