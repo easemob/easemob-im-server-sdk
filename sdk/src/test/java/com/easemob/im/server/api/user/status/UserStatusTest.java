@@ -1,6 +1,7 @@
-package com.easemob.im.server.api.status.online;
+package com.easemob.im.server.api.user.status;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.MockingContext;
 import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.model.EMUserStatus;
@@ -17,35 +18,23 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserStatusTest {
-    private ObjectMapper objectMapper = new ObjectMapper();
+public class UserStatusTest extends AbstractApiTest {
 
-    private MockingHttpServer server = MockingHttpServer.builder()
-        .addHandler("GET /easemob/demo/users/alice/status", this::handleUserStatusRequest)
-        .addHandler("POST /easemob/demo/users/batch/status", this::handleUserStatusBatch)
-        .build();
-
-    private EMProperties properties = EMProperties.builder()
-        .baseUri(this.server.uri())
-        .appkey("easemob#demo")
-        .clientId("clientId")
-        .clientSecret("clientSecret")
-        .build();
-
-    private MockingContext context = new MockingContext(properties);
+    public UserStatusTest() {
+        this.server.addHandler("GET /easemob/demo/users/alice/status", this::handleUserStatusRequest);
+        this.server.addHandler("POST /easemob/demo/users/batch/status", this::handleUserStatusBatch);
+    }
 
     @Test
     public void testUserStatusSingle() {
-        UserStatus userStatus = new UserStatus(this.context);
-        EMUserStatus aliceStatus = userStatus.single("alice").block(Duration.ofSeconds(3));
+        EMUserStatus aliceStatus = UserStatus.single(this.context, "alice").block(Duration.ofSeconds(3));
         assertEquals("alice", aliceStatus.getUsername());
         assertEquals(true, aliceStatus.isOnline());
     }
 
     @Test
     public void testUserStatusEach() {
-        UserStatus userStatus = new UserStatus(this.context);
-        List<EMUserStatus> statusList = userStatus.each(Flux.just("alice", "queen")).collectList().block(Duration.ofSeconds(3));
+        List<EMUserStatus> statusList = UserStatus.batch(this.context, Flux.just("alice", "queen")).collectList().block(Duration.ofSeconds(3));
         assertEquals(2, statusList.size());
         Map<String, Boolean> statusMap = statusList.stream().collect(Collectors.toMap(s -> s.getUsername(), s -> s.isOnline()));
         assertEquals(true, statusMap.get("alice"));

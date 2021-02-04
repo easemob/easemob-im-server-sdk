@@ -27,7 +27,7 @@ public class UserResource {
         return activated;
     }
 
-    public EMUser toUser() {
+    public EMUser toEMUser() {
         return new EMUser(this.username, !this.activated);
     }
 }

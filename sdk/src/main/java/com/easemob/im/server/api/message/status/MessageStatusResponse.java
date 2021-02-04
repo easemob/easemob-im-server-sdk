@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.status.message;
+package com.easemob.im.server.api.message.status;
 
 import com.easemob.im.server.model.EMMessageStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;

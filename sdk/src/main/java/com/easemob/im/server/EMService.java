@@ -7,7 +7,7 @@ import com.easemob.im.server.api.chatgroups.GroupApi;
 import com.easemob.im.server.api.chatgroups.GroupsApi;
 import com.easemob.im.server.api.notification.NotificationV1;
 import com.easemob.im.server.api.token.TokenApiGroup;
-import com.easemob.im.server.api.user.UserApiGroupV1;
+import com.easemob.im.server.api.user.UserApi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +19,7 @@ public class EMService {
 
     private final TokenApiGroup tokenApiGroup;
 
-    private final UserApiGroupV1 userApiGroupV1;
+    private final UserApi userApi;
 
     private final NotificationV1 notificationV1;
 
@@ -34,7 +34,7 @@ public class EMService {
         this.context = new DefaultContext(properties);
 
         this.tokenApiGroup = new TokenApiGroup(this.context);
-        this.userApiGroupV1 = new UserApiGroupV1(this.context);
+        this.userApi = new UserApi(this.context);
         this.notificationV1 = new NotificationV1(this.context);
         this.blockV1 = new BlockApiV1(this.context);
     }
@@ -43,8 +43,8 @@ public class EMService {
         return this.tokenApiGroup;
     }
 
-    public UserApiGroupV1 userV1() {
-        return this.userApiGroupV1;
+    public UserApi user() {
+        return this.userApi;
     }
 
     public NotificationV1 notificationV1() {
@@ -62,6 +62,8 @@ public class EMService {
     public GroupApi group(String groupId) {
         return new GroupApi(this.context, groupId);
     }
+
+
 
     private void printBanner() {
         String banner = "                                                                                            \n" +

@@ -1,6 +1,7 @@
-package com.easemob.im.server.api.status.message;
+package com.easemob.im.server.api.message.status;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.MockingContext;
 import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.model.EMMessageStatus;
@@ -13,27 +14,15 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MessageStatusTest {
+public class MessageStatusTest extends AbstractApiTest {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
-    private MockingHttpServer server = MockingHttpServer.builder()
-        .addHandler("GET /easemob/demo/users/alice/offline_msg_status/123456789", this::handleMessageStatusRequest)
-        .build();
-
-    private EMProperties properties = EMProperties.builder()
-        .baseUri(this.server.uri())
-        .appkey("easemob#demo")
-        .clientId("clientId")
-        .clientSecret("clientSecret")
-        .build();
-
-    private MockingContext context = new MockingContext(properties);
+    public MessageStatusTest() {
+        this.server.addHandler("GET /easemob/demo/users/alice/offline_msg_status/123456789", this::handleMessageStatusRequest);
+    }
 
     @Test
     public void testMessageStatus() {
-        MessageStatus messageStatus = new MessageStatus(this.context, "123456789");
-        EMMessageStatus status = messageStatus.toUser("alice").block(Duration.ofSeconds(3));
+        EMMessageStatus status = MessageStatus.isMessageDeliveredToUser(this.context, "123456789", "alice").block(Duration.ofSeconds(3));
         assertEquals("123456789", status.getMessageId());
         assertEquals(true, status.isDelivered());
         assertEquals("alice", status.getToUsername());

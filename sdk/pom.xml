@@ -149,6 +149,18 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
         </plugins>
     </build>
 
@@ -264,16 +276,16 @@
         <developer>
             <name>fudonghai</name>
             <email>fudh@easemob.com</email>
-            <url>https://github.com/easemob/</url>
+            <url>https://github.com/fudonghai</url>
         </developer>
     </developers>
 
     <!-- scm信息 -->
     <scm>
         <tag>master</tag>
-        <url>https://github.com/easemob/easemob-im-server-sdk</url>
-        <connection>https://github.com/easemob/easemob-im-server-sdk.git</connection>
-        <developerConnection>https://github.com/easemob</developerConnection>
+        <url>scm:git:https://github.com/easemob/easemob-im-server-sdk</url>
+        <connection>scm:git:https://github.com/easemob/easemob-im-server-sdk</connection>
+        <developerConnection>scm:git:https://github.com/easemob/easemob-im-server-sdk</developerConnection>
     </scm>
 
     <!--定义snapshots库和releases库的nexus地址-->

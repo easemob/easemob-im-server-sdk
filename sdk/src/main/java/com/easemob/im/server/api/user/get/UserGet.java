@@ -9,24 +9,19 @@ import reactor.core.publisher.Mono;
 
 public class UserGet {
 
-    private Context context;
-
-    public UserGet(Context context) {
-        this.context = context;
-    }
-
-    public Mono<EMUser> single(String username) {
-        return this.context.getHttpClient()
+    public static Mono<EMUser> single(Context context, String username) {
+        return context.getHttpClient()
             .get()
             .uri(String.format("/users/%s", username))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, UserGetResponse.class))
-            .map(response -> {
-                if (response.getEntities().isEmpty()) {
-                    throw new EMUnknownException("get single user returns empty");
+            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> context.getCodec().decode(buf, UserGetResponse.class))
+            .handle((rsp, sink) -> {
+                EMUser user = rsp.getEMUser(username);
+                if (user == null) {
+                    sink.error(new EMUnknownException(String.format("user:%s", username)));
+                    return;
                 }
-                UserResource user = response.getEntities().get(0);
-                return new EMUser(user.getUsername(), !user.isActivated());
+                sink.next(user);
             });
     }
 
@@ -36,17 +31,11 @@ public class UserGet {
      * @param limit 一次从服务器取多少用户
      * @return {@code Flux<EMUser>}
      */
-    public Flux<EMUser> all(int limit) {
-        return all(limit, null)
-            .expand(rsp -> {
-                if (rsp.getCursor() == null || rsp.getCursor().isEmpty()) {
-                    return Mono.empty();
-                }
-                return all(limit, rsp.getCursor());
-            })
+    public static Flux<EMUser> all(Context context, int limit) {
+        return all(context, limit, null)
+            .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : all(context, limit, rsp.getCursor()))
             .limitRate(1)
-            .concatMapIterable(UserGetResponse::getEntities)
-            .map(UserResource::toUser)
+            .concatMapIterable(UserGetResponse::getEMUsers)
             .limitRate(limit);
     }
 
@@ -56,16 +45,16 @@ public class UserGet {
      * @param cursor 从哪里开始，首次可以传{@code Optional.empty()}，或者从上次返回的
      * @return {@code Mono<UserGetResponse>}
      */
-    public Mono<UserGetResponse> all(int limit, String cursor) {
+    public static Mono<UserGetResponse> all(Context context, int limit, String cursor) {
         String query = String.format("limit=%d", limit);
         if (cursor != null) {
             query = String.format("%s&cursor=%s", query, cursor);
         }
-        return this.context.getHttpClient()
+        return context.getHttpClient()
             .get()
             .uri(String.format("/users?%s", query))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, UserGetResponse.class));
+            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> context.getCodec().decode(buf, UserGetResponse.class));
     }
 
 }

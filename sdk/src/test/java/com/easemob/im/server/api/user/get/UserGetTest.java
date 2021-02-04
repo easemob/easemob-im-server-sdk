@@ -42,15 +42,13 @@ public class UserGetTest {
 
     @Test
     public void testUserGetSingle() {
-        UserGet userGet = new UserGet(this.context);
-        EMUser user = userGet.single("username").block(Duration.ofSeconds(3));
+        EMUser user = UserGet.single(this.context, "username").block(Duration.ofSeconds(3));
         assertEquals("username", user.getUsername());
     }
 
     @Test
     public void testUserGetAll100EachTime() {
-        UserGet userGet = new UserGet(this.context);
-        List<EMUser> users = userGet.all(100)
+        List<EMUser> users = UserGet.all(this.context, 100)
             .collectList().block(Duration.ofSeconds(3));
         assertEquals(300, users.size());
         for (int i = 0; i < 300; i++) {
@@ -60,8 +58,7 @@ public class UserGetTest {
 
     @Test
     public void testUserGetAll200EachTime() {
-        UserGet userGet = new UserGet(this.context);
-        List<EMUser> users = userGet.all(200)
+        List<EMUser> users = UserGet.all(this.context, 200)
             .collectList().block(Duration.ofSeconds(3));
         assertEquals(300, users.size());
         for (int i = 0; i < 300; i++) {

@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.user.unregister;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.MockingContext;
 import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.model.EMUser;
@@ -15,37 +16,23 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserUnregisterTest {
-    private ObjectMapper objectMapper = new ObjectMapper();
+public class UserUnregisterTest extends AbstractApiTest {
 
-    private MockingHttpServer server = MockingHttpServer.builder()
-        .addHandler("DELETE /easemob/demo/users/username", this::handleUserUnregisterSingle)
-        .addHandler("DELETE /easemob/demo/users?limit=100", req -> handleUserUnregisterAll(req, 100, "cursor"))
-        .addHandler("DELETE /easemob/demo/users?limit=100&cursor=cursor", req -> handleUserUnregisterAll(req, 100, null))
-        .build();
-
-
-
-    private EMProperties properties = EMProperties.builder()
-        .baseUri(this.server.uri())
-        .appkey("easemob#demo")
-        .clientId("clientId")
-        .clientSecret("clientSecret")
-        .build();
-
-    private MockingContext context = new MockingContext(properties);
+    public UserUnregisterTest() {
+        this.server.addHandler("DELETE /easemob/demo/users/username", this::handleUserUnregisterSingle);
+        this.server.addHandler("DELETE /easemob/demo/users?limit=100", req -> handleUserUnregisterAll(req, 100, "cursor"));
+        this.server.addHandler("DELETE /easemob/demo/users?limit=100&cursor=cursor", req -> handleUserUnregisterAll(req, 100, null));
+    }
 
     @Test
     public void testUserUnregisterSingle() {
-        UserUnregister unregister = new UserUnregister(this.context);
-        EMUser user = unregister.single("username").block(Duration.ofSeconds(3));
+        EMUser user = UserUnregister.single(this.context, "username").block(Duration.ofSeconds(3));
         assertEquals("username", user.getUsername());
     }
 
     @Test
     public void testUserUnregisterAll() {
-        UserUnregister unregister = new UserUnregister(this.context);
-        List<EMUser> users = unregister.all(100).collectList().block(Duration.ofSeconds(3));
+        List<EMUser> users = UserUnregister.all(this.context, 100).collectList().block(Duration.ofSeconds(3));
         assertEquals(200, users.size());
         for (int i = 0; i < 200; i++) {
             assertEquals("username", users.get(i).getUsername());

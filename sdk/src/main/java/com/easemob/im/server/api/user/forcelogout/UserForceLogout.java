@@ -6,31 +6,26 @@ import reactor.core.publisher.Mono;
 
 public class UserForceLogout {
 
-    private Context context;
-
-    public UserForceLogout(Context context) {
-        this.context = context;
+    public static Mono<Void> byUsername(Context context, String username) {
+        return byUsernameAndResource(context, username, null);
     }
 
-    public Mono<Void> byUsername(String username) {
-        return byUsernameAndResource(username, null);
-    }
-
-    public Mono<Void> byUsernameAndResource(String username, String resource) {
+    public static Mono<Void> byUsernameAndResource(Context context, String username, String resource) {
         String path = String.format("/users/%s/disconnect", username);
         if (resource != null) {
             path = String.format("%s/%s", path, resource);
         }
-        return this.context.getHttpClient()
+        return context.getHttpClient()
             .get()
             .uri(path)
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, UserForceLogoutResponse.class))
-            .doOnNext(rsp -> {
+            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> context.getCodec().decode(buf, UserForceLogoutResponse.class))
+            .handle((rsp, sink) -> {
                 if (!rsp.isSuccessful()) {
-                    throw new EMInternalServerErrorException("unknown");
+                    sink.error(new EMInternalServerErrorException("unknown"));
+                    return;
                 }
-
-            }).then();
+                sink.complete();
+            });
     }
 }

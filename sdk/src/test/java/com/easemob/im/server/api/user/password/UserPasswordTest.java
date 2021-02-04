@@ -32,17 +32,15 @@ public class UserPasswordTest {
 
     @Test
     public void testUserPasswordReset() {
-        UserPassword userPassword = new UserPassword(this.context);
         assertDoesNotThrow(() -> {
-            userPassword.reset("username", "password").block(Duration.ofSeconds(3));
+            UserPassword.reset(this.context, "username", "password").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testNonRegisteredUserPasswordReset() {
-        UserPassword userPassword = new UserPassword(this.context);
         assertThrows(EMNotFoundException.class, () -> {
-            userPassword.reset("power", "password").block(Duration.ofSeconds(3));
+            UserPassword.reset(this.context, "power", "password").block(Duration.ofSeconds(3));
         });
     }
 

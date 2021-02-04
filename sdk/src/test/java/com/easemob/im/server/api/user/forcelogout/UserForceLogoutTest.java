@@ -20,19 +20,15 @@ public class UserForceLogoutTest extends AbstractApiTest {
 
     @Test
     public void testForceLogoutByUsername() {
-        UserForceLogout forceLogout = new UserForceLogout(this.context);
-
         assertDoesNotThrow(() -> {
-            forceLogout.byUsername("alice").block(Duration.ofSeconds(3));
+            UserForceLogout.byUsername(this.context,"alice").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testForceLogoutByUsernameAndResource() {
-        UserForceLogout forceLogout = new UserForceLogout(this.context);
-
         assertThrows(EMInternalServerErrorException.class, () -> {
-            forceLogout.byUsernameAndResource("alice", "slippers").block(Duration.ofSeconds(3));
+            UserForceLogout.byUsernameAndResource(this.context, "alice", "slippers").block(Duration.ofSeconds(3));
         });
     }
 

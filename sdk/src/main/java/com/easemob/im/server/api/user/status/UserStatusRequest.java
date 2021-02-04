@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.status.online;
+package com.easemob.im.server.api.user.status;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

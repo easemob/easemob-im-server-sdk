@@ -1,10 +1,12 @@
 package com.easemob.im.server.api.user.get;
 
 import com.easemob.im.server.api.user.UserResource;
+import com.easemob.im.server.model.EMUser;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 class UserGetResponse {
 
@@ -21,8 +23,14 @@ class UserGetResponse {
         this.cursor = cursor;
     }
 
-    public List<UserResource> getEntities() {
-        return this.entities;
+    public List<EMUser> getEMUsers() {
+        return this.entities.stream().map(UserResource::toEMUser).collect(Collectors.toList());
+    }
+
+    public EMUser getEMUser(String username) {
+        return this.entities.stream()
+            .filter(user -> user.getUsername().equals(username)).findFirst()
+            .map(UserResource::toEMUser).orElse(null);
     }
 
     public String getCursor() {
