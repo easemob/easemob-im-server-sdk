@@ -38,7 +38,7 @@ public class GroupDetailResponse {
         @JsonProperty("membersonly")
         private boolean needApproveToJoin;
 
-        @JsonProperty("allow")
+        @JsonProperty("allowinvites")
         private boolean memberCanInviteOthers; // only works in private group
 
         @JsonProperty("maxusers")

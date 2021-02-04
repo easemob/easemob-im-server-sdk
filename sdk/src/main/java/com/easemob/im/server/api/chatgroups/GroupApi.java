@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.chatgroups;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.chatgroups.announcement.GroupAnnouncement;
 import com.easemob.im.server.api.chatgroups.delete.GroupDelete;
 import com.easemob.im.server.api.chatgroups.detail.GroupDetails;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdate;
@@ -62,4 +63,21 @@ public class GroupApi {
         return GroupDelete.execute(this.context, this.groupId);
     }
 
+    /**
+     * Get the group announcement.
+     *
+     * @return A {@code Mono} emits the announcement on success.
+     */
+    public Mono<String> getAnnouncement() {
+        return GroupAnnouncement.get(this.context, this.groupId);
+    }
+
+    /**
+     * Update the group announcement.
+     * @param announcement the announcement
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> putAnnouncement(String announcement) {
+        return GroupAnnouncement.update(this.context, this.groupId, announcement);
+    }
 }

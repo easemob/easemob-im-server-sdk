@@ -43,61 +43,6 @@ public class ChatGroupsApi {
     }
 
     /**
-     * 获取群组公告
-     *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E5%85%AC%E5%91%8A
-     *
-     * 获取指定群组id的群组公告
-     *
-     * @param groupId  需要获取群组公告的群组 ID
-     * @return ChatGroup
-     * @throws ChatGroupsException 调用群组方法会抛出的异常
-     */
-    public ChatGroup getChatGroupAnnouncement(String groupId) throws ChatGroupsException {
-        verifyGroupId(groupId);
-
-        String uri = "/chatgroups/" + groupId + "/announcement";
-        JsonNode response;
-        try {
-            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
-        } catch (ApiException e) {
-            throw new ChatGroupsException(e.getMessage());
-        }
-        return responseToChatGroupObject(groupId, response);
-    }
-
-    /**
-     * 修改群组公告
-     *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E4%BF%AE%E6%94%B9%E7%BE%A4%E7%BB%84%E5%85%AC%E5%91%8A
-     *
-     * 修改指定群组id的群组公告，注意群组公告的内容不能超过512个字符
-     *
-     * @param groupId       需要修改群组公告的群组 ID
-     * @param announcement  要修改的群组公告内容
-     * @return ChatGroup
-     * @throws ChatGroupsException 调用群组方法会抛出的异常
-     */
-    public ChatGroup modifyChatGroupAnnouncement(String groupId, String announcement) throws ChatGroupsException {
-        verifyGroupId(groupId);
-        if (announcement == null || announcement.length() > 512) {
-            throw new ChatGroupsException("Bad Request invalid announcement");
-        }
-
-        ObjectNode request = this.mapper.createObjectNode();
-        request.put("announcement", announcement);
-
-        String uri = "/chatgroups/" + groupId + "/announcement";
-        JsonNode response;
-        try {
-            response = HttpUtils.execute(this.http, HttpMethod.POST, uri, request ,this.allocator, this.mapper, this.properties, this.tokenCache);
-        } catch (ApiException e) {
-            throw new ChatGroupsException(e.getMessage());
-        }
-        return responseToChatGroupObject(groupId, response);
-    }
-
-    /**
      * 获取群组共享文件
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6
