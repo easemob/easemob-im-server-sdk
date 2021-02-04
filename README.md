@@ -7,7 +7,7 @@ Easemob provides instant messaging APIs for your applications.
 This project provides a facade for our RESTful API so that you can focus on the business logic. 
 
 ```
-This project is currently under development.
+This project is under heavy development, the API will change rapidly until first release. 
 ```
 
 ## Register your app
