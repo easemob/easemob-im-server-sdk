@@ -3,7 +3,7 @@ package com.easemob.im.server;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApiV1;
-import com.easemob.im.server.api.chatgroups.GroupApiV1;
+import com.easemob.im.server.api.chatgroups.GroupApi;
 import com.easemob.im.server.api.chatgroups.GroupsApi;
 import com.easemob.im.server.api.notification.NotificationV1;
 import com.easemob.im.server.api.token.TokenApiGroup;
@@ -59,8 +59,8 @@ public class EMService {
         return new GroupsApi(this.context);
     }
 
-    public GroupApiV1 group(String groupId) {
-        return new GroupApiV1(this.context, groupId);
+    public GroupApi group(String groupId) {
+        return new GroupApi(this.context, groupId);
     }
 
     private void printBanner() {

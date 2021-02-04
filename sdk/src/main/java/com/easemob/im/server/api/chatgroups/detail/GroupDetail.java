@@ -1,9 +1,8 @@
 package com.easemob.im.server.api.chatgroups.detail;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.model.EMGroup;
+import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMGroupDetail;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,18 +12,25 @@ public class GroupDetail {
 
     private Context context;
 
-    public GroupDetail(Context context) {
+    private String groupId;
+
+    public GroupDetail(Context context, String groupId) {
         this.context = context;
+        this.groupId = groupId;
     }
 
-    public Flux<EMGroupDetail> byId(Flux<String> groupIds) {
-        return groupIds.window(10)
-            .flatMap(g -> g.collect(Collectors.joining(",")))
-            .flatMap(groupIdList -> this.context.getHttpClient()
+    public Mono<EMGroupDetail> execute() {
+        return this.context.getHttpClient()
                 .get()
-                .uri(String.format("/chatgroups/%s", groupIdList))
+                .uri(String.format("/chatgroups/%s", this.groupId))
                 .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
                 .map(buf -> this.context.getCodec().decode(buf, GroupDetailResponse.class))
-                .flatMapIterable(GroupDetailResponse::toGroupDetails));
+                .map(rsp -> {
+                    EMGroupDetail detail = rsp.toGroupDetail(this.groupId);
+                    if (detail == null) {
+                        throw new EMNotFoundException(String.format("group:%s", this.groupId));
+                    }
+                    return detail;
+                });
     }
 }
