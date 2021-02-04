@@ -3,6 +3,8 @@ package com.easemob.im.server;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApiV1;
+import com.easemob.im.server.api.chatgroups.GroupApiV1;
+import com.easemob.im.server.api.chatgroups.GroupsApi;
 import com.easemob.im.server.api.notification.NotificationV1;
 import com.easemob.im.server.api.token.TokenApiGroup;
 import com.easemob.im.server.api.user.UserApiGroupV1;
@@ -12,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 public class EMService {
 
     private static final Logger log = LogManager.getLogger();
+
+    private final Context context;
 
     private final TokenApiGroup tokenApiGroup;
 
@@ -27,12 +31,12 @@ public class EMService {
         log.debug("EMService version: {}", EMVersion.getVersion());
         log.debug("EMService properties: {}", properties);
 
-        Context context = new DefaultContext(properties);
+        this.context = new DefaultContext(properties);
 
-        this.tokenApiGroup = new TokenApiGroup(context);
-        this.userApiGroupV1 = new UserApiGroupV1(context);
-        this.notificationV1 = new NotificationV1(context);
-        this.blockV1 = new BlockApiV1(context);
+        this.tokenApiGroup = new TokenApiGroup(this.context);
+        this.userApiGroupV1 = new UserApiGroupV1(this.context);
+        this.notificationV1 = new NotificationV1(this.context);
+        this.blockV1 = new BlockApiV1(this.context);
     }
 
     public TokenApiGroup tokenV1() {
@@ -49,6 +53,14 @@ public class EMService {
 
     public BlockApiV1 blockV1() {
         return this.blockV1();
+    }
+
+    public GroupsApi groups() {
+        return new GroupsApi(this.context);
+    }
+
+    public GroupApiV1 group(String groupId) {
+        return new GroupApiV1(this.context, groupId);
     }
 
     private void printBanner() {

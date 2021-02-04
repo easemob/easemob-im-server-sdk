@@ -3,6 +3,7 @@ package com.easemob.im.server.api.codec;
 import com.easemob.im.server.api.Codec;
 import com.easemob.im.server.exception.EMJsonException;
 import com.easemob.im.server.exception.EMUnknownException;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,7 @@ public class JsonCodec implements Codec {
     public JsonCodec() {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     public ByteBuf encode(Object object) {
