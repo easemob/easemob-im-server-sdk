@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.chatgroups;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.chatgroups.delete.GroupDelete;
 import com.easemob.im.server.api.chatgroups.detail.GroupDetails;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdate;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdateRequest;
@@ -21,7 +22,7 @@ public class GroupApi {
     }
 
     /**
-     * Get group detail.
+     * Get this group detail.
      *
      * To get group details,
      * <pre>{@code
@@ -36,9 +37,9 @@ public class GroupApi {
     }
 
     /**
-     * Update group settings.
-     * <p>
-     * To update max members to 100,
+     * Update this group's settings.
+     *
+     * To update max members of a group:
      * <pre>{@code
      *     EMService service;
      *     service.group("111").updateSettings(settings -> settings.maxMembers(100)).block();
@@ -50,6 +51,15 @@ public class GroupApi {
     public Mono<Void> update(Function<GroupUpdateRequest, GroupUpdateRequest> customizer) {
         return new GroupUpdate(this.context, this.groupId, customizer.apply(new GroupUpdateRequest()))
             .execute();
+    }
+
+    /**
+     * Delete this group.
+     *
+     * @return A {@code Mono} complete on success.
+     */
+    public Mono<Void> delete() {
+        return GroupDelete.execute(this.context, this.groupId);
     }
 
 }
