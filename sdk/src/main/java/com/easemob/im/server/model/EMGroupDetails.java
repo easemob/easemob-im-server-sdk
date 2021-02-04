@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class EMGroupDetail {
+public class EMGroupDetails {
     private final String groupId;
 
     private final boolean isPublic;
@@ -18,7 +18,7 @@ public class EMGroupDetail {
 
     private final List<EMGroupMember> members;
 
-    public EMGroupDetail(String groupId, boolean isPublic, boolean needApproveToJoin, boolean memberCanInviteOthers, int maxMembers, List<EMGroupMember> members) {
+    public EMGroupDetails(String groupId, boolean isPublic, boolean needApproveToJoin, boolean memberCanInviteOthers, int maxMembers, List<EMGroupMember> members) {
         this.groupId = groupId;
         this.isPublic = isPublic;
         this.needApproveToJoin = needApproveToJoin;

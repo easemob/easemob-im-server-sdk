@@ -1,6 +1,6 @@
 package com.easemob.im.server.api.chatgroups.detail;
 
-import com.easemob.im.server.model.EMGroupDetail;
+import com.easemob.im.server.model.EMGroupDetails;
 import com.easemob.im.server.model.EMGroupMember;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +17,7 @@ public class GroupDetailResponse {
         this.groupDetails = groupDetails;
     }
 
-    public EMGroupDetail toGroupDetail(String groupId) {
+    public EMGroupDetails toGroupDetail(String groupId) {
         return this.groupDetails.stream()
             .filter(groupDetailResource -> groupDetailResource.groupId.equals(groupId))
             .map(GroupDetailResource::toGroupDetail)
@@ -25,7 +25,7 @@ public class GroupDetailResponse {
             .orElse(null);
     }
 
-    public List<EMGroupDetail> toGroupDetails() {
+    public List<EMGroupDetails> toGroupDetails() {
         return this.groupDetails.stream()
             .map(GroupDetailResource::toGroupDetail)
             .collect(Collectors.toList());
@@ -50,11 +50,11 @@ public class GroupDetailResponse {
         @JsonProperty("affiliations")
         private List<GroupMemberResource> members;
 
-        public EMGroupDetail toGroupDetail() {
+        public EMGroupDetails toGroupDetail() {
             List<EMGroupMember> memberList = this.members.stream()
                 .map(GroupMemberResource::toGroupMember)
                 .collect(Collectors.toList());
-            return new EMGroupDetail(this.groupId, this.isPublic, this.needApproveToJoin, this.memberCanInviteOthers, this.maxMembers, memberList);
+            return new EMGroupDetails(this.groupId, this.isPublic, this.needApproveToJoin, this.memberCanInviteOthers, this.maxMembers, memberList);
         }
     }
 

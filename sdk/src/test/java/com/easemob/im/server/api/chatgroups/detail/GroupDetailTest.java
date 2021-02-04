@@ -1,13 +1,12 @@
 package com.easemob.im.server.api.chatgroups.detail;
 
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.model.EMGroupDetail;
+import com.easemob.im.server.model.EMGroupDetails;
 import com.easemob.im.server.model.EMGroupMember;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -24,8 +23,7 @@ public class GroupDetailTest extends AbstractApiTest {
 
     @Test
     public void testGroupDetails() {
-        GroupDetail groupDetail = new GroupDetail(this.context, "1");
-        EMGroupDetail detail = groupDetail.execute().block(Duration.ofSeconds(3));
+        EMGroupDetails detail = GroupDetails.execute(this.context, "1").block(Duration.ofSeconds(3));
         assertEquals("1", detail.getGroupId());
         assertEquals(true, detail.getIsPublic());
         assertEquals(false, detail.getNeedApproveToJoin());

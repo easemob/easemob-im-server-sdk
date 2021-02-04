@@ -1,9 +1,10 @@
 package com.easemob.im.server.api.chatgroups;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.api.chatgroups.detail.GroupDetail;
+import com.easemob.im.server.api.chatgroups.detail.GroupDetails;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdate;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdateRequest;
+import com.easemob.im.server.model.EMGroupDetails;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
@@ -19,8 +20,19 @@ public class GroupApi {
         this.groupId = groupId;
     }
 
-    public GroupDetail detail() {
-        return new GroupDetail(this.context, this.groupId);
+    /**
+     * Get group detail.
+     *
+     * To get group details,
+     * <pre>{@code
+     *      EMService service;
+     *      EMGroupDetails details = service.group("1").getDetail().block();
+     * }</pre>
+     *
+     * @return A {@code Mono} emits {@code EMGroupDetail} on success.
+     */
+    public Mono<EMGroupDetails> detail() {
+        return GroupDetails.execute(this.context, this.groupId);
     }
 
     /**

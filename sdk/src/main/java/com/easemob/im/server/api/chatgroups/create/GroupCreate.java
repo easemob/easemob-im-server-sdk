@@ -2,8 +2,6 @@ package com.easemob.im.server.api.chatgroups.create;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMGroup;
-import com.easemob.im.server.model.EMGroupDetail;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
