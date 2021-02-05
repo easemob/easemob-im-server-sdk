@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.member;
+package com.easemob.im.server.api.chatgroups.member.list;
 
 import com.easemob.im.server.api.chatgroups.GroupMemberResource;
 import com.easemob.im.server.model.EMGroupMember;

@@ -7,8 +7,10 @@ import com.easemob.im.server.api.chatgroups.delete.GroupDelete;
 import com.easemob.im.server.api.chatgroups.detail.GroupDetails;
 import com.easemob.im.server.api.chatgroups.list.GroupList;
 import com.easemob.im.server.api.chatgroups.list.GroupListResponse;
-import com.easemob.im.server.api.chatgroups.member.GroupMemberList;
-import com.easemob.im.server.api.chatgroups.member.GroupMemberListResponse;
+import com.easemob.im.server.api.chatgroups.member.add.GroupMemberAdd;
+import com.easemob.im.server.api.chatgroups.member.list.GroupMemberList;
+import com.easemob.im.server.api.chatgroups.member.list.GroupMemberListResponse;
+import com.easemob.im.server.api.chatgroups.member.remove.GroupMemberRemove;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdate;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdateRequest;
 import com.easemob.im.server.model.EMGroup;
@@ -243,4 +245,27 @@ public class GroupApi {
     public Mono<GroupMemberListResponse> listGroupMembers(String groupId, int limit, String cursor) {
         return GroupMemberList.next(this.context, groupId, limit, cursor);
     }
+
+    /**
+     * Add a user to the group.
+     *
+     * @param groupId the group id
+     * @param username the username
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> addGroupMember(String groupId, String username) {
+        return GroupMemberAdd.single(this.context, groupId, username);
+    }
+
+    /**
+     * Remove a member from the group.
+     *
+     * @param groupId the group id
+     * @param username the username
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> removeGroupMember(String groupId, String username) {
+        return GroupMemberRemove.single(this.context, groupId, username);
+    }
+
 }
