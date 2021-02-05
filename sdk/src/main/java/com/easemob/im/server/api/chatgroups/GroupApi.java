@@ -1,6 +1,9 @@
 package com.easemob.im.server.api.chatgroups;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.chatgroups.admin.add.GroupAdminAdd;
+import com.easemob.im.server.api.chatgroups.admin.list.GroupAdminList;
+import com.easemob.im.server.api.chatgroups.admin.remove.GroupAdminRemove;
 import com.easemob.im.server.api.chatgroups.announcement.GroupAnnouncement;
 import com.easemob.im.server.api.chatgroups.create.GroupCreate;
 import com.easemob.im.server.api.chatgroups.delete.GroupDelete;
@@ -14,6 +17,7 @@ import com.easemob.im.server.api.chatgroups.member.remove.GroupMemberRemove;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdate;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdateRequest;
 import com.easemob.im.server.model.EMGroup;
+import com.easemob.im.server.model.EMGroupAdmin;
 import com.easemob.im.server.model.EMGroupDetails;
 import com.easemob.im.server.model.EMGroupMember;
 import reactor.core.publisher.Flux;
@@ -163,6 +167,7 @@ public class GroupApi {
      *      EMGroupDetails details = service.group().detail("1").block();
      * }</pre>
      *
+     * @param groupId the group id
      * @return A {@code Mono} emits {@code EMGroupDetail} on success.
      */
     public Mono<EMGroupDetails> getGroupDetails(String groupId) {
@@ -178,6 +183,7 @@ public class GroupApi {
      *     service.group().updateSettings("1", settings -> settings.maxMembers(100)).block();
      * }</pre>
      *
+     * @param groupId the group id
      * @param customizer update request customizer
      * @return A {@code Mono} complete if successful.
      */
@@ -189,6 +195,7 @@ public class GroupApi {
     /**
      * Get the group announcement.
      *
+     * @param groupId the group id
      * @return A {@code Mono} emits the announcement on success.
      */
     public Mono<String> getGroupAnnouncement(String groupId) {
@@ -197,6 +204,7 @@ public class GroupApi {
 
     /**
      * Update the group announcement.
+     * @param groupId the group id
      * @param announcement the announcement
      * @return A {@code Mono} which complete on success.
      */
@@ -266,6 +274,38 @@ public class GroupApi {
      */
     public Mono<Void> removeGroupMember(String groupId, String username) {
         return GroupMemberRemove.single(this.context, groupId, username);
+    }
+
+    /**
+     * List all admins of the group.
+     *
+     * @param groupId the group id
+     * @return A {@code Flux} emits {@code EMGroupAdmin}.
+     */
+    public Flux<EMGroupAdmin> listGroupAdmins(String groupId) {
+        return GroupAdminList.all(this.context, groupId);
+    }
+
+    /**
+     * Promote a member of the group to be admin.
+     *
+     * @param groupId the group id
+     * @param username the username
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> addGroupAdmin(String groupId, String username) {
+        return GroupAdminAdd.single(this.context, groupId, username);
+    }
+
+    /**
+     * Demote an admin of the group to be member.
+     *
+     * @param groupId the group id
+     * @param username the username
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> removeGroupAdmin(String groupId, String username) {
+        return GroupAdminRemove.single(this.context, groupId, username);
     }
 
 }
