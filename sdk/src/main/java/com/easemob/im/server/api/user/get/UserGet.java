@@ -25,12 +25,6 @@ public class UserGet {
             });
     }
 
-    /**
-     * 从头开始遍历全部用户。
-     *
-     * @param limit 一次从服务器取多少用户
-     * @return {@code Flux<EMUser>}
-     */
     public static Flux<EMUser> all(Context context, int limit) {
         return all(context, limit, null)
             .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : all(context, limit, rsp.getCursor()))
@@ -39,12 +33,6 @@ public class UserGet {
             .limitRate(limit);
     }
 
-    /** 从cursor开始遍历全部用户。
-     *
-     * @param limit 一次从服务器取回多少用户
-     * @param cursor 从哪里开始，首次可以传{@code Optional.empty()}，或者从上次返回的
-     * @return {@code Mono<UserGetResponse>}
-     */
     public static Mono<UserGetResponse> all(Context context, int limit, String cursor) {
         String query = String.format("limit=%d", limit);
         if (cursor != null) {

@@ -238,7 +238,7 @@ public class GroupApi {
      * @param groupId the group id
      * @param limit the limit, controls max members returns each time
      * @param cursor the cursor received in the previous response
-     * @return
+     * @return A {@code Mono} emits {@code GroupMemberListResponse}.
      */
     public Mono<GroupMemberListResponse> listGroupMembers(String groupId, int limit, String cursor) {
         return GroupMemberList.next(this.context, groupId, limit, cursor);

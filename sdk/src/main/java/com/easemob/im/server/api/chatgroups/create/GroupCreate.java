@@ -20,16 +20,6 @@ public class GroupCreate {
             .map(GroupCreateResponse::toEMGroup);
     }
 
-    /**
-     * Create a private group. Private group is not listed in GroupList api.
-     *
-     *
-     * @param owner the owner's username
-     * @param members the initial members
-     * @param maxMembers how many members could join this group
-     * @param canMemberInvite can member invite others
-     * @return A {@code Mono} which emit {@code EMGroup} if successful.
-     */
     public static Mono<EMGroup> privateGroup(Context context, String owner, List<String> members, int maxMembers, boolean canMemberInvite) {
         return context.getHttpClient()
             .post()

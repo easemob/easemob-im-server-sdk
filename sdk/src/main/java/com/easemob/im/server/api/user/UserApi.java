@@ -76,7 +76,7 @@ public class UserApi {
      * Force user logout.
      *
      * @param username the username
-     * @return
+     * @return A {@code Mono} which complete on success.
      */
     public Mono<Void> forceLogoutAllDevices(String username) {
         return UserForceLogout.byUsername(this.context, username);
@@ -87,7 +87,7 @@ public class UserApi {
      *
      * @param username the username
      * @param resource the device name
-     * @return
+     * @return A {@code Mono} which complete on success.
      */
     public Mono<Void> forceLogoutOneDevice(String username, String resource) {
         return UserForceLogout.byUsernameAndResource(this.context, username, resource);

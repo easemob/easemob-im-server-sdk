@@ -33,13 +33,6 @@ public class UserUnregister {
             .concatMapIterable(UserUnregisterResponse::getEMUsers);
     }
 
-    /**
-     * （手动翻页）注销全部用户。
-     *
-     * @param limit how many user to delete each time
-     * @param cursor from where to continue
-     * @return {@code Mono<UserUnregisterResponse>}
-     */
     public static Mono<UserUnregisterResponse> all(Context context, int limit, String cursor) {
         String query = String.format("limit=%d", limit);
         if (cursor != null) {
