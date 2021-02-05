@@ -3,16 +3,17 @@ package com.easemob.im.server.api.chatgroups;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.chatgroups.announcement.GroupAnnouncement;
 import com.easemob.im.server.api.chatgroups.create.GroupCreate;
-import com.easemob.im.server.api.chatgroups.create.GroupCreateRequest;
-import com.easemob.im.server.api.chatgroups.create.GroupCreateResponse;
 import com.easemob.im.server.api.chatgroups.delete.GroupDelete;
 import com.easemob.im.server.api.chatgroups.detail.GroupDetails;
 import com.easemob.im.server.api.chatgroups.list.GroupList;
 import com.easemob.im.server.api.chatgroups.list.GroupListResponse;
+import com.easemob.im.server.api.chatgroups.member.GroupMemberList;
+import com.easemob.im.server.api.chatgroups.member.GroupMemberListResponse;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdate;
 import com.easemob.im.server.api.chatgroups.update.GroupUpdateRequest;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupDetails;
+import com.easemob.im.server.model.EMGroupMember;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -103,19 +104,23 @@ public class GroupApi {
     /**
      * List all groups.
      *
-     * To control the page by yourself, you can use the listGroups api instead.
+     * Note that listAllGroups will send requests recursively until the end.
+     * You can use the listGroups api to control when to send next request.
      *
-     * @param pageSize the page size, 20 is a good start point.
-     *                 A higher value gives better I/O efficiency, while a smaller value give lower latency.
+     * @param limit the limit groups requested each time, 20 is a good start point.
+     *              Turn it higher to get better I/O efficiency, smaller to get lower latency.
      * @return A {@code Flux} which emits {@code EMGroup} on success.
      */
-    public Flux<EMGroup> listAllGroups(int pageSize) {
-        return GroupList.all(this.context, pageSize);
+    public Flux<EMGroup> listAllGroups(int limit) {
+        return GroupList.all(this.context, limit);
     }
 
     /**
      * List groups in one page.
-     * For the first page, pass {@code null} in cursor. To get the next page, you need to pass the cursor returned from previous response.
+     *
+     * At the first call, pass {@code null} in cursor.
+     * Then you need to pass the cursor returned from previous response.
+     *
      * <pre>{@code
      *  EMService service;
      *  GroupListResponse response = service.listGroups(10, null).block();
@@ -129,13 +134,12 @@ public class GroupApi {
      *  }
      * }</pre>
      *
-     * @param pageSize the page size, 20 is a good start point.
-     *                 A higher value gives better I/O efficiency, while a smaller value give lower latency.
-     * @param cursor where to continue, returned in previous {@code GroupListResponse}
+     * @param limit the limit, controls max members returns each time
+     * @param cursor the cursor received in the previous response
      * @return A {@code Mono} emits {@code GroupListResponse} on success.
      */
-    public Mono<GroupListResponse> listGroups(int pageSize, String cursor) {
-        return GroupList.next(this.context, pageSize, cursor);
+    public Mono<GroupListResponse> listGroups(int limit, String cursor) {
+        return GroupList.next(this.context, limit, cursor);
     }
 
     /**
@@ -196,5 +200,47 @@ public class GroupApi {
      */
     public Mono<Void> updateGroupAnnouncement(String groupId, String announcement) {
         return GroupAnnouncement.update(this.context, groupId, announcement);
+    }
+
+    /**
+     * List all members of a group.
+     * Note that listAllGroupMembers send requests recursively until the end.
+     * You call use listGroupMembers to control when to send next request.
+     *
+     * @param groupId the group id
+     * @param limit the limit groups requested each time, 20 is a good start point.
+     *              Tune it higher to get better I/O efficiency, smaller to get lower latency.
+     * @return A {@code Flux} emits {@code EMGroupMember}.
+     */
+    public Flux<EMGroupMember> listAllGroupMembers(String groupId, int limit) {
+        return GroupMemberList.all(this.context, groupId, limit);
+    }
+
+    /**
+     * List members of a group.
+     *
+     * At the first call, pass {@code null} in cursor.
+     * Then you need to pass the cursor returned from previous response.
+     *
+     * <pre>{@code
+     *  EMService service;
+     *  GroupListResponse response = service.listGroupMemberss("group-id", 10, null).block();
+     *  List<EMGroupMembers> groups = response.getEMGroups();
+     *  // ... do something to the members ...
+     *  String cursor = response.getCursor();
+     *  while (cursor != null) {
+     *      response = service.listGroupMembers("group-id", 10, cursor);
+     *      // ... do something to the members ...
+     *      cursor = response.getCursor();
+     *  }
+     * }</pre>
+
+     * @param groupId the group id
+     * @param limit the limit, controls max members returns each time
+     * @param cursor the cursor received in the previous response
+     * @return
+     */
+    public Mono<GroupMemberListResponse> listGroupMembers(String groupId, int limit, String cursor) {
+        return GroupMemberList.next(this.context, groupId, limit, cursor);
     }
 }

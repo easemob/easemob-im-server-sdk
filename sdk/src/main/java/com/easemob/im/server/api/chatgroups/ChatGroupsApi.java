@@ -179,38 +179,6 @@ public class ChatGroupsApi {
     }
 
     /**
-     * 分页获取群组成员
-     *
-     * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98
-     *
-     * 可以分页获取群组成员列表的接口
-     *
-     * @param groupId   需要获取的群组 ID
-     * @param pageNum   要获取第几页
-     * @param pageSize  每页获取多少条
-     * @return ChatGroup
-     * @throws ChatGroupsException 调用群组方法会抛出的异常
-     */
-    public ChatGroup getChatGroupMembers(String groupId, Integer pageNum, Integer pageSize) throws ChatGroupsException {
-        verifyGroupId(groupId);
-        if (pageNum == null || pageNum < 0) {
-            throw new ChatGroupsException("Bad Request invalid pageNum");
-        }
-        if (pageSize == null || pageSize < 0) {
-            throw new ChatGroupsException("Bad Request invalid pageSize");
-        }
-
-        String uri = "/chatgroups/" + groupId + "/users?pagenum=" + pageNum + "&pagesize=" + pageSize;
-        JsonNode response;
-        try {
-            response = HttpUtils.execute(this.http, HttpMethod.GET, uri, this.mapper, this.properties, this.tokenCache);
-        } catch (ApiException e) {
-            throw new ChatGroupsException(e.getMessage());
-        }
-        return responseToChatGroupObject(groupId, response);
-    }
-
-    /**
      * 添加单个群组成员
      *
      * 环信官网接口文档：http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98
