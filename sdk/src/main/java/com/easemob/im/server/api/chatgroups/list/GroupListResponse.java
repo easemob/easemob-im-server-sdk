@@ -23,7 +23,7 @@ public class GroupListResponse {
         this.cursor = cursor;
     }
 
-    public List<EMGroup> getGroups() {
+    public List<EMGroup> getEMGroups() {
         return groups.stream().map(GroupResource::toGroup).collect(Collectors.toList());
     }
 

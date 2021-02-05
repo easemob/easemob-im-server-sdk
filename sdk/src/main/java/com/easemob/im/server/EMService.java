@@ -4,7 +4,6 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApiV1;
 import com.easemob.im.server.api.chatgroups.GroupApi;
-import com.easemob.im.server.api.chatgroups.GroupsApi;
 import com.easemob.im.server.api.notification.NotificationV1;
 import com.easemob.im.server.api.token.TokenApiGroup;
 import com.easemob.im.server.api.user.UserApi;
@@ -55,18 +54,15 @@ public class EMService {
         return this.blockV1();
     }
 
-    public GroupsApi groups() {
-        return new GroupsApi(this.context);
-    }
-
-    public GroupApi group(String groupId) {
-        return new GroupApi(this.context, groupId);
+    public GroupApi group() {
+        return new GroupApi(this.context);
     }
 
 
 
     private void printBanner() {
-        String banner = "                                                                                            \n" +
+        String banner =
+            "                                                                                            \n" +
             "            ////////\\\\      ______  ___    _____   ______  __  ___  ____    ____    ______ \n" +
             "          ///       ///    / ____/ /   |  / ___/  / ____/ /  |/  / / __ \\  / __ )  / ____/ \n" +
             "        ///  //////////   / __/   / /| |  \\__ \\  / __/   / /|_/ / / / / / / __  | / __/   \n" +

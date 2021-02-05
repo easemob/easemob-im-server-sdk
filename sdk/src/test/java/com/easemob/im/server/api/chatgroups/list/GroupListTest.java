@@ -10,8 +10,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class GroupListTest extends AbstractApiTest {
     private static int seq = 0;
 
@@ -27,8 +25,7 @@ public class GroupListTest extends AbstractApiTest {
 
     @Test
     public void testGroupListHighLevelApi() {
-        GroupList groupList = new GroupList(this.context);
-        groupList.all(10)
+        GroupList.all(this.context, 10)
             .as(StepVerifier::create)
             .expectNextCount(25)
             .expectComplete()
@@ -37,19 +34,16 @@ public class GroupListTest extends AbstractApiTest {
 
     @Test
     public void testGroupListLowLevelApi() {
-        GroupList groupList = new GroupList(this.context);
-        groupList.all(10, "1")
+        GroupList.next(this.context, 10, "1")
             .as(StepVerifier::create)
-            .expectNextMatches(rsp -> rsp.getGroups().size() == 10 && rsp.getCursor().equals("2"))
+            .expectNextMatches(rsp -> rsp.getEMGroups().size() == 10 && rsp.getCursor().equals("2"))
             .expectComplete()
             .verify(Duration.ofSeconds(3));
     }
 
     @Test
     public void testGroupListUserJoined() {
-        GroupList groupList = new GroupList(this.context);
-
-        groupList.userJoined("alice")
+        GroupList.userJoined(this.context, "alice")
             .as(StepVerifier::create)
             .expectNext(new EMGroup("aliceGroup"))
             .expectNext(new EMGroup("rabbitGroup"))

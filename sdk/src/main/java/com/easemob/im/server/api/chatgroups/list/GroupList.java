@@ -13,49 +13,30 @@ public class GroupList {
         this.context = context;
     }
 
-    /**
-     * List all groups.
-     *
-     * @param limit how many groups retrieved each round trip
-     * @return A {@code Flux} which emits {@code EMGroup}.
-     */
-    public Flux<EMGroup> all(int limit) {
-        return all(limit, null)
-            .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : all(limit, rsp.getCursor()))
-            .concatMapIterable(GroupListResponse::getGroups);
+    public static Flux<EMGroup> all(Context context, int limit) {
+        return next(context, limit, null)
+            .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(context, limit, rsp.getCursor()))
+            .concatMapIterable(GroupListResponse::getEMGroups);
     }
 
-    /**
-     * List all groups.
-     *
-     * @param limit how many groups retrieved each round trip
-     * @param cursor where to continue, returned in previous {@code GroupListResponse}
-     * @return A {@code Mono} emits {@code GroupListResponse} if successful
-     */
-    public Mono<GroupListResponse> all(int limit, String cursor) {
+    public static Mono<GroupListResponse> next(Context context, int limit, String cursor) {
         String path = String.format("/chatgroups?limit=%s", limit);
         if (cursor != null) {
             path = String.format("%s&cursor=%s", path, cursor);
         }
-        return this.context.getHttpClient()
+        return context.getHttpClient()
             .get()
             .uri(path)
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class));
+            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> context.getCodec().decode(buf, GroupListResponse.class));
     }
 
-    /**
-     * List groups user joined.
-     *
-     * @param username the user's username
-     * @return A {@code Flux} which emits {@code EMGroup} if successful
-     */
-    public Flux<EMGroup> userJoined(String username) {
-        return this.context.getHttpClient()
+    public static Flux<EMGroup> userJoined(Context context, String username) {
+        return context.getHttpClient()
             .get()
             .uri(String.format("/users/%s/joined_chatgroups", username))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
-            .flatMapIterable(GroupListResponse::getGroups);
+            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> context.getCodec().decode(buf, GroupListResponse.class))
+            .flatMapIterable(GroupListResponse::getEMGroups);
     }
 }

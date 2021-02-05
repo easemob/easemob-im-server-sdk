@@ -21,28 +21,20 @@ class GroupCreateTest extends AbstractApiTest {
 
     @Test
     public void testCreatePublicGroup() {
-        GroupCreate groupCreate = new GroupCreate(this.context);
         EMGroup emGroup = new EMGroup("group-create-test");
         List<String> members = new ArrayList<>();
         members.add("madhat");
         members.add("rabbit");
-        assertEquals(emGroup, groupCreate.publicGroup("alice").block(Duration.ofSeconds(3)));
-        assertEquals(emGroup, groupCreate.publicGroup("alice", members).block(Duration.ofSeconds(3)));
-        assertEquals(emGroup, groupCreate.publicGroup("alice", members, 10).block(Duration.ofSeconds(3)));
-        assertEquals(emGroup, groupCreate.publicGroup("alice", members, 10, true).block(Duration.ofSeconds(3)));
+        assertEquals(emGroup, GroupCreate.publicGroup(this.context, "alice", members, 10, true).block(Duration.ofSeconds(3)));
     }
 
     @Test
     public void testCreatePrivateGroup() {
-        GroupCreate groupCreate = new GroupCreate(this.context);
         EMGroup emGroup = new EMGroup("group-create-test");
         List<String> members = new ArrayList<>();
         members.add("madhat");
         members.add("rabbit");
-        assertEquals(emGroup, groupCreate.privateGroup("alice").block(Duration.ofSeconds(3)));
-        assertEquals(emGroup, groupCreate.privateGroup("alice", members).block(Duration.ofSeconds(3)));
-        assertEquals(emGroup, groupCreate.privateGroup("alice", members, 10).block(Duration.ofSeconds(3)));
-        assertEquals(emGroup, groupCreate.privateGroup("alice", members, 10, true).block(Duration.ofSeconds(3)));
+        assertEquals(emGroup, GroupCreate.privateGroup(this.context, "alice", members, 10, true).block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupCreateRequest(JsonNode jsonNode) {

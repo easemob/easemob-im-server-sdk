@@ -52,11 +52,11 @@ public class EMProperties {
     @Override
     public String toString() {
         return "EMProperties{" +
-            "baseUri='" + baseUri + '\'' +
-            ", appkey='" + appkey + '\'' +
-            ", clientId=" + maskSensitiveString(clientId) +
-            ", clientSecret=" + maskSensitiveString(clientSecret) +
-            ", httpConnectionPoolSize=" + httpConnectionPoolSize +
+            "baseUri=" + this.baseUri +
+            ", appkey=" + this.appkey +
+            ", clientId=" + maskSensitiveString(this.clientId) +
+            ", clientSecret=" + maskSensitiveString(this.clientSecret) +
+            ", httpConnectionPoolSize=" + this.httpConnectionPoolSize +
             '}';
     }
 
