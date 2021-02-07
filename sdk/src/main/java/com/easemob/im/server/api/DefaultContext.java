@@ -54,10 +54,8 @@ public class DefaultContext implements Context {
         ConnectionProvider connectionProvider = ConnectionProvider.create("easemob-sdk", properties.getHttpConnectionPoolSize());
         HttpClient httpClient = HttpClient.create(connectionProvider)
             .baseUrl(properties.getBaseUri())
-            .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())));
-        if (EMLog.isDebugEnabled()) {
-            httpClient = httpClient.wiretap("com.easemob.im.http", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
-        }
+            .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())))
+            .wiretap("com.easemob.im.http", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
         this.codec = new JsonCodec();
         this.errorMapper = new DefaultErrorMapper();
         this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.codec, this.errorMapper);
