@@ -22,10 +22,10 @@ public class UserPasswordTest {
         .build();
 
     private EMProperties properties = EMProperties.builder()
-        .baseUri(this.server.uri())
-        .appkey("easemob#demo")
-        .clientId("clientId")
-        .clientSecret("clientSecret")
+        .setBaseUri(this.server.uri())
+        .setAppkey("easemob#demo")
+        .setClientId("clientId")
+        .setClientSecret("clientSecret")
         .build();
 
     private MockingContext context = new MockingContext(properties);

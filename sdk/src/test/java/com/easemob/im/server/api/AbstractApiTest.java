@@ -4,8 +4,6 @@ import com.easemob.im.server.EMProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.function.Function;
-
 public abstract class AbstractApiTest {
     protected ObjectMapper objectMapper;
 
@@ -23,10 +21,10 @@ public abstract class AbstractApiTest {
         this.server = MockingHttpServer.builder().build();
 
         this.properties = EMProperties.builder()
-            .baseUri(this.server.uri())
-            .appkey("easemob#demo")
-            .clientId("clientId")
-            .clientSecret("clientSecret")
+            .setBaseUri(this.server.uri())
+            .setAppkey("easemob#demo")
+            .setClientId("clientId")
+            .setClientSecret("clientSecret")
             .build();
 
         this.context = new MockingContext(properties);

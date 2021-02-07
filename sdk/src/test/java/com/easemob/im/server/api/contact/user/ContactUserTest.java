@@ -6,7 +6,6 @@ import com.easemob.im.server.api.MockingHttpServer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.time.Duration;
 import java.util.List;
@@ -23,10 +22,10 @@ public class ContactUserTest {
         .build();
 
     private EMProperties properties = EMProperties.builder()
-        .baseUri(this.server.uri())
-        .appkey("easemob#demo")
-        .clientId("clientId")
-        .clientSecret("clientSecret")
+        .setBaseUri(this.server.uri())
+        .setAppkey("easemob#demo")
+        .setClientId("clientId")
+        .setClientSecret("clientSecret")
         .build();
 
     private MockingContext context = new MockingContext(properties);

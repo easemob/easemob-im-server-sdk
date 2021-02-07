@@ -12,18 +12,18 @@ public class EMUser {
 
     private final String username;
 
-    private final boolean restricted;
+    private final Boolean canLogin;
 
     public EMUser(String username) {
-        this(username, false);
+        this(username, null);
     }
 
-    public EMUser(String username, boolean restricted) {
+    public EMUser(String username, Boolean canLogin) {
         if (username == null || username.isEmpty()) {
             throw new EMInvalidArgumentException("username must not be null or empty");
         }
         this.username = username;
-        this.restricted = restricted;
+        this.canLogin = canLogin;
     }
 
     public static void validateUsername(String username) {
@@ -40,6 +40,10 @@ public class EMUser {
 
     public String getUsername() {
         return this.username;
+    }
+
+    public boolean getCanLogin() {
+        return this.canLogin;
     }
 
     @Override
@@ -59,4 +63,11 @@ public class EMUser {
         return Objects.hash(username);
     }
 
+    @Override
+    public String toString() {
+        return "EMUser{" +
+                "username='" + username + '\'' +
+                ", restricted=" + canLogin +
+                '}';
+    }
 }

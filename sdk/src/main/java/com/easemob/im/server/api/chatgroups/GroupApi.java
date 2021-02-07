@@ -100,7 +100,7 @@ public class GroupApi {
 
     /**
      * Delete this group.
-     *
+     * @param groupId the group id
      * @return A {@code Mono} complete on success.
      */
     public Mono<Void> deleteGroup(String groupId) {

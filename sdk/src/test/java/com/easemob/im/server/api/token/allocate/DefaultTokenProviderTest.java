@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.token.allocate;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.MockingContext;
 import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.model.EMToken;
@@ -12,21 +13,11 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DefaultTokenProviderTest {
-    private ObjectMapper objectMapper = new ObjectMapper();
+public class DefaultTokenProviderTest extends AbstractApiTest {
 
-    private MockingHttpServer server = MockingHttpServer.builder()
-        .addHandler("POST /easemob/demo/tokens", this::handlePostToken)
-        .build();
-
-    private EMProperties properties = EMProperties.builder()
-        .baseUri(server.uri())
-        .appkey("easemob#demo")
-        .clientId("id")
-        .clientSecret("secret")
-        .build();
-
-    private MockingContext context = new MockingContext(properties);
+    public DefaultTokenProviderTest() {
+        this.server.addHandler("POST /easemob/demo/token", this::handlePostToken);
+    }
 
     @Test
     public void testFetchAppToken() {

@@ -72,7 +72,7 @@ public class EMProperties {
          * @param appkey appkey
          * @return {@code Builder}
          */
-        public Builder appkey(String appkey) {
+        public Builder setAppkey(String appkey) {
             if (appkey == null || appkey.isEmpty()) {
                 throw new EMInvalidArgumentException("appkey must not be null or empty");
             }
@@ -101,7 +101,7 @@ public class EMProperties {
          * @param clientId     认证id
          * @return {@code Builder}
          */
-        public Builder clientId(String clientId) {
+        public Builder setClientId(String clientId) {
             if (clientId == null || clientId.isEmpty()) {
                 throw new EMInvalidArgumentException("clientId must not be null or empty");
             }
@@ -117,7 +117,7 @@ public class EMProperties {
          * @param clientSecret 认证密码
          * @return {@code Builder}
          */
-        public Builder clientSecret(String clientSecret) {
+        public Builder setClientSecret(String clientSecret) {
             if (clientSecret == null || clientSecret.isEmpty()) {
                 throw new EMInvalidArgumentException("clientSecret must not be null or empty");
             }
@@ -132,7 +132,7 @@ public class EMProperties {
          * @param baseUri baseUri
          * @return the {@code Builder}
          */
-        public Builder baseUri(String baseUri) {
+        public Builder setBaseUri(String baseUri) {
             if (baseUri == null || baseUri.isEmpty()) {
                 throw new EMInvalidArgumentException("baseUri must not be null or empty");
             }

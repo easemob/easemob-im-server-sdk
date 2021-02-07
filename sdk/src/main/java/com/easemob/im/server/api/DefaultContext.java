@@ -7,8 +7,10 @@ import com.easemob.im.server.api.codec.JsonCodec;
 import com.easemob.im.server.api.token.allocate.DefaultTokenProvider;
 import com.easemob.im.server.api.token.allocate.TokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.handler.logging.LogLevel;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 public class DefaultContext implements Context {
 
@@ -53,8 +55,8 @@ public class DefaultContext implements Context {
         HttpClient httpClient = HttpClient.create(connectionProvider)
             .baseUrl(properties.getBaseUri())
             .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())));
-        if (EMLog.isTraceEnabled()) {
-            httpClient = httpClient.wiretap(true);
+        if (EMLog.isDebugEnabled()) {
+            httpClient = httpClient.wiretap("com.easemob.im.http", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
         }
         this.codec = new JsonCodec();
         this.errorMapper = new DefaultErrorMapper();

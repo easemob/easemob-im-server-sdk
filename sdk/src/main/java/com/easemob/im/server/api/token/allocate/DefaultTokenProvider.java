@@ -56,14 +56,15 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
 
     private void initialize() {
         AppTokenRequest appTokenRequest = AppTokenRequest.of(this.properties.getClientId(), this.properties.getClientSecret());
-        this.appToken = fetchToken(appTokenRequest).flatMap(token -> {
-            Duration ttl = Duration.between(Instant.now(), token.getExpireTimestamp());
-            if (ttl.isNegative()) {
-                LOG.error("token already expired");
-                return Mono.error(new EMInvalidStateException("token already expired"));
-            }
-            return Mono.just(token).cache(ttl.dividedBy(2));
-        });
+//        this.appToken = fetchToken(appTokenRequest).flatMapMany(token -> {
+//            Duration ttl = Duration.between(Instant.now(), token.getExpireTimestamp());
+//            if (ttl.isNegative()) {
+//                LOG.error("token already expired");
+//                return Mono.error(new EMInvalidStateException("token already expired"));
+//            }
+//            return Mono.just(token).cache(ttl.dividedBy(2));
+//        }).checkpoint("apptoken").log();
+        this.appToken = fetchToken(appTokenRequest).cache(Duration.ofSeconds(3600));
 
         LOG.info("token provider initialized");
     }
@@ -71,7 +72,7 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
     private Mono<EMToken> fetchToken(TokenRequest tokenRequest) {
         return this.httpClient
             .post()
-            .uri("/tokens")
+            .uri("/token")
             .send(Mono.just(this.codec.encode(tokenRequest)))
             .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
             .map(buf -> this.codec.decode(buf, TokenResponse.class))
