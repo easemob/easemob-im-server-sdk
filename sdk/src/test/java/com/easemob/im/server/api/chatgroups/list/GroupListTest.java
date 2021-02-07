@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.chatgroups.list;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.api.chatgroups.crud.GroupList;
 import com.easemob.im.server.model.EMGroup;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;

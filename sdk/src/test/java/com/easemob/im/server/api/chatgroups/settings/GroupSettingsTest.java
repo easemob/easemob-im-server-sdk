@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.update;
+package com.easemob.im.server.api.chatgroups.settings;
 
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.exception.EMUnknownException;
@@ -10,26 +10,26 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GroupUpdateTest extends AbstractApiTest {
+class GroupSettingsTest extends AbstractApiTest {
 
-    public GroupUpdateTest() {
+    public GroupSettingsTest() {
         this.server.addHandler("PUT /easemob/demo/chatgroups/1", this::handleGroupUpdateRequestSuccess);
         this.server.addHandler("PUT /easemob/demo/chatgroups/2", this::handleGroupUpdateRequestFailure);
     }
 
     @Test
     public void testGroupUpdateSuccess() {
-        GroupUpdateRequest request = new GroupUpdateRequest();
+        GroupSettingsUpdateRequest request = new GroupSettingsUpdateRequest();
         request.setMaxMembers(10);
-        assertDoesNotThrow(() -> new GroupUpdate(this.context, "1", request).execute().block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> GroupSettings.update(this.context, "1", request).block(Duration.ofSeconds(3)));
     }
 
     @Test
     public void testGroupUpdateFailure() {
-        GroupUpdateRequest request = new GroupUpdateRequest();
+        GroupSettingsUpdateRequest request = new GroupSettingsUpdateRequest();
         request.setMaxMembers(100000000);
         request.setMemberCanInviteOthers(false);
-        assertThrows(EMUnknownException.class, () -> new GroupUpdate(this.context, "2", request).execute().block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> GroupSettings.update(this.context, "2", request).block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupUpdateRequestSuccess(JsonNode jsonNode) {

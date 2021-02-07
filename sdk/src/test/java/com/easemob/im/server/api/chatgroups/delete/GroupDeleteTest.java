@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.chatgroups.delete;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.api.chatgroups.crud.GroupDelete;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 

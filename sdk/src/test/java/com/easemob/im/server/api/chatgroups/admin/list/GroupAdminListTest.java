@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.chatgroups.admin.list;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.api.chatgroups.admin.GroupAdminList;
 import com.easemob.im.server.model.EMGroupAdmin;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;

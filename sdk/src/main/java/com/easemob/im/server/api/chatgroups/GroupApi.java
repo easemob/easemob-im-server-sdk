@@ -1,21 +1,18 @@
 package com.easemob.im.server.api.chatgroups;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.api.chatgroups.admin.add.GroupAdminAdd;
-import com.easemob.im.server.api.chatgroups.admin.list.GroupAdminList;
-import com.easemob.im.server.api.chatgroups.admin.remove.GroupAdminRemove;
+import com.easemob.im.server.api.chatgroups.admin.GroupAdminAdd;
+import com.easemob.im.server.api.chatgroups.admin.GroupAdminList;
+import com.easemob.im.server.api.chatgroups.admin.GroupAdminRemove;
 import com.easemob.im.server.api.chatgroups.announcement.GroupAnnouncement;
-import com.easemob.im.server.api.chatgroups.create.GroupCreate;
-import com.easemob.im.server.api.chatgroups.delete.GroupDelete;
+import com.easemob.im.server.api.chatgroups.crud.*;
 import com.easemob.im.server.api.chatgroups.detail.GroupDetails;
-import com.easemob.im.server.api.chatgroups.list.GroupList;
-import com.easemob.im.server.api.chatgroups.list.GroupListResponse;
 import com.easemob.im.server.api.chatgroups.member.add.GroupMemberAdd;
 import com.easemob.im.server.api.chatgroups.member.list.GroupMemberList;
 import com.easemob.im.server.api.chatgroups.member.list.GroupMemberListResponse;
 import com.easemob.im.server.api.chatgroups.member.remove.GroupMemberRemove;
-import com.easemob.im.server.api.chatgroups.update.GroupUpdate;
-import com.easemob.im.server.api.chatgroups.update.GroupUpdateRequest;
+import com.easemob.im.server.api.chatgroups.settings.GroupSettings;
+import com.easemob.im.server.api.chatgroups.settings.GroupSettingsUpdateRequest;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupAdmin;
 import com.easemob.im.server.model.EMGroupDetails;
@@ -185,11 +182,10 @@ public class GroupApi {
      *
      * @param groupId the group id
      * @param customizer update request customizer
-     * @return A {@code Mono} complete if successful.
+     * @return A {@code Mono} complete on successful.
      */
-    public Mono<Void> updateGroupSettings(String groupId, Function<GroupUpdateRequest, GroupUpdateRequest> customizer) {
-        return new GroupUpdate(this.context, groupId, customizer.apply(new GroupUpdateRequest()))
-            .execute();
+    public Mono<Void> updateSettings(String groupId, Function<GroupSettingsUpdateRequest, GroupSettingsUpdateRequest> customizer) {
+        return GroupSettings.update(this.context, groupId, customizer.apply(new GroupSettingsUpdateRequest()));
     }
 
     /**
@@ -306,6 +302,17 @@ public class GroupApi {
      */
     public Mono<Void> removeGroupAdmin(String groupId, String username) {
         return GroupAdminRemove.single(this.context, groupId, username);
+    }
+
+    /**
+     * Update owner of the group.
+     *
+     * @param groupId the group id
+     * @param username the username of new owner
+     * @return
+     */
+    public Mono<Void> updateGroupOwner(String groupId, String username) {
+        return GroupUpdate.owner(this.context, groupId, username);
     }
 
 }

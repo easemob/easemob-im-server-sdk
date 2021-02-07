@@ -5,6 +5,7 @@ import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMGroupDetails;
 import reactor.core.publisher.Mono;
 
+// TODO: move GroupDetails into group settings
 public class GroupDetails {
 
     public static Mono<EMGroupDetails> execute(Context context, String groupId) {

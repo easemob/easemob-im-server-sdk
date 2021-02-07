@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+//TODO: make BlockUser... static
 public class BlockUser {
 
     private Context context;
@@ -37,7 +38,7 @@ public class BlockUser {
                 .flatMapMany(usernames -> this.context.getHttpClient()
                     .post()
                     .uri(String.format("/users/%s/blocks/users", username))
-                    .send(Mono.just(this.context.getCodec().encode(new BlockUserRequest(usernames))))
+                    .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new BlockUserRequest(usernames)))))
                     .response()
                     .flatMap(rsp -> this.context.getErrorMapper().apply(rsp))
                     .thenMany(Flux.fromIterable(usernames))));

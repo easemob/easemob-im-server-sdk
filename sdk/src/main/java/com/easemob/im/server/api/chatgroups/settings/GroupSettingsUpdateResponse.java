@@ -1,15 +1,15 @@
-package com.easemob.im.server.api.chatgroups.update;
+package com.easemob.im.server.api.chatgroups.settings;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GroupUpdateResponse {
+public class GroupSettingsUpdateResponse {
 
     @JsonProperty("data")
     private GroupUpdateResource resource;
 
     @JsonCreator
-    public GroupUpdateResponse(@JsonProperty("data") GroupUpdateResource resource) {
+    public GroupSettingsUpdateResponse(@JsonProperty("data") GroupUpdateResource resource) {
         this.resource = resource;
     }
 

@@ -13,17 +13,11 @@ import reactor.core.publisher.Mono;
  */
 public class UserRegister {
 
-    private Context context;
-
-    public UserRegister(Context context) {
-        this.context = context;
-    }
-
     public static Mono<EMUser> single(Context context, String username, String password) {
         return context.getHttpClient()
             .post()
             .uri("/users")
-            .send(Mono.just(context.getCodec().encode(new UserRegisterRequest(username, password))))
+            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new UserRegisterRequest(username, password)))))
             .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
             .map(buf -> context.getCodec().decode(buf, UserRegisterResponse.class))
             .map(responseIgnored -> new EMUser(username));

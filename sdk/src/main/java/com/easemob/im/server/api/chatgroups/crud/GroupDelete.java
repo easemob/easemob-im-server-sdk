@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.delete;
+package com.easemob.im.server.api.chatgroups.crud;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMNotFoundException;

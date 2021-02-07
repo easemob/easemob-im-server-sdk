@@ -8,7 +8,7 @@ public class UserPassword {
         return context.getHttpClient()
             .put()
             .uri(String.format("/users/%s/password", username))
-            .send(Mono.just(context.getCodec().encode(new UserPasswordResetRequest(password))))
+            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new UserPasswordResetRequest(password)))))
             .response()
             .flatMap(r -> context.getErrorMapper().apply(r))
             .then();

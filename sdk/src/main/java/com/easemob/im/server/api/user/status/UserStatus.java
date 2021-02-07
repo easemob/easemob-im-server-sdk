@@ -24,7 +24,7 @@ public class UserStatus {
                 .flatMapMany(nsl -> context.getHttpClient()
                     .post()
                     .uri("/users/batch/status")
-                    .send(Mono.just(context.getCodec().encode(new UserStatusRequest(nsl))))
+                    .send(Mono.create(sink -> sink.success(context.getCodec().encode(new UserStatusRequest(nsl)))))
                     .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
                     .map(buf -> context.getCodec().decode(buf, UserStatusResponse.class))
                     .flatMapIterable(UserStatusResponse::getUserStatusList)));

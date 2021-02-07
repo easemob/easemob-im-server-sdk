@@ -30,7 +30,7 @@ public class UnblockUser {
                 .flatMapMany(usernames -> this.context.getHttpClient()
                     .delete()
                     .uri(String.format("/users/%s/blocks/users", username))
-                    .send(Mono.just(this.context.getCodec().encode(new UnblockUserRequest(usernames))))
+                    .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new UnblockUserRequest(usernames)))))
                     .response()
                     .flatMap(rsp -> this.context.getErrorMapper().apply(rsp))
                     .thenMany(Flux.fromIterable(usernames))));

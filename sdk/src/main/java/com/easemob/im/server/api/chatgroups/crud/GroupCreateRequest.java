@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.create;
+package com.easemob.im.server.api.chatgroups.crud;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

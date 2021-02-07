@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.create;
+package com.easemob.im.server.api.chatgroups.crud;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMGroup;
@@ -13,8 +13,7 @@ public class GroupCreate {
         return context.getHttpClient()
             .post()
             .uri("/chatgroups")
-            .send(Mono.just(new GroupCreateRequest(true, owner, members, maxMembers, false, needApproveToJoin))
-                .map(req -> context.getCodec().encode(req)))
+            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new GroupCreateRequest(true, owner, members, maxMembers, false, needApproveToJoin)))))
             .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
             .map(buf -> context.getCodec().decode(buf, GroupCreateResponse.class))
             .map(GroupCreateResponse::toEMGroup);
@@ -24,8 +23,7 @@ public class GroupCreate {
         return context.getHttpClient()
             .post()
             .uri("/chatgroups")
-            .send(Mono.just(new GroupCreateRequest(false, owner, members, maxMembers, canMemberInvite, !canMemberInvite))
-                .map(req -> context.getCodec().encode(req)))
+            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new GroupCreateRequest(false, owner, members, maxMembers, canMemberInvite, !canMemberInvite)))))
             .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
             .map(buf -> context.getCodec().decode(buf, GroupCreateResponse.class))
             .map(GroupCreateResponse::toEMGroup);

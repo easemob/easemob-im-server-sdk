@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.chatgroups.admin.remove;
 
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.chatgroups.admin.add.GroupAdminAdd;
+import com.easemob.im.server.api.chatgroups.admin.GroupAdminAdd;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 

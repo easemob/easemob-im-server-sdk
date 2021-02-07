@@ -79,7 +79,7 @@ public class MockingHttpServer {
                             throw new EMJsonException(e.getMessage());
                         }
 
-                        return rsp.status(HttpResponseStatus.OK).send(Mono.just(Unpooled.wrappedBuffer(arrayRsp))).then();
+                        return rsp.status(HttpResponseStatus.OK).send(Mono.create(sink -> sink.success(Unpooled.wrappedBuffer(arrayRsp)))).then();
                     });
             })
             .bindNow();

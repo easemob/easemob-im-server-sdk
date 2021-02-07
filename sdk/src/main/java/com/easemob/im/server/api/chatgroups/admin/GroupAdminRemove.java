@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.admin.remove;
+package com.easemob.im.server.api.chatgroups.admin;
 
 import com.easemob.im.server.api.Context;
 import reactor.core.publisher.Mono;

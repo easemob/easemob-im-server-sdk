@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.admin.add;
+package com.easemob.im.server.api.chatgroups.admin;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMNotFoundException;

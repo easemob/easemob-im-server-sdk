@@ -1,11 +1,9 @@
-package com.easemob.im.server.api.chatgroups.update;
+package com.easemob.im.server.api.chatgroups.settings;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Optional;
-
-public class GroupUpdateRequest {
+public class GroupSettingsUpdateRequest {
 
     @JsonProperty("allowinvites")
     private Boolean memberCanInviteOthers;
@@ -16,32 +14,32 @@ public class GroupUpdateRequest {
     @JsonProperty("maxusers")
     private Integer maxMembers;
 
-    public GroupUpdateRequest() {
+    public GroupSettingsUpdateRequest() {
         this.memberCanInviteOthers = null;
         this.needApproveToJoin = null;
         this.maxMembers = null;
     }
 
     @JsonCreator
-    public GroupUpdateRequest(@JsonProperty("allowinvites") Boolean memberCanInviteOthers,
-                              @JsonProperty("membersonly") Boolean needApproveToJoin,
-                              @JsonProperty("maxusers") Integer maxMembers) {
+    public GroupSettingsUpdateRequest(@JsonProperty("allowinvites") Boolean memberCanInviteOthers,
+                                      @JsonProperty("membersonly") Boolean needApproveToJoin,
+                                      @JsonProperty("maxusers") Integer maxMembers) {
         this.memberCanInviteOthers = memberCanInviteOthers;
         this.needApproveToJoin = needApproveToJoin;
         this.maxMembers = maxMembers;
     }
 
-    public GroupUpdateRequest setMemberCanInviteOthers(boolean memberCanInviteOthers) {
+    public GroupSettingsUpdateRequest setMemberCanInviteOthers(boolean memberCanInviteOthers) {
         this.memberCanInviteOthers = memberCanInviteOthers;
         return this;
     }
 
-    public GroupUpdateRequest setNeedApproveToJoin(boolean needApproveToJoin) {
+    public GroupSettingsUpdateRequest setNeedApproveToJoin(boolean needApproveToJoin) {
         this.needApproveToJoin = needApproveToJoin;
         return this;
     }
 
-    public GroupUpdateRequest setMaxMembers(int maxMembers) {
+    public GroupSettingsUpdateRequest setMaxMembers(int maxMembers) {
         this.maxMembers = maxMembers;
         return this;
     }

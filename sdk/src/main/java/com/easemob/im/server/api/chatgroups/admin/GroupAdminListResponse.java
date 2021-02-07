@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.admin.list;
+package com.easemob.im.server.api.chatgroups.admin;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.chatgroups.create;
+package com.easemob.im.server.api.chatgroups.crud;
 
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.model.EMGroup;

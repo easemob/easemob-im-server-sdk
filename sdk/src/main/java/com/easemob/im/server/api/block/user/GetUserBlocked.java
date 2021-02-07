@@ -3,6 +3,7 @@ package com.easemob.im.server.api.block.user;
 import com.easemob.im.server.api.Context;
 import reactor.core.publisher.Flux;
 
+// TODO: make GetUserBlocked... static
 public class GetUserBlocked {
     private Context context;
 
