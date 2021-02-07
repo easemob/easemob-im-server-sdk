@@ -4,6 +4,7 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApiV1;
 import com.easemob.im.server.api.chatgroups.GroupApi;
+import com.easemob.im.server.api.contact.ContactApi;
 import com.easemob.im.server.api.notification.NotificationV1;
 import com.easemob.im.server.api.token.TokenApiGroup;
 import com.easemob.im.server.api.user.UserApi;
@@ -16,13 +17,17 @@ public class EMService {
 
     private final Context context;
 
-    private final TokenApiGroup tokenApiGroup;
+    private final BlockApiV1 blockV1;
 
-    private final UserApi userApi;
+    private final ContactApi contactApi;
+
+    private final GroupApi groupApi;
 
     private final NotificationV1 notificationV1;
 
-    private final BlockApiV1 blockV1;
+    private final TokenApiGroup tokenApiGroup;
+
+    private final UserApi userApi;
 
     public EMService(EMProperties properties) {
         printBanner();
@@ -32,10 +37,28 @@ public class EMService {
 
         this.context = new DefaultContext(properties);
 
+        this.blockV1 = new BlockApiV1(this.context);
+        this.contactApi = new ContactApi(this.context);
+        this.groupApi = new GroupApi(this.context);
+        this.notificationV1 = new NotificationV1(this.context);
         this.tokenApiGroup = new TokenApiGroup(this.context);
         this.userApi = new UserApi(this.context);
-        this.notificationV1 = new NotificationV1(this.context);
-        this.blockV1 = new BlockApiV1(this.context);
+    }
+
+    public BlockApiV1 blockV1() {
+        return this.blockV1;
+    }
+
+    public ContactApi contact() {
+        return this.contactApi;
+    }
+
+    public GroupApi group() {
+        return new GroupApi(this.context);
+    }
+
+    public NotificationV1 notificationV1() {
+        return this.notificationV1;
     }
 
     public TokenApiGroup tokenV1() {
@@ -44,18 +67,6 @@ public class EMService {
 
     public UserApi user() {
         return this.userApi;
-    }
-
-    public NotificationV1 notificationV1() {
-        return this.notificationV1;
-    }
-
-    public BlockApiV1 blockV1() {
-        return this.blockV1();
-    }
-
-    public GroupApi group() {
-        return new GroupApi(this.context);
     }
 
 

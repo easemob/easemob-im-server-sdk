@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.contact.user;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.MockingContext;
 import com.easemob.im.server.api.MockingHttpServer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,43 +10,32 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ContactUserTest {
-    private ObjectMapper objectMapper = new ObjectMapper();
-
-    private MockingHttpServer server = MockingHttpServer.builder()
-        .addHandler("POST /easemob/demo/users/alice/contacts/users/bob", this::handleContactUserAdd)
-        .addHandler("DELETE /easemob/demo/users/alice/contacts/users/bob", this::handleContactUserRemove)
-        .addHandler("GET /easemob/demo/users/alice/contacts/users", this::handleContactUserList)
-        .build();
-
-    private EMProperties properties = EMProperties.builder()
-        .setBaseUri(this.server.uri())
-        .setAppkey("easemob#demo")
-        .setClientId("clientId")
-        .setClientSecret("clientSecret")
-        .build();
-
-    private MockingContext context = new MockingContext(properties);
+public class ContactUserTest extends AbstractApiTest {
+    public ContactUserTest() {
+        this.server.addHandler("POST /easemob/demo/users/alice/contacts/users/bob", this::handleContactUserAdd);
+        this.server.addHandler("DELETE /easemob/demo/users/alice/contacts/users/bob", this::handleContactUserRemove);
+        this.server.addHandler("GET /easemob/demo/users/alice/contacts/users", this::handleContactUserList);
+    }
 
     @Test
     public void testAddContact() {
-        ContactUser contactUser = new ContactUser(this.context, "alice");
-        assertDoesNotThrow(() -> contactUser.add("bob").block());
+        assertDoesNotThrow(() -> ContactUser.add(this.context, "alice", "bob").block());
     }
 
     @Test
     public void testRemoveContact() {
-        ContactUser contactUser = new ContactUser(this.context, "alice");
-        assertDoesNotThrow(() -> contactUser.remove("bob"));
+        assertDoesNotThrow(() -> ContactUser.remove(this.context, "alice", "bob"));
     }
 
     @Test
     public void testListContacts() {
-        ContactUser contactUser = new ContactUser(this.context, "alice");
-        List<String> contacts = contactUser.list().collectList().block(Duration.ofSeconds(3));
+        Set<String> contacts = ContactUser.list(this.context, "alice").collect(Collectors.toSet())
+                .block(Duration.ofSeconds(3));
         assertEquals(3, contacts.size());
         assertTrue(contacts.contains("queen"));
         assertTrue(contacts.contains("madhat"));

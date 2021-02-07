@@ -1,5 +1,6 @@
 package com.easemob.im.cli;
 
+import com.easemob.im.cli.cmd.ContactCmd;
 import com.easemob.im.cli.cmd.UserCmd;
 import org.springframework.stereotype.Component;
 import picocli.AutoComplete;
@@ -12,8 +13,7 @@ import picocli.CommandLine.HelpCommand;
 @Command(name = "im",
         mixinStandardHelpOptions = true,
         subcommands = {
-                HelpCommand.class,
-                GenerateCompletion.class,
+                ContactCmd.class,
                 UserCmd.class
         })
 public class IMCliCmd {
