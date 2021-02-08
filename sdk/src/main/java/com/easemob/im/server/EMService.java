@@ -5,7 +5,7 @@ import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApiV1;
 import com.easemob.im.server.api.chatgroups.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
-import com.easemob.im.server.api.notification.NotificationV1;
+import com.easemob.im.server.api.notification.NotificationApi;
 import com.easemob.im.server.api.token.TokenApiGroup;
 import com.easemob.im.server.api.user.UserApi;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +23,7 @@ public class EMService {
 
     private final GroupApi groupApi;
 
-    private final NotificationV1 notificationV1;
+    private final NotificationApi notificationApi;
 
     private final TokenApiGroup tokenApiGroup;
 
@@ -40,7 +40,7 @@ public class EMService {
         this.blockV1 = new BlockApiV1(this.context);
         this.contactApi = new ContactApi(this.context);
         this.groupApi = new GroupApi(this.context);
-        this.notificationV1 = new NotificationV1(this.context);
+        this.notificationApi = new NotificationApi(this.context);
         this.tokenApiGroup = new TokenApiGroup(this.context);
         this.userApi = new UserApi(this.context);
     }
@@ -57,8 +57,8 @@ public class EMService {
         return new GroupApi(this.context);
     }
 
-    public NotificationV1 notificationV1() {
-        return this.notificationV1;
+    public NotificationApi notification() {
+        return this.notificationApi;
     }
 
     public TokenApiGroup tokenV1() {
