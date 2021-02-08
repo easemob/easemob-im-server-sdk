@@ -56,15 +56,10 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
 
     private void initialize() {
         AppTokenRequest appTokenRequest = AppTokenRequest.of(this.properties.getClientId(), this.properties.getClientSecret());
-//        this.appToken = fetchToken(appTokenRequest).flatMapMany(token -> {
-//            Duration ttl = Duration.between(Instant.now(), token.getExpireTimestamp());
-//            if (ttl.isNegative()) {
-//                LOG.error("token already expired");
-//                return Mono.error(new EMInvalidStateException("token already expired"));
-//            }
-//            return Mono.just(token).cache(ttl.dividedBy(2));
-//        }).checkpoint("apptoken").log();
-        this.appToken = fetchToken(appTokenRequest).cache(Duration.ofSeconds(3600));
+        this.appToken = fetchToken(appTokenRequest)
+                .cache(token -> Duration.between(Instant.now(), token.getExpireTimestamp()).dividedBy(2),
+                        error -> Duration.ofSeconds(10),
+                        () -> Duration.ofSeconds(10));
 
         LOG.info("token provider initialized");
     }
