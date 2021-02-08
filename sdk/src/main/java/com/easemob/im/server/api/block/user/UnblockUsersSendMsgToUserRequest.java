@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class GetUserBlockedResponse {
-    @JsonProperty("data")
+public class UnblockUsersSendMsgToUserRequest {
+    @JsonProperty("usernames")
     private List<String> usernames;
 
     @JsonCreator
-    public GetUserBlockedResponse(@JsonProperty("data") List<String> usernames) {
+    public UnblockUsersSendMsgToUserRequest(@JsonProperty("usernames") List<String> usernames) {
         this.usernames = usernames;
     }
 

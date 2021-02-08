@@ -2,7 +2,7 @@ package com.easemob.im.server;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
-import com.easemob.im.server.api.block.BlockApiV1;
+import com.easemob.im.server.api.block.BlockApi;
 import com.easemob.im.server.api.chatgroups.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
 import com.easemob.im.server.api.notification.NotificationApi;
@@ -17,7 +17,7 @@ public class EMService {
 
     private final Context context;
 
-    private final BlockApiV1 blockV1;
+    private final BlockApi blockV1;
 
     private final ContactApi contactApi;
 
@@ -37,7 +37,7 @@ public class EMService {
 
         this.context = new DefaultContext(properties);
 
-        this.blockV1 = new BlockApiV1(this.context);
+        this.blockV1 = new BlockApi(this.context);
         this.contactApi = new ContactApi(this.context);
         this.groupApi = new GroupApi(this.context);
         this.notificationApi = new NotificationApi(this.context);
@@ -45,7 +45,7 @@ public class EMService {
         this.userApi = new UserApi(this.context);
     }
 
-    public BlockApiV1 blockV1() {
+    public BlockApi block() {
         return this.blockV1;
     }
 

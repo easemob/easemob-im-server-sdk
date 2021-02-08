@@ -2,7 +2,6 @@ package com.easemob.im.cli.cmd;
 
 import com.easemob.im.server.EMService;
 import com.easemob.im.server.model.EMUser;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,7 @@ import picocli.CommandLine.Parameters;
 import static picocli.CommandLine.Option.NULL_VALUE;
 
 @Component
-@Command(name = "user", description = "User commands.", mixinStandardHelpOptions = true)
+@Command(name = "user", description = "User commands.")
 public class UserCmd {
     @Autowired
     private EMService service;
@@ -41,18 +40,28 @@ public class UserCmd {
                 .block();
     }
 
-    @Command(name = "list", description = "List users", mixinStandardHelpOptions = true)
-    public void list(@Option(names = {"--limit", "-l"}, defaultValue = "10") int limit,
-                         @Option(names = {"--all", "-a"}, defaultValue = "false") boolean all,
-                         @Option(names = {"--cursor", "-c"}, defaultValue = NULL_VALUE) String cursor) {
-        if (all) {
-            service.user().listAllUsers()
-                    .take(limit)
-                    .doOnNext(user -> {
-                        System.out.println(user.getUsername());
-                    })
+
+
+    @Command(name = "get", description = "Get user info.", mixinStandardHelpOptions = true)
+    public void get(@Parameters(index = "0", description = "The username") String username) {
+        this.service.user().get(username)
+                .doOnNext(user -> {
+                    System.out.println("user: " + user.getUsername());
+                    System.out.println("canLogin: " + user.getCanLogin());
+                }).block();
+    }
+
+    @Command(name = "list", description = "List users. By default all users are listed.\nUse --limit and --cursor to control ", mixinStandardHelpOptions = true)
+    public void list(@Option(names = {"--blocked-by-user"}, description = "to list users blocked from sending message to this user") String blockedByUser,
+                     @Option(names = {"--limit"}, description = "to limit") Integer limit,
+                     @Option(names = {"--cursor"}, description = "the cursor") String cursor) {
+
+        if (blockedByUser != null) {
+            service.block().getUsersBlockedFromSendMsgToUser(blockedByUser)
+                    .doOnNext(username -> System.out.println("user: "+username))
+                    .doOnSubscribe(s -> System.out.println("blocked by user: " + blockedByUser))
                     .blockLast();
-        } else {
+        } else if (limit != null) {
             service.user().listUsers(limit, cursor)
                     .doOnNext(rsp -> {
                         System.out.println("cursor: " + rsp.getCursor());
@@ -61,20 +70,15 @@ public class UserCmd {
                             System.out.println("\t"+user.getUsername());
                         }
                     })
+                    .doOnSubscribe(s -> System.out.println("limit: " + limit + "\ncursor: " + cursor))
                     .block();
+        } else {
+            service.user().listAllUsers()
+                    .doOnNext(user -> {
+                        System.out.println(user.getUsername());
+                    })
+                    .blockLast();
         }
     }
-
-    @Command(name = "get", description = "Get user info.", mixinStandardHelpOptions = true)
-    public void get(@Parameters(index = "0", description = "The username") String username) {
-        this.service.user().get(username)
-                .doOnNext(user -> {
-                    System.out.println("username: " + user.getUsername());
-                    System.out.println("canLogin: " + user.getCanLogin());
-                }).block();
-    }
-
-
-
 
 }

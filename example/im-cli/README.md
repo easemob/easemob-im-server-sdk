@@ -4,6 +4,16 @@ This is an example project to demonstrate usage of the Easemob IM Java SDK.
 
 ## Configuration
 
+## Auto Completion
+
+To setup auto completion:
+
+```
+alias im='java -jar im-cli-0.0.1.jar'
+. completion.sh
+```
+
+
 ## Commands
 
 - User

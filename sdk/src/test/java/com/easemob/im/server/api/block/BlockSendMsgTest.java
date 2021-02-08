@@ -1,20 +1,22 @@
-package com.easemob.im.server.api.block.user;
+package com.easemob.im.server.api.block;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.api.block.user.Login;
+import com.easemob.im.server.api.block.user.SendMsgToUser;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BlockUserTest extends AbstractApiTest {
+public class BlockSendMsgTest extends AbstractApiTest {
 
-    public BlockUserTest() {
+    public BlockSendMsgTest() {
         super();
         this.server.addHandler("POST /easemob/demo/users/alice/blocks/users", this::handleUserBlockFromSendMsgRequest);
         this.server.addHandler("DELETE /easemob/demo/users/alice/blocks/users", this::handleUserUnblockFromSendMsgRequest);
@@ -25,56 +27,48 @@ public class BlockUserTest extends AbstractApiTest {
 
     @Test
     public void testBlockUserFromSendMsg() {
-        BlockUser blockUser = new BlockUser(this.context, Flux.just("queen", "madhat", "rabbit"));
+        List<String> blockUsers = new ArrayList<>();
+        blockUsers.add("queen");
+        blockUsers.add("madhat");
+        blockUsers.add("rabbit");
 
-        Flux.from(blockUser.fromSendMessageToUser("alice"))
-            .as(StepVerifier::create)
-            .expectNext("queen")
-            .expectNext("madhat")
-            .expectNext("rabbit")
-            .expectComplete().verify(Duration.ofSeconds(3));
+        assertDoesNotThrow(() -> {
+            SendMsgToUser.blockUsers(this.context, blockUsers, "alice").block(Duration.ofSeconds(3));
+        });
     }
 
     @Test
     public void testUnBlockUserFromSendMsg() {
-        UnblockUser unblockUser = new UnblockUser(this.context, Flux.just("queen", "madhat", "rabbit"));
-        Flux.from(unblockUser.fromSendMessageToUser("alice"))
-            .as(StepVerifier::create)
-            .expectNext("queen")
-            .expectNext("madhat")
-            .expectNext("rabbit")
-            .expectComplete().verify(Duration.ofSeconds(3));
+        List<String> unblockUsers = new ArrayList<>();
+        unblockUsers.add("queen");
+        unblockUsers.add("madhat");
+        unblockUsers.add("rabbit");
+
+        assertDoesNotThrow(() -> {
+            SendMsgToUser.unblockUsers(this.context, unblockUsers, "alice").block(Duration.ofSeconds(3));
+        });
     }
 
     @Test
     public void testGetUserBlockedFromSendMsg() {
-        GetUserBlocked getUserBlocked = new GetUserBlocked(this.context);
-        List<String> blocked = getUserBlocked.fromSendingMessagesTo("alice").collectList().block(Duration.ofSeconds(3));
-        assertEquals(3, blocked.size());
-        assertTrue(blocked.contains("queen"));
-        assertTrue(blocked.contains("madhat"));
-        assertTrue(blocked.contains("rabbit"));
+        Set<String> blockedUsers = SendMsgToUser.getUsersBlocked(this.context, "alice").collect(Collectors.toSet()).block(Duration.ofSeconds(3));
+        assertTrue(blockedUsers.contains("queen"));
+        assertTrue(blockedUsers.contains("madhat"));
+        assertTrue(blockedUsers.contains("rabbit"));
     }
 
     @Test
     public void testBlockUserFromLogin() {
-        BlockUser blockUser = new BlockUser(this.context, Flux.just("alice"));
-
-        Mono.from(blockUser.fromLogin())
-            .as(StepVerifier::create)
-            .expectNext("alice")
-            .expectComplete()
-            .verify(Duration.ofSeconds(3));
+        assertDoesNotThrow(() -> {
+            Login.blockUser(context, "alice").block(Duration.ofSeconds(3));
+        });
     }
 
     @Test
     public void testUnblockUserFromLogin() {
-        UnblockUser unblockUser = new UnblockUser(this.context, Flux.just("alice"));
-        Mono.from(unblockUser.fromLogin())
-            .as(StepVerifier::create)
-            .expectNext("alice")
-            .expectComplete()
-            .verify(Duration.ofSeconds(3));
+        assertDoesNotThrow(() -> {
+            Login.unblockUser(context, "alice").block(Duration.ofSeconds(3));
+        });
     }
 
     private JsonNode handleGetUserBlockedFromSendMsgRequest(JsonNode jsonNode) {
