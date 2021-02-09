@@ -21,6 +21,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class GroupApi {
@@ -96,12 +97,12 @@ public class GroupApi {
     }
 
     /**
-     * Delete this group.
+     * Destroy this group.
      * @param groupId the group id
      * @return A {@code Mono} complete on success.
      */
-    public Mono<Void> deleteGroup(String groupId) {
-        return GroupDelete.execute(this.context, groupId);
+    public Mono<Void> destroyGroup(String groupId) {
+        return GroupDestroy.execute(this.context, groupId);
     }
 
     /**
@@ -110,12 +111,10 @@ public class GroupApi {
      * Note that listAllGroups will send requests recursively until the end.
      * You can use the listGroups api to control when to send next request.
      *
-     * @param limit the limit groups requested each time, 20 is a good start point.
-     *              Turn it higher to get better I/O efficiency, smaller to get lower latency.
      * @return A {@code Flux} which emits {@code EMGroup} on success.
      */
-    public Flux<EMGroup> listAllGroups(int limit) {
-        return GroupList.all(this.context, limit);
+    public Flux<EMGroup> listAllGroups() {
+        return GroupList.all(this.context, 20);
     }
 
     /**
@@ -126,12 +125,12 @@ public class GroupApi {
      *
      * <pre>{@code
      *  EMService service;
-     *  GroupListResponse response = service.listGroups(10, null).block();
+     *  GroupListResponse response = service.listGroups(20, null).block();
      *  List<EMGroup> groups = response.getEMGroups();
      *  // ... do something to the groups ...
      *  String cursor = response.getCursor();
      *  while (cursor != null) {
-     *      response = service.listGroups(10, cursor);
+     *      response = service.listGroups(20, cursor);
      *      // ... do something to the groups ...
      *      cursor = response.getCursor();
      *  }
@@ -184,8 +183,8 @@ public class GroupApi {
      * @param customizer update request customizer
      * @return A {@code Mono} complete on successful.
      */
-    public Mono<Void> updateSettings(String groupId, Function<GroupSettingsUpdateRequest, GroupSettingsUpdateRequest> customizer) {
-        return GroupSettings.update(this.context, groupId, customizer.apply(new GroupSettingsUpdateRequest()));
+    public Mono<Void> updateSettings(String groupId, Consumer<GroupSettingsUpdateRequest> customizer) {
+        return GroupSettings.update(this.context, groupId, customizer);
     }
 
     /**
@@ -209,7 +208,7 @@ public class GroupApi {
     }
 
     /**
-     * List all members of a group.
+     * List all members of a group. This method is recommended over {@code getGroupDetails}, since
      * Note that listAllGroupMembers send requests recursively until the end.
      * You call use listGroupMembers to control when to send next request.
      *

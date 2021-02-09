@@ -59,7 +59,7 @@ public class UserCmd {
         if (blockedByUser != null) {
             service.block().getUsersBlockedFromSendMsgToUser(blockedByUser)
                     .doOnNext(username -> System.out.println("user: "+username))
-                    .doOnSubscribe(s -> System.out.println("blocked by user: " + blockedByUser))
+                    .doOnSubscribe(s -> System.out.println("blockedByUser: " + blockedByUser))
                     .blockLast();
         } else if (limit != null) {
             service.user().listUsers(limit, cursor)
@@ -69,9 +69,7 @@ public class UserCmd {
                         for (EMUser user : rsp.getEMUsers()) {
                             System.out.println("\t"+user.getUsername());
                         }
-                    })
-                    .doOnSubscribe(s -> System.out.println("limit: " + limit + "\ncursor: " + cursor))
-                    .block();
+                    }).block();
         } else {
             service.user().listAllUsers()
                     .doOnNext(user -> {

@@ -14,6 +14,7 @@ import picocli.CommandLine.HelpCommand;
         subcommands = {
                 BlockCmd.class,
                 ContactCmd.class,
+                GroupCmd.class,
                 NotificationCmd.class,
                 UnblockCmd.class,
                 UserCmd.class

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GroupSettingsUpdateRequest {
 
     @JsonProperty("allowinvites")
-    private Boolean memberCanInviteOthers;
+    private Boolean canMemberInviteOthers;
 
     @JsonProperty("membersonly")
     private Boolean needApproveToJoin;
@@ -15,22 +15,22 @@ public class GroupSettingsUpdateRequest {
     private Integer maxMembers;
 
     public GroupSettingsUpdateRequest() {
-        this.memberCanInviteOthers = null;
+        this.canMemberInviteOthers = null;
         this.needApproveToJoin = null;
         this.maxMembers = null;
     }
 
     @JsonCreator
-    public GroupSettingsUpdateRequest(@JsonProperty("allowinvites") Boolean memberCanInviteOthers,
+    public GroupSettingsUpdateRequest(@JsonProperty("allowinvites") Boolean canMemberInviteOthers,
                                       @JsonProperty("membersonly") Boolean needApproveToJoin,
                                       @JsonProperty("maxusers") Integer maxMembers) {
-        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.canMemberInviteOthers = canMemberInviteOthers;
         this.needApproveToJoin = needApproveToJoin;
         this.maxMembers = maxMembers;
     }
 
-    public GroupSettingsUpdateRequest setMemberCanInviteOthers(boolean memberCanInviteOthers) {
-        this.memberCanInviteOthers = memberCanInviteOthers;
+    public GroupSettingsUpdateRequest setCanMemberInviteOthers(boolean canMemberInviteOthers) {
+        this.canMemberInviteOthers = canMemberInviteOthers;
         return this;
     }
 
@@ -44,8 +44,8 @@ public class GroupSettingsUpdateRequest {
         return this;
     }
 
-    public Boolean getMemberCanInviteOthers() {
-        return memberCanInviteOthers;
+    public Boolean getCanMemberInviteOthers() {
+        return canMemberInviteOthers;
     }
 
     public Boolean getNeedApproveToJoin() {

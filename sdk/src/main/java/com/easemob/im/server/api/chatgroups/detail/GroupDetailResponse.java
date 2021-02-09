@@ -42,6 +42,9 @@ public class GroupDetailResponse {
         @JsonProperty("allowinvites")
         private boolean memberCanInviteOthers; // only works in private group
 
+        @JsonProperty("owner")
+        private String owner;
+
         @JsonProperty("maxusers")
         private int maxMembers; // does owner count here?
 
@@ -55,7 +58,8 @@ public class GroupDetailResponse {
             List<EMGroupMember> memberList = this.members.stream()
                 .map(GroupMemberResource::toGroupMember)
                 .collect(Collectors.toList());
-            return new EMGroupDetails(this.groupId, this.isPublic, this.needApproveToJoin, this.memberCanInviteOthers, this.maxMembers, memberList);
+            return new EMGroupDetails(this.groupId, this.isPublic, this.needApproveToJoin, this.memberCanInviteOthers,
+                    this.owner, this.maxMembers, memberList);
         }
     }
 

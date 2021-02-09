@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.chatgroups.delete;
 
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.chatgroups.crud.GroupDelete;
+import com.easemob.im.server.api.chatgroups.crud.GroupDestroy;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
@@ -9,23 +9,23 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GroupDeleteTest extends AbstractApiTest {
+class GroupDestroyTest extends AbstractApiTest {
 
-    public GroupDeleteTest() {
+    public GroupDestroyTest() {
         this.server.addHandler("DELETE /easemob/demo/chatgroups/1", this::handleDeleteGroupRequest);
     }
 
     @Test
     public void testGroupDeleteSuccess() {
         assertDoesNotThrow(() -> {
-            GroupDelete.execute(this.context, "1").block(Duration.ofSeconds(3));
+            GroupDestroy.execute(this.context, "1").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testGroupDeleteNotFoundAlsoSuccess() {
         assertDoesNotThrow(() -> {
-            GroupDelete.execute(this.context, "2").block(Duration.ofSeconds(3));
+            GroupDestroy.execute(this.context, "2").block(Duration.ofSeconds(3));
         });
     }
 

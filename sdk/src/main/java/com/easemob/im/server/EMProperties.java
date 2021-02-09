@@ -11,6 +11,7 @@ public class EMProperties {
     private final String clientId;
     private final String clientSecret;
     private final int httpConnectionPoolSize;
+    private final boolean hideBanner;
 
     public static Builder builder() {
         return new Builder();
@@ -36,13 +37,19 @@ public class EMProperties {
         return this.httpConnectionPoolSize;
     }
 
-    private EMProperties(String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize) {
+    public boolean getHideBanner() {
+        return this.hideBanner;
+    }
+
+    private EMProperties(String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize,
+                         boolean hideBanner) {
         String[] tokens = appkey.split("#");
         this.baseUri = String.format("%s/%s/%s", baseUri, tokens[0], tokens[1]);
         this.appkey = appkey;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
+        this.hideBanner = hideBanner;
     }
 
     public String maskSensitiveString(String str) {
@@ -66,6 +73,7 @@ public class EMProperties {
         private String clientSecret;
         private String baseUri;
         private int httpConnectionPoolSize = 10;
+        private boolean hideBanner = false;
 
         /**
          * 设置Appkey，可以到环信Console查询该值。
@@ -146,12 +154,17 @@ public class EMProperties {
             return this;
         }
 
-        public Builder httpConnectionPoolSize(int httpConnectionPoolSize) {
+        public Builder setHttpConnectionPoolSize(int httpConnectionPoolSize) {
             if (httpConnectionPoolSize < 0) {
                 throw new EMInvalidArgumentException("httpConnectionPoolSize must not be negative");
             }
 
             this.httpConnectionPoolSize = httpConnectionPoolSize;
+            return this;
+        }
+
+        public Builder setHideBanner(boolean hideBanner) {
+            this.hideBanner = hideBanner;
             return this;
         }
 
@@ -173,7 +186,8 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret, this.httpConnectionPoolSize);
+            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret, this.httpConnectionPoolSize,
+                    this.hideBanner);
         }
 
     }

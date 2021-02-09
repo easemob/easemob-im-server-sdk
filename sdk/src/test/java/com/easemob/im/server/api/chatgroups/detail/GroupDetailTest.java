@@ -27,7 +27,8 @@ public class GroupDetailTest extends AbstractApiTest {
         assertEquals("1", detail.getGroupId());
         assertEquals(true, detail.getIsPublic());
         assertEquals(false, detail.getNeedApproveToJoin());
-        assertEquals(false, detail.getMemberCanInviteOthers());
+        assertEquals(false, detail.getCanMemberInviteOthers());
+        assertEquals("alice", detail.getOwner());
         assertEquals(200, detail.getMaxMembers());
 
         List<EMGroupMember> members = detail.getMembers();
@@ -67,6 +68,7 @@ public class GroupDetailTest extends AbstractApiTest {
         group1.put("public", true);
         group1.put("membersonly", false);
         group1.put("allowinvites", false);
+        group1.put("owner", "alice");
         group1.put("maxusers", 200);
         group1.set("affiliations", members);
         return group1;

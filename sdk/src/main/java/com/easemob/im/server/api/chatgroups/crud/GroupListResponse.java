@@ -40,10 +40,11 @@ public class GroupListResponse {
     }
 
     private static class GroupResource {
+        @JsonProperty("groupid")
         private String groupId;
 
         @JsonCreator
-        public GroupResource(@JsonProperty("groupId") String groupId) {
+        public GroupResource(@JsonProperty("groupid") String groupId) {
             this.groupId = groupId;
         }
 

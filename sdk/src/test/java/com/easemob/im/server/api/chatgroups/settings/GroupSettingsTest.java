@@ -19,17 +19,12 @@ class GroupSettingsTest extends AbstractApiTest {
 
     @Test
     public void testGroupUpdateSuccess() {
-        GroupSettingsUpdateRequest request = new GroupSettingsUpdateRequest();
-        request.setMaxMembers(10);
-        assertDoesNotThrow(() -> GroupSettings.update(this.context, "1", request).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> GroupSettings.update(this.context, "1", settings -> settings.setMaxMembers(10)).block(Duration.ofSeconds(3)));
     }
 
     @Test
     public void testGroupUpdateFailure() {
-        GroupSettingsUpdateRequest request = new GroupSettingsUpdateRequest();
-        request.setMaxMembers(100000000);
-        request.setMemberCanInviteOthers(false);
-        assertThrows(EMUnknownException.class, () -> GroupSettings.update(this.context, "2", request).block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> GroupSettings.update(this.context, "2", settings -> settings.setMaxMembers(1000000).setCanMemberInviteOthers(false)).block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupUpdateRequestSuccess(JsonNode jsonNode) {

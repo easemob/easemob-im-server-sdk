@@ -69,11 +69,11 @@ public class GroupListTest extends AbstractApiTest {
         ArrayNode data = this.objectMapper.createArrayNode();
 
         ObjectNode group1 = this.objectMapper.createObjectNode();
-        group1.put("groupId", "aliceGroup");
+        group1.put("groupid", "aliceGroup");
         data.add(group1);
 
         ObjectNode group2 = this.objectMapper.createObjectNode();
-        group2.put("groupId", "rabbitGroup");
+        group2.put("groupid", "rabbitGroup");
         data.add(group2);
 
         ObjectNode rsp = this.objectMapper.createObjectNode();
@@ -85,7 +85,7 @@ public class GroupListTest extends AbstractApiTest {
         ArrayNode data = this.objectMapper.createArrayNode();
         for (int i = 0; i < count; i++) {
             ObjectNode group = this.objectMapper.createObjectNode();
-            group.put("groupId", String.format("%d", seq++));
+            group.put("groupid", String.format("%d", seq++));
             data.add(group);
         }
         ObjectNode rsp = this.objectMapper.createObjectNode();

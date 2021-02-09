@@ -30,9 +30,10 @@ public class EMService {
     private final UserApi userApi;
 
     public EMService(EMProperties properties) {
-        printBanner();
+        if (!properties.getHideBanner()) {
+            printBanner();
+        }
 
-        log.debug("EMService version: {}", EMVersion.getVersion());
         log.debug("EMService properties: {}", properties);
 
         this.context = new DefaultContext(properties);
@@ -82,6 +83,7 @@ public class EMService {
             "                                                                                         ";
 
         System.out.println(banner);
+        System.out.printf("        EASEMOB Java SDK v%s", EMVersion.getVersion());
     }
 
 }

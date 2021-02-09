@@ -49,7 +49,7 @@ public class UserApi {
      * @return A {@code Flux} which emits {@code EMUser}.
      */
     public Flux<EMUser> listAllUsers() {
-        return UserList.all(this.context, 10);
+        return UserList.all(this.context, 20);
     }
 
     /**

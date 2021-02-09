@@ -1,8 +1,5 @@
 package com.easemob.im.server.model;
 
-import com.easemob.im.server.api.chatgroups.detail.GroupDetailResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public class EMGroupDetails {
@@ -12,17 +9,21 @@ public class EMGroupDetails {
 
     private final boolean needApproveToJoin;
 
-    private final boolean memberCanInviteOthers;
+    private final boolean canMemberInviteOthers;
+
+    private final String owner;
 
     private final int maxMembers;
 
     private final List<EMGroupMember> members;
 
-    public EMGroupDetails(String groupId, boolean isPublic, boolean needApproveToJoin, boolean memberCanInviteOthers, int maxMembers, List<EMGroupMember> members) {
+    public EMGroupDetails(String groupId, boolean isPublic, boolean needApproveToJoin, boolean canMemberInviteOthers,
+                          String owner, int maxMembers, List<EMGroupMember> members) {
         this.groupId = groupId;
         this.isPublic = isPublic;
         this.needApproveToJoin = needApproveToJoin;
-        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.canMemberInviteOthers = canMemberInviteOthers;
+        this.owner = owner;
         this.maxMembers = maxMembers;
         this.members = members;
     }
@@ -39,8 +40,12 @@ public class EMGroupDetails {
         return this.needApproveToJoin;
     }
 
-    public boolean getMemberCanInviteOthers() {
-        return this.memberCanInviteOthers;
+    public boolean getCanMemberInviteOthers() {
+        return this.canMemberInviteOthers;
+    }
+
+    public String getOwner() {
+        return this.owner;
     }
 
     public int getMaxMembers() {

@@ -4,7 +4,7 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMNotFoundException;
 import reactor.core.publisher.Mono;
 
-public class GroupDelete {
+public class GroupDestroy {
     public static Mono<Void> execute(Context context, String groupId) {
         return context.getHttpClient()
             .delete()

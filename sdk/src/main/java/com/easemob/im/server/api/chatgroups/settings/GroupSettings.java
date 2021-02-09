@@ -4,9 +4,14 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMUnknownException;
 import reactor.core.publisher.Mono;
 
+import java.util.function.Consumer;
+
 public class GroupSettings {
 
-    public static Mono<Void> update(Context context, String groupId, GroupSettingsUpdateRequest request) {
+    public static Mono<Void> update(Context context, String groupId, Consumer<GroupSettingsUpdateRequest> customizer) {
+        GroupSettingsUpdateRequest request = new GroupSettingsUpdateRequest();
+        customizer.accept(request);
+
         return context.getHttpClient()
             .put()
             .uri(String.format("/chatgroups/%s", groupId))
@@ -18,7 +23,7 @@ public class GroupSettings {
                     throw new EMUnknownException("maxMembers");
                 }
 
-                if (request.getMemberCanInviteOthers() != null && (rsp.getMemberCanInviteOthersUpdated() == null || !rsp.getMemberCanInviteOthersUpdated())) {
+                if (request.getCanMemberInviteOthers() != null && (rsp.getMemberCanInviteOthersUpdated() == null || !rsp.getMemberCanInviteOthersUpdated())) {
                     throw new EMUnknownException("memberCanInviteOthers");
                 }
 
