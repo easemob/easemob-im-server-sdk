@@ -1,6 +1,7 @@
 package com.easemob.im.cli.cmd;
 
 import com.easemob.im.server.EMService;
+import com.easemob.im.server.exception.EMUnauthorizedException;
 import com.easemob.im.server.model.EMUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,10 @@ import org.springframework.stereotype.Component;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
+
+import java.time.Duration;
 
 import static picocli.CommandLine.Option.NULL_VALUE;
 
@@ -26,11 +31,21 @@ public class UserCmd {
     }
 
     @Command(name = "delete", description = "Delete a user.", mixinStandardHelpOptions = true)
-    public void delete(@Parameters(index = "0", description = "the username") String username) {
-        this.service.user().delete(username)
-            .doOnSuccess(user -> System.out.println(user.getUsername() + " deleted"))
-            .block();
+    public void delete(@Parameters(index = "0", description = "the username", defaultValue = "") String username,
+                       @Option(names = {"--all"}, description = "delete all users") boolean all) {
+        if (all) {
+            this.service.user().deleteAll()
+                    .doOnNext(user -> System.out.println("user " + user.getUsername() + " deleted"))
+                    .blockLast();
+        } else {
+            this.service.user().delete(username)
+                    .doOnSuccess(user -> System.out.println("user " + user.getUsername() + " deleted"))
+                    .block();
+        }
+
     }
+
+
 
     @Command(name = "reset-password", description = "Reset password for the user.", mixinStandardHelpOptions = true)
     public void resetPassword(@Parameters(index = "0", description = "the username") String username,

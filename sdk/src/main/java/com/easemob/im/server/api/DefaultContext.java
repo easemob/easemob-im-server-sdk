@@ -60,6 +60,6 @@ public class DefaultContext implements Context {
         this.errorMapper = new DefaultErrorMapper();
         this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.codec, this.errorMapper);
         this.httpClient = httpClient
-            .headersWhen(headers -> this.tokenProvider.fetchAppToken().map(token -> headers.add("Authorization", String.format("Bearer %s", token.getValue()))));
+            .headersWhen(headers -> this.tokenProvider.fetchAppToken().map(token -> headers.set("Authorization", String.format("Bearer %s", token.getValue()))));
     }
 }

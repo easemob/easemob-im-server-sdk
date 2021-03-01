@@ -66,11 +66,10 @@ public class UserApi {
     /**
      * Delete all users.
      *
-     * @param limit how many users to delete each time
      * @return A {@code Flux} of deleted users.
      */
-    public Flux<EMUser> deleteAll(int limit) {
-        return UserUnregister.all(this.context, limit);
+    public Flux<EMUser> deleteAll() {
+        return UserUnregister.all(this.context, 10);
     }
 
     /**
