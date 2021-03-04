@@ -1,7 +1,6 @@
 package com.easemob.im.server;
 
 import com.easemob.im.server.api.chatfiles.ChatFilesApi;
-import com.easemob.im.server.api.chatgroups.ChatGroupsApi;
 import com.easemob.im.server.api.chatmessages.ChatMessagesApi;
 import com.easemob.im.server.api.chatrooms.ChatRoomsApi;
 import com.easemob.im.server.api.message.MessageApi;
@@ -86,11 +85,6 @@ public class EMClient {
     // 消息模块
     public MessageApi message() {
         return new MessageApi(this.httpClient, this.objectMapper, this.allocator, properties, this.tokenCache);
-    }
-
-    // 群组模块
-    public ChatGroupsApi chatGroups() {
-        return new ChatGroupsApi(this.httpClient, this.objectMapper, this.allocator, properties, this.tokenCache);
     }
 
     // 聊天室模块

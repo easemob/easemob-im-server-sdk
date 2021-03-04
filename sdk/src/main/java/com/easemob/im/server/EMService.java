@@ -3,7 +3,7 @@ package com.easemob.im.server;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApi;
-import com.easemob.im.server.api.chatgroups.GroupApi;
+import com.easemob.im.server.api.group.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
 import com.easemob.im.server.api.notification.NotificationApi;
 import com.easemob.im.server.api.token.TokenApiGroup;
