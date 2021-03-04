@@ -1,9 +1,9 @@
-package com.easemob.im.server.api.block.user;
+package com.easemob.im.server.api.block.login;
 
 import com.easemob.im.server.api.Context;
 import reactor.core.publisher.Mono;
 
-public class Login {
+public class BlockUserLogin {
 
     public static Mono<Void> blockUser(Context context, String username) {
         return context.getHttpClient()

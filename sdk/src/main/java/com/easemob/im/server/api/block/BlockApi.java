@@ -1,11 +1,15 @@
 package com.easemob.im.server.api.block;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.api.block.user.Login;
+import com.easemob.im.server.api.block.group.join.BlockUserJoinGroup;
+import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroup;
+import com.easemob.im.server.api.block.login.BlockUserLogin;
 import com.easemob.im.server.api.block.user.SendMsgToUser;
+import com.easemob.im.server.model.EMBlock;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
 
 public class BlockApi {
@@ -63,7 +67,7 @@ public class BlockApi {
      * @return A {@code Flux<String>} emit usernames successfully blocked.
      */
     public Mono<Void> blockUserLogin(String username) {
-        return Login.blockUser(this.context, username);
+        return BlockUserLogin.blockUser(this.context, username);
     }
 
     /**
@@ -73,6 +77,83 @@ public class BlockApi {
      * @return A {@code Mono} which complete on success.
      */
     public Mono<Void> unblockUserLogin(String username) {
-        return Login.unblockUser(this.context, username);
+        return BlockUserLogin.unblockUser(this.context, username);
     }
+
+    /**
+     * Get users blocked to join specified group.
+     *
+     * @param groupId the group's id
+     * @return A {@code Flux} which emits {@code EMBlock}s.
+     */
+    public Flux<EMBlock> getUsersBlockedJoinGroup(String groupId) {
+        return BlockUserJoinGroup.getBlockedUsers(this.context, groupId);
+    }
+
+    /**
+     * Block a user from joining specified group.
+     *
+     * @param username the user's username
+     * @param groupId the group's id
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> blockUserJoinGroup(String username, String groupId) {
+        return BlockUserJoinGroup.blockUser(this.context, username, groupId);
+    }
+
+    /**
+     * Unblock a user from joining specified group.
+     *
+     * @param username the user's username
+     * @param groupId the group's id
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> unblockUserJoinGroup(String username, String groupId) {
+        return BlockUserJoinGroup.unblockUser(this.context, username, groupId);
+    }
+
+    /**
+     * Get users blocked to send message to specified group.
+     *
+     * @param groupId the group's id
+     * @return A {@code Flux} which emits {@code EMBlock}s.
+     */
+    public Flux<EMBlock> getUsersBlockedSendMsgToGroup(String groupId) {
+        return BlockUserSendMsgToGroup.getBlockedUsers(this.context, groupId);
+    }
+
+    /**
+     * Block a user from sending message to specified group.
+     *
+     * @param username the user's username
+     * @param groupId the group's id
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> blockUserSendMsgToGroup(String username, String groupId) {
+        return BlockUserSendMsgToGroup.blockUser(this.context, username, groupId);
+    }
+
+    /**
+     * Block a user from sending message to specified group for a period.
+     *
+     * @param username the user's username
+     * @param groupId the group's id
+     * @param duration the block's period
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> blockUserSendMsgToGroup(String username, String groupId, Duration duration) {
+        return BlockUserSendMsgToGroup.blockUser(this.context, username, groupId, duration);
+    }
+
+    /**
+     * Unblock a user from sending message to specified group.
+     *
+     * @param username the user's username
+     * @param groupId the group's id
+     * @return A {@code Mono} which complete on success.
+     */
+    public Mono<Void> unblockUserSendMsgToGroup(String username, String groupId) {
+        return BlockUserSendMsgToGroup.unblockUser(this.context, username, groupId);
+    }
+
 }

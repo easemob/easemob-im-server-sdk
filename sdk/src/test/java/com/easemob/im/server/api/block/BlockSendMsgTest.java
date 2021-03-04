@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.block;
 
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.block.user.Login;
+import com.easemob.im.server.api.block.login.BlockUserLogin;
 import com.easemob.im.server.api.block.user.SendMsgToUser;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
@@ -60,14 +60,14 @@ public class BlockSendMsgTest extends AbstractApiTest {
     @Test
     public void testBlockUserFromLogin() {
         assertDoesNotThrow(() -> {
-            Login.blockUser(context, "alice").block(Duration.ofSeconds(3));
+            BlockUserLogin.blockUser(context, "alice").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testUnblockUserFromLogin() {
         assertDoesNotThrow(() -> {
-            Login.unblockUser(context, "alice").block(Duration.ofSeconds(3));
+            BlockUserLogin.unblockUser(context, "alice").block(Duration.ofSeconds(3));
         });
     }
 
