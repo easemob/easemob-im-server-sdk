@@ -26,8 +26,9 @@ public class UnblockCmd {
                     .doOnSuccess(ignore -> System.out.println("done"))
                     .block();
         } else if (toGroup != null) {
-            // TODO: implement block users send msg to group
-            System.out.println("Not implemented");
+            this.service.block().unblockUserSendMsgToGroup(unblockUsers.get(0), toGroup)
+                    .doOnSuccess(ignore -> System.out.println("done"))
+                    .block();
         } else if (toRoom != null) {
             // TODO: implement block users send msg to room
             System.out.println("Not implemented");
@@ -37,12 +38,19 @@ public class UnblockCmd {
 
     }
 
-
-    @Command(name = "login", description = "Block user from login.")
-    public void blockUserLogin(@Parameters(index = "0", description = "the user to block") String username) {
-        this.service.block().blockUserLogin(username)
+    @Command(name = "login", description = "UnBlock user from login.")
+    public void unblockUserLogin(@Parameters(index = "0", description = "the user to unblock") String username) {
+        this.service.block().unblockUserLogin(username)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .block(Duration.ofSeconds(3));
+    }
+
+    @Command(name = "join", description = "UnBlock user join group.")
+    public void unblockUserJoinGroup(@Parameters(index = "0", description = "the group") String group,
+                                   @Parameters(index = "1", description = "the username") String username) {
+        this.service.block().unblockUserJoinGroup(username, group)
+                .doOnSuccess(ignored -> System.out.println("done"))
+                .block();
     }
 
 }
