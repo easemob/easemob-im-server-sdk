@@ -33,9 +33,11 @@ public class BlockCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         } else if (toGroup != null) {
-            this.service.block().blockUserSendMsgToGroup(blockUsers.get(0), toGroup)
-                    .doOnSuccess(ignore -> System.out.println("done"))
-                    .block();
+            blockUsers.forEach(user -> {
+                this.service.block().blockUserSendMsgToGroup(user, toGroup, Duration.ofMillis(6000))
+                        .doOnSuccess(ignore -> System.out.println("done"))
+                        .block();
+            });
         } else if (toRoom != null) {
             // TODO: implement block users send msg to room
             System.out.println("Not implemented");
@@ -54,8 +56,8 @@ public class BlockCmd {
     }
 
     @Command(name = "join", description = "Block user join group.")
-    public void blockUserJoinGroup(@Parameters(index = "0", description = "the group") String group,
-                                   @Parameters(index = "1", description = "the username") String username) {
+    public void blockUserJoinGroup(@Option(names = "--from-user", description = "the username") String username,
+                                   @Option(names = "--join-group", description = "the group") String group) {
         this.service.block().blockUserJoinGroup(username, group)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .block();
