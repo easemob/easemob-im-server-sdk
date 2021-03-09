@@ -53,7 +53,7 @@ public class JsonCodec implements Codec {
             return this.objectMapper.readValue(array, offset, len, tClass);
         } catch (IOException e) {
             System.out.println(String.format("could not decode class %s: %s", tClass.getName(), e.getMessage()));
-            throw new EMUnknownException(String.format("could not decode class %s: %s", tClass.getName(), e.getMessage()));
+            throw new EMJsonException(String.format("could not decode class %s: %s", tClass.getName(), e.getMessage()));
         }
     }
 
