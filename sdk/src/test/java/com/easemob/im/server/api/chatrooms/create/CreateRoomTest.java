@@ -3,10 +3,11 @@ package com.easemob.im.server.api.chatrooms.create;
 import com.easemob.im.server.api.AbstractApiTest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.sun.tools.javac.util.List;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +29,10 @@ class CreateRoomTest extends AbstractApiTest {
 
     @Test
     void testCreateRoom() {
-        String id = CreateRoom.createRoom(this.context, "room one", "have a nice day", "alice", List.of("rabbit", "madhat"), 200)
+        List<String> members = new ArrayList<>();
+        members.add("rabbit");
+        members.add("madhat");
+        String id = CreateRoom.createRoom(this.context, "room one", "have a nice day", "alice", members, 200)
             .block(Duration.ofSeconds(3));
         assertEquals("r1", id);
     }
