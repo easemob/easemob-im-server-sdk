@@ -1,6 +1,9 @@
 package com.easemob.im.server.api.chatrooms;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.chatrooms.admin.demote.DemoteRoomAdmin;
+import com.easemob.im.server.api.chatrooms.admin.promote.PromoteRoomAdmin;
+import com.easemob.im.server.api.chatrooms.admin.list.ListRoomAdmins;
 import com.easemob.im.server.api.chatrooms.create.CreateRoom;
 import com.easemob.im.server.api.chatrooms.detail.GetRoomDetail;
 import com.easemob.im.server.api.chatrooms.list.ListRooms;
@@ -91,7 +94,7 @@ public class RoomApi {
      *
      * @return A {@code Flux} which emits each room's id.
      */
-    public Flux<String> listAllRooms() {
+    public Flux<String> listRoomsAll() {
         return ListRooms.all(this.context, 10);
     }
 
@@ -123,7 +126,7 @@ public class RoomApi {
      * @param roomId the room's id
      * @return A {@code Flux} of member's username.
      */
-    public Flux<String> listAllRoomMembers(String roomId) {
+    public Flux<String> listRoomMembersAll(String roomId) {
         return ListRoomMembers.all(this.context, roomId, 10);
     }
 
@@ -161,5 +164,39 @@ public class RoomApi {
     public Mono<Void> removeRoomMember(String roomId, String username) {
         return RemoveRoomMember.single(this.context, roomId, username);
     }
+
+    /**
+     * List admins of the room.
+     *
+     * @param roomId the room's id
+     * @return A {@code Flux} of admin username.
+     */
+    public Flux<String> listRoomAdminsAll(String roomId) {
+        return ListRoomAdmins.all(this.context, roomId);
+    }
+
+    /**
+     * Promote a room member to admin.
+     *
+     * @param roomId the room's id
+     * @param username the member's username
+     * @return A {@code Mono} which completes upon success.
+     */
+    public Mono<Void> promoteRoomAdmin(String roomId, String username) {
+        return PromoteRoomAdmin.single(this.context, roomId, username);
+    }
+
+    /**
+     * Demote a room admin to member.
+     *
+     * @param roomId the room's id
+     * @param username the admin's username
+     * @return A {@code Mono} which completes upon success.
+     */
+    public Mono<Void> demoteRoomAdmin(String roomId, String username) {
+        return DemoteRoomAdmin.single(this.context, roomId, username);
+    }
+
+
 
 }
