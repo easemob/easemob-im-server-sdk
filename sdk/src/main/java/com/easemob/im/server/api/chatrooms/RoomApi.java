@@ -5,6 +5,10 @@ import com.easemob.im.server.api.chatrooms.create.CreateRoom;
 import com.easemob.im.server.api.chatrooms.detail.GetRoomDetail;
 import com.easemob.im.server.api.chatrooms.list.ListRooms;
 import com.easemob.im.server.api.chatrooms.list.ListRoomsResponse;
+import com.easemob.im.server.api.chatrooms.member.add.AddRoomMember;
+import com.easemob.im.server.api.chatrooms.member.remove.RemoveRoomMember;
+import com.easemob.im.server.api.chatrooms.member.list.ListRoomMembersResponse;
+import com.easemob.im.server.api.chatrooms.member.list.ListRoomMembers;
 import com.easemob.im.server.api.chatrooms.update.UpdateRoom;
 import com.easemob.im.server.api.chatrooms.update.UpdateRoomRequest;
 import com.easemob.im.server.model.EMRoom;
@@ -87,19 +91,19 @@ public class RoomApi {
      *
      * @return A {@code Flux} which emits each room's id.
      */
-    public Flux<String> listRooms() {
+    public Flux<String> listAllRooms() {
         return ListRooms.all(this.context, 10);
     }
 
     /**
      * List rooms iteratively.
      *
-     * @param limit how many results returns, 10 is a good starting point
+     * @param limit how many rooms to return
      * @param cursor where to continue, returned in previous response.
      *               For the first call, pass {@code null}.
      * @return A {@code Mono} which emits {@code ListRoomsResponse} upon success.
      */
-    public Mono<ListRoomsResponse> listRoomsPaged(int limit, String cursor) {
+    public Mono<ListRoomsResponse> listRooms(int limit, String cursor) {
         return ListRooms.next(this.context, limit, cursor);
     }
 
@@ -112,4 +116,50 @@ public class RoomApi {
     public Flux<String> listRoomsUserJoined(String username) {
         return ListRooms.userJoined(this.context, username);
     }
+
+    /**
+     * List room members iteratively.
+     *
+     * @param roomId the room's id
+     * @return A {@code Flux} of member's username.
+     */
+    public Flux<String> listAllRoomMembers(String roomId) {
+        return ListRoomMembers.all(this.context, roomId, 10);
+    }
+
+    /**
+     * List room members.
+     *
+     * @param roomId the room's id
+     * @param limit how many members to return
+     * @param cursor where to start, returned in previous call.
+     *               For the first call, pass {@code null}.
+     * @return A {@code Mono} of {@code ListRoomMembersResponse}.
+     */
+    public Mono<ListRoomMembersResponse> listRoomMembers(String roomId, int limit, String cursor) {
+        return ListRoomMembers.next(this.context, roomId, limit, cursor);
+    }
+
+    /**
+     * Add a member to the room.
+     *
+     * @param roomId the room's id
+     * @param username the user's username
+     * @return A {@code Mono} which completes upon success.
+     */
+    public Mono<Void> addRoomMember(String roomId, String username) {
+        return AddRoomMember.single(this.context, roomId, username);
+    }
+
+    /**
+     * Remove a member from the room.
+     *
+     * @param roomId the room's id
+     * @param username the user's username
+     * @return A {@code Mono} which completes upon success.
+     */
+    public Mono<Void> removeRoomMember(String roomId, String username) {
+        return RemoveRoomMember.single(this.context, roomId, username);
+    }
+
 }
