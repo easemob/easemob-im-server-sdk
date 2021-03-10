@@ -75,8 +75,8 @@ class BlockUserJoinGroupTest extends AbstractApiTest {
                     .block(Duration.ofSeconds(3));
 
             assertEquals(2, blocks.size());
-            assertTrue(blocks.contains(EMBlock.user("alice")));
-            assertTrue(blocks.contains(EMBlock.user("rabbit")));
+            assertTrue(blocks.contains(new EMBlock("alice", null)));
+            assertTrue(blocks.contains(new EMBlock("rabbit", null)));
         });
     }
 

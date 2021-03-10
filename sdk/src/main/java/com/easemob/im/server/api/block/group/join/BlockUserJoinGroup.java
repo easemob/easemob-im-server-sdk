@@ -17,7 +17,7 @@ public class BlockUserJoinGroup {
                 .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
                 .map(buf -> context.getCodec().decode(buf, GetBlockedUsersResponse.class))
                 .flatMapIterable(GetBlockedUsersResponse::getUsernames)
-                .map(EMBlock::user);
+                .map(username -> new EMBlock(username, null));
     }
 
     public static Mono<Void> blockUser(Context context, String username, String groupId) {

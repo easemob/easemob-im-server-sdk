@@ -76,7 +76,7 @@ public class GroupApi {
      *
      * @param owner the owner's username
      * @param members the initial members
-     * @return A {@code Mono} which emit {@code EMGroup} if successful.
+     * @return A {@code Mono} which emits {@code EMGroup} if successful.
      */
     public Mono<EMGroup> createPrivateGroup(String owner, List<String> members) {
         return GroupCreate.privateGroup(this.context, owner, members, PRIVATE_GROUP_MAX_MEMBERS_DEFAULT, PRIVATE_GROUP_MEMBER_CAN_INVITE_OTHERS_DEFAULT);
@@ -98,7 +98,7 @@ public class GroupApi {
     /**
      * Destroy this group.
      * @param groupId the group id
-     * @return A {@code Mono} complete on success.
+     * @return A {@code Mono} completes on success.
      */
     public Mono<Void> destroyGroup(String groupId) {
         return GroupDestroy.execute(this.context, groupId);
@@ -180,7 +180,7 @@ public class GroupApi {
      *
      * @param groupId the group id
      * @param customizer update request customizer
-     * @return A {@code Mono} complete on successful.
+     * @return A {@code Mono} completes on successful.
      */
     public Mono<Void> updateSettings(String groupId, Consumer<GroupSettingsUpdateRequest> customizer) {
         return GroupSettings.update(this.context, groupId, customizer);
@@ -200,7 +200,7 @@ public class GroupApi {
      * Update the group announcement.
      * @param groupId the group id
      * @param announcement the announcement
-     * @return A {@code Mono} which complete on success.
+     * @return A {@code Mono} which completes on success.
      */
     public Mono<Void> updateGroupAnnouncement(String groupId, String announcement) {
         return GroupAnnouncement.update(this.context, groupId, announcement);
@@ -253,7 +253,7 @@ public class GroupApi {
      *
      * @param groupId the group id
      * @param username the username
-     * @return A {@code Mono} which complete on success.
+     * @return A {@code Mono} which completes on success.
      */
     public Mono<Void> addGroupMember(String groupId, String username) {
         return GroupMemberAdd.single(this.context, groupId, username);
@@ -264,7 +264,7 @@ public class GroupApi {
      *
      * @param groupId the group id
      * @param username the username
-     * @return A {@code Mono} which complete on success.
+     * @return A {@code Mono} which completes on success.
      */
     public Mono<Void> removeGroupMember(String groupId, String username) {
         return GroupMemberRemove.single(this.context, groupId, username);
@@ -285,7 +285,7 @@ public class GroupApi {
      *
      * @param groupId the group id
      * @param username the username
-     * @return A {@code Mono} which complete on success.
+     * @return A {@code Mono} which completes on success.
      */
     public Mono<Void> addGroupAdmin(String groupId, String username) {
         return GroupAdminAdd.single(this.context, groupId, username);
@@ -296,7 +296,7 @@ public class GroupApi {
      *
      * @param groupId the group id
      * @param username the username
-     * @return A {@code Mono} which complete on success.
+     * @return A {@code Mono} which completes on success.
      */
     public Mono<Void> removeGroupAdmin(String groupId, String username) {
         return GroupAdminRemove.single(this.context, groupId, username);
@@ -307,7 +307,7 @@ public class GroupApi {
      *
      * @param groupId the group id
      * @param username the username of new owner
-     * @return
+     * @return A {@code Mono} which completes upon success.
      */
     public Mono<Void> updateGroupOwner(String groupId, String username) {
         return GroupUpdate.owner(this.context, groupId, username);

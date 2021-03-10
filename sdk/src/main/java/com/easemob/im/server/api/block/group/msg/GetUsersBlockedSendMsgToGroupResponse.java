@@ -35,7 +35,7 @@ public class GetUsersBlockedSendMsgToGroupResponse {
 
         public EMBlock toEMBlock() {
             // TODO: investigate which value indicates never?
-            return EMBlock.user(this.username, Instant.ofEpochMilli(this.expireTimestamp));
+            return new EMBlock(this.username, Instant.ofEpochMilli(this.expireTimestamp));
         }
     }
 }

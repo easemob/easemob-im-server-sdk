@@ -103,8 +103,8 @@ class BlockUserSendMsgToGroupTest extends AbstractApiTest {
     void testGetBlockedUsers() {
         List<EMBlock> blocks = BlockUserSendMsgToGroup.getBlockedUsers(this.context, "1").collectList().block(Duration.ofSeconds(3));
         assertEquals(2, blocks.size());
-        assertTrue(blocks.contains(EMBlock.user("alice", Instant.ofEpochMilli(1000000))));
-        assertTrue(blocks.contains(EMBlock.user("rabbit", Instant.ofEpochMilli(1000000))));
+        assertTrue(blocks.contains(new EMBlock("alice", Instant.ofEpochMilli(1000000))));
+        assertTrue(blocks.contains(new EMBlock("rabbit", Instant.ofEpochMilli(1000000))));
     }
 
     @Test
