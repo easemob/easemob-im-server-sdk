@@ -9,17 +9,9 @@ public class EMBlock {
 
     private String username;
 
-    private Optional<Instant> expireAt;
+    private Instant expireAt;
 
-    public static EMBlock user(String username) {
-        return new EMBlock(username, Optional.empty());
-    }
-
-    public static EMBlock user(String username, Instant expireAt) {
-        return new EMBlock(username, Optional.of(expireAt));
-    }
-
-    private EMBlock(String username, Optional<Instant> expireAt) {
+    public EMBlock(String username, Instant expireAt) {
         this.username = username;
         this.expireAt = expireAt;
     }
@@ -28,7 +20,7 @@ public class EMBlock {
         return this.username;
     }
 
-    public Optional<Instant> getExpireAt() {
+    public Instant getExpireAt() {
         return this.expireAt;
     }
 

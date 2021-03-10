@@ -4,6 +4,10 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.block.group.join.BlockUserJoinGroup;
 import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroup;
 import com.easemob.im.server.api.block.login.BlockUserLogin;
+import com.easemob.im.server.api.block.room.msg.block.BlockUserSendMsgToRoom;
+import com.easemob.im.server.api.block.room.msg.block.BlockUserSendMsgToRoomResponse;
+import com.easemob.im.server.api.block.room.msg.list.ListUsersBlockedSendMsgToRoom;
+import com.easemob.im.server.api.block.room.msg.unblock.UnblockUserSendMsgToRoom;
 import com.easemob.im.server.api.block.user.SendMsgToUser;
 import com.easemob.im.server.model.EMBlock;
 import reactor.core.publisher.Flux;
@@ -123,17 +127,6 @@ public class BlockApi {
     }
 
     /**
-     * Block a user from sending message to specified group.
-     *
-     * @param username the user's username
-     * @param groupId the group's id
-     * @return A {@code Mono} which complete on success.
-     */
-    public Mono<Void> blockUserSendMsgToGroup(String username, String groupId) {
-        return BlockUserSendMsgToGroup.blockUser(this.context, username, groupId);
-    }
-
-    /**
      * Block a user from sending message to specified group for a period.
      *
      * @param username the user's username
@@ -156,4 +149,36 @@ public class BlockApi {
         return BlockUserSendMsgToGroup.unblockUser(this.context, username, groupId);
     }
 
+    /**
+     * List users blocked to send message in the room.
+     *
+     * @param roomId the room's id
+     * @return A {@code Flux} of blocked users.
+     */
+    public Flux<EMBlock> listUsersBlockedSendMsgToRoom(String roomId) {
+        return ListUsersBlockedSendMsgToRoom.all(this.context, roomId);
+    }
+
+    /**
+     * Block a user from send message in the room.
+     *
+     * @param username the user's username
+     * @param roomId the room's id
+     * @param duration the blocking duration
+     * @return A {@code Mono} which completes upon success.
+     */
+    public Mono<Void> blockUserSendMsgToRoom(String username, String roomId, Duration duration) {
+        return BlockUserSendMsgToRoom.single(this.context, username, roomId, duration);
+    }
+
+    /**
+     * Unblock a user from send message in the room.
+     *
+     * @param username the user's username
+     * @param roomId the room's id
+     * @return A {@code Mono} which completes upon success.
+     */
+    public Mono<Void> unblockUserSendMsgToRoom(String username, String roomId) {
+        return UnblockUserSendMsgToRoom.single(this.context, username, roomId);
+    }
 }
