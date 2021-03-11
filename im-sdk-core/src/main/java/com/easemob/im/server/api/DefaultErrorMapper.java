@@ -65,23 +65,21 @@ public class DefaultErrorMapper implements ErrorMapper {
             return Mono.just(response);
         }
 
+        String reason = String.format("%s %s return %d %s", response.method().toString(), response.uri(),
+                response.status().code(), response.status().reasonPhrase());
         Constructor<?>[] ctors = errorClass.getConstructors();
         for (int i = 0; i < ctors.length; i++) {
             if (ctors[i].getParameterCount() == 1 && ctors[i].getParameterTypes()[0] == String.class) {
                 EMException error;
                 try {
-                    error = (EMException) ctors[i].newInstance(response.status().toString());
-                } catch (InstantiationException e) {
-                    return Mono.error(new EMUnknownException(e.getMessage()));
-                } catch (IllegalAccessException e) {
-                    return Mono.error(new EMUnknownException(e.getMessage()));
-                } catch (InvocationTargetException e) {
-                    return Mono.error(new EMUnknownException(e.getMessage()));
+                    error = (EMException) ctors[i].newInstance(reason);
+                } catch (Exception e) {
+                    return Mono.error(new EMUnknownException(reason));
                 }
                 return Mono.error(error);
             }
         }
-        return Mono.error(new EMUnknownException(response.status().toString()));
+        return Mono.error(new EMUnknownException(reason));
 
 
     }

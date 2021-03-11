@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MAVEN_CLI_OPTS: >
-        -B
+        --batch-mode
         --errors
         --fail-at-end
         --show-version

@@ -1,11 +1,13 @@
 package com.easemob.im.cli.cmd;
 
+import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+import reactor.core.publisher.Mono;
 
 @Component
 @Command(name = "notification", description = "Notification commands.")
@@ -31,6 +33,8 @@ public class NotificationCmd {
                     }
                 })
                 .doOnSuccess(ignored -> System.out.println("done"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();
     }
 
@@ -42,6 +46,8 @@ public class NotificationCmd {
                     System.out.println("username: "+settings.getUsername());
                     System.out.println("nickname: "+settings.getNickname());
                     System.out.println("showMessageContent: "+settings.getShowMessageContent());
-                }).block();
+                }).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
     }
 }
