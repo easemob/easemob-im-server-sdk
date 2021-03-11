@@ -23,8 +23,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.easemob</groupId>
-            <artifactId>im-server-sdk</artifactId>
+            <groupId>com.easemob.im</groupId>
+            <artifactId>im-sdk-core</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
