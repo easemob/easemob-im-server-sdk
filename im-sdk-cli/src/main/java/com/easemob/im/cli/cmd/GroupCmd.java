@@ -1,5 +1,6 @@
 package com.easemob.im.cli.cmd;
 
+import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupMember;
@@ -10,6 +11,7 @@ import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -28,6 +30,8 @@ public class GroupCmd {
         if (joinedByUser != null) {
             this.service.group().listGroupsUserJoined(joinedByUser)
                     .doOnNext(group -> System.out.println("group: " + group.getGroupId()))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         } else if (limit != null) {
             this.service.group().listGroups(limit, cursor)
@@ -37,12 +41,18 @@ public class GroupCmd {
                             System.out.println("group: " + groups.get(i).getGroupId());
                         }
                         System.out.println("cursor: " + rsp.getCursor());
-                    }).block();
+                    })
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
         } else {
             this.service.group().listAllGroups()
                     .doOnNext(group -> {
                         System.out.println("group: " + group.getGroupId());
-                    }).blockLast();
+                    })
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
         }
     }
 
@@ -60,6 +70,8 @@ public class GroupCmd {
                                       @Option(names = "--need-approve-to-join", defaultValue = "false", description = "need approve to join") boolean needApproveToJoin) {
             this.service.group().createPublicGroup(owner, members, maxMembers, needApproveToJoin)
                     .doOnSuccess(group -> System.out.println("group: " + group.getGroupId()))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
 
@@ -71,6 +83,8 @@ public class GroupCmd {
                                        @Option(names = "--can-member-invite", defaultValue = "false", description = "can member invite others to join") boolean canMemberInvite) {
             this.service.group().createPrivateGroup(owner, members, maxMembers, canMemberInvite)
                     .doOnSuccess(group -> System.out.println(group.getGroupId()))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
     }
@@ -80,6 +94,8 @@ public class GroupCmd {
     public void destroyGroup(@Parameters(index = "0", description = "the group's id") String groupId) {
         this.service.group().destroyGroup(groupId)
                 .doOnSuccess(ignored -> System.out.println("done"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();
     }
 
@@ -112,12 +128,19 @@ public class GroupCmd {
                         }
                         System.out.println("\t]");
                     }
-                }).block();
-        if (options == null || options.announcement) {
-            this.service.group().getGroupAnnouncement(groupId)
-                    .doOnSuccess(announcement -> System.out.println("announcement: " + announcement))
-                    .block();
-        }
+                })
+                .then(Mono.defer(() -> {
+                    if (options == null || options.announcement) {
+                        return this.service.group().getGroupAnnouncement(groupId)
+                                .doOnSuccess(announcement -> System.out.println("announcement: " + announcement));
+                    }
+                    return Mono.empty();
+                }))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
+
+
     }
 
     public static class UpdateGroupOptions {
@@ -148,14 +171,20 @@ public class GroupCmd {
                     settings.setCanMemberInviteOthers(options.settings.canMemberInvite);
                 }
             }).doOnSuccess(ignored -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         } else if (options.owner != null) {
             this.service.group().updateGroupOwner(groupId, options.owner)
                     .doOnSuccess(ignored -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         } else if (options.announcement != null) {
             this.service.group().updateGroupAnnouncement(groupId, options.announcement)
                     .doOnSuccess(ignored -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
     }

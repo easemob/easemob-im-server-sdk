@@ -1,5 +1,6 @@
 package com.easemob.im.cli.cmd;
 
+import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
 import com.easemob.im.server.exception.EMUnauthorizedException;
 import com.easemob.im.server.model.EMUser;
@@ -27,6 +28,8 @@ public class UserCmd {
                          @Parameters(index = "1", description = "the password") String password) {
         service.user().create(username, password)
                 .doOnSuccess(user -> System.out.println(user.getUsername() + " created"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();
     }
 
@@ -36,10 +39,14 @@ public class UserCmd {
         if (all) {
             this.service.user().deleteAll()
                     .doOnNext(user -> System.out.println("user " + user.getUsername() + " deleted"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         } else {
             this.service.user().delete(username)
                     .doOnSuccess(user -> System.out.println("user " + user.getUsername() + " deleted"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
 
@@ -52,6 +59,8 @@ public class UserCmd {
                               @Parameters(index = "1", description = "the password") String password) {
         this.service.user().resetPassword(username, password)
                 .doOnSuccess(ignore -> System.out.println("done"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();
     }
 
@@ -63,7 +72,9 @@ public class UserCmd {
                 .doOnNext(user -> {
                     System.out.println("user: " + user.getUsername());
                     System.out.println("canLogin: " + user.getCanLogin());
-                }).block();
+                }).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
     }
 
     @Command(name = "list", description = "List users. By default all users are listed.\nUse --limit and --cursor to control ", mixinStandardHelpOptions = true)
@@ -74,7 +85,8 @@ public class UserCmd {
         if (blockedByUser != null) {
             service.block().getUsersBlockedFromSendMsgToUser(blockedByUser)
                     .doOnNext(username -> System.out.println("user: "+username))
-                    .doOnSubscribe(s -> System.out.println("blockedByUser: " + blockedByUser))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         } else if (limit != null) {
             service.user().listUsers(limit, cursor)
@@ -84,12 +96,15 @@ public class UserCmd {
                         for (EMUser user : rsp.getEMUsers()) {
                             System.out.println("\t"+user.getUsername());
                         }
-                    }).block();
+                    }).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
         } else {
             service.user().listAllUsers()
                     .doOnNext(user -> {
                         System.out.println(user.getUsername());
-                    })
+                    }).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         }
     }
