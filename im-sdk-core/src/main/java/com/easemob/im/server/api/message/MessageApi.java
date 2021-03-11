@@ -286,6 +286,7 @@ public class MessageApi {
         return buildMessage(targetType, target, msg, from, ext);
     }
 
+    @SuppressWarnings("unchecked")
     // 构建消息
     private Message buildMessage(TargetType targetType, Set<String> target, ObjectNode msg, String from, Map<String, Object> ext) throws MessageException {
         verifyUsername(from);
