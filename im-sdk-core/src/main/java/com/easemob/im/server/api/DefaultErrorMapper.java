@@ -56,6 +56,7 @@ public class DefaultErrorMapper implements ErrorMapper {
         log.debug("http error mapper unregistered for status code {}", status.code());
     }
 
+    @SuppressWarnings("unchecked")
     public Mono<HttpClientResponse> apply(HttpClientResponse response) {
         int code = response.status().code();
         Class<? extends EMException> errorClass = this.mappers.get(response.status());
@@ -64,7 +65,7 @@ public class DefaultErrorMapper implements ErrorMapper {
             return Mono.just(response);
         }
 
-        Constructor[] ctors = errorClass.getConstructors();
+        Constructor<?>[] ctors = errorClass.getConstructors();
         for (int i = 0; i < ctors.length; i++) {
             if (ctors[i].getParameterCount() == 1 && ctors[i].getParameterTypes()[0] == String.class) {
                 EMException error;

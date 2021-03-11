@@ -29,7 +29,7 @@ public class HttpUtils {
         return execute(http, method, uri, null, null, mapper, properties, tokenCache);
     }
 
-    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ContainerNode request, ByteBufAllocator allocator, ObjectMapper mapper, EMProperties properties, Cache<String,
+    public static JsonNode execute(HttpClient http, HttpMethod method, String uri, ContainerNode<?> request, ByteBufAllocator allocator, ObjectMapper mapper, EMProperties properties, Cache<String,
         String> tokenCache) throws ApiException {
         Mono<ByteBuf> buf;
         if (request == null && allocator == null) {
@@ -169,16 +169,7 @@ public class HttpUtils {
 
     // 获取 token
     private static String getCacheToken(EMProperties properties, Cache<String, String> tokenCache) throws TokenException {
-        // TODO: 我们支持多个Appkey吗？如果只有一个Appkey，为什么用Appkey做缓存的key呢？
-        String key = properties.getAppkey();
-        String cachedToken = tokenCache.getIfPresent(key);
-        if (cachedToken != null) {
-            return cachedToken;
-        }
-
-        String token = EMClient.getInstance().token().getToken();
-        tokenCache.put(key, token);
-        return token;
+        return null;
     }
 
 }

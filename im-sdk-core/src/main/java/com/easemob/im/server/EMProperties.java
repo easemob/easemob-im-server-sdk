@@ -2,8 +2,6 @@ package com.easemob.im.server;
 
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.config.Loggers;
 
 public class EMProperties {
     private final String baseUri;

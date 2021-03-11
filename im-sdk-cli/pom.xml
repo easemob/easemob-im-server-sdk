@@ -6,19 +6,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.easemob</groupId>
-    <artifactId>im-cli</artifactId>
-    <version>0.0.1</version>
+    <artifactId>im-sdk-cli</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <description>Easemob IM cli utility</description>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.2</version>
+        <groupId>com.easemob.im</groupId>
+        <artifactId>im-sdk-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <picocli.version>4.6.1</picocli.version>
+        <spring-boot.version>2.4.3</spring-boot.version>
     </properties>
 
     <dependencies>
@@ -27,25 +27,37 @@
             <artifactId>im-server-sdk</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.6.1</version>
+            <version>${picocli.version}</version>
         </dependency>
-
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli-spring-boot-starter</artifactId>
-            <version>4.6.1</version>
+            <version>${picocli.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
-
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
@@ -66,12 +78,16 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals><goal>repackage</goal></goals>
+                    </execution>
+                </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -99,7 +115,6 @@
                     </arguments>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>

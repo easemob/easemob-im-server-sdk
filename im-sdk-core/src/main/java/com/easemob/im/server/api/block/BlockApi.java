@@ -67,7 +67,7 @@ public class BlockApi {
 
     /**
      * Block a user from login.
-     *
+     * @param username the user's username
      * @return A {@code Flux<String>} emit usernames successfully blocked.
      */
     public Mono<Void> blockUserLogin(String username) {
