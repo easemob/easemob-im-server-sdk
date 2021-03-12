@@ -29,6 +29,10 @@ public class RoomApi {
 
     private Context context;
 
+    public RoomApi(Context context) {
+        this.context = context;
+    }
+
     /**
      * Create a room.
      *

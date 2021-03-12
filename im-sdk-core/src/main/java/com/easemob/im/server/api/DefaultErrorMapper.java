@@ -1,18 +1,7 @@
 package com.easemob.im.server.api;
 
 import com.easemob.im.server.EMException;
-import com.easemob.im.server.exception.EMBadGatewayException;
-import com.easemob.im.server.exception.EMBadRequestException;
-import com.easemob.im.server.exception.EMForbiddenException;
-import com.easemob.im.server.exception.EMGatewayTimeoutException;
-import com.easemob.im.server.exception.EMInternalServerErrorException;
-import com.easemob.im.server.exception.EMMethodAllowedException;
-import com.easemob.im.server.exception.EMNotAcceptableException;
-import com.easemob.im.server.exception.EMNotFoundException;
-import com.easemob.im.server.exception.EMServiceUnavailableException;
-import com.easemob.im.server.exception.EMTooManyRequestsException;
-import com.easemob.im.server.exception.EMUnauthorizedException;
-import com.easemob.im.server.exception.EMUnknownException;
+import com.easemob.im.server.exception.*;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,6 +27,7 @@ public class DefaultErrorMapper implements ErrorMapper {
         register(HttpResponseStatus.NOT_FOUND, EMNotFoundException.class);
         register(HttpResponseStatus.METHOD_NOT_ALLOWED, EMMethodAllowedException.class);
         register(HttpResponseStatus.NOT_ACCEPTABLE, EMNotAcceptableException.class);
+        register(HttpResponseStatus.UNSUPPORTED_MEDIA_TYPE, EMUnSupportedMediaTypeException.class);
         register(HttpResponseStatus.TOO_MANY_REQUESTS, EMTooManyRequestsException.class);
         register(HttpResponseStatus.INTERNAL_SERVER_ERROR, EMInternalServerErrorException.class);
         register(HttpResponseStatus.BAD_GATEWAY, EMBadGatewayException.class);

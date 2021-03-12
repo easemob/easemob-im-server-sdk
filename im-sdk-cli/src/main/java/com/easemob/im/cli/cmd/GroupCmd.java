@@ -144,7 +144,7 @@ public class GroupCmd {
     }
 
     public static class UpdateGroupOptions {
-        @ArgGroup UpdateGroupSettingOptions settings;
+        @ArgGroup(exclusive = false) UpdateGroupSettingOptions settings;
         @Option(names = {"--owner"}, description = "the new owner's username, who must be member of this group") String owner;
         @Option(names = {"--announcement"}, description = "the announcement") String announcement;
     }
