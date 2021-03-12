@@ -3,6 +3,8 @@ package com.easemob.im.server;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApi;
+import com.easemob.im.server.api.chatfiles.FileApi;
+import com.easemob.im.server.api.chatrooms.RoomApi;
 import com.easemob.im.server.api.group.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
 import com.easemob.im.server.api.notification.NotificationApi;
@@ -21,13 +23,18 @@ public class EMService {
 
     private final ContactApi contactApi;
 
+    private final FileApi fileApi;
+
     private final GroupApi groupApi;
 
     private final NotificationApi notificationApi;
 
+    private final RoomApi roomApi;
+
     private final TokenApiGroup tokenApiGroup;
 
     private final UserApi userApi;
+
 
     public EMService(EMProperties properties) {
         if (!properties.getHideBanner()) {
@@ -36,12 +43,15 @@ public class EMService {
 
         log.debug("EMService properties: {}", properties);
 
+
         this.context = new DefaultContext(properties);
 
         this.blockV1 = new BlockApi(this.context);
         this.contactApi = new ContactApi(this.context);
+        this.fileApi = new FileApi(this.context, properties.getDownloadDir().toAbsolutePath());
         this.groupApi = new GroupApi(this.context);
         this.notificationApi = new NotificationApi(this.context);
+        this.roomApi = new RoomApi(this.context);
         this.tokenApiGroup = new TokenApiGroup(this.context);
         this.userApi = new UserApi(this.context);
     }
@@ -54,8 +64,12 @@ public class EMService {
         return this.contactApi;
     }
 
+    public FileApi file() {
+        return this.fileApi;
+    }
+
     public GroupApi group() {
-        return new GroupApi(this.context);
+        return this.groupApi;
     }
 
     public NotificationApi notification() {
@@ -70,7 +84,9 @@ public class EMService {
         return this.userApi;
     }
 
-
+    public RoomApi room() {
+        return this.roomApi;
+    }
 
     private void printBanner() {
         String banner =

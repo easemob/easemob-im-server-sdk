@@ -3,11 +3,14 @@ package com.easemob.im.server;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 
+import java.nio.file.Path;
+
 public class EMProperties {
-    private final String baseUri;
     private final String appkey;
+    private final String baseUri;
     private final String clientId;
     private final String clientSecret;
+    private final Path downloadDir;
     private final int httpConnectionPoolSize;
     private final boolean hideBanner;
 
@@ -31,6 +34,10 @@ public class EMProperties {
         return this.clientSecret;
     }
 
+    public Path getDownloadDir() {
+        return this.downloadDir;
+    }
+
     public int getHttpConnectionPoolSize() {
         return this.httpConnectionPoolSize;
     }
@@ -39,13 +46,14 @@ public class EMProperties {
         return this.hideBanner;
     }
 
-    private EMProperties(String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize,
-                         boolean hideBanner) {
+    private EMProperties(String baseUri, String appkey, String clientId, String clientSecret, Path downloadDir,
+                         int httpConnectionPoolSize, boolean hideBanner) {
         String[] tokens = appkey.split("#");
-        this.baseUri = String.format("%s/%s/%s", baseUri, tokens[0], tokens[1]);
         this.appkey = appkey;
+        this.baseUri = String.format("%s/%s/%s", baseUri, tokens[0], tokens[1]);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.downloadDir = downloadDir;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
         this.hideBanner = hideBanner;
     }
@@ -57,19 +65,22 @@ public class EMProperties {
     @Override
     public String toString() {
         return "EMProperties{" +
-            "baseUri=" + this.baseUri +
-            ", appkey=" + this.appkey +
-            ", clientId=" + maskSensitiveString(this.clientId) +
-            ", clientSecret=" + maskSensitiveString(this.clientSecret) +
-            ", httpConnectionPoolSize=" + this.httpConnectionPoolSize +
-            '}';
+                "appkey='" + appkey + '\'' +
+                ", baseUri='" + baseUri + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientSecret='" + clientSecret + '\'' +
+                ", downloadDir=" + downloadDir +
+                ", httpConnectionPoolSize=" + httpConnectionPoolSize +
+                ", hideBanner=" + hideBanner +
+                '}';
     }
 
     public static class Builder {
         private String appkey;
+        private String baseUri;
         private String clientId;
         private String clientSecret;
-        private String baseUri;
+        private Path downloadDir;
         private int httpConnectionPoolSize = 10;
         private boolean hideBanner = false;
 
@@ -97,6 +108,26 @@ public class EMProperties {
             }
 
             this.appkey = appkey;
+            return this;
+        }
+
+        /**
+         * 设置环信API baseUri，可以到环信Console查询该值。
+         *
+         * @param baseUri baseUri
+         * @return the {@code Builder}
+         */
+        public Builder setBaseUri(String baseUri) {
+            if (baseUri == null || baseUri.isEmpty()) {
+                throw new EMInvalidArgumentException("baseUri must not be null or empty");
+            }
+            // trim trailing slash
+            if (baseUri.charAt(baseUri.length()-1) == '/') {
+                this.baseUri = baseUri.substring(0, baseUri.length()-1);
+            } else {
+                this.baseUri = baseUri;
+            }
+
             return this;
         }
 
@@ -132,23 +163,8 @@ public class EMProperties {
             return this;
         }
 
-        /**
-         * 设置环信API baseUri，可以到环信Console查询该值。
-         *
-         * @param baseUri baseUri
-         * @return the {@code Builder}
-         */
-        public Builder setBaseUri(String baseUri) {
-            if (baseUri == null || baseUri.isEmpty()) {
-                throw new EMInvalidArgumentException("baseUri must not be null or empty");
-            }
-            // trim trailing slash
-            if (baseUri.charAt(baseUri.length()-1) == '/') {
-                this.baseUri = baseUri.substring(0, baseUri.length()-1);
-            } else {
-                this.baseUri = baseUri;
-            }
-
+        public Builder setDownloadDir(Path downloadDir) {
+            this.downloadDir = downloadDir;
             return this;
         }
 
@@ -184,8 +200,8 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret, this.httpConnectionPoolSize,
-                    this.hideBanner);
+            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret, this.downloadDir,
+                    this.httpConnectionPoolSize, this.hideBanner);
         }
 
     }
