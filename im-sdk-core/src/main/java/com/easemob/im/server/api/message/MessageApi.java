@@ -4,7 +4,6 @@ import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.message.exception.MessageException;
 import com.easemob.im.server.model.Message;
-import com.easemob.im.server.utils.HttpUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -289,71 +288,7 @@ public class MessageApi {
     @SuppressWarnings("unchecked")
     // 构建消息
     private Message buildMessage(TargetType targetType, Set<String> target, ObjectNode msg, String from, Map<String, Object> ext) throws MessageException {
-        verifyUsername(from);
-        if (target == null || target.size() < 1 | target.size() > 1000) {
-            throw new MessageException("Bad Request invalid targets");
-        }
-
-        for (String targetUsername : target) {
-            verifyTargetUsername(targetUsername);
-        }
-
-        ObjectNode request = this.mapper.createObjectNode();
-        request.put("target_type", targetType.toString());
-        request.set("target", mapper.valueToTree(target));
-        request.set("msg", msg);
-        request.put("from", from);
-        if (ext != null) {
-            ObjectNode extJsonNode;
-            try {
-                String json = this.mapper.writeValueAsString(ext);
-                extJsonNode = mapper.readValue(json, ObjectNode.class);
-            } catch (JsonProcessingException e) {
-                throw new MessageException("message to json " + e);
-            }
-            request.set("ext", extJsonNode);
-        }
-
-        JsonNode result;
-        try {
-            result = HttpUtils.execute(this.http, HttpMethod.POST, "/messages", request, this.allocator, this.mapper, this.properties, this.tokenCache);
-        } catch (ApiException e) {
-            throw new MessageException(e.getMessage());
-        }
-
-        JsonNode data;
-        if(result != null) {
-            if (result.get("data") != null) {
-                data = result.get("data");
-            } else {
-                throw new MessageException("data is null");
-            }
-        } else {
-            throw new MessageException("response is null");
-        }
-
-        Map<String, String> targetMap;
-        try {
-            targetMap = mapper.treeToValue(data, Map.class);
-        } catch (JsonProcessingException e) {
-            throw new MessageException("json target to map fail " + e);
-        }
-
-        Map<String, Object> msgContextMap;
-        try {
-            msgContextMap = mapper.treeToValue(msg, Map.class);
-        } catch (JsonProcessingException e) {
-            throw new MessageException("json msg to map fail " + e);
-        }
-
-        return Message.builder()
-                .targetType(targetType)
-                .from(from)
-                .target(targetMap)
-                .messageContext(msgContextMap)
-                .sendMessageTimestamp(result.get("timestamp").asLong())
-                .ext(ext)
-                .build();
+        return null;
     }
 
     // 验证 target type
