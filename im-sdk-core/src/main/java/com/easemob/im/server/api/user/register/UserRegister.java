@@ -2,15 +2,8 @@ package com.easemob.im.server.api.user.register;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMUser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * 用户注册
- */
 public class UserRegister {
 
     public static Mono<EMUser> single(Context context, String username, String password) {

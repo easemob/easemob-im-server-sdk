@@ -1,6 +1,5 @@
 package com.easemob.im.server.utils;
 
-import com.easemob.im.server.EMClient;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.ApiException;
 import com.easemob.im.server.api.token.exception.TokenException;

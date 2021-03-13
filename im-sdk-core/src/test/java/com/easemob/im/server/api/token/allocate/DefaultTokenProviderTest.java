@@ -4,12 +4,20 @@ import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.MockingContext;
 import com.easemob.im.server.api.MockingHttpServer;
+import com.easemob.im.server.api.loadbalance.Endpoint;
+import com.easemob.im.server.api.loadbalance.EndpointRegistry;
+import com.easemob.im.server.api.loadbalance.LoadBalancer;
 import com.easemob.im.server.model.EMToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,11 +27,19 @@ public class DefaultTokenProviderTest extends AbstractApiTest {
         this.server.addHandler("POST /easemob/demo/token", this::handlePostToken);
     }
 
+    private DefaultTokenProvider tokenProvider;
+
+    @BeforeEach
+    void init() {
+        HttpClient httpClient = HttpClient.newConnection();
+        LoadBalancer loadBalancer = endpoints -> endpoints.get(0);
+        EndpointRegistry endpointRegistry = () -> Arrays.asList(new Endpoint("http", "localhost", this.server.port()));
+        this.tokenProvider = new DefaultTokenProvider(this.context.getProperties(), httpClient, endpointRegistry, loadBalancer, this.context.getCodec(), this.context.getErrorMapper());
+    }
+
     @Test
     public void testFetchAppToken() {
-        DefaultTokenProvider tokenProvider = new DefaultTokenProvider(this.context.getProperties(), this.context.getHttpClient(), this.context.getCodec(), this.context.getErrorMapper());
-
-        EMToken appToken = tokenProvider.fetchAppToken().block(Duration.ofSeconds(3));
+        EMToken appToken = this.tokenProvider.fetchAppToken().block(Duration.ofSeconds(3));
         assertEquals("access_token", appToken.getValue());
         assertTrue(appToken.isValid());
     }
@@ -36,9 +52,7 @@ public class DefaultTokenProviderTest extends AbstractApiTest {
 
     @Test
     public void testFetchUserToken() {
-        DefaultTokenProvider tokenProvider = new DefaultTokenProvider(this.context.getProperties(), this.context.getHttpClient(), this.context.getCodec(), this.context.getErrorMapper());
-
-        EMToken appToken = tokenProvider.fetchUserToken("username", "password").block(Duration.ofSeconds(3));
+        EMToken appToken = this.tokenProvider.fetchUserToken("username", "password").block(Duration.ofSeconds(3));
         assertEquals("access_token", appToken.getValue());
         assertTrue(appToken.isValid());
     }

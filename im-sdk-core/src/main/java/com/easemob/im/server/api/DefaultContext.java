@@ -3,14 +3,21 @@ package com.easemob.im.server.api;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.EMVersion;
 import com.easemob.im.server.api.codec.JsonCodec;
+import com.easemob.im.server.api.loadbalance.*;
 import com.easemob.im.server.api.token.allocate.DefaultTokenProvider;
 import com.easemob.im.server.api.token.allocate.TokenProvider;
 import io.netty.handler.logging.LogLevel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
+import java.time.Duration;
+
 public class DefaultContext implements Context {
+
+    private static final Logger log = LoggerFactory.getLogger(DefaultContext.class);
 
     private final EMProperties properties;
 
@@ -22,6 +29,13 @@ public class DefaultContext implements Context {
 
     private final ErrorMapper errorMapper;
 
+    private final LoadBalancer loadBalancer;
+
+    private final EndpointProvider endpointProvider;
+
+    private final EndpointRegistry endpointRegistry;
+
+
     @Override
     public EMProperties getProperties() {
         return this.properties;
@@ -29,7 +43,12 @@ public class DefaultContext implements Context {
 
     @Override
     public HttpClient getHttpClient() {
-        return this.httpClient;
+        Endpoint endpoint = this.loadBalancer.loadBalance(this.endpointRegistry.endpoints());
+        String baseUri = String.format("%s/%s", endpoint.getUri(), this.properties.getAppkeySlashDelimited());
+        if (log.isDebugEnabled()) {
+            log.debug("load balanced base uri: {}", baseUri);
+        }
+        return this.httpClient.baseUrl(baseUri);
     }
 
     @Override
@@ -51,13 +70,15 @@ public class DefaultContext implements Context {
         this.properties = properties;
         ConnectionProvider connectionProvider = ConnectionProvider.create("easemob-sdk", properties.getHttpConnectionPoolSize());
         HttpClient httpClient = HttpClient.create(connectionProvider)
-            .baseUrl(properties.getBaseUri())
             .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())))
             .wiretap("com.easemob.im.http", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
         this.codec = new JsonCodec();
         this.errorMapper = new DefaultErrorMapper();
-        this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.codec, this.errorMapper);
-        this.httpClient = httpClient
-            .headersWhen(headers -> this.tokenProvider.fetchAppToken().map(token -> headers.set("Authorization", String.format("Bearer %s", token.getValue()))));
+        this.loadBalancer = new UniformRandomLoadBalancer();
+        this.endpointProvider = new DnsConfigEndpointProvider(this.properties, this.codec, httpClient.baseUrl("http://rs.easemob.com"), this.errorMapper);
+        this.endpointRegistry = new TimedRefreshEndpointRegistry(this.endpointProvider, Duration.ofMinutes(5));
+        this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.endpointRegistry, this.loadBalancer, this.codec, this.errorMapper);
+        this.httpClient = httpClient.headersWhen(headers -> this.tokenProvider.fetchAppToken().map(token -> headers.set("Authorization", String.format("Bearer %s", token.getValue()))));
+
     }
 }

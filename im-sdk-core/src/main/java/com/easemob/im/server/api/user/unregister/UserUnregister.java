@@ -1,16 +1,15 @@
 package com.easemob.im.server.api.user.unregister;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.api.user.UserResource;
 import com.easemob.im.server.model.EMUser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class UserUnregister {
 
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger log = LoggerFactory.getLogger(UserUnregister.class);
 
     public static Mono<EMUser> single(Context context, String username) {
         return context.getHttpClient()

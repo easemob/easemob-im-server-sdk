@@ -14,6 +14,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// TODO: refactor this using AbstractApiTest
 public class NotificationUserSettingTest {
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -23,13 +24,12 @@ public class NotificationUserSettingTest {
         .build();
 
     private EMProperties properties = EMProperties.builder()
-        .setBaseUri(this.server.uri())
         .setAppkey("easemob#demo")
         .setClientId("clientId")
         .setClientSecret("clientSecret")
         .build();
 
-    private MockingContext context = new MockingContext(properties);
+    private MockingContext context = new MockingContext(properties, this.server.uri());
 
     @Test
     public void testUserSetNickname() {
