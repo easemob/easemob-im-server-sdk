@@ -97,6 +97,10 @@ public class MockingHttpServer {
         return String.format("http://localhost:%s", this.http.port());
     }
 
+    public int port() {
+        return this.http.port();
+    }
+
     public static Builder builder() {
         return new Builder();
     }

@@ -8,14 +8,13 @@ import com.easemob.im.server.api.chatrooms.RoomApi;
 import com.easemob.im.server.api.group.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
 import com.easemob.im.server.api.notification.NotificationApi;
-import com.easemob.im.server.api.token.TokenApiGroup;
 import com.easemob.im.server.api.user.UserApi;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EMService {
 
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger log = LoggerFactory.getLogger(EMService.class);
 
     private final Context context;
 
@@ -31,19 +30,11 @@ public class EMService {
 
     private final RoomApi roomApi;
 
-    private final TokenApiGroup tokenApiGroup;
-
     private final UserApi userApi;
 
 
     public EMService(EMProperties properties) {
-        if (!properties.getHideBanner()) {
-            printBanner();
-        }
-
         log.debug("EMService properties: {}", properties);
-
-
         this.context = new DefaultContext(properties);
 
         this.blockV1 = new BlockApi(this.context);
@@ -52,7 +43,6 @@ public class EMService {
         this.groupApi = new GroupApi(this.context);
         this.notificationApi = new NotificationApi(this.context);
         this.roomApi = new RoomApi(this.context);
-        this.tokenApiGroup = new TokenApiGroup(this.context);
         this.userApi = new UserApi(this.context);
     }
 
@@ -76,30 +66,12 @@ public class EMService {
         return this.notificationApi;
     }
 
-    public TokenApiGroup tokenV1() {
-        return this.tokenApiGroup;
-    }
-
     public UserApi user() {
         return this.userApi;
     }
 
     public RoomApi room() {
         return this.roomApi;
-    }
-
-    private void printBanner() {
-        String banner =
-            "                                                                                            \n" +
-            "            ////////\\\\      ______  ___    _____   ______  __  ___  ____    ____    ______ \n" +
-            "          ///       ///    / ____/ /   |  / ___/  / ____/ /  |/  / / __ \\  / __ )  / ____/ \n" +
-            "        ///  //////////   / __/   / /| |  \\__ \\  / __/   / /|_/ / / / / / / __  | / __/   \n" +
-            "         ///             / /___  / ___ | ___/ / / /___  / /  / / / /_/ / / /_/ / / /___     \n" +
-            "          //////////    /_____/ /_/  |_|/____/ /_____/ /_/  /_/  \\____/ /_____/ /_____/    \n" +
-            "                                                                                         ";
-
-        System.out.println(banner);
-        System.out.printf("        EASEMOB Java SDK v%s", EMVersion.getVersion());
     }
 
 }

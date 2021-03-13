@@ -21,12 +21,11 @@ public abstract class AbstractApiTest {
         this.server = MockingHttpServer.builder().build();
 
         this.properties = EMProperties.builder()
-            .setBaseUri(this.server.uri())
             .setAppkey("easemob#demo")
             .setClientId("clientId")
             .setClientSecret("clientSecret")
             .build();
 
-        this.context = new MockingContext(properties);
+        this.context = new MockingContext(properties, this.server.uri());
     }
 }

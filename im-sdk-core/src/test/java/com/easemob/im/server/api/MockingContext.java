@@ -8,6 +8,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.netty.http.client.HttpClient;
 
+import java.net.URI;
+
 public class MockingContext implements Context {
 
     private EMProperties properties;
@@ -22,9 +24,10 @@ public class MockingContext implements Context {
 
     private ErrorMapper errorMapper;
 
-    public MockingContext(EMProperties properties) {
+    public MockingContext(EMProperties properties, String serverUri) {
         this.properties = properties;
-        this.httpClient = HttpClient.newConnection().baseUrl(properties.getBaseUri())
+        this.httpClient = HttpClient.newConnection()
+            .baseUrl(String.format("%s/%s", serverUri, properties.getAppkeySlashDelimited()))
             .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())));
         this.tokenProvider = new MockingTokenProvider();
         this.bearerAuthorization = new BearerAuthorization(tokenProvider);

@@ -2,28 +2,37 @@ package com.easemob.im.server;
 
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
+import com.easemob.im.server.exception.EMUnsupportedEncodingException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Path;
 
 public class EMProperties {
     private final String appkey;
-    private final String baseUri;
     private final String clientId;
     private final String clientSecret;
     private final Path downloadDir;
     private final int httpConnectionPoolSize;
-    private final boolean hideBanner;
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public String getBaseUri() {
-        return this.baseUri;
-    }
-
     public String getAppkey() {
         return this.appkey;
+    }
+
+    public String getAppkeyUrlEncoded() {
+        try {
+            return URLEncoder.encode(this.appkey, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new EMUnsupportedEncodingException(e.getMessage());
+        }
+    }
+
+    public String getAppkeySlashDelimited() {
+        return this.appkey.replace('#', '/');
     }
 
     public String getClientId() {
@@ -42,36 +51,27 @@ public class EMProperties {
         return this.httpConnectionPoolSize;
     }
 
-    public boolean getHideBanner() {
-        return this.hideBanner;
-    }
-
-    private EMProperties(String baseUri, String appkey, String clientId, String clientSecret, Path downloadDir,
+    private EMProperties(String appkey, String clientId, String clientSecret, Path downloadDir,
                          int httpConnectionPoolSize, boolean hideBanner) {
-        String[] tokens = appkey.split("#");
         this.appkey = appkey;
-        this.baseUri = String.format("%s/%s/%s", baseUri, tokens[0], tokens[1]);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.downloadDir = downloadDir;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
-        this.hideBanner = hideBanner;
     }
 
-    public String maskSensitiveString(String str) {
-        return "<hidden>";
+    public String hide(String str) {
+        return str.replaceAll(".", "*");
     }
 
     @Override
     public String toString() {
         return "EMProperties{" +
                 "appkey='" + appkey + '\'' +
-                ", baseUri='" + baseUri + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", clientSecret='" + clientSecret + '\'' +
+                ", clientId='" + hide(clientId) + '\'' +
+                ", clientSecret='" + hide(clientSecret) + '\'' +
                 ", downloadDir=" + downloadDir +
                 ", httpConnectionPoolSize=" + httpConnectionPoolSize +
-                ", hideBanner=" + hideBanner +
                 '}';
     }
 
@@ -108,26 +108,6 @@ public class EMProperties {
             }
 
             this.appkey = appkey;
-            return this;
-        }
-
-        /**
-         * 设置环信API baseUri，可以到环信Console查询该值。
-         *
-         * @param baseUri baseUri
-         * @return the {@code Builder}
-         */
-        public Builder setBaseUri(String baseUri) {
-            if (baseUri == null || baseUri.isEmpty()) {
-                throw new EMInvalidArgumentException("baseUri must not be null or empty");
-            }
-            // trim trailing slash
-            if (baseUri.charAt(baseUri.length()-1) == '/') {
-                this.baseUri = baseUri.substring(0, baseUri.length()-1);
-            } else {
-                this.baseUri = baseUri;
-            }
-
             return this;
         }
 
@@ -187,9 +167,6 @@ public class EMProperties {
          * @return {@code EMProperties}
          */
         public EMProperties build() {
-            if (this.baseUri == null) {
-                throw new EMInvalidStateException("baseUri not set");
-            }
             if (this.appkey == null) {
                 throw new EMInvalidStateException("appkey not set");
             }
@@ -200,7 +177,7 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret, this.downloadDir,
+            return new EMProperties(this.appkey, this.clientId, this.clientSecret, this.downloadDir,
                     this.httpConnectionPoolSize, this.hideBanner);
         }
 

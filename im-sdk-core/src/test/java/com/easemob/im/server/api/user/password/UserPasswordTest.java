@@ -13,6 +13,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// TODO: refactor this using AbstractApiTest
 public class UserPasswordTest {
     private ObjectMapper objectMapper = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -22,13 +23,12 @@ public class UserPasswordTest {
         .build();
 
     private EMProperties properties = EMProperties.builder()
-        .setBaseUri(this.server.uri())
         .setAppkey("easemob#demo")
         .setClientId("clientId")
         .setClientSecret("clientSecret")
         .build();
 
-    private MockingContext context = new MockingContext(properties);
+    private MockingContext context = new MockingContext(properties, this.server.uri());
 
     @Test
     public void testUserPasswordReset() {
