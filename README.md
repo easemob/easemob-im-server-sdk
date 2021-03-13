@@ -1,6 +1,8 @@
-# Easemob IM Java SDK
+# Easemob IM Java SDK 
 
-[![codecov](https://codecov.io/gh/harry-hao/easemob-im-server-sdk/branch/master/graph/badge.svg?token=DG02Z5O1PZ)](https://codecov.io/gh/harry-hao/easemob-im-server-sdk)
+[![build](https://github.com/easemob/easemob-im-server-sdk/workflows/Build/badge.svg)](https://github.com/easemob/easemob-im-server-sdk/actions)
+
+[![codecov](https://codecov.io/gh/easemob/easemob-im-server-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/easemob/easemob-im-server-sdk)
 
 This is the official Easemob IM Java SDK repository.
 
