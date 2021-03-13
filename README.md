@@ -1,5 +1,7 @@
 # Easemob IM Java SDK
 
+[![codecov](https://codecov.io/gh/harry-hao/easemob-im-server-sdk/branch/master/graph/badge.svg?token=DG02Z5O1PZ)](https://codecov.io/gh/harry-hao/easemob-im-server-sdk)
+
 This is the official Easemob IM Java SDK repository.
 
 Easemob provides instant messaging APIs for your applications.
@@ -55,6 +57,7 @@ Note subscribe() will return immediately, if you want to block until complete or
 		.then(service.sendText("Welcome, bob").toUser("bob"))
 		.block(Duration.ofSeconds(3));
 ```
+
 
 ## References
 
