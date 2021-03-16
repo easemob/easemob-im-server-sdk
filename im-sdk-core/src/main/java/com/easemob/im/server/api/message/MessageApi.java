@@ -1,6 +1,8 @@
 package com.easemob.im.server.api.message;
 
+import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.message.history.MessageHistory;
 import com.easemob.im.server.api.message.missed.MessageMissed;
 import com.easemob.im.server.api.message.send.SendMessage;
 import com.easemob.im.server.api.message.send.SendMessageResponse;
@@ -10,6 +12,8 @@ import com.easemob.im.server.model.EMMessage;
 import com.easemob.im.server.model.EMMessageStatus;
 import reactor.core.publisher.Mono;
 
+import java.nio.file.Path;
+import java.time.Instant;
 import java.util.Set;
 
 public class MessageApi {
@@ -20,10 +24,14 @@ public class MessageApi {
 
     private SendMessage sendMessage;
 
+    private MessageHistory messageHistory;
+
     public MessageApi(Context context) {
+        EMProperties properties = context.getProperties();
         this.context = context;
         this.missed = new MessageMissed(context);
         this.sendMessage = new SendMessage(context);
+        this.messageHistory = new MessageHistory(context, properties.getServerTimezone());
     }
 
     public MessageMissed missed() {
@@ -68,4 +76,26 @@ public class MessageApi {
     public Mono<SendMessageResponse> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
         return this.sendMessage.send(from, toType, tos, message, extensions);
     }
+
+    /**
+     * Get message history uri.
+     *
+     * @param instant the time
+     * @return A {@code Mono} of the uri
+     */
+    public Mono<String> getHistoryAsUri(Instant instant) {
+        return this.messageHistory.toUri(instant);
+    }
+
+    /**
+     * Download message history as local file.
+     * @param instant the time
+     * @param dir the path to save downloaded file
+     * @param filename the filename, fallback to YYYYMMDDHH if null
+     * @return A {@code Mono} of the path of downloaded file
+     */
+    public Mono<Path> getHistoryAsLocalFile(Instant instant, Path dir, String filename) {
+        return this.messageHistory.toLocalFile(instant, dir, filename);
+    }
+
 }

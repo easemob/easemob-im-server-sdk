@@ -3,7 +3,8 @@ package com.easemob.im.server;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApi;
-import com.easemob.im.server.api.attachment.FileApi;
+import com.easemob.im.server.api.attachment.AttachmentApi;
+import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.room.RoomApi;
 import com.easemob.im.server.api.group.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
@@ -22,9 +23,11 @@ public class EMService {
 
     private final ContactApi contactApi;
 
-    private final FileApi fileApi;
+    private final AttachmentApi attachmentApi;
 
     private final GroupApi groupApi;
+
+    private final MessageApi messageApi;
 
     private final NotificationApi notificationApi;
 
@@ -39,7 +42,8 @@ public class EMService {
 
         this.blockV1 = new BlockApi(this.context);
         this.contactApi = new ContactApi(this.context);
-        this.fileApi = new FileApi(this.context, properties.getDownloadDir().toAbsolutePath());
+        this.attachmentApi = new AttachmentApi(this.context);
+        this.messageApi = new MessageApi(this.context);
         this.groupApi = new GroupApi(this.context);
         this.notificationApi = new NotificationApi(this.context);
         this.roomApi = new RoomApi(this.context);
@@ -54,12 +58,16 @@ public class EMService {
         return this.contactApi;
     }
 
-    public FileApi file() {
-        return this.fileApi;
+    public AttachmentApi file() {
+        return this.attachmentApi;
     }
 
     public GroupApi group() {
         return this.groupApi;
+    }
+
+    public MessageApi message() {
+        return this.messageApi;
     }
 
     public NotificationApi notification() {
@@ -73,5 +81,7 @@ public class EMService {
     public RoomApi room() {
         return this.roomApi;
     }
+
+
 
 }

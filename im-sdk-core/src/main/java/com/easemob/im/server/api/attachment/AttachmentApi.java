@@ -7,26 +7,20 @@ import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
 
-public class FileApi {
+public class AttachmentApi {
 
     private Context context;
 
-    private Path downloadDir;
-
-    public FileApi(Context context, Path downloadDir) {
-        if (!downloadDir.toFile().exists()) {
-            downloadDir.toFile().mkdirs();
-        }
+    public AttachmentApi(Context context) {
         this.context = context;
-        this.downloadDir = downloadDir;
     }
 
     public Mono<String> uploadFile(Path path, boolean restrictAccess) {
         return Upload.fromLocalFile(this.context, path, restrictAccess);
     }
 
-    public Mono<Path> downloadFile(String fileId, String filename) {
-        return Download.toLocalFile(this.context, fileId, this.downloadDir, filename);
+    public Mono<Path> downloadFile(String fileId, Path dir, String filename) {
+        return Download.toLocalFile(this.context, fileId, dir, filename);
     }
 
 

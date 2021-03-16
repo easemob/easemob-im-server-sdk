@@ -1,5 +1,6 @@
 package com.easemob.im.server;
 
+import com.easemob.im.server.api.util.Sensitive;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMUnsupportedEncodingException;
@@ -12,8 +13,9 @@ public class EMProperties {
     private final String appkey;
     private final String clientId;
     private final String clientSecret;
-    private final Path downloadDir;
+
     private final int httpConnectionPoolSize;
+    private final String serverTimezone;
 
     public static Builder builder() {
         return new Builder();
@@ -43,46 +45,41 @@ public class EMProperties {
         return this.clientSecret;
     }
 
-    public Path getDownloadDir() {
-        return this.downloadDir;
-    }
-
     public int getHttpConnectionPoolSize() {
         return this.httpConnectionPoolSize;
     }
 
-    private EMProperties(String appkey, String clientId, String clientSecret, Path downloadDir,
-                         int httpConnectionPoolSize, boolean hideBanner) {
+    public String getServerTimezone() {
+        return this.serverTimezone;
+    }
+
+    private EMProperties(String appkey, String clientId, String clientSecret,
+                         int httpConnectionPoolSize, String serverTimezone) {
         this.appkey = appkey;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.downloadDir = downloadDir;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
-    }
-
-    public String hide(String str) {
-        return str.replaceAll(".", "*");
+        this.serverTimezone = serverTimezone;
     }
 
     @Override
     public String toString() {
         return "EMProperties{" +
                 "appkey='" + appkey + '\'' +
-                ", clientId='" + hide(clientId) + '\'' +
-                ", clientSecret='" + hide(clientSecret) + '\'' +
-                ", downloadDir=" + downloadDir +
+                ", clientId='" + Sensitive.mask(clientId) + '\'' +
+                ", clientSecret='" + Sensitive.mask(clientSecret) + '\'' +
                 ", httpConnectionPoolSize=" + httpConnectionPoolSize +
+                ", serverTimezone=" + serverTimezone +
                 '}';
     }
 
     public static class Builder {
         private String appkey;
-        private String baseUri;
         private String clientId;
         private String clientSecret;
         private Path downloadDir;
         private int httpConnectionPoolSize = 10;
-        private boolean hideBanner = false;
+        private String serverTimezone = "+8";
 
         /**
          * 设置Appkey，可以到环信Console查询该值。
@@ -143,11 +140,6 @@ public class EMProperties {
             return this;
         }
 
-        public Builder setDownloadDir(Path downloadDir) {
-            this.downloadDir = downloadDir;
-            return this;
-        }
-
         public Builder setHttpConnectionPoolSize(int httpConnectionPoolSize) {
             if (httpConnectionPoolSize < 0) {
                 throw new EMInvalidArgumentException("httpConnectionPoolSize must not be negative");
@@ -157,8 +149,8 @@ public class EMProperties {
             return this;
         }
 
-        public Builder setHideBanner(boolean hideBanner) {
-            this.hideBanner = hideBanner;
+        public Builder setServerTimezone(String timezone) {
+            this.serverTimezone = timezone;
             return this;
         }
 
@@ -177,8 +169,8 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.appkey, this.clientId, this.clientSecret, this.downloadDir,
-                    this.httpConnectionPoolSize, this.hideBanner);
+            return new EMProperties(this.appkey, this.clientId, this.clientSecret,
+                    this.httpConnectionPoolSize, this.serverTimezone);
         }
 
     }
