@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.List;
 
 @Component
-@Command(name = "unblock", description = "Block users from sending message or login.")
+@Command(name = "unblock", description = "Unblock users from sending message or login.")
 public class UnblockCmd {
     @Autowired
     private EMService service;
@@ -30,10 +30,13 @@ public class UnblockCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         } else if (toGroup != null) {
-            // TODO: implement block users send msg to group
-            System.out.println("Not implemented");
+            unblockUsers.forEach(user -> {
+                this.service.block().unblockUserSendMsgToGroup(user, toGroup)
+                        .doOnSuccess(ignore -> System.out.println("done"))
+                        .block();
+            });
         } else if (toRoom != null) {
-            // TODO: implement block users send msg to room
+            // TODO: implement unblock users send msg to room
             System.out.println("Not implemented");
         } else {
             System.out.println("At least one of --to-user,-u/--to-group,-g/--to-room,-r must be specified.");
@@ -42,13 +45,21 @@ public class UnblockCmd {
     }
 
 
-    @Command(name = "login", description = "Block user from login.")
-    public void blockUserLogin(@Parameters(index = "0", description = "the user to block") String username) {
+    @Command(name = "login", description = "Unblock user from login.")
+    public void unblockUserLogin(@Parameters(index = "0", description = "the user to unblock") String username) {
         this.service.block().blockUserLogin(username)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block(Duration.ofSeconds(3));
+    }
+
+    @Command(name = "join", description = "Unblock user join group.")
+    public void unblockUserJoinGroup(@Option(names = "--from-user", description = "the username") String username,
+                                     @Option(names = "--join-group", description = "the group") String group) {
+        this.service.block().unblockUserJoinGroup(username, group)
+                .doOnSuccess(ignored -> System.out.println("done"))
+                .block();
     }
 
 }
