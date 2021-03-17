@@ -2,6 +2,7 @@ package com.easemob.im.cli.cmd;
 
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
+import com.easemob.im.server.model.EMUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -66,5 +67,46 @@ public class GetCmd implements Action{
                 }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();
+    }
+
+    @Command(name = "user-list", description = "List users. By default all users are listed.\nUse --limit and --cursor to control ", mixinStandardHelpOptions = true)
+    public void userList(@Option(names = {"--blocked-by-user"}, description = "to list users blocked from sending message to this user") String blockedByUser,
+                         @Option(names = {"--limit"}, description = "to limit") Integer limit,
+                         @Option(names = {"--cursor"}, description = "the cursor") String cursor) {
+
+        if (blockedByUser != null) {
+            service.block().getUsersBlockedFromSendMsgToUser(blockedByUser)
+                    .doOnNext(username -> System.out.println("user: "+username))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        } else if (limit != null) {
+            service.user().listUsers(limit, cursor)
+                    .doOnNext(rsp -> {
+                        System.out.println("cursor: " + rsp.getCursor());
+                        System.out.println("users:");
+                        for (EMUser user : rsp.getEMUsers()) {
+                            System.out.println("\t"+user.getUsername());
+                        }
+                    }).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        } else {
+            service.user().listAllUsers()
+                    .doOnNext(user -> {
+                        System.out.println(user.getUsername());
+                    }).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        }
+    }
+
+    @Command(name = "contact-list", description = "List contacts of a user.")
+    public void contactList(@Parameters(index = "0", description = "the user's username") String username) {
+        this.service.contact().list(username)
+                .doOnNext(contact -> System.out.println(contact))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .blockLast();
     }
 }

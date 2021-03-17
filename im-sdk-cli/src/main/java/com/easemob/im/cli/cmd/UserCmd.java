@@ -17,8 +17,9 @@ import java.time.Duration;
 
 import static picocli.CommandLine.Option.NULL_VALUE;
 
-@Component
-@Command(name = "user", description = "User commands.")
+@Deprecated
+//@Component
+//@Command(name = "user", description = "User commands.")
 public class UserCmd {
     @Autowired
     private EMService service;
