@@ -23,7 +23,7 @@ public class CreateCmd {
     private EMService service;
 
     @Command(name = "attachment", description = "Create an attachment.")
-    public void createAttachment(@Option(names = "-f", description = "from file") Path file) {
+    public void attachment(@Option(names = "-f", description = "from file") Path file) {
         this.service.file().uploadFile(file, false)
                 .doOnNext(id -> System.out.println(String.format("id: %s", id)))
                 .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))

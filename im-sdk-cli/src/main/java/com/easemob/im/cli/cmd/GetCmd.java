@@ -35,7 +35,7 @@ public class GetCmd {
     private Path historyDir;
 
     @Command(name = "attachment", description = "Download attachment by id.")
-    public void getAttachment(@Parameters(arity = "1") String id) {
+    public void attachment(@Parameters(arity = "1") String id) {
         this.service.file().downloadFile(id, this.attachmentDir, id)
                 .doOnSuccess(downloaded -> System.out.println(String.format("downloaded: %s", downloaded.toString())))
                 .doOnError(error -> System.out.println(String.format("error: %s", error.getMessage())))
