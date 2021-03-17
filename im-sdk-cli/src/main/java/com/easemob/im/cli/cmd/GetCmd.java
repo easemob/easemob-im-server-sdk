@@ -9,14 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
-import java.time.*;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -184,5 +185,19 @@ public class GetCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         }
+    }
+
+    @Command(name = "user-setting", description = "Get notification setting for the user.")
+    public void userSetting(@Parameters(index = "0", description = "username") String username) {
+        System.out.println("username : " + username);
+        this.service.notification()
+                .getUserSetting(username)
+                .doOnSuccess(settings -> {
+                    System.out.println("username: " + settings.getUsername());
+                    System.out.println("nickname: " + settings.getNickname());
+                    System.out.println("showMessageContent: " + settings.getShowMessageContent());
+                }).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
     }
 }

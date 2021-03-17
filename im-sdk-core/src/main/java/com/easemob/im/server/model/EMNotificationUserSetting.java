@@ -6,9 +6,9 @@ public class EMNotificationUserSetting {
 
     private String nickname;
 
-    private boolean showMessageContent;
+    private Boolean showMessageContent;
 
-    public EMNotificationUserSetting(String username, String nickname, boolean showMessageContent) {
+    public EMNotificationUserSetting(String username, String nickname, Boolean showMessageContent) {
         this.username = username;
         this.nickname = nickname;
         this.showMessageContent = showMessageContent;
@@ -22,7 +22,7 @@ public class EMNotificationUserSetting {
         return this.nickname;
     }
 
-    public boolean getShowMessageContent() {
+    public Boolean getShowMessageContent() {
         return this.showMessageContent;
     }
 
