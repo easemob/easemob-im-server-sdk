@@ -57,4 +57,14 @@ public class GetCmd implements Action{
         }
     }
 
+    @Command(name = "user", description = "Get user info.", mixinStandardHelpOptions = true)
+    public void user(@Parameters(index = "0", description = "The username") String username) {
+        this.service.user().get(username)
+                .doOnNext(user -> {
+                    System.out.println("user: " + user.getUsername());
+                    System.out.println("canLogin: " + user.getCanLogin());
+                }).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
+    }
 }
