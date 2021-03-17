@@ -173,5 +173,16 @@ public class EMProperties {
                     this.httpConnectionPoolSize, this.serverTimezone);
         }
 
+        @Override
+        public String toString() {
+            return "Builder{" +
+                    "appkey='" + appkey + '\'' +
+                    ", clientId='" + Sensitive.mask(clientId) + '\'' +
+                    ", clientSecret='" + Sensitive.mask(clientSecret) + '\'' +
+                    ", downloadDir=" + downloadDir +
+                    ", httpConnectionPoolSize=" + httpConnectionPoolSize +
+                    ", serverTimezone='" + serverTimezone + '\'' +
+                    '}';
+        }
     }
 }

@@ -28,9 +28,9 @@ public class TimedRefreshEndpointRegistry implements EndpointRegistry {
         endpointProvider.endpoints()
                 .timeout(Duration.ofSeconds(10))
                 .doOnNext(nextEndpoints -> this.endpoints.set(nextEndpoints))
-                .doOnError(error -> log.warn("load endpoints error: %s", error.getMessage()))
+                .doOnError(error -> log.warn("load endpoints error: {}", error.getMessage()))
                 .retryWhen(Retry.fixedDelay(10, Duration.ofSeconds(3)))
-                .doOnError(error -> log.warn("load endpoints error, retry exhausted: %s", error.getMessage()))
+                .doOnError(error -> log.warn("load endpoints error, retry exhausted: {}", error.getMessage()))
                 .block();
 
         this.refreshDisposable = Flux.interval(refreshInterval)

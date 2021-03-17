@@ -1,12 +1,13 @@
 package com.easemob.im.cli;
 
+import ch.qos.logback.classic.Level;
 import com.easemob.im.cli.cmd.*;
+import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.Logger;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
-import picocli.AutoComplete;
-import picocli.AutoComplete.GenerateCompletion;
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.HelpCommand;
+import picocli.CommandLine.Option;
 
 @Component
 @Command(name = "im",
@@ -21,6 +22,16 @@ import picocli.CommandLine.HelpCommand;
                 UnblockCmd.class,
                 UserCmd.class
         })
-public class IMCliCmd {
+public class IMCliCmd implements InitializingBean {
+    @Option(names = {"-v", "--verbose"})
+    private boolean verbose;
 
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (this.verbose) {
+            Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+            root.setLevel(Level.DEBUG);
+        }
+    }
 }
