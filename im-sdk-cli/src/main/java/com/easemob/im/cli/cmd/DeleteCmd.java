@@ -58,7 +58,7 @@ public class DeleteCmd {
     }
 
     @Command(name = "user", description = "Delete a user.", mixinStandardHelpOptions = true)
-    public void user(@CommandLine.Parameters(index = "0", description = "the username", defaultValue = "") String username,
+    public void user(@CommandLine.Parameters(index = "0", paramLabel = "username", description = "user to unblock", defaultValue = "") String username,
                        @CommandLine.Option(names = {"--all"}, description = "delete all users") boolean all) {
         if (all) {
             this.service.user().deleteAll()

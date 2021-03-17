@@ -32,7 +32,7 @@ public class CreateCmd {
     }
 
     @Command(name = "block", description = "Block user from resource.")
-    public void block(@Parameters(index = "0", paramLabel = "userId", description = "user to block") String username,
+    public void block(@Parameters(index = "0", paramLabel = "username", description = "user to block") String username,
                       @Option(names = {"--msg-to-user"}, description = "block user send message to this user") String msgToUsername,
                       @Option(names = {"--msg-to-group"}, description = "block user send message to this group") String msgToGroupId,
                       @Option(names = {"--msg-to-room"}, description = "block user send message to this room") String msgToRoomId,
