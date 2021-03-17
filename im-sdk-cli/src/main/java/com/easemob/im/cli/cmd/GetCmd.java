@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 @Command(name = "get", description = "Get a resource.")
-public class GetCmd {
+public class GetCmd implements Action{
 
     @Autowired
     private EMService service;

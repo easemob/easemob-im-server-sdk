@@ -12,8 +12,9 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 
-@Component
-@Command(name = "unblock", description = "Unblock users from sending message or login.")
+@Deprecated
+//@Component
+//@Command(name = "unblock", description = "Unblock users from sending message or login.")
 public class UnblockCmd {
     @Autowired
     private EMService service;

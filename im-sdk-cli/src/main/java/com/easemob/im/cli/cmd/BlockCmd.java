@@ -12,10 +12,9 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 
-
-
-@Component
-@Command(name = "block", description = "Block users from sending message or login.")
+@Deprecated
+//@Component
+//@Command(name = "block", description = "Block users from sending message or login.")
 public class BlockCmd {
 
     @Autowired

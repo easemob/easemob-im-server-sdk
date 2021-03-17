@@ -1,26 +1,20 @@
 package com.easemob.im.cli;
 
-import ch.qos.logback.classic.Level;
-import com.easemob.im.cli.cmd.*;
-import org.slf4j.LoggerFactory;
-import ch.qos.logback.classic.Logger;
-import org.springframework.beans.factory.InitializingBean;
+import com.easemob.im.cli.cmd.CreateCmd;
+import com.easemob.im.cli.cmd.DeleteCmd;
+import com.easemob.im.cli.cmd.GetCmd;
+import com.easemob.im.cli.cmd.UpdateCmd;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 
 @Component
 @Command(name = "im",
         mixinStandardHelpOptions = true,
         subcommands = {
-                BlockCmd.class,
-                ContactCmd.class,
                 CreateCmd.class,
                 GetCmd.class,
-                GroupCmd.class,
-                NotificationCmd.class,
-                UnblockCmd.class,
-                UserCmd.class
+                DeleteCmd.class,
+                UpdateCmd.class
         })
 public class IMCliCmd implements InitializingBean {
     @Option(names = {"-v", "--verbose"})
