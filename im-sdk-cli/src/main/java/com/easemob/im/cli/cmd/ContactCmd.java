@@ -9,8 +9,9 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 import reactor.core.publisher.Mono;
 
-@Component
-@Command(name = "contact", description = "Contact commands.")
+@Deprecated
+//@Component
+//@Command(name = "contact", description = "Contact commands.")
 public class ContactCmd {
     @Autowired
     private EMService service;
