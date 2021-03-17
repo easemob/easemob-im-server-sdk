@@ -76,4 +76,14 @@ public class CreateCmd implements Action {
                 .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();
     }
+
+    @Command(name = "contact", description = "Add a contact to the user.")
+    public void contact(@CommandLine.Parameters(index = "0", description = "the user's username") String user,
+                           @CommandLine.Parameters(index = "1", description = "the contact's username") String contact) {
+        this.service.contact().add(user, contact)
+                .doOnSuccess(ignored -> System.out.println("done"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
+    }
 }

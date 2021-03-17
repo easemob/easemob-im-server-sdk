@@ -55,4 +55,32 @@ public class DeleteCmd implements Action {
                     .block();
         }
     }
+
+    @Command(name = "user", description = "Delete a user.", mixinStandardHelpOptions = true)
+    public void user(@CommandLine.Parameters(index = "0", description = "the username", defaultValue = "") String username,
+                       @CommandLine.Option(names = {"--all"}, description = "delete all users") boolean all) {
+        if (all) {
+            this.service.user().deleteAll()
+                    .doOnNext(user -> System.out.println("user " + user.getUsername() + " deleted"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        } else {
+            this.service.user().delete(username)
+                    .doOnSuccess(user -> System.out.println("user " + user.getUsername() + " deleted"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        }
+    }
+
+    @Command(name = "contact", description = "Remove a contact from the user.")
+    public void contact(@CommandLine.Parameters(index = "0", description = "the user's username") String user,
+                              @CommandLine.Parameters(index = "1", description = "the contact's username") String contact) {
+        this.service.contact().remove(user, contact)
+                .doOnSuccess(ignored -> System.out.println("done"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
+    }
 }
