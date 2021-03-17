@@ -60,11 +60,20 @@ public class CreateCmd implements Action {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block(Duration.ofSeconds(3));
         }
-
         if (hasText(groupId)) {
             this.service.block().blockUserJoinGroup(username, groupId)
                     .doOnSuccess(ignored -> System.out.println("done"))
                     .block();
         }
+    }
+
+    @Command(name = "user", description = "Create a user.", mixinStandardHelpOptions = true)
+    public void user(@CommandLine.Parameters(index = "0", description = "the username") String username,
+                       @CommandLine.Parameters(index = "1", description = "the password") String password) {
+        service.user().create(username, password)
+                .doOnSuccess(user -> System.out.println(user.getUsername() + " created"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
     }
 }
