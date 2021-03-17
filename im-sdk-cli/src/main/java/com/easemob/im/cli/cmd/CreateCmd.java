@@ -5,7 +5,7 @@ import com.easemob.im.server.EMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import picocli.CommandLine;
+import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import reactor.core.publisher.Mono;
@@ -32,12 +32,12 @@ public class CreateCmd {
     }
 
     @Command(name = "block", description = "Block user from resource.")
-    public void block(@CommandLine.Parameters(index = "0", paramLabel = "userId", description = "user to block") String username,
-                      @CommandLine.Option(names = {"--msg-to-user"}, description = "block user send message to this user") String msgToUsername,
-                      @CommandLine.Option(names = {"--msg-to-group"}, description = "block user send message to this group") String msgToGroupId,
-                      @CommandLine.Option(names = {"--msg-to-room"}, description = "block user send message to this room") String msgToRoomId,
-                      @CommandLine.Option(names = {"--login"}, description = "block user to login") boolean login,
-                      @CommandLine.Option(names = {"--join-group"}, description = "block user to join group") String groupId) {
+    public void block(@Parameters(index = "0", paramLabel = "userId", description = "user to block") String username,
+                      @Option(names = {"--msg-to-user"}, description = "block user send message to this user") String msgToUsername,
+                      @Option(names = {"--msg-to-group"}, description = "block user send message to this group") String msgToGroupId,
+                      @Option(names = {"--msg-to-room"}, description = "block user send message to this room") String msgToRoomId,
+                      @Option(names = {"--login"}, description = "block user to login") boolean login,
+                      @Option(names = {"--join-group"}, description = "block user to join group") String groupId) {
         if (StringUtils.hasText(msgToUsername)) {
             this.service.block().blockUsersSendMsgToUser(Arrays.asList(username), msgToUsername)
                     .doOnSuccess(ignore -> System.out.println("done"))
@@ -69,8 +69,8 @@ public class CreateCmd {
     }
 
     @Command(name = "user", description = "Create a user.", mixinStandardHelpOptions = true)
-    public void user(@CommandLine.Parameters(index = "0", description = "the username") String username,
-                     @CommandLine.Parameters(index = "1", description = "the password") String password) {
+    public void user(@Parameters(index = "0", description = "the username") String username,
+                     @Parameters(index = "1", description = "the password") String password) {
         service.user().create(username, password)
                 .doOnSuccess(user -> System.out.println(user.getUsername() + " created"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -79,8 +79,8 @@ public class CreateCmd {
     }
 
     @Command(name = "contact", description = "Add a contact to the user.")
-    public void contact(@CommandLine.Parameters(index = "0", description = "the user's username") String user,
-                        @CommandLine.Parameters(index = "1", description = "the contact's username") String contact) {
+    public void contact(@Parameters(index = "0", description = "the user's username") String user,
+                        @Parameters(index = "1", description = "the contact's username") String contact) {
         this.service.contact().add(user, contact)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
