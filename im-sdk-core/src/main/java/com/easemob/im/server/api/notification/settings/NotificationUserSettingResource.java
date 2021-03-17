@@ -4,6 +4,9 @@ import com.easemob.im.server.model.EMNotificationUserSetting;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Optional;
+import java.util.concurrent.Executors;
+
 public class NotificationUserSettingResource {
     @JsonProperty("username")
     private String username;
@@ -22,7 +25,7 @@ public class NotificationUserSettingResource {
     }
 
     public EMNotificationUserSetting toEMNotificationSettings() {
-        return new EMNotificationUserSetting(this.username, this.nickname, this.showMessageContent == 1);
+        return new EMNotificationUserSetting(this.username, this.nickname, this.showMessageContent == null ? null : this.showMessageContent == 1);
     }
 
 }
