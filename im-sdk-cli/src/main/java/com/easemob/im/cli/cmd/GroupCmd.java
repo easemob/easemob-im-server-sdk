@@ -15,8 +15,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-@Component
-@Command(name = "group", description = "Group related commands.")
+@Deprecated
+//@Component
+//@Command(name = "group", description = "Group related commands.")
 public class GroupCmd {
 
     @Autowired
