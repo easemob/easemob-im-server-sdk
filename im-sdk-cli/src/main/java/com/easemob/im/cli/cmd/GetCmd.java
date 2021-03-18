@@ -89,8 +89,8 @@ public class GetCmd {
                     .doOnNext(rsp -> {
                         System.out.println("cursor: " + rsp.getCursor());
                         System.out.println("users:");
-                        for (EMUser user : rsp.getEMUsers()) {
-                            System.out.println("\t" + user.getUsername());
+                        for (String user : rsp.getUsernames()) {
+                            System.out.println("\t" + user);
                         }
                     }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -98,7 +98,7 @@ public class GetCmd {
         } else {
             service.user().listAllUsers()
                     .doOnNext(user -> {
-                        System.out.println(user.getUsername());
+                        System.out.println(user);
                     }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
@@ -120,7 +120,7 @@ public class GetCmd {
                       @Option(names = {"--owner"}, description = "get owner") boolean owner,
                       @Option(names = {"--members"}, description = "get members") boolean members,
                       @Option(names = {"--announcement"}, description = "get announcement") boolean announcement) {
-        this.service.group().getGroupDetails(groupId)
+        this.service.group().getGroup(groupId)
                 .doOnSuccess(group -> {
                     System.out.println("group: " + group.getGroupId());
                     if (settings) {

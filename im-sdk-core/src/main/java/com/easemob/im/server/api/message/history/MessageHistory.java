@@ -36,7 +36,7 @@ public class MessageHistory {
         }
 
         if (filename == null) {
-            filename = toPath(instant);
+            filename = toPath(instant)+".gz";
         }
 
         String finalFilename = filename;

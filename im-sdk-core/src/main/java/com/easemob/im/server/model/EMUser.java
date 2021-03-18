@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 
 public class EMUser extends EMEntity {
 
-    private static final Pattern USERNAME_PATTERN = Pattern.compile("[a-z][0-9a-z-]{7,31}");
+    private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z][0-9a-z-]{1,32}$");
 
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("[0-9a-zA-Z-_?!.]{8,32}");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9~!@#$%^&*\\-_=+<>;:,./?]{1,32}$");
 
     private final String username;
 

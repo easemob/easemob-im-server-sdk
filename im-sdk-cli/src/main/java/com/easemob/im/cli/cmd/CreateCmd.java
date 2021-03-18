@@ -71,7 +71,7 @@ public class CreateCmd {
     public void user(@Parameters(index = "0", description = "the username") String username,
                      @Parameters(index = "1", description = "the password") String password) {
         service.user().create(username, password)
-                .doOnSuccess(user -> System.out.println(user.getUsername() + " created"))
+                .doOnSuccess(ignore -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();

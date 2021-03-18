@@ -1,12 +1,8 @@
 package com.easemob.im.server.api.user.unregister;
 
-import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.MockingContext;
-import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.model.EMUser;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -16,26 +12,26 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserUnregisterTest extends AbstractApiTest {
+class DeleteUserTest extends AbstractApiTest {
+    DeleteUser deleteUser = new DeleteUser(this.context);
 
-    public UserUnregisterTest() {
+    DeleteUserTest() {
         this.server.addHandler("DELETE /easemob/demo/users/username", this::handleUserUnregisterSingle);
         this.server.addHandler("DELETE /easemob/demo/users?limit=100", req -> handleUserUnregisterAll(req, 100, "cursor"));
         this.server.addHandler("DELETE /easemob/demo/users?limit=100&cursor=cursor", req -> handleUserUnregisterAll(req, 100, null));
     }
 
     @Test
-    public void testUserUnregisterSingle() {
-        EMUser user = UserUnregister.single(this.context, "username").block(Duration.ofSeconds(3));
-        assertEquals("username", user.getUsername());
+    void testUserUnregisterSingle() {
+        assertDoesNotThrow(() -> this.deleteUser.single("username").block(Duration.ofSeconds(3)));
     }
 
     @Test
     public void testUserUnregisterAll() {
-        List<EMUser> users = UserUnregister.all(this.context, 100).collectList().block(Duration.ofSeconds(3));
+        List<String> users = this.deleteUser.all(100).collectList().block(Duration.ofSeconds(3));
         assertEquals(200, users.size());
         for (int i = 0; i < 200; i++) {
-            assertEquals("username", users.get(i).getUsername());
+            assertEquals("username", users.get(i));
         }
     }
 

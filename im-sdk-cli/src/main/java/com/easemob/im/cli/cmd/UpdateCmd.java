@@ -19,7 +19,7 @@ public class UpdateCmd {
     @Command(name = "password", description = "Reset password for the user.", mixinStandardHelpOptions = true)
     public void password(@CommandLine.Parameters(index = "0", description = "the username") String username,
                          @CommandLine.Parameters(index = "1", description = "the password") String password) {
-        this.service.user().resetPassword(username, password)
+        this.service.user().updateUserPassword(username, password)
                 .doOnSuccess(ignore -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -35,7 +35,7 @@ public class UpdateCmd {
                       @CommandLine.Option(names = {"--can-member-invite"}, description = "can member invite others to join") Boolean canMemberInvite) {
 
         if (maxMembers != null || needApproveToJoin != null || canMemberInvite != null) {
-            this.service.group().updateSettings(groupId, settings -> {
+            this.service.group().updateGroup(groupId, settings -> {
                 if (maxMembers != null) {
                     settings.setMaxMembers(maxMembers);
                 }

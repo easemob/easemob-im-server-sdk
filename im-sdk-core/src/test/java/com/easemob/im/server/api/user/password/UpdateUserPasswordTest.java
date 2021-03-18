@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.user.password;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.MockingContext;
 import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.exception.EMNotFoundException;
@@ -13,34 +14,25 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// TODO: refactor this using AbstractApiTest
-public class UserPasswordTest {
-    private ObjectMapper objectMapper = new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+public class UpdateUserPasswordTest extends AbstractApiTest {
 
-    private MockingHttpServer server = MockingHttpServer.builder()
-        .addHandler("PUT /easemob/demo/users/username/password", this::handleUserPasswordReset)
-        .build();
+    UpdateUserPassword updateUserPassword = new UpdateUserPassword(this.context);
 
-    private EMProperties properties = EMProperties.builder()
-        .setAppkey("easemob#demo")
-        .setClientId("clientId")
-        .setClientSecret("clientSecret")
-        .build();
-
-    private MockingContext context = new MockingContext(properties, this.server.uri());
+    UpdateUserPasswordTest() {
+        this.server.addHandler("PUT /easemob/demo/users/username/password", this::handleUserPasswordReset);
+    }
 
     @Test
     public void testUserPasswordReset() {
         assertDoesNotThrow(() -> {
-            UserPassword.reset(this.context, "username", "password").block(Duration.ofSeconds(3));
+            this.updateUserPassword.update("username", "password").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testNonRegisteredUserPasswordReset() {
         assertThrows(EMNotFoundException.class, () -> {
-            UserPassword.reset(this.context, "power", "password").block(Duration.ofSeconds(3));
+            this.updateUserPassword.update("power", "password").block(Duration.ofSeconds(3));
         });
     }
 

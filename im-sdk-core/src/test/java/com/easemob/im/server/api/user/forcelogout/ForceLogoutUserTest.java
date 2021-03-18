@@ -10,9 +10,11 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserForceLogoutTest extends AbstractApiTest {
+class ForceLogoutUserTest extends AbstractApiTest {
 
-    public UserForceLogoutTest() {
+    ForceLogoutUser forceLogoutUser = new ForceLogoutUser(this.context);
+
+    ForceLogoutUserTest() {
         super();
         this.server.addHandler("GET /easemob/demo/users/alice/disconnect", this::handlDisconnectByUsernameSucc);
         this.server.addHandler("GET /easemob/demo/users/alice/disconnect/slippers", this::handlDisconnectByUsernameAndResourceFail);
@@ -21,14 +23,14 @@ public class UserForceLogoutTest extends AbstractApiTest {
     @Test
     public void testForceLogoutByUsername() {
         assertDoesNotThrow(() -> {
-            UserForceLogout.byUsername(this.context,"alice").block(Duration.ofSeconds(3));
+            this.forceLogoutUser.byUsername("alice").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testForceLogoutByUsernameAndResource() {
         assertThrows(EMInternalServerErrorException.class, () -> {
-            UserForceLogout.byUsernameAndResource(this.context, "alice", "slippers").block(Duration.ofSeconds(3));
+            this.forceLogoutUser.byUsernameAndResource("alice", "slippers").block(Duration.ofSeconds(3));
         });
     }
 

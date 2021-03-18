@@ -8,8 +8,8 @@ import java.util.function.Consumer;
 
 public class GroupSettings {
 
-    public static Mono<Void> update(Context context, String groupId, Consumer<GroupSettingsUpdateRequest> customizer) {
-        GroupSettingsUpdateRequest request = new GroupSettingsUpdateRequest();
+    public static Mono<Void> update(Context context, String groupId, Consumer<GroupUpdateRequest> customizer) {
+        GroupUpdateRequest request = new GroupUpdateRequest();
         customizer.accept(request);
 
         return context.getHttpClient()

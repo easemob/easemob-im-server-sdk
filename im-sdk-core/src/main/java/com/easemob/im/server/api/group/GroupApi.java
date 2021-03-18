@@ -12,7 +12,7 @@ import com.easemob.im.server.api.group.member.list.GroupMemberList;
 import com.easemob.im.server.api.group.member.list.GroupMemberListResponse;
 import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
 import com.easemob.im.server.api.group.settings.GroupSettings;
-import com.easemob.im.server.api.group.settings.GroupSettingsUpdateRequest;
+import com.easemob.im.server.api.group.settings.GroupUpdateRequest;
 import com.easemob.im.server.model.EMGroupAdmin;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupMember;
@@ -24,9 +24,28 @@ import java.util.function.Consumer;
 
 /**
  * 群API。
+ * 支持群管理：
+ * - 创建群
+ * - 删除群
+ * - 获取群列表
+ * - 获取群详情
+ * - 获取用户加入的群
+ * - 修改群详情
+ * - 修改群主
+ * 支持群成员管理：
+ * - 获取群成员列表
+ * - 添加群成员
+ * - 删除群成员
+ * 支持群管理员管理：
+ * - 获取群管理员列表
+ * - 添加群管理员
+ * - 删除群管理员
+ *
  * 群与聊天室都是多人聊天，与聊天室主要差别在于群支持离线消息，即群成员上线时可以收到离线时错过的消息。
  * 如果配置了推送，则离线消息也会产生推送。
  * 群分为公开群和私有群，区别在于：在设备SDK中（指iOS、Android、Web、小程序等），私有群不会出现在群列表API的返回结果。
+ *
+ * @see com.easemob.im.server.api.block.BlockApi
  */
 public class GroupApi {
 
@@ -145,7 +164,7 @@ public class GroupApi {
      * @return 群详情或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E8%AF%A6%E6%83%85">获取群详情</a>
      */
-    public Mono<EMGroup> getGroupDetails(String groupId) {
+    public Mono<EMGroup> getGroup(String groupId) {
         return GroupDetails.execute(this.context, groupId);
     }
 
@@ -161,10 +180,10 @@ public class GroupApi {
      * @param groupId 群id
      * @param customizer 请求定制器
      * @return 成功或错误
-     * @see com.easemob.im.server.api.group.settings.GroupSettingsUpdateRequest
+     * @see GroupUpdateRequest
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E4%BF%AE%E6%94%B9%E7%BE%A4%E7%BB%84%E4%BF%A1%E6%81%AF">修改群详情</a>
      */
-    public Mono<Void> updateSettings(String groupId, Consumer<GroupSettingsUpdateRequest> customizer) {
+    public Mono<Void> updateGroup(String groupId, Consumer<GroupUpdateRequest> customizer) {
         return GroupSettings.update(this.context, groupId, customizer);
     }
 

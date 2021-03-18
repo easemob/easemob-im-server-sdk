@@ -25,6 +25,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/** 聊天室API。
+ * 支持聊天室管理：
+ * - 创建聊天室
+ * - 获取聊天室详情
+ * - 修改聊天室
+ * - 获取聊天室列表
+ * - 获取用户加入的聊天室列表
+ * 支持聊天室成员管理：
+ * - 获取聊天室成员列表
+ * - 添加聊天室成员
+ * - 移除聊天室成员
+ * 支持聊天室管理员管理：
+ * - 获取聊天室管理员
+ * - 添加聊天室管理员
+ *
+ * TODO：支持聊天室超级管理员管理
+ *
+ * @see com.easemob.im.server.api.block.BlockApi
+ */
 public class RoomApi {
     private static final List<String> EMPTY_MEMBER_LIST = new ArrayList<>();
 
@@ -37,36 +56,27 @@ public class RoomApi {
     }
 
     /**
-     * Create a room.
+     * 创建聊天室。
      *
-     * @param name the room's name
-     * @param description the room's description
-     * @param owner the owner's username
-     * @return A {@code Mono} which emits {@code EMRoom}.
-     */
-    public Mono<String> createRoom(String name, String description, String owner) {
-        return CreateRoom.createRoom(this.context, name, description, owner, EMPTY_MEMBER_LIST, DEFAULT_MAX_MEMBERS);
-    }
-
-    /**
-     * Create a room.
+     * @param name 聊天室名称
+     * @param description 聊天室描述
+     * @param owner 聊天室主
+     * @param members 聊天室初始成员的用户名列表
+     * @param maxMembers 聊天室最大成员数
+     * @return 聊天室id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%9B%E5%BB%BA%E8%81%8A%E5%A4%A9%E5%AE%A4">创建聊天室</a>
      *
-     * @param name the room's name
-     * @param description the room's description
-     * @param owner the owner's username
-     * @param members the rooms members
-     * @param maxMembers max members count
-     * @return A {@code Mono} which emits {@code EMRoom}.
      */
     public Mono<String> createRoom(String name, String description, String owner, List<String> members, int maxMembers) {
         return CreateRoom.createRoom(this.context, name, description, owner, members, maxMembers);
     }
 
     /**
-     * Get the room's detail by id.
+     * 获取聊天室详情。
      *
-     * @param id the room's id
-     * @return A {@code Mono} which emits {@code EMRoomDetail}.
+     * @param id 聊天室id
+     * @return 聊天室详情或错误.
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E8%AF%A6%E6%83%85">获取聊天室详情</a>
      */
     public Mono<EMRoom> getRoom(String id) {
         return GetRoomDetail.byId(this.context, id);
@@ -74,131 +84,137 @@ public class RoomApi {
 
 
     /**
-     * Update the room.
+     * 修改聊天室。
      *
-     * Currently, you can update:
-     * - name
-     * - description
-     * - maxMembers
-     * More fields will be added.
+     * 可修改的字段参考 {@link com.easemob.im.server.api.room.update.UpdateRoomRequest UpdateRoomRequest}
      *
-     * To update room's name, you can:
+     * 比如，要更新聊天室名称，可以这么做:
      * <pre>{@code
-     *  EMService service;
-     *  service.updateRoom(roomId, request -> request.withName("some cool name")).block(timeout);
+     * EMService service;
+     * service.updateRoom(roomId, request -> request.withName("some cool name")).block(timeout);
      * }</pre>
      *
-     * @param id the room's id
-     * @param customizer the update request customizer
-     * @return A {@code Mono} which complete upon success.
+     * @param id 聊天室id
+     * @param customizer 更新请求定制函数
+     * @return 成功或错误
+     * @see com.easemob.im.server.api.room.update.UpdateRoomRequest
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E4%BF%AE%E6%94%B9%E8%81%8A%E5%A4%A9%E5%AE%A4%E4%BF%A1%E6%81%AF">修改聊天室</a>
      */
     public Mono<Void> updateRoom(String id, Consumer<UpdateRoomRequest> customizer) {
         return UpdateRoom.byId(this.context, id, customizer);
     }
 
     /**
-     * List all rooms.
+     * 获取全部聊天室列表
      *
-     * @return A {@code Flux} which emits each room's id.
+     * @return 每个聊天室的id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96_app_%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取聊天室列表</a>
      */
     public Flux<String> listRoomsAll() {
         return ListRooms.all(this.context, 10);
     }
 
     /**
-     * List rooms iteratively.
+     * 分页获取聊天室列表
      *
-     * @param limit how many rooms to return
-     * @param cursor where to continue, returned in previous response.
-     *               For the first call, pass {@code null}.
-     * @return A {@code Mono} which emits {@code ListRoomsResponse} upon success.
+     * @param limit 返回多少个聊天室id
+     * @param cursor 开始位置
+     * @return 获取聊天室响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96_app_%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取聊天室列表</a>
      */
     public Mono<ListRoomsResponse> listRooms(int limit, String cursor) {
         return ListRooms.next(this.context, limit, cursor);
     }
 
     /**
-     * List rooms user joined.
+     * 获取用户加入的聊天室列表。
      *
-     * @param username the user's username
-     * @return A {@code Flux} of each room's id.
+     * @param username 用户名
+     * @return 每个聊天室的id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%8A%A0%E5%85%A5%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取用户加入的聊天室</a>
      */
     public Flux<String> listRoomsUserJoined(String username) {
         return ListRooms.userJoined(this.context, username);
     }
 
     /**
-     * List room members iteratively.
+     * 获取聊天室全部成员列表。
      *
-     * @param roomId the room's id
-     * @return A {@code Flux} of member's username.
+     * @param roomId 聊天室id
+     * @return 每个聊天室成员或者错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
      */
     public Flux<String> listRoomMembersAll(String roomId) {
         return ListRoomMembers.all(this.context, roomId, 10);
     }
 
     /**
-     * List room members.
+     * 分页获取聊天室成员列表。
      *
-     * @param roomId the room's id
-     * @param limit how many members to return
-     * @param cursor where to start, returned in previous call.
-     *               For the first call, pass {@code null}.
-     * @return A {@code Mono} of {@code ListRoomMembersResponse}.
+     * @param roomId 聊天室id
+     * @param limit 返回多少个聊天室成员
+     * @param cursor 开始位置
+     * @return 获取聊天室成员响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
      */
     public Mono<ListRoomMembersResponse> listRoomMembers(String roomId, int limit, String cursor) {
         return ListRoomMembers.next(this.context, roomId, limit, cursor);
     }
 
     /**
-     * Add a member to the room.
+     * 向聊天室添加成员。
      *
-     * @param roomId the room's id
-     * @param username the user's username
-     * @return A {@code Mono} which completes upon success.
+     * @param roomId 聊天室id
+     * @param username 要添加的用户的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">聊天室添加成员</a>
      */
     public Mono<Void> addRoomMember(String roomId, String username) {
         return AddRoomMember.single(this.context, roomId, username);
     }
 
     /**
-     * Remove a member from the room.
+     * 从聊天室移除成员。
      *
-     * @param roomId the room's id
-     * @param username the user's username
-     * @return A {@code Mono} which completes upon success.
+     * @param roomId 聊天室id
+     * @param username 要移除的成员的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%A0%E9%99%A4%E5%8D%95%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">聊天室移除成员</a>
      */
     public Mono<Void> removeRoomMember(String roomId, String username) {
         return RemoveRoomMember.single(this.context, roomId, username);
     }
 
     /**
-     * List admins of the room.
+     * 获取聊天室管理员。
      *
-     * @param roomId the room's id
-     * @return A {@code Flux} of admin username.
+     * @param roomId 聊天室id
+     * @return 每个管理员的用户名或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">获取聊天室管理员</a>
      */
     public Flux<String> listRoomAdminsAll(String roomId) {
         return ListRoomAdmins.all(this.context, roomId);
     }
 
     /**
-     * Promote a room member to admin.
+     * 升级聊天室成员至管理员。
      *
-     * @param roomId the room's id
-     * @param username the member's username
-     * @return A {@code Mono} which completes upon success.
+     * @param roomId 聊天室id
+     * @param username 要升级的成员的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%AE%A1%E7%90%86%E5%91%98">添加聊天室管理员</a>
      */
     public Mono<Void> promoteRoomAdmin(String roomId, String username) {
         return PromoteRoomAdmin.single(this.context, roomId, username);
     }
 
     /**
-     * Demote a room admin to member.
+     * 降级聊天室管理员至成员。
      *
-     * @param roomId the room's id
-     * @param username the admin's username
-     * @return A {@code Mono} which completes upon success.
+     * @param roomId 聊天室id
+     * @param username 要降级的管理员的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%AE%A1%E7%90%86%E5%91%98">移除聊天室管理员</a>
      */
     public Mono<Void> demoteRoomAdmin(String roomId, String username) {
         return DemoteRoomAdmin.single(this.context, roomId, username);

@@ -23,8 +23,8 @@ public class UserListResponse {
         this.cursor = cursor;
     }
 
-    public List<EMUser> getEMUsers() {
-        return this.entities.stream().map(UserResource::toEMUser).collect(Collectors.toList());
+    public List<String> getUsernames() {
+        return this.entities.stream().map(UserResource::getUsername).collect(Collectors.toList());
     }
 
     public EMUser getEMUser(String username) {
@@ -40,7 +40,7 @@ public class UserListResponse {
     @Override
     public String toString() {
         return "UserListResponse{" +
-                "entities=" + getEMUsers().stream().map(EMUser::toString).collect(Collectors.joining(",")) +
+                "entities=" + entities +
                 ", cursor='" + cursor + '\'' +
                 '}';
     }

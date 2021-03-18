@@ -4,22 +4,28 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMInternalServerErrorException;
 import reactor.core.publisher.Mono;
 
-public class UserForceLogout {
+public class ForceLogoutUser {
 
-    public static Mono<Void> byUsername(Context context, String username) {
-        return byUsernameAndResource(context, username, null);
+    private Context context;
+
+    public ForceLogoutUser(Context context) {
+        this.context = context;
     }
 
-    public static Mono<Void> byUsernameAndResource(Context context, String username, String resource) {
+    public Mono<Void> byUsername(String username) {
+        return byUsernameAndResource(username, null);
+    }
+
+    public Mono<Void> byUsernameAndResource(String username, String resource) {
         String path = String.format("/users/%s/disconnect", username);
         if (resource != null) {
             path = String.format("%s/%s", path, resource);
         }
-        return context.getHttpClient()
+        return this.context.getHttpClient()
             .get()
             .uri(path)
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> context.getCodec().decode(buf, UserForceLogoutResponse.class))
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> this.context.getCodec().decode(buf, UserForceLogoutResponse.class))
             .handle((rsp, sink) -> {
                 if (!rsp.isSuccessful()) {
                     sink.error(new EMInternalServerErrorException("unknown"));

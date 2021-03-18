@@ -30,4 +30,12 @@ public class UserResource {
     public EMUser toEMUser() {
         return new EMUser(this.username, this.activated);
     }
+
+    @Override
+    public String toString() {
+        return "UserResource{" +
+                "username='" + username + '\'' +
+                ", activated=" + activated +
+                '}';
+    }
 }

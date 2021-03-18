@@ -12,9 +12,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserListTest extends AbstractApiTest {
+class ListUsersTest extends AbstractApiTest {
 
-    public UserListTest() {
+    ListUsers listUsers = new ListUsers(this.context);
+
+    ListUsersTest() {
         this.server.addHandler("GET /easemob/demo/users?limit=100", this::handleUserGet100);
         this.server.addHandler("GET /easemob/demo/users?limit=100&cursor=cursor-0-99", this::handleUserGet100Continued);
         this.server.addHandler("GET /easemob/demo/users?limit=100&cursor=cursor-100-199", this::handleUserGet100Last);
@@ -23,22 +25,22 @@ class UserListTest extends AbstractApiTest {
     }
 
     @Test
-    public void testUserGetAll100EachTime() {
-        List<EMUser> users = UserList.all(this.context, 100)
+    void testUserGetAll100EachTime() {
+        List<String> users = this.listUsers.all(100)
                 .collectList().block(Duration.ofSeconds(3));
         assertEquals(300, users.size());
         for (int i = 0; i < 300; i++) {
-            assertEquals("username", users.get(i).getUsername());
+            assertEquals("username", users.get(i));
         }
     }
 
     @Test
-    public void testUserGetAll200EachTime() {
-        List<EMUser> users = UserList.all(this.context, 200)
+    void testUserGetAll200EachTime() {
+        List<String> users = this.listUsers.all(200)
                 .collectList().block(Duration.ofSeconds(3));
         assertEquals(300, users.size());
         for (int i = 0; i < 300; i++) {
-            assertEquals("username", users.get(i).getUsername());
+            assertEquals("username", users.get(i));
         }
     }
 

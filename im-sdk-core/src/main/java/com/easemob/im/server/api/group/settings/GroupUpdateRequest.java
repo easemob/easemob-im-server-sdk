@@ -3,7 +3,7 @@ package com.easemob.im.server.api.group.settings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GroupSettingsUpdateRequest {
+public class GroupUpdateRequest {
 
     @JsonProperty("allowinvites")
     private Boolean canMemberInviteOthers;
@@ -14,32 +14,32 @@ public class GroupSettingsUpdateRequest {
     @JsonProperty("maxusers")
     private Integer maxMembers;
 
-    public GroupSettingsUpdateRequest() {
+    public GroupUpdateRequest() {
         this.canMemberInviteOthers = null;
         this.needApproveToJoin = null;
         this.maxMembers = null;
     }
 
     @JsonCreator
-    public GroupSettingsUpdateRequest(@JsonProperty("allowinvites") Boolean canMemberInviteOthers,
-                                      @JsonProperty("membersonly") Boolean needApproveToJoin,
-                                      @JsonProperty("maxusers") Integer maxMembers) {
+    public GroupUpdateRequest(@JsonProperty("allowinvites") Boolean canMemberInviteOthers,
+                              @JsonProperty("membersonly") Boolean needApproveToJoin,
+                              @JsonProperty("maxusers") Integer maxMembers) {
         this.canMemberInviteOthers = canMemberInviteOthers;
         this.needApproveToJoin = needApproveToJoin;
         this.maxMembers = maxMembers;
     }
 
-    public GroupSettingsUpdateRequest setCanMemberInviteOthers(boolean canMemberInviteOthers) {
+    public GroupUpdateRequest setCanMemberInviteOthers(boolean canMemberInviteOthers) {
         this.canMemberInviteOthers = canMemberInviteOthers;
         return this;
     }
 
-    public GroupSettingsUpdateRequest setNeedApproveToJoin(boolean needApproveToJoin) {
+    public GroupUpdateRequest setNeedApproveToJoin(boolean needApproveToJoin) {
         this.needApproveToJoin = needApproveToJoin;
         return this;
     }
 
-    public GroupSettingsUpdateRequest setMaxMembers(int maxMembers) {
+    public GroupUpdateRequest setMaxMembers(int maxMembers) {
         this.maxMembers = maxMembers;
         return this;
     }

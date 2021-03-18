@@ -1,20 +1,13 @@
 package com.easemob.im.server.api.user.get;
 
-import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.MockingContext;
-import com.easemob.im.server.api.MockingHttpServer;
-import com.easemob.im.server.api.user.list.UserList;
 import com.easemob.im.server.model.EMUser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

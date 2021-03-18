@@ -1,31 +1,26 @@
-package com.easemob.im.server.api.user.register;
+package com.easemob.im.server.api.user.create;
 
-import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.MockingContext;
-import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.model.EMUser;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserRegisterTest extends AbstractApiTest {
+class CreateUserTest extends AbstractApiTest {
 
-    public UserRegisterTest() {
+    CreateUser createUser = new CreateUser(this.context);
+
+    CreateUserTest() {
         this.server.addHandler("POST /easemob/demo/users", this::handleUserRegisterRequest);
     }
 
     @Test
     public void testUserRegisterSingle() {
-        EMUser user = UserRegister.single(this.context, "username", "password").block(Duration.ofSeconds(3));
-        assertEquals("username", user.getUsername());
+        assertDoesNotThrow(() -> this.createUser.single("username", "password").block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleUserRegisterRequest(JsonNode req) {

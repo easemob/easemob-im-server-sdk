@@ -62,13 +62,13 @@ public class DeleteCmd {
                      @Option(names = {"--all"}, description = "delete all users") boolean all) {
         if (all) {
             this.service.user().deleteAll()
-                    .doOnNext(user -> System.out.println("user " + user.getUsername() + " deleted"))
+                    .doOnNext(user -> System.out.println("user " + user + " deleted"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         } else if (StringUtils.hasText(username)) {
             this.service.user().delete(username)
-                    .doOnSuccess(user -> System.out.println("user " + user.getUsername() + " deleted"))
+                    .doOnSuccess(user -> System.out.println("user " + user + " deleted"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
