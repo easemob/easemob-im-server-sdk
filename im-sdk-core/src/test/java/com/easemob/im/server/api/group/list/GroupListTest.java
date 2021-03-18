@@ -2,7 +2,6 @@ package com.easemob.im.server.api.group.list;
 
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.group.crud.GroupList;
-import com.easemob.im.server.model.EMGroup;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -13,6 +12,8 @@ import java.time.Duration;
 
 public class GroupListTest extends AbstractApiTest {
     private static int seq = 0;
+
+    private GroupList groupList = new GroupList(this.context);
 
     public GroupListTest() {
         super();
@@ -26,7 +27,7 @@ public class GroupListTest extends AbstractApiTest {
 
     @Test
     public void testGroupListHighLevelApi() {
-        GroupList.all(this.context, 10)
+        this.groupList.all(10)
             .as(StepVerifier::create)
             .expectNextCount(25)
             .expectComplete()
@@ -35,19 +36,19 @@ public class GroupListTest extends AbstractApiTest {
 
     @Test
     public void testGroupListLowLevelApi() {
-        GroupList.next(this.context, 10, "1")
+        this.groupList.next(10, "1")
             .as(StepVerifier::create)
-            .expectNextMatches(rsp -> rsp.getEMGroups().size() == 10 && rsp.getCursor().equals("2"))
+            .expectNextMatches(rsp -> rsp.getGroupIds().size() == 10 && rsp.getCursor().equals("2"))
             .expectComplete()
             .verify(Duration.ofSeconds(3));
     }
 
     @Test
     public void testGroupListUserJoined() {
-        GroupList.userJoined(this.context, "alice")
+        this.groupList.userJoined("alice")
             .as(StepVerifier::create)
-            .expectNext(new EMGroup("aliceGroup"))
-            .expectNext(new EMGroup("rabbitGroup"))
+            .expectNext("aliceGroup")
+            .expectNext("rabbitGroup")
             .expectComplete()
             .verify(Duration.ofSeconds(3));
     }

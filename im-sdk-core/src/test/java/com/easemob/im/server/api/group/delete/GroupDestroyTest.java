@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GroupDestroyTest extends AbstractApiTest {
 
+    GroupDestroy groupDestroy = new GroupDestroy(this.context);
+
     public GroupDestroyTest() {
         this.server.addHandler("DELETE /easemob/demo/chatgroups/1", this::handleDeleteGroupRequest);
     }
@@ -18,14 +20,14 @@ class GroupDestroyTest extends AbstractApiTest {
     @Test
     public void testGroupDeleteSuccess() {
         assertDoesNotThrow(() -> {
-            GroupDestroy.execute(this.context, "1").block(Duration.ofSeconds(3));
+            this.groupDestroy.execute("1").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testGroupDeleteNotFoundAlsoSuccess() {
         assertDoesNotThrow(() -> {
-            GroupDestroy.execute(this.context, "2").block(Duration.ofSeconds(3));
+            this.groupDestroy.execute("2").block(Duration.ofSeconds(3));
         });
     }
 

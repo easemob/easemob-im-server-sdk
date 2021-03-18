@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GroupUpdateTest extends AbstractApiTest {
 
+    GroupUpdate groupUpdate = new GroupUpdate(this.context);
+
     public GroupUpdateTest() {
         this.server.addHandler("PUT /easemob/demo/chatgroups/1", this::handleGroupUpdateOwnerRequest);
     }
@@ -17,7 +19,7 @@ class GroupUpdateTest extends AbstractApiTest {
     @Test
     void testUpdateGroupOwner() {
         assertDoesNotThrow(() -> {
-            GroupUpdate.owner(this.context, "1", "rabbit").block(Duration.ofSeconds(3));
+            this.groupUpdate.owner("1", "rabbit").block(Duration.ofSeconds(3));
         });
     }
 

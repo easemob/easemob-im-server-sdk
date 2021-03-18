@@ -1,6 +1,5 @@
 package com.easemob.im.server.api.group.crud;
 
-import com.easemob.im.server.model.EMGroup;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,7 +23,7 @@ public class GroupCreateResponse {
 
     }
 
-    public EMGroup toEMGroup() {
-        return new EMGroup(this.group.getGroupId());
+    public String getGroupId() {
+        return this.group == null ? null : this.group.getGroupId();
     }
 }

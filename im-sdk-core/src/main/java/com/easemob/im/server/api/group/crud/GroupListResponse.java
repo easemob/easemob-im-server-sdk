@@ -1,6 +1,5 @@
 package com.easemob.im.server.api.group.crud;
 
-import com.easemob.im.server.model.EMGroup;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,8 +22,8 @@ public class GroupListResponse {
         this.cursor = cursor;
     }
 
-    public List<EMGroup> getEMGroups() {
-        return groups.stream().map(GroupResource::toGroup).collect(Collectors.toList());
+    public List<String> getGroupIds() {
+        return groups.stream().map(GroupResource::getGroupId).collect(Collectors.toList());
     }
 
     public String getCursor() {
@@ -48,8 +47,8 @@ public class GroupListResponse {
             this.groupId = groupId;
         }
 
-        public EMGroup toGroup() {
-            return new EMGroup(this.groupId);
+        public String getGroupId() {
+            return this.groupId;
         }
 
         @Override

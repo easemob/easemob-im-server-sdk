@@ -99,13 +99,13 @@ public class CreateCmd {
                       @Option(names = "--need-approve-to-join", defaultValue = "false", description = "only for public group, whether need approve to join") boolean needApproveToJoin) {
         if (isPrivate) {
             this.service.group().createPrivateGroup(owner, members, maxMembers, canMemberInvite)
-                    .doOnSuccess(group -> System.out.println(group.getGroupId()))
+                    .doOnSuccess(groupId -> System.out.println("group: " + groupId))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         } else {
             this.service.group().createPublicGroup(owner, members, maxMembers, needApproveToJoin)
-                    .doOnSuccess(group -> System.out.println("group: " + group.getGroupId()))
+                    .doOnSuccess(groupId -> System.out.println("group: " + groupId))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();

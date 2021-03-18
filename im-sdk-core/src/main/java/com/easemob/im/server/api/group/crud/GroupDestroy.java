@@ -5,12 +5,18 @@ import com.easemob.im.server.exception.EMNotFoundException;
 import reactor.core.publisher.Mono;
 
 public class GroupDestroy {
-    public static Mono<Void> execute(Context context, String groupId) {
-        return context.getHttpClient()
+    private Context context;
+
+    public GroupDestroy(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Void> execute(String groupId) {
+        return this.context.getHttpClient()
             .delete()
             .uri(String.format("/chatgroups/%s", groupId))
             .response()
-            .flatMap(rsp -> context.getErrorMapper().apply(rsp))
+            .flatMap(rsp -> this.context.getErrorMapper().apply(rsp))
             .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty())
             .then();
     }

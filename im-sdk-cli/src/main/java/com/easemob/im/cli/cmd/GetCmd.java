@@ -2,7 +2,6 @@ package com.easemob.im.cli.cmd;
 
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
-import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupMember;
 import com.easemob.im.server.model.EMUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,16 +159,16 @@ public class GetCmd {
                           @Option(names = {"--cursor"}, description = "the cursor") String cursor) {
         if (StringUtils.hasText(username)) {
             this.service.group().listGroupsUserJoined(username)
-                    .doOnNext(group -> System.out.println("group: " + group.getGroupId()))
+                    .doOnNext(groupId -> System.out.println("group: " + groupId))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         } else if (limit != null) {
             this.service.group().listGroups(limit, cursor)
                     .doOnNext(rsp -> {
-                        List<EMGroup> groups = rsp.getEMGroups();
-                        for (int i = 0; i < groups.size(); i++) {
-                            System.out.println("group: " + groups.get(i).getGroupId());
+                        List<String> groupIds = rsp.getGroupIds();
+                        for (int i = 0; i < groupIds.size(); i++) {
+                            System.out.println("group: " + groupIds.get(i));
                         }
                         System.out.println("cursor: " + rsp.getCursor());
                     })
@@ -178,8 +177,8 @@ public class GetCmd {
                     .block();
         } else {
             this.service.group().listAllGroups()
-                    .doOnNext(group -> {
-                        System.out.println("group: " + group.getGroupId());
+                    .doOnNext(groupId -> {
+                        System.out.println("group: " + groupId);
                     })
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())

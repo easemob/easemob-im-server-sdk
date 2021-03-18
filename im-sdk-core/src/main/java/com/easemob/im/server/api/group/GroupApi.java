@@ -13,7 +13,6 @@ import com.easemob.im.server.api.group.member.list.GroupMemberListResponse;
 import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
 import com.easemob.im.server.api.group.settings.GroupSettings;
 import com.easemob.im.server.api.group.settings.GroupSettingsUpdateRequest;
-import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupAdmin;
 import com.easemob.im.server.model.EMGroupDetails;
 import com.easemob.im.server.model.EMGroupMember;
@@ -23,126 +22,110 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.function.Consumer;
 
-
+/**
+ * 群API。
+ * 群与聊天室都是多人聊天，与聊天室主要差别在于群支持离线消息，即群成员上线时可以收到离线时错过的消息。
+ * 如果配置了推送，则离线消息也会产生推送。
+ * 群分为公开群和私有群，区别在于：在设备SDK中（指iOS、Android、Web、小程序等），私有群不会出现在群列表API的返回结果。
+ */
 public class GroupApi {
-    private static final int PUBLIC_GROUP_MAX_MEMBERS_DEFAULT = 200;
-    private static final boolean PUBLIC_GROUP_NEED_APPROVE_TO_JOIN_DEFAULT = false;
-    private static final int PRIVATE_GROUP_MAX_MEMBERS_DEFAULT = 200;
-    private static final boolean PRIVATE_GROUP_MEMBER_CAN_INVITE_OTHERS_DEFAULT = false;
 
     private Context context;
 
+    private GroupList groupList;
+    private GroupCreate groupCreate;
+    private GroupDestroy groupDestroy;
+    private GroupUpdate groupUpdate;
+
     public GroupApi(Context context) {
         this.context = context;
+        this.groupList = new GroupList(context);
+        this.groupCreate = new GroupCreate(context);
+        this.groupDestroy = new GroupDestroy(context);
+        this.groupUpdate = new GroupUpdate(context);
     }
 
     /**
      * 创建公开群。
-     * 需要注意的是，目前公开群不允许成员邀请其他用户加入。如果要允许，可以用修改群API设置
-     * By default, member of public group could not invite others to join.
-     * To allow member invite others, you can update group settings like this:
+     * 需要注意的是，目前公开群不允许成员邀请其他用户加入。如果要允许，可以用修改群API设置:
      * <pre>{@code
      *      EMService service;
      *      service.group().updateSetting("group-id", settings -> settings.memberCanInvite(true)).block();
      * }</pre>
      *
-     * @param owner the owner's username
-     * @param members the initial members, could be null or empty to create an empty group
-     * @return A {@code Mono} which emits {@code EMGroup} on success.
+     * @param owner 群主的用户名
+     * @param members 初始群成员的用户名列表
+     * @param maxMembers 群最大成员数
+     * @param needApproveToJoin 新成员加入需要管理员审批
+     * @return 群id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
-    public Mono<EMGroup> createPublicGroup(String owner, List<String> members) {
-        return GroupCreate.publicGroup(this.context, owner, members, PUBLIC_GROUP_MAX_MEMBERS_DEFAULT, PUBLIC_GROUP_NEED_APPROVE_TO_JOIN_DEFAULT);
+    public Mono<String> createPublicGroup(String owner, List<String> members, int maxMembers, boolean needApproveToJoin) {
+        return this.groupCreate.publicGroup(owner, members, maxMembers, needApproveToJoin);
     }
 
     /**
-     * Create a public group.
-     * By default, member of public group could not invite others to join.
-     * To allow member invite others, you can update group settings like this:
-     * <pre>{@code
-     *      EMService service;
-     *      service.group().updateSetting("group-id", settings -> settings.memberCanInvite(true)).block();
-     * }</pre>
+     * 创建私有群。
      *
-     * @param owner the owner's username
-     * @param members the initial members
-     * @param maxMembers how many members could join this group
-     * @param needApproveToJoin whether user joining this group have to wait, until owner/admin approve it
-     * @return A {@code Mono} which emits {@code EMGroup} on success.
+     * @param owner 群主的用户名
+     * @param members 初始群成员的用户名列表
+     * @param maxMembers 群最大成员数
+     * @param canMemberInvite 新成员加入需要管理员审批
+     * @return 群id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
-    public Mono<EMGroup> createPublicGroup(String owner, List<String> members, int maxMembers, boolean needApproveToJoin) {
-        return GroupCreate.publicGroup(this.context, owner, members, maxMembers, needApproveToJoin);
+    public Mono<String> createPrivateGroup(String owner, List<String> members, int maxMembers, boolean canMemberInvite) {
+        return this.groupCreate.privateGroup(owner, members, maxMembers, canMemberInvite);
     }
 
     /**
-     * Create a private group.
+     * 注销群。
      *
-     * @param owner the owner's username
-     * @param members the initial members
-     * @return A {@code Mono} which emits {@code EMGroup} if successful.
-     */
-    public Mono<EMGroup> createPrivateGroup(String owner, List<String> members) {
-        return GroupCreate.privateGroup(this.context, owner, members, PRIVATE_GROUP_MAX_MEMBERS_DEFAULT, PRIVATE_GROUP_MEMBER_CAN_INVITE_OTHERS_DEFAULT);
-    }
-
-    /**
-     * Create a private group.
-     *
-     * @param owner the owner's username
-     * @param members the initial members
-     * @param maxMembers how many members could join this group
-     * @param canMemberInvite can member invite others
-     * @return A {@code Mono} which emit {@code EMGroup} if successful.
-     */
-    public Mono<EMGroup> createPrivateGroup(String owner, List<String> members, int maxMembers, boolean canMemberInvite) {
-        return GroupCreate.privateGroup(this.context, owner, members, maxMembers, canMemberInvite);
-    }
-
-    /**
-     * Destroy this group.
-     * @param groupId the group id
-     * @return A {@code Mono} completes on success.
+     * @param groupId 群id
+     * @return 成功或错误
      */
     public Mono<Void> destroyGroup(String groupId) {
-        return GroupDestroy.execute(this.context, groupId);
+        return this.groupDestroy.execute(groupId);
     }
 
     /**
-     * List all groups.
+     * 获取全部群列表。
      *
-     * Note that listAllGroups will send requests recursively until the end.
-     * You can use the listGroups api to control when to send next request.
-     *
-     * @return A {@code Flux} which emits {@code EMGroup} on success.
+     * @return 每个群id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96app%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%BE%A4%E7%BB%84_%E5%8F%AF%E5%88%86%E9%A1%B5">获取群列表</a>
      */
-    public Flux<EMGroup> listAllGroups() {
-        return GroupList.all(this.context, 20);
+    public Flux<String> listAllGroups() {
+        return this.groupList.all(20);
     }
 
     /**
-     * List groups in one page.
+     * 分页获取群列表。
      *
-     * At the first call, pass {@code null} in cursor.
-     * Then you need to pass the cursor returned from previous response.
+     * 初次调用时，{@code cursor} 传 {@code null}。之后的调用，{@code cursor} 传上次返回的值。
      *
+     * 可以这样遍历群列表：
      * <pre>{@code
      *  EMService service;
      *  GroupListResponse response = service.listGroups(20, null).block();
-     *  List<EMGroup> groups = response.getEMGroups();
-     *  // ... do something to the groups ...
+     *  List<String> groupIds = response.getGroupIds();
+     *  // ... do something with the groupIds ...
      *  String cursor = response.getCursor();
+     *  // cursor == null indicates the end of the list
      *  while (cursor != null) {
      *      response = service.listGroups(20, cursor);
-     *      // ... do something to the groups ...
+     *      // ... do something to the groupIds ...
      *      cursor = response.getCursor();
      *  }
      * }</pre>
      *
-     * @param limit the limit, controls max members returns each time
-     * @param cursor the cursor received in the previous response
-     * @return A {@code Mono} emits {@code GroupListResponse} on success.
+     * @param limit 每次取回多少个群id
+     * @param cursor 上次返回的{@code cursor}
+     * @return 群列表响应或错误
+     * @see com.easemob.im.server.api.group.crud.GroupListResponse
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96app%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%BE%A4%E7%BB%84_%E5%8F%AF%E5%88%86%E9%A1%B5">获取群列表</a>
      */
     public Mono<GroupListResponse> listGroups(int limit, String cursor) {
-        return GroupList.next(this.context, limit, cursor);
+        return this.groupList.next(limit, cursor);
     }
 
     /**
@@ -151,168 +134,175 @@ public class GroupApi {
      * @param username the username
      * @return A {@code Flux} which emits {@code EMGroup} on successful.
      */
-    public Flux<EMGroup> listGroupsUserJoined(String username) {
-        return GroupList.userJoined(this.context, username);
+    public Flux<String> listGroupsUserJoined(String username) {
+        return this.groupList.userJoined(username);
     }
 
     /**
-     * Get this group detail.
+     * 获取群详情。
      *
-     * To get group details,
-     * <pre>{@code
-     *      EMService service;
-     *      EMGroupDetails details = service.group().detail("1").block();
-     * }</pre>
-     *
-     * @param groupId the group id
-     * @return A {@code Mono} emits {@code EMGroupDetail} on success.
+     * @param groupId 群id
+     * @return 群详情或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E8%AF%A6%E6%83%85">获取群详情</a>
      */
     public Mono<EMGroupDetails> getGroupDetails(String groupId) {
         return GroupDetails.execute(this.context, groupId);
     }
 
     /**
-     * Update this group's settings.
-     *
-     * To update max members of a group:
+     * 修改群详情。
+     * 支持修改的参数见{@code GroupSettingsUpdateRequest}
+     * 比如，更新群最大成员数：
      * <pre>{@code
-     *     EMService service;
-     *     service.group().updateSettings("1", settings -> settings.maxMembers(100)).block();
+     * EMService service;
+     * service.group().updateSettings("1", settings -> settings.maxMembers(100)).block();
      * }</pre>
      *
-     * @param groupId the group id
-     * @param customizer update request customizer
-     * @return A {@code Mono} completes on successful.
+     * @param groupId 群id
+     * @param customizer 请求定制器
+     * @return 成功或错误
+     * @see com.easemob.im.server.api.group.settings.GroupSettingsUpdateRequest
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E4%BF%AE%E6%94%B9%E7%BE%A4%E7%BB%84%E4%BF%A1%E6%81%AF">修改群详情</a>
      */
     public Mono<Void> updateSettings(String groupId, Consumer<GroupSettingsUpdateRequest> customizer) {
         return GroupSettings.update(this.context, groupId, customizer);
     }
 
     /**
-     * Get the group announcement.
+     * 获取群公告。
      *
-     * @param groupId the group id
-     * @return A {@code Mono} emits the announcement on success.
+     * @param groupId 群id
+     * @return 群公告或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E5%85%AC%E5%91%8A">获取群公告</a>
      */
     public Mono<String> getGroupAnnouncement(String groupId) {
         return GroupAnnouncement.get(this.context, groupId);
     }
 
     /**
-     * Update the group announcement.
-     * @param groupId the group id
-     * @param announcement the announcement
-     * @return A {@code Mono} which completes on success.
+     * 更新群公告。
+     *
+     * @param groupId 群id
+     * @param announcement 群公告
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E4%BF%AE%E6%94%B9%E7%BE%A4%E7%BB%84%E5%85%AC%E5%91%8A">更新群公告</a>
      */
     public Mono<Void> updateGroupAnnouncement(String groupId, String announcement) {
         return GroupAnnouncement.update(this.context, groupId, announcement);
     }
 
     /**
-     * List all members of a group. This method is recommended over {@code getGroupDetails}, since
-     * Note that listAllGroupMembers send requests recursively until the end.
-     * You call use listGroupMembers to control when to send next request.
+     * 获取群全部成员。
      *
-     * @param groupId the group id
-     * @param limit the limit groups requested each time, 20 is a good start point.
-     *              Tune it higher to get better I/O efficiency, smaller to get lower latency.
-     * @return A {@code Flux} emits {@code EMGroupMember}.
+     * @param groupId 群id
+     * @return 每个群成员或错误
+     * @see com.easemob.im.server.model.EMGroupMember
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
-    public Flux<EMGroupMember> listAllGroupMembers(String groupId, int limit) {
-        return GroupMemberList.all(this.context, groupId, limit);
+    public Flux<EMGroupMember> listAllGroupMembers(String groupId) {
+        return GroupMemberList.all(this.context, groupId, 20);
     }
 
     /**
-     * List members of a group.
+     * 分页获取群成员。
      *
-     * At the first call, pass {@code null} in cursor.
-     * Then you need to pass the cursor returned from previous response.
+     * 首次调用时，{@code cursor} 传 {@code null}。之后每次调用，{@code cursor} 传上次返回的值。
+     *
+     * 比如：
      *
      * <pre>{@code
-     *  EMService service;
-     *  GroupListResponse response = service.listGroupMemberss("group-id", 10, null).block();
-     *  List<EMGroupMembers> groups = response.getEMGroups();
-     *  // ... do something to the members ...
-     *  String cursor = response.getCursor();
-     *  while (cursor != null) {
-     *      response = service.listGroupMembers("group-id", 10, cursor);
-     *      // ... do something to the members ...
-     *      cursor = response.getCursor();
-     *  }
+     * EMService service;
+     * GroupListResponse response = service.listGroupMemberss("group-id", 10, null).block();
+     * List<EMGroupMembers> groups = response.getEMGroups();
+     * // ... do something to the members ...
+     * String cursor = response.getCursor();
+     * while (cursor != null) {
+     *     response = service.listGroupMembers("group-id", 10, cursor);
+     *     // ... do something to the members ...
+     *     cursor = response.getCursor();
+     * }
      * }</pre>
 
-     * @param groupId the group id
-     * @param limit the limit, controls max members returns each time
-     * @param cursor the cursor received in the previous response
-     * @return A {@code Mono} emits {@code GroupMemberListResponse}.
+     * @param groupId 群id
+     * @param limit 返回多少群id
+     * @param cursor 开始位置
+     * @return 获取群成员响应或错误
+     * @see com.easemob.im.server.api.group.member.list.GroupMemberListResponse
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
     public Mono<GroupMemberListResponse> listGroupMembers(String groupId, int limit, String cursor) {
         return GroupMemberList.next(this.context, groupId, limit, cursor);
     }
 
     /**
-     * Add a user to the group.
+     * 添加群成员。
      *
-     * @param groupId the group id
-     * @param username the username
-     * @return A {@code Mono} which completes on success.
+     * @param groupId 群id
+     * @param username 要添加的用户的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">添加群成员</a>
      */
     public Mono<Void> addGroupMember(String groupId, String username) {
         return GroupMemberAdd.single(this.context, groupId, username);
     }
 
     /**
-     * Remove a member from the group.
+     * 移除群成员。
      *
-     * @param groupId the group id
-     * @param username the username
-     * @return A {@code Mono} which completes on success.
+     * @param groupId 群id
+     * @param username 要移除的用户的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E5%8D%95%E4%B8%AA%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">移除群成员</a>
      */
     public Mono<Void> removeGroupMember(String groupId, String username) {
         return GroupMemberRemove.single(this.context, groupId, username);
     }
 
     /**
-     * List all admins of the group.
+     * 获取群全部管理员。
      *
-     * @param groupId the group id
-     * @return A {@code Flux} emits {@code EMGroupAdmin}.
+     * @param groupId 群id
+     * @return 每个管理员或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">获取群管理员</a>
      */
     public Flux<EMGroupAdmin> listGroupAdmins(String groupId) {
         return GroupAdminList.all(this.context, groupId);
     }
 
     /**
-     * Promote a member of the group to be admin.
+     * 升级群成员为群管理员。
      *
-     * @param groupId the group id
-     * @param username the username
-     * @return A {@code Mono} which completes on success.
+     * @param groupId 群id
+     * @param username 被升级的群成员的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98">升级群成员</a>
      */
     public Mono<Void> addGroupAdmin(String groupId, String username) {
         return GroupAdminAdd.single(this.context, groupId, username);
     }
 
     /**
-     * Demote an admin of the group to be member.
+     * 降级群管理员为群成员。
      *
-     * @param groupId the group id
-     * @param username the username
-     * @return A {@code Mono} which completes on success.
+     * @param groupId 群id
+     * @param username 被降级的群管理员的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98">降级群管理员</a>
      */
     public Mono<Void> removeGroupAdmin(String groupId, String username) {
         return GroupAdminRemove.single(this.context, groupId, username);
     }
 
     /**
-     * Update owner of the group.
+     * 修改群主。新群主需要已经是群成员，否则会报错{@code EMForbiddenException}。
      *
-     * @param groupId the group id
-     * @param username the username of new owner
-     * @return A {@code Mono} which completes upon success.
+     * @param groupId 群id
+     * @param username 新群主的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%BD%AC%E8%AE%A9%E7%BE%A4%E7%BB%84">修改群主</a>
      */
     public Mono<Void> updateGroupOwner(String groupId, String username) {
-        return GroupUpdate.owner(this.context, groupId, username);
+        return this.groupUpdate.owner(groupId, username);
     }
 
 }
