@@ -12,6 +12,9 @@ import com.easemob.im.server.api.room.member.add.AddRoomMember;
 import com.easemob.im.server.api.room.member.remove.RemoveRoomMember;
 import com.easemob.im.server.api.room.member.list.ListRoomMembersResponse;
 import com.easemob.im.server.api.room.member.list.ListRoomMembers;
+import com.easemob.im.server.api.room.superadmin.demote.DemoteRoomSuperAdmin;
+import com.easemob.im.server.api.room.superadmin.list.ListRoomSuperAdmins;
+import com.easemob.im.server.api.room.superadmin.promote.PromoteRoomSuperAdmin;
 import com.easemob.im.server.api.room.update.UpdateRoom;
 import com.easemob.im.server.api.room.update.UpdateRoomRequest;
 import com.easemob.im.server.model.EMRoom;
@@ -200,7 +203,36 @@ public class RoomApi {
     public Mono<Void> demoteRoomAdmin(String roomId, String username) {
         return DemoteRoomAdmin.single(this.context, roomId, username);
     }
+    /**
+     * List Room Super Admins
+     *
+     * @param pagesize where to start
+     * @param pagenum how many super admins to return
+     * @return A {@code Flux} of super admin's username
+     */
+    public Flux<String> listRoomSuperAdminsAll(int pagesize, int pagenum){
+        return ListRoomSuperAdmins.all(this.context, pagesize, pagenum);
+    }
 
+    /**
+     * Promote room super admin to member
+     *
+     * @param username the member's username
+     * @return A {code Mono} which completes upon success.
+     */
+    public Mono<Void> promoteRoomSuperAdmin(String username){
+        return PromoteRoomSuperAdmin.single(this.context, username);
+    }
+
+    /**
+     * Demote room super admin to member
+     *
+     * @param username the super admin's username
+     * @return A {@code Mono} which completes upon success.
+     */
+    public Mono<Void> demoteRoomSuperAdmin(String username) {
+        return DemoteRoomSuperAdmin.singnle(this.context, username);
+    }
 
 
 }
