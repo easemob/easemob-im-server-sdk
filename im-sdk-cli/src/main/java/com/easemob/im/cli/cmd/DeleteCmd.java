@@ -66,12 +66,14 @@ public class DeleteCmd {
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
-        } else {
+        } else if(StringUtils.hasText(username)){
             this.service.user().delete(username)
                     .doOnSuccess(user -> System.out.println("user " + user.getUsername() + " deleted"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
+        } else {
+            System.out.println("must specify one of username or --all");
         }
     }
 
