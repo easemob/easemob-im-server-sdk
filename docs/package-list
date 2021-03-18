@@ -47,11 +47,11 @@ com.easemob.im.server.api.room.member.remove
 com.easemob.im.server.api.room.update
 com.easemob.im.server.api.token.allocate
 com.easemob.im.server.api.user
+com.easemob.im.server.api.user.create
 com.easemob.im.server.api.user.forcelogout
 com.easemob.im.server.api.user.get
 com.easemob.im.server.api.user.list
 com.easemob.im.server.api.user.password
-com.easemob.im.server.api.user.register
 com.easemob.im.server.api.user.status
 com.easemob.im.server.api.user.unregister
 com.easemob.im.server.api.util
