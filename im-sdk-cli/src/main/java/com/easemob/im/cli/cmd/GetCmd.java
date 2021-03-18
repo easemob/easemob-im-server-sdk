@@ -80,7 +80,7 @@ public class GetCmd {
 
         if (blockedByUser != null) {
             service.block().getUsersBlockedFromSendMsgToUser(blockedByUser)
-                    .doOnNext(username -> System.out.println("user: " + username.getUsername()))
+                    .doOnNext(emBlock -> System.out.println("user: " + emBlock.getUsername()))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
