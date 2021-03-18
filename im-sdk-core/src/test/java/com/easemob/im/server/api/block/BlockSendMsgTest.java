@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,25 +25,15 @@ public class BlockSendMsgTest extends AbstractApiTest {
 
     @Test
     public void testBlockUserFromSendMsg() {
-        List<String> blockUsers = new ArrayList<>();
-        blockUsers.add("queen");
-        blockUsers.add("madhat");
-        blockUsers.add("rabbit");
-
         assertDoesNotThrow(() -> {
-            SendMsgToUser.blockUsers(this.context, blockUsers, "alice").block(Duration.ofSeconds(3));
+            SendMsgToUser.blockUser(this.context, "rabbit", "alice").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testUnBlockUserFromSendMsg() {
-        List<String> unblockUsers = new ArrayList<>();
-        unblockUsers.add("queen");
-        unblockUsers.add("madhat");
-        unblockUsers.add("rabbit");
-
         assertDoesNotThrow(() -> {
-            SendMsgToUser.unblockUsers(this.context, unblockUsers, "alice").block(Duration.ofSeconds(3));
+            SendMsgToUser.unblockUser(this.context, "rabbit", "alice").block(Duration.ofSeconds(3));
         });
     }
 

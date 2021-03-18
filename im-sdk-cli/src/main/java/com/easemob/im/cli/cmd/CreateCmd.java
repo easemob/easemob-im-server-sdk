@@ -24,7 +24,7 @@ public class CreateCmd {
 
     @Command(name = "attachment", description = "Create an attachment.")
     public void attachment(@Option(names = "-f", description = "from file") Path file) {
-        this.service.file().uploadFile(file, false)
+        this.service.file().uploadFile(file)
                 .doOnNext(id -> System.out.println(String.format("id: %s", id)))
                 .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
                 .onErrorResume(EMException.class, err -> Mono.empty())
@@ -39,7 +39,7 @@ public class CreateCmd {
                       @Option(names = {"--login"}, description = "block user to login") boolean login,
                       @Option(names = {"--join-group"}, description = "block user to join group") String groupId) {
         if (StringUtils.hasText(msgToUsername)) {
-            this.service.block().blockUsersSendMsgToUser(Arrays.asList(username), msgToUsername)
+            this.service.block().blockUserSendMsgToUser(username, msgToUsername)
                     .doOnSuccess(ignore -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())

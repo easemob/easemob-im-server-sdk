@@ -1,9 +1,11 @@
 package com.easemob.im.server.api.block.user;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.exception.EMInvalidArgumentException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,23 +21,23 @@ public class SendMsgToUser {
                 .flatMapIterable(GetUsersBlockedSendMsgToUserResponse::getUsernames);
     }
 
-    public static Mono<Void> blockUsers(Context context, List<String> blockUsers, String toUser) {
-        List<String> blockUsersExceptSelf = blockUsers.stream()
-                .filter(user -> !user.equals(toUser))
-                .collect(Collectors.toList());
+    public static Mono<Void> blockUser(Context context, String fromUser, String toUser) {
+        if (fromUser.equals(toUser)) {
+            return Mono.error(new EMInvalidArgumentException("user could not block himself"));
+        }
         return context.getHttpClient()
                 .post()
                 .uri(String.format("/users/%s/blocks/users", toUser))
-                .send(Mono.create(sink -> sink.success(context.getCodec().encode(new BlockUsersSendMsgToUserRequest(blockUsersExceptSelf)))))
+                .send(Mono.create(sink -> sink.success(context.getCodec().encode(new BlockUsersSendMsgToUserRequest(Arrays.asList(fromUser))))))
                 .response()
                 .flatMap(rsp -> context.getErrorMapper().apply(rsp).then());
     }
 
-    public static Mono<Void> unblockUsers(Context context, List<String> unblockUsers, String toUser) {
+    public static Mono<Void> unblockUser(Context context, String fromUser, String toUser) {
         return context.getHttpClient()
             .delete()
             .uri(String.format("/users/%s/blocks/users", toUser))
-            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new UnblockUsersSendMsgToUserRequest(unblockUsers)))))
+            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new UnblockUsersSendMsgToUserRequest(Arrays.asList(fromUser))))))
             .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
     }
 

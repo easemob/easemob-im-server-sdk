@@ -10,8 +10,6 @@ import picocli.CommandLine.Command;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 @Command(name = "delete", description = "Delete a resource.")
@@ -28,7 +26,7 @@ public class DeleteCmd {
                       @CommandLine.Option(names = {"--login"}, description = "unblock user to login") boolean login,
                       @CommandLine.Option(names = {"--join-group"}, description = "unblock user to join group") String groupId) {
         if (StringUtils.hasText(msgToUsername)) {
-            this.service.block().unblockUsersSendMsgToUser(Arrays.asList(username), msgToUsername)
+            this.service.block().unblockUserSendMsgToUser(username, msgToUsername)
                     .doOnSuccess(ignore -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())

@@ -15,7 +15,7 @@
 
 ## 安装
 
-如果你的项目使用Maven，可以在pom.xml中添加下面代码：
+如果你的项目使用Maven构建，可以在pom.xml中添加下面代码：
 
 ``` xml
 <dependency>
@@ -25,9 +25,9 @@
 </dependency>
 ```
 
-如果你的项目使用Gradle，可以在build.grade中添加下面代码：
+如果你的项目使用Gradle构建，可以在build.grade中添加下面代码：
 
-```
+``` gradle
 implementation 'com.easemob.im:im-sdk-core:0.1.0-SNAPSHOT'
 ```
 

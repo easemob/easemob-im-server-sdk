@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.function.Consumer;
 
+
 public class GroupApi {
     private static final int PUBLIC_GROUP_MAX_MEMBERS_DEFAULT = 200;
     private static final boolean PUBLIC_GROUP_NEED_APPROVE_TO_JOIN_DEFAULT = false;
@@ -36,7 +37,8 @@ public class GroupApi {
     }
 
     /**
-     * Create a public group.
+     * 创建公开群。
+     * 需要注意的是，目前公开群不允许成员邀请其他用户加入。如果要允许，可以用修改群API设置
      * By default, member of public group could not invite others to join.
      * To allow member invite others, you can update group settings like this:
      * <pre>{@code

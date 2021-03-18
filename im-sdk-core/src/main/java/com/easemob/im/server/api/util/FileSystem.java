@@ -12,6 +12,9 @@ import java.nio.file.StandardOpenOption;
 
 public class FileSystem {
     public static Path choosePath(Path dir, String filename) {
+        if (!dir.toFile().exists()) {
+            dir.toFile().mkdirs();
+        }
         Path localFile = dir.resolve(filename);
         int suffix = 0;
         while (localFile.toFile().exists()) {
