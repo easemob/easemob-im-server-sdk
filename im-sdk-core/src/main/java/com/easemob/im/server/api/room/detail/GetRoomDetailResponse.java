@@ -69,19 +69,9 @@ public class GetRoomDetailResponse {
             this.members = members;
         }
 
-        public EMRoom toRoomDetail() {
-            EMRoom room = EMRoom.of(this.id)
-                    .withName(this.name)
-                    .withDescription(this.description)
-                    .withNeedApproveToJoin(this.needApprove)
-                    .withOwner(this.owner)
-                    .withMaxMembers(this.maxMembers);
-
-            for (Member member : this.members) {
-                room = room.withMember(member.getUsername());
-            }
-
-            return room;
+        public EMRoom toRoom() {
+            return new EMRoom(this.id, this.name, this.description, this.needApprove, this.owner, this.maxMembers,
+                    this.members.stream().map(Member::getUsername).collect(Collectors.toList()));
         }
     }
 
@@ -90,6 +80,6 @@ public class GetRoomDetailResponse {
     }
 
     public List<EMRoom> toRoomDetails() {
-        return this.rooms.stream().map(Room::toRoomDetail).collect(Collectors.toList());
+        return this.rooms.stream().map(Room::toRoom).collect(Collectors.toList());
     }
 }

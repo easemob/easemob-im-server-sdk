@@ -7,7 +7,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class EMUser {
+public class EMUser extends EMEntity {
+
     private static final Pattern USERNAME_PATTERN = Pattern.compile("[a-z][0-9a-z-]{7,31}");
 
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("[0-9a-zA-Z-_?!.]{8,32}");
@@ -16,27 +17,30 @@ public class EMUser {
 
     private final Boolean canLogin;
 
-    private Optional<Instant> blockExpireTimestamp;
-
     public EMUser(String username) {
         this(username, null);
     }
 
     public EMUser(String username, Boolean canLogin) {
-        if (username == null || username.isEmpty()) {
-            throw new EMInvalidArgumentException("username must not be null or empty");
-        }
+        super(EntityType.USER);
+        super.id(username);
         this.username = username;
         this.canLogin = canLogin;
     }
 
     public static void validateUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            throw new EMInvalidArgumentException("username must not be null or empty");
+        }
         if (!USERNAME_PATTERN.matcher(username).matches()) {
             throw new EMInvalidArgumentException(String.format("username should match regex %s", USERNAME_PATTERN.toString()));
         }
     }
 
     public static void validatePassword(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new EMInvalidArgumentException("password must not be null or empty");
+        }
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
             throw new EMInvalidArgumentException(String.format("password should match regex %s", PASSWORD_PATTERN.toString()));
         }
@@ -71,7 +75,7 @@ public class EMUser {
     public String toString() {
         return "EMUser{" +
                 "username='" + username + '\'' +
-                ", restricted=" + canLogin +
+                ", canLogin=" + canLogin +
                 '}';
     }
 }

@@ -48,12 +48,12 @@ class GetRoomDetailTest extends AbstractApiTest {
     @Test
     void testGetRoomDetail() {
         EMRoom r1 = GetRoomDetail.byId(this.context, "r1").block(Duration.ofSeconds(3));
-        assertEquals("r1", r1.getId());
-        assertEquals("room1", r1.getName());
-        assertEquals("The first room.", r1.getDescription());
-        assertEquals("alice", r1.getOwner());
-        assertEquals(200, r1.getMaxMembers());
-        List<String> members = r1.getMembers();
+        assertEquals("r1", r1.id());
+        assertEquals("room1", r1.name());
+        assertEquals("The first room.", r1.description());
+        assertEquals("alice", r1.owner());
+        assertEquals(200, r1.maxMembers());
+        List<String> members = r1.members();
         assertEquals(3, members.size());
         assertEquals("alice", members.get(0));
         assertEquals("rabbit", members.get(1));

@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.group.detail;
 
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.model.EMGroupDetails;
+import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupMember;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -23,7 +23,7 @@ public class GroupDetailTest extends AbstractApiTest {
 
     @Test
     public void testGroupDetails() {
-        EMGroupDetails detail = GroupDetails.execute(this.context, "1").block(Duration.ofSeconds(3));
+        EMGroup detail = GroupDetails.execute(this.context, "1").block(Duration.ofSeconds(3));
         assertEquals("1", detail.getGroupId());
         assertEquals(true, detail.getIsPublic());
         assertEquals(false, detail.getNeedApproveToJoin());

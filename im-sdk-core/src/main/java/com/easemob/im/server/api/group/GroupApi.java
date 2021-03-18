@@ -14,7 +14,7 @@ import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
 import com.easemob.im.server.api.group.settings.GroupSettings;
 import com.easemob.im.server.api.group.settings.GroupSettingsUpdateRequest;
 import com.easemob.im.server.model.EMGroupAdmin;
-import com.easemob.im.server.model.EMGroupDetails;
+import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupMember;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -145,7 +145,7 @@ public class GroupApi {
      * @return 群详情或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E8%AF%A6%E6%83%85">获取群详情</a>
      */
-    public Mono<EMGroupDetails> getGroupDetails(String groupId) {
+    public Mono<EMGroup> getGroupDetails(String groupId) {
         return GroupDetails.execute(this.context, groupId);
     }
 

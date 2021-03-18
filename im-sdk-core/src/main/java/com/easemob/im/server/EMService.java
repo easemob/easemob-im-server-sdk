@@ -58,7 +58,7 @@ public class EMService {
         return this.contactApi;
     }
 
-    public AttachmentApi file() {
+    public AttachmentApi attachment() {
         return this.attachmentApi;
     }
 

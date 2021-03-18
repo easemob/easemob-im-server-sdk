@@ -2,8 +2,7 @@ package com.easemob.im.server.model;
 
 import java.util.List;
 
-public class EMGroupDetails {
-    private final String groupId;
+public class EMGroup extends EMEntity {
 
     private final boolean isPublic;
 
@@ -17,9 +16,10 @@ public class EMGroupDetails {
 
     private final List<EMGroupMember> members;
 
-    public EMGroupDetails(String groupId, boolean isPublic, boolean needApproveToJoin, boolean canMemberInviteOthers,
-                          String owner, int maxMembers, List<EMGroupMember> members) {
-        this.groupId = groupId;
+    public EMGroup(String groupId, boolean isPublic, boolean needApproveToJoin, boolean canMemberInviteOthers,
+                   String owner, int maxMembers, List<EMGroupMember> members) {
+        super(EntityType.GROUP);
+        super.id(groupId);
         this.isPublic = isPublic;
         this.needApproveToJoin = needApproveToJoin;
         this.canMemberInviteOthers = canMemberInviteOthers;
@@ -29,7 +29,7 @@ public class EMGroupDetails {
     }
 
     public String getGroupId() {
-        return this.groupId;
+        return super.id();
     }
 
     public boolean getIsPublic() {

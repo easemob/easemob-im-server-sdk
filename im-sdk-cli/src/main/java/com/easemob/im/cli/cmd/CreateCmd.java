@@ -5,14 +5,13 @@ import com.easemob.im.server.EMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -24,7 +23,7 @@ public class CreateCmd {
 
     @Command(name = "attachment", description = "Create an attachment.")
     public void attachment(@Option(names = "-f", description = "from file") Path file) {
-        this.service.file().uploadFile(file)
+        this.service.attachment().uploadFile(file)
                 .doOnNext(id -> System.out.println(String.format("id: %s", id)))
                 .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
                 .onErrorResume(EMException.class, err -> Mono.empty())
