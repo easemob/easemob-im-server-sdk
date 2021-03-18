@@ -3,6 +3,7 @@ package com.easemob.im.server.api.block;
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.block.login.BlockUserLogin;
 import com.easemob.im.server.api.block.user.SendMsgToUser;
+import com.easemob.im.server.model.EMBlock;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
@@ -39,10 +40,11 @@ public class BlockSendMsgTest extends AbstractApiTest {
 
     @Test
     public void testGetUserBlockedFromSendMsg() {
-        Set<String> blockedUsers = SendMsgToUser.getUsersBlocked(this.context, "alice").collect(Collectors.toSet()).block(Duration.ofSeconds(3));
-        assertTrue(blockedUsers.contains("queen"));
-        assertTrue(blockedUsers.contains("madhat"));
-        assertTrue(blockedUsers.contains("rabbit"));
+        Set<EMBlock> blockedUsers = SendMsgToUser.getUsersBlocked(this.context, "alice").collect(Collectors.toSet()).block(Duration.ofSeconds(3));
+        Set<String> blockedUsernames = blockedUsers.stream().map(EMBlock::getUsername).collect(Collectors.toSet());
+        assertTrue(blockedUsernames.contains("queen"));
+        assertTrue(blockedUsernames.contains("madhat"));
+        assertTrue(blockedUsernames.contains("rabbit"));
     }
 
     @Test

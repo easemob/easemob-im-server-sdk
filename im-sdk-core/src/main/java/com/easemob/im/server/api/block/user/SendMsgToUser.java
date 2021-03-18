@@ -2,6 +2,7 @@ package com.easemob.im.server.api.block.user;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
+import com.easemob.im.server.model.EMBlock;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,13 +13,14 @@ import java.util.stream.Collectors;
 public class SendMsgToUser {
 
 
-    public static Flux<String> getUsersBlocked(Context context, String username) {
+    public static Flux<EMBlock> getUsersBlocked(Context context, String username) {
         return context.getHttpClient()
                 .get()
                 .uri(String.format("/users/%s/blocks/users", username))
                 .responseSingle((httpRsp, buf) -> context.getErrorMapper().apply(httpRsp).then(buf))
                 .map(buf -> context.getCodec().decode(buf, GetUsersBlockedSendMsgToUserResponse.class))
-                .flatMapIterable(GetUsersBlockedSendMsgToUserResponse::getUsernames);
+                .flatMapIterable(GetUsersBlockedSendMsgToUserResponse::getUsernames)
+                .map(blockedUsername -> new EMBlock(blockedUsername, null));
     }
 
     public static Mono<Void> blockUser(Context context, String fromUser, String toUser) {
