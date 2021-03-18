@@ -43,8 +43,8 @@ public class GetCmd {
     }
 
     @Command(name = "history", description = "Get the history file uri by time")
-    public void getHistory(@Parameters(arity = "1", description = "The ISO8601 date time. e.g. 2020-12-12T13:00") String datetime,
-                           @Option(names = {"--download"}, description = "Download the file if specified. The file is compressed, use `zless` to read it.") boolean download) {
+    public void history(@Parameters(arity = "1", description = "The ISO8601 date time. e.g. 2020-12-12T13:00") String datetime,
+                        @Option(names = {"--download"}, description = "Download the file if specified. The file is compressed, use `zless` to read it.") boolean download) {
 
         ZonedDateTime localDatetime = ZonedDateTime.parse(datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()));
         Instant instant = localDatetime.toInstant();
@@ -80,7 +80,7 @@ public class GetCmd {
 
         if (blockedByUser != null) {
             service.block().getUsersBlockedFromSendMsgToUser(blockedByUser)
-                    .doOnNext(username -> System.out.println("user: " + username))
+                    .doOnNext(username -> System.out.println("user: " + username.getUsername()))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
@@ -198,5 +198,36 @@ public class GetCmd {
                 }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();
+    }
+
+    @Command(name = "block", description = "List block list for user or group")
+    public void block(@Option(names = {"--msg-to-user"}, description = "list user's block list") String msgToUsername,
+                      @Option(names = {"--msg-to-group"}, description = "list users who can not send message in this group") String msgToGroupId,
+                      @Option(names = {"--join-group"}, description = "list users who can not join this group") String joinGroupId) {
+        if (!StringUtils.hasText(msgToUsername) && !StringUtils.hasText(msgToGroupId) && !StringUtils.hasText(joinGroupId)) {
+            System.out.println("must specify one of option, e.g. --msg-to-user, --msg-to-group or --join-group");
+            return;
+        }
+        if (StringUtils.hasText(msgToUsername)) {
+            this.service.block().getUsersBlockedFromSendMsgToUser(msgToUsername)
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        }
+        if (StringUtils.hasText(msgToGroupId)) {
+            this.service.block().getUsersBlockedSendMsgToGroup(msgToGroupId)
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        }
+        if (StringUtils.hasText(joinGroupId)) {
+            this.service.block().getUsersBlockedJoinGroup(joinGroupId)
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        }
     }
 }

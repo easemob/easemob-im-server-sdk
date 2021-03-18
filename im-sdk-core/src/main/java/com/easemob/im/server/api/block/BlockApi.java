@@ -40,7 +40,7 @@ public class BlockApi {
      * @return 每个被禁言用户的用户的用户名或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E9%BB%91%E5%90%8D%E5%8D%95">获取用户禁言列表</a>
      */
-    public Flux<String> getUsersBlockedFromSendMsgToUser(String username) {
+    public Flux<EMBlock> getUsersBlockedFromSendMsgToUser(String username) {
         return SendMsgToUser.getUsersBlocked(this.context, username);
     }
 
