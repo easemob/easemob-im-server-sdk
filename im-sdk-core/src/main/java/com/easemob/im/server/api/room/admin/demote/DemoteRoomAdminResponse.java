@@ -9,18 +9,18 @@ public class DemoteRoomAdminResponse {
 
     public static class Wrapper {
         @JsonProperty("result")
-        private boolean result;
+        private String result;
         @JsonProperty("oldadmin")
         private String username;
 
         @JsonCreator
-        public Wrapper(@JsonProperty("result") boolean result,
+        public Wrapper(@JsonProperty("result") String result,
                        @JsonProperty("oldadmin") String username) {
             this.result = result;
             this.username = username;
         }
 
-        public boolean getResult() {
+        public String getResult() {
             return this.result;
         }
     }
@@ -31,6 +31,6 @@ public class DemoteRoomAdminResponse {
     }
 
     public boolean isSuccess() {
-        return this.wrapper != null && this.wrapper.getResult();
+        return this.wrapper != null && "success".equals(this.wrapper.getResult());
     }
 }

@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.room.admin.demote;
+package com.easemob.im.server.api.room.superadmin.promote;
 
 import com.easemob.im.server.api.AbstractApiTest;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,22 +9,24 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-class DemoteRoomAdminTest extends AbstractApiTest {
-    DemoteRoomAdminTest() {
-        this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/admin/rabbit", this::handleDemoteRoomAdmin);
+class PromoteRoomSuperAdminsTest extends AbstractApiTest {
+    PromoteRoomSuperAdminsTest() {
+        this.server.addHandler("POST /easemob/demo/chatrooms/super_admin", this::handleAddRoomSuperAdmin);
     }
 
-    private JsonNode handleDemoteRoomAdmin(JsonNode jsonNode) {
+    private JsonNode handleAddRoomSuperAdmin(JsonNode jsonNode) {
         ObjectNode data = this.objectMapper.createObjectNode();
         data.put("result", "success");
-        data.put("oldadmin", "rabbit");
+        data.put("resource", "");
+
         ObjectNode rsp = this.objectMapper.createObjectNode();
         rsp.set("data", data);
+
         return rsp;
     }
 
     @Test
-    void testDemoteRoomAdmin() {
-        assertDoesNotThrow(() -> DemoteRoomAdmin.single(this.context, "r1", "rabbit").block(Duration.ofSeconds(3)));
+    void testPromoteRoomSuperAdmin() {
+        assertDoesNotThrow(() -> PromoteRoomSuperAdmin.single(this.context, "rabbit").block(Duration.ofSeconds(3)));
     }
 }
