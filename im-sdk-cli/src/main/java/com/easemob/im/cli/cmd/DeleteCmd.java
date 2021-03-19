@@ -20,7 +20,7 @@ public class DeleteCmd {
     @Autowired
     private EMService service;
 
-    static class UnBlockArgGroup {
+    private static class UnBlockArgGroup {
         @Option(names = {"--msg-to-user"}, description = "unblock user send message to this user")
         String msgToUsername;
 
@@ -77,7 +77,7 @@ public class DeleteCmd {
         }
     }
 
-    static class DeleteUserArgGroup {
+    private static class DeleteUserArgGroup {
         @Parameters(description = "delete one user")
         String username;
 
@@ -137,6 +137,60 @@ public class DeleteCmd {
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
+        }
+    }
+
+    private static class MemberArgGroup {
+        @Option(names = "--from-group", description = "remove user from this group")
+        String fromGroup;
+
+        @Option(names = "--from-room", description = "remove user from this room")
+        String fromRoom;
+    }
+
+    @Command(name = "member", description = "Remove user from group or room.")
+    public void member(@Parameters(description = "the user") String username,
+                       @ArgGroup(multiplicity = "1") MemberArgGroup argGroup) {
+        if (StringUtils.hasText(argGroup.fromGroup)) {
+            this.service.group().removeGroupMember(argGroup.fromGroup, username)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        } else if (StringUtils.hasText(argGroup.fromRoom)) {
+            this.service.room().removeRoomMember(argGroup.fromRoom, username)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        }
+    }
+
+    private static class AdminArgGroup {
+        @Option(names = "--group", description = "remove this group admin")
+        String groupId;
+
+        @Option(names = "--room", description = "remove this room admin")
+        String roomId;
+    }
+
+    @Command(name = "admin", description = "Remove a group or room's admin")
+    public void admin(@Parameters(description = "admin username") String username,
+                      @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
+        if (argGroup.groupId != null) {
+            this.service.group().removeGroupAdmin(argGroup.groupId, username)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        } else {
+            // TODO 缺少 removeRoomAdmin API
+//            this.service.room().removeRoomAdmin(argGroup.roomId, username)
+//                    .doOnNext(System.out::println)
+//                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+//                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+//                    .blockLast();
+            System.out.println("Not implemented.");
         }
     }
 }

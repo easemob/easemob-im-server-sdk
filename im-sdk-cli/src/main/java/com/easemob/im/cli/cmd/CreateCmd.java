@@ -2,6 +2,7 @@ package com.easemob.im.cli.cmd;
 
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
+import com.easemob.im.server.api.message.send.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -31,7 +32,7 @@ public class CreateCmd {
                 .block();
     }
 
-    static class BlockArgGroup {
+    private static class BlockArgGroup {
         @Option(names = {"--msg-to-user"}, description = "block user send message to this user")
         String msgToUsername;
 
@@ -134,7 +135,7 @@ public class CreateCmd {
         }
     }
 
-    static class MemberArgGroup {
+    private static class MemberArgGroup {
         @Option(names = "--to-group", description = "add user to this group")
         String toGroup;
 
@@ -146,17 +147,79 @@ public class CreateCmd {
     public void member(@Parameters(description = "the user") String username,
                        @ArgGroup(multiplicity = "1") MemberArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.toGroup)) {
-            this.service.room().addRoomMember(argGroup.toGroup, username)
+            this.service.group().addGroupMember(argGroup.toGroup, username)
                     .doOnSuccess(ig -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         } else if (StringUtils.hasText(argGroup.toRoom)) {
-            this.service.group().addGroupMember(argGroup.toRoom, username)
+            this.service.room().addRoomMember(argGroup.toRoom, username)
                     .doOnSuccess(ig -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
+        }
+    }
+
+    private static class MessageArgGroup {
+        @Option(names = "--to-user", description = "send message to this user")
+        String toUsername;
+
+        @Option(names = "--to-group", description = "send message to this group")
+        String toGroupId;
+
+        @Option(names = "--to-room", description = "send message to this room")
+        String toRoomId;
+    }
+
+    @Command(name = "message", description = "Send messages.")
+    public void message(@Parameters(description = "message sender") String sender,
+                        @ArgGroup(multiplicity = "1", heading = "To whom.") MessageArgGroup argGroup,
+                        @Option(names = "--text", description = "send this text message") String text) {
+        // TODO 目前只支持控制台发送文本，后续将支持从文件读取以及多种消息类型。
+        if (text != null) {
+            SendMessage.RouteSpec routeSpec = this.service.message().send().fromUser(sender);
+            SendMessage.MessageSpec messageSpec;
+            if (argGroup.toUsername != null) {
+                messageSpec = routeSpec.toUser(argGroup.toUsername);
+            } else if (argGroup.toGroupId != null) {
+                messageSpec = routeSpec.toGroup(argGroup.toGroupId);
+            } else {
+                messageSpec = routeSpec.toRoom(argGroup.toRoomId);
+            }
+            messageSpec.text(emTextMessage -> emTextMessage.text(text)).send()
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        }
+    }
+
+    private static class AdminArgGroup {
+        @Option(names = "--group", description = "add a group admin")
+        String groupId;
+
+        @Option(names = "--room", description = "add a room admin")
+        String roomId;
+    }
+
+    @Command(name = "admin", description = "Add a group or room's admin")
+    public void admin(@Parameters(description = "admin username") String username,
+                      @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
+        if (argGroup.groupId != null) {
+            this.service.group().addGroupAdmin(argGroup.groupId, username)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        } else {
+            // TODO 缺少 addRoomAdmin API
+//            this.service.room().addRoomAdmin(argGroup.roomId, username)
+//                    .doOnNext(System.out::println)
+//                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+//                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+//                    .blockLast();
+            System.out.println("Not implemented.");
         }
     }
 }

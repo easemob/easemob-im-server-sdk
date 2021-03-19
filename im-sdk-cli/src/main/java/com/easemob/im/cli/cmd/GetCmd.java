@@ -145,7 +145,7 @@ public class GetCmd {
         }
     }
 
-    static class BlockArgGroup {
+    private static class BlockArgGroup {
         @Option(names = {"--msg-to-user"}, description = "list users who can not send message to this user")
         String msgToUsername;
 
@@ -193,21 +193,20 @@ public class GetCmd {
         }
     }
 
-    static class MemberArgGroup {
-        @Option(names = "--group", description = "list group members")
-        boolean group;
+    private static class MemberArgGroup {
+        @Option(names = "--group", description = "list this group members")
+        String groupId;
 
-        @Option(names = "--room", description = "list room members")
-        boolean room;
+        @Option(names = "--room", description = "list this room members")
+        String roomId;
     }
 
     @Command(name = "member", description = "List group or room members.")
-    public void member(@Parameters(arity = "1", description = "the group or room's id") String id,
-                       @ArgGroup(multiplicity = "1") MemberArgGroup memberArgGroup,
+    public void member(@ArgGroup(multiplicity = "1") MemberArgGroup memberArgGroup,
                        @ArgGroup(exclusive = false) PageArgGroup pageArgGroup) {
-        if (memberArgGroup.room) {
+        if (memberArgGroup.roomId != null) {
             if (pageArgGroup != null) {
-                this.service.room().listRoomMembers(id, pageArgGroup.limit, pageArgGroup.cursor)
+                this.service.room().listRoomMembers(memberArgGroup.roomId, pageArgGroup.limit, pageArgGroup.cursor)
                         .doOnSuccess(emPage -> {
                             emPage.getValues().forEach(System.out::println);
                             System.out.println("cursor: " + emPage.getCursor());
@@ -216,15 +215,15 @@ public class GetCmd {
                         .onErrorResume(EMException.class, ignore -> Mono.empty())
                         .block();
             } else {
-                this.service.room().listRoomMembersAll(id)
+                this.service.room().listRoomMembersAll(memberArgGroup.roomId)
                         .doOnNext(System.out::println)
                         .doOnError(err -> System.out.println("error: " + err.getMessage()))
                         .onErrorResume(EMException.class, ignore -> Mono.empty())
                         .blockLast();
             }
-        } else if (memberArgGroup.group) {
+        } else {
             if (pageArgGroup != null) {
-                this.service.group().listGroupMembers(id, pageArgGroup.limit, pageArgGroup.cursor)
+                this.service.group().listGroupMembers(memberArgGroup.groupId, pageArgGroup.limit, pageArgGroup.cursor)
                         .doOnSuccess(emPage -> {
                             emPage.getValues().forEach(System.out::println);
                             System.out.println("cursor: " + emPage.getCursor());
@@ -233,7 +232,7 @@ public class GetCmd {
                         .onErrorResume(EMException.class, ignore -> Mono.empty())
                         .block();
             } else {
-                this.service.group().listAllGroupMembers(id)
+                this.service.group().listAllGroupMembers(memberArgGroup.groupId)
                         .doOnNext(System.out::println)
                         .doOnError(err -> System.out.println("error: " + err.getMessage()))
                         .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -242,7 +241,58 @@ public class GetCmd {
         }
     }
 
-    static class PageArgGroup {
+    private static class MessageArgGroup {
+        @Option(names = "--count", description = "count message")
+        boolean count;
+
+        @Option(names = "--status", description = "get one message status")
+        String messageId;
+    }
+
+    @Command(name = "message", description = "List or count messages.")
+    public void message(@ArgGroup(multiplicity = "1") MessageArgGroup argGroup,
+                        @Option(names = "--missed", description = "list this user's missed messages") String username) {
+        if (argGroup.count) {
+            if (StringUtils.hasText(username)) {
+                this.service.message().countMissedMessages(username)
+                        .doOnNext(msg -> {
+                            System.out.printf("%s : %s \n", msg.getQueueName(), msg.getMessageCount());
+                        })
+                        .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                        .onErrorResume(EMException.class, ignore -> Mono.empty())
+                        .blockLast();
+            }
+        } else if (StringUtils.hasText(argGroup.messageId)) {
+            System.out.println("Not implemented.");
+        }
+    }
+
+    private static class AdminArgGroup {
+        @Option(names = "--group", description = "list group's admin")
+        String groupId;
+
+        @Option(names = "--room", description = "list room's admin")
+        String roomId;
+    }
+
+    @Command(name = "admin", description = "List a group or room's admin")
+    public void admin(@ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
+        if (argGroup.groupId != null) {
+            this.service.group().listGroupAdmins(argGroup.groupId)
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        } else {
+            this.service.room().listRoomAdminsAll(argGroup.roomId)
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        }
+    }
+
+    private static class PageArgGroup {
         @Option(names = "--limit", description = "the limit", required = true)
         Integer limit;
 
