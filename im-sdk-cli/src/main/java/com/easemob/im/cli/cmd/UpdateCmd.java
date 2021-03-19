@@ -28,7 +28,7 @@ public class UpdateCmd {
                 .block();
     }
 
-    static class GroupArgGroup {
+    private static class GroupArgGroup {
         @Option(names = {"--owner"}, description = "the new owner's username, who must be member of this group")
         String owner;
 
