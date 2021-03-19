@@ -5,6 +5,7 @@ import com.easemob.im.server.EMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -30,39 +31,60 @@ public class CreateCmd {
                 .block();
     }
 
+    static class BlockArgGroup {
+        @Option(names = {"--msg-to-user"}, description = "block user send message to this user")
+        String msgToUsername;
+
+        @Option(names = {"--msg-to-group"}, description = "block user send message to this group")
+        String msgToGroupId;
+
+        @Option(names = {"--msg-to-room"}, description = "block user send message to this room")
+        String msgToRoomId;
+
+        @Option(names = {"--join-group"}, description = "block user to join group")
+        String joinGroupId;
+
+        @Option(names = {"--login"}, description = "block user to login")
+        boolean login;
+
+        @Option(names = "--duration", description = "block duration, required by block user send msg to group or room")
+        Duration duration;
+    }
+
     @Command(name = "block", description = "Block user from resource.")
     public void block(@Parameters(index = "0", paramLabel = "username", description = "user to block") String username,
-                      @Option(names = {"--msg-to-user"}, description = "block user send message to this user") String msgToUsername,
-                      @Option(names = {"--msg-to-group"}, description = "block user send message to this group") String msgToGroupId,
-                      @Option(names = {"--msg-to-room"}, description = "block user send message to this room") String msgToRoomId,
-                      @Option(names = {"--login"}, description = "block user to login") boolean login,
-                      @Option(names = {"--join-group"}, description = "block user to join group") String groupId) {
-        if (StringUtils.hasText(msgToUsername)) {
-            this.service.block().blockUserSendMsgToUser(username, msgToUsername)
+                      @ArgGroup(multiplicity = "1", exclusive = false) BlockArgGroup argGroup) {
+        if (StringUtils.hasText(argGroup.msgToUsername)) {
+            this.service.block().blockUserSendMsgToUser(username, argGroup.msgToUsername)
                     .doOnSuccess(ignore -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
-        if (StringUtils.hasText(msgToGroupId)) {
-            this.service.block().blockUserSendMsgToGroup(username, msgToGroupId, Duration.ofMillis(6000))
+        if (StringUtils.hasText(argGroup.msgToGroupId) && argGroup.duration != null) {
+            this.service.block().blockUserSendMsgToGroup(username, argGroup.msgToGroupId, argGroup.duration)
                     .doOnSuccess(ignore -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
-        if (StringUtils.hasText(msgToRoomId)) {
-            // TODO: implement unblock users send msg to room
-            System.out.println("Not implemented");
+        if (StringUtils.hasText(argGroup.msgToRoomId) && argGroup.duration != null) {
+            this.service.block().blockUserSendMsgToRoom(argGroup.msgToUsername, argGroup.msgToRoomId, argGroup.duration)
+                    .doOnSuccess(ig -> System.out.println("done."))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
         }
-        if (login) {
+        if (StringUtils.hasText(argGroup.joinGroupId)) {
+            this.service.block().blockUserJoinGroup(username, argGroup.joinGroupId)
+                    .doOnSuccess(ignored -> System.out.println("done"))
+                    .block();
+        }
+        if (argGroup.login) {
             this.service.block().blockUserLogin(username)
                     .doOnSuccess(ignored -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
-                    .block(Duration.ofSeconds(3));
-        }
-        if (StringUtils.hasText(groupId)) {
-            this.service.block().blockUserJoinGroup(username, groupId)
-                    .doOnSuccess(ignored -> System.out.println("done"))
                     .block();
         }
     }
@@ -90,12 +112,12 @@ public class CreateCmd {
     @Command(name = "group", description = "Create a group.\n" +
             "Public(by default) groups can be listed using Android, iOS, Web SDKs. So that end user can discover and join public groups.\n" +
             "Private groups can NOT be listed using Android, iOS, Web SDKs.")
-    public void group(@Option(names = "--private", description = "create a private group") boolean isPrivate,
+    public void group(@Parameters(index = "0", arity = "1..*", description = "the member's username list") List<String> members,
                       @Option(names = "--owner", required = true, description = "the owner's username") String owner,
-                      @Option(names = "--member", description = "the member's username") List<String> members,
+                      @Option(names = "--private", description = "create a private group") boolean isPrivate,
                       @Option(names = "--max-members", defaultValue = "200", description = "max number of members") int maxMembers,
-                      @Option(names = "--can-member-invite", defaultValue = "false", description = "can member invite others to join") boolean canMemberInvite,
-                      @Option(names = "--need-approve-to-join", defaultValue = "false", description = "only for public group, whether need approve to join") boolean needApproveToJoin) {
+                      @Option(names = "--can-member-invite", description = "can member invite others to join") boolean canMemberInvite,
+                      @Option(names = {"--need-approve-to-join"}, description = "need approve to join") boolean needApproveToJoin) {
         if (isPrivate) {
             this.service.group().createPrivateGroup(owner, members, maxMembers, canMemberInvite)
                     .doOnSuccess(groupId -> System.out.println("group: " + groupId))
@@ -105,6 +127,33 @@ public class CreateCmd {
         } else {
             this.service.group().createPublicGroup(owner, members, maxMembers, needApproveToJoin)
                     .doOnSuccess(groupId -> System.out.println("group: " + groupId))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        }
+    }
+
+    static class MemberArgGroup {
+        @Option(names = "--group", description = "add a group member")
+        boolean group;
+
+        @Option(names = "--room", description = "add a room member")
+        boolean room;
+    }
+
+    @Command(name = "member", description = "Add user to group or room.")
+    public void member(@Parameters(index = "0", description = "the group or room's id") String id,
+                       @Parameters(index = "1", description = "the user") String username,
+                       @ArgGroup(multiplicity = "1") MemberArgGroup argGroup) {
+        if (argGroup.room) {
+            this.service.room().addRoomMember(id, username)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        } else if (argGroup.group) {
+            this.service.group().addGroupMember(id, username)
+                    .doOnSuccess(ig -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();

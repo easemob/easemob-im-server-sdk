@@ -5,8 +5,10 @@ import com.easemob.im.server.EMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import picocli.CommandLine;
+import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -17,8 +19,8 @@ public class UpdateCmd {
     private EMService service;
 
     @Command(name = "password", description = "Reset password for the user.", mixinStandardHelpOptions = true)
-    public void password(@CommandLine.Parameters(index = "0", description = "the username") String username,
-                         @CommandLine.Parameters(index = "1", description = "the password") String password) {
+    public void password(@Parameters(index = "0", description = "the username") String username,
+                         @Parameters(index = "1", description = "the password") String password) {
         this.service.user().updateUserPassword(username, password)
                 .doOnSuccess(ignore -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -26,45 +28,56 @@ public class UpdateCmd {
                 .block();
     }
 
-    @Command(name = "group", description = "Update a group's settings.")
-    public void group(@CommandLine.Parameters(index = "0", description = "the group's id") String groupId,
-                      @CommandLine.Option(names = {"--owner"}, description = "the new owner's username, who must be member of this group") String owner,
-                      @CommandLine.Option(names = {"--announcement"}, description = "the announcement") String announcement,
-                      @CommandLine.Option(names = {"--max-members"}, description = "the max number of members") Integer maxMembers,
-                      @CommandLine.Option(names = {"--need-approve-to-join"}, description = "need approve to join") Boolean needApproveToJoin,
-                      @CommandLine.Option(names = {"--can-member-invite"}, description = "can member invite others to join") Boolean canMemberInvite) {
+    static class GroupArgGroup {
+        @Option(names = {"--owner"}, description = "the new owner's username, who must be member of this group")
+        String owner;
 
-        if (maxMembers != null || needApproveToJoin != null || canMemberInvite != null) {
-            this.service.group().updateGroup(groupId, settings -> {
-                if (maxMembers != null) {
-                    settings.setMaxMembers(maxMembers);
+        @Option(names = {"--announcement"}, description = "the announcement")
+        String announcement;
+
+        @Option(names = {"--max-members"}, description = "the max number of members")
+        Integer maxMembers;
+
+        // Use Boolean but boolean is because this is update action.
+        @Option(names = {"--need-approve-to-join"}, description = "need approve to join")
+        Boolean needApproveToJoin;
+
+        @Option(names = {"--can-member-invite"}, description = "can member invite others to join")
+        Boolean canMemberInvite;
+    }
+
+    @Command(name = "group", description = "Update a group's settings.")
+    public void group(@Parameters(index = "0", description = "the group's id") String groupId,
+                      @ArgGroup(multiplicity = "1", exclusive = false) GroupArgGroup argGroup) {
+        if (argGroup.maxMembers != null || argGroup.needApproveToJoin != null || argGroup.canMemberInvite != null) {
+            this.service.group().updateGroup(groupId, request -> {
+                if (argGroup.maxMembers != null) {
+                    request.setMaxMembers(argGroup.maxMembers);
                 }
-                if (needApproveToJoin != null) {
-                    settings.setNeedApproveToJoin(needApproveToJoin);
+                if (argGroup.needApproveToJoin != null) {
+                    request.setNeedApproveToJoin(argGroup.needApproveToJoin);
                 }
-                if (canMemberInvite != null) {
-                    settings.setCanMemberInviteOthers(canMemberInvite);
+                if (argGroup.canMemberInvite != null) {
+                    request.setCanMemberInviteOthers(argGroup.canMemberInvite);
                 }
             }).doOnSuccess(ignored -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
-        if (owner != null) {
-            this.service.group().updateGroupOwner(groupId, owner)
+        if (StringUtils.hasText(argGroup.owner)) {
+            this.service.group().updateGroupOwner(groupId, argGroup.owner)
                     .doOnSuccess(ignored -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
-        if (announcement != null) {
-            this.service.group().updateGroupAnnouncement(groupId, announcement)
+        if (argGroup.announcement != null) {
+            this.service.group().updateGroupAnnouncement(groupId, argGroup.announcement)
                     .doOnSuccess(ignored -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
     }
-
-
 }
