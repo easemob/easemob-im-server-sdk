@@ -135,6 +135,20 @@ public class CreateCmd {
         }
     }
 
+    @Command(name = "room", description = "Create a room.")
+    public void room(@Parameters(arity = "1", description = "the member's username list") List<String> members,
+                     @Option(names = "--name", required = true, description = "the room name") String name,
+                     @Option(names = "--owner", required = true, description = "the owner's username") String owner,
+                     @Option(names = "--description", description = "the room's description", defaultValue = "") String description,
+                     @Option(names = "--max-members", defaultValue = "200", description = "max number of members") int maxMembers) {
+        // TODO 没有canMemberInvite？
+        this.service.room().createRoom(name, description, owner, members, maxMembers)
+                .doOnSuccess(roomId -> System.out.println("roomId: " + roomId))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
+    }
+
     private static class MemberArgGroup {
         @Option(names = "--to-group", description = "add user to this group")
         String toGroup;
@@ -201,9 +215,12 @@ public class CreateCmd {
 
         @Option(names = "--room", description = "add a room admin")
         String roomId;
+
+        @Option(names = "--super", description = "add a super admin, who is the only person that can create a room")
+        String superAdminUsername;
     }
 
-    @Command(name = "admin", description = "Add a group or room's admin")
+    @Command(name = "admin", description = "Add admin")
     public void admin(@Parameters(description = "admin username") String username,
                       @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {
@@ -212,14 +229,18 @@ public class CreateCmd {
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
+        } else if (argGroup.roomId != null) {
+            this.service.room().promoteRoomAdmin(argGroup.roomId, username)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
         } else {
-            // TODO 缺少 addRoomAdmin API
-//            this.service.room().addRoomAdmin(argGroup.roomId, username)
-//                    .doOnNext(System.out::println)
-//                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
-//                    .onErrorResume(EMException.class, ignore -> Mono.empty())
-//                    .blockLast();
-            System.out.println("Not implemented.");
+            this.service.room().promoteRoomSuperAdmin(argGroup.superAdminUsername)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
         }
     }
 }

@@ -45,20 +45,19 @@ public class UpdateCmd {
     @Command(name = "group", description = "Update a group's settings.")
     public void group(@Parameters(description = "the group's id") String groupId,
                       @ArgGroup(multiplicity = "1", exclusive = false) GroupArgGroup argGroup) {
-        if (argGroup.maxMembers != null || argGroup.canMemberInvite != null) {
-            this.service.group().updateGroup(groupId, request -> {
-                if (argGroup.maxMembers != null) {
-                    request.setMaxMembers(argGroup.maxMembers);
-                }
-                if (argGroup.canMemberInvite != null) {
-                    request.setCanMemberInviteOthers(argGroup.canMemberInvite);
-                    request.setNeedApproveToJoin(!argGroup.canMemberInvite);
-                }
-            }).doOnSuccess(ignored -> System.out.println("done"))
-                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                    .onErrorResume(EMException.class, ignore -> Mono.empty())
-                    .block();
-        }
+        this.service.group().updateGroup(groupId, request -> {
+            if (argGroup.maxMembers != null) {
+                request.setMaxMembers(argGroup.maxMembers);
+            }
+            if (argGroup.canMemberInvite != null) {
+                request.setCanMemberInviteOthers(argGroup.canMemberInvite);
+                request.setNeedApproveToJoin(!argGroup.canMemberInvite);
+            }
+        }).doOnSuccess(ignored -> System.out.println("done"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
+
         if (StringUtils.hasText(argGroup.owner)) {
             this.service.group().updateGroupOwner(groupId, argGroup.owner)
                     .doOnSuccess(ignored -> System.out.println("done"))
@@ -66,6 +65,7 @@ public class UpdateCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
+
         if (argGroup.announcement != null) {
             this.service.group().updateGroupAnnouncement(groupId, argGroup.announcement)
                     .doOnSuccess(ignored -> System.out.println("done"))
@@ -73,5 +73,35 @@ public class UpdateCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
+    }
+
+    private static class RoomArgGroup {
+        @Option(names = "--name", description = "new room name")
+        String name;
+
+        @Option(names = {"--description"}, description = "the announcement")
+        String description;
+
+        @Option(names = {"--max-members"}, description = "the max number of members")
+        Integer maxMembers;
+    }
+
+    @Command(name = "room", description = "Update a room's settings.")
+    public void room(@Parameters(description = "the room's id") String roomId,
+                     @ArgGroup(multiplicity = "1", exclusive = false) RoomArgGroup argGroup) {
+        this.service.room().updateRoom(roomId, request -> {
+            if (argGroup.name != null) {
+                request.withName(argGroup.name);
+            }
+            if (argGroup.description != null) {
+                request.withDescription(argGroup.description);
+            }
+            if (argGroup.maxMembers != null) {
+                request.withMaxMembers(argGroup.maxMembers);
+            }
+        }).doOnSuccess(ignored -> System.out.println("done"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
     }
 }
