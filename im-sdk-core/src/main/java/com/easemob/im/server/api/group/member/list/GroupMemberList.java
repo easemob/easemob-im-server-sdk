@@ -2,6 +2,7 @@ package com.easemob.im.server.api.group.member.list;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMGroupMember;
+import com.easemob.im.server.model.EMPage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,13 +14,13 @@ public class GroupMemberList {
         this.context = context;
     }
 
-    public Flux<EMGroupMember> all(String groupId, int limit) {
+    public Flux<String> all(String groupId, int limit) {
         return next(groupId, limit, null)
             .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(groupId, limit, rsp.getCursor()))
-            .concatMapIterable(GroupMemberListResponse::getMembers);
+            .concatMapIterable(EMPage::getValues);
     }
 
-    public Mono<GroupMemberListResponse> next(String groupId, int limit, String cursor) {
+    public Mono<EMPage<String>> next(String groupId, int limit, String cursor) {
         String uri = String.format("/chatgroups/%s/users?limit=%d", groupId, limit);
         if (cursor != null) {
             uri += String.format("&cursor=%s", cursor);
@@ -29,6 +30,7 @@ public class GroupMemberList {
             .get()
             .uri(uri)
             .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, GroupMemberListResponse.class));
+            .map(buf -> this.context.getCodec().decode(buf, GroupMemberListResponse.class))
+            .map(GroupMemberListResponse::toEMPage);
     }
 }

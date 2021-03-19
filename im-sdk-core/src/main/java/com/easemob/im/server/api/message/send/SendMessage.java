@@ -18,13 +18,14 @@ public class SendMessage {
         return new RouteSpec(username);
     }
 
-    public Mono<SendMessageResponse> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
+    public Mono<EMSentMessages> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
         return this.context.getHttpClient()
                 .post()
                 .uri("/messages?useMsgId=true")
                 .send(Mono.create(sink -> sink.success(context.getCodec().encode(new SendMessageRequest(from, toType, tos, message, SendMessageRequest.parseExtensions(extensions))))))
                 .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, SendMessageResponse.class));
+                .map(buf -> context.getCodec().decode(buf, SendMessageResponse.class))
+                .map(SendMessageResponse::toEMSentMessages);
     }
 
     public class RouteSpec {
@@ -156,39 +157,10 @@ public class SendMessage {
             return this;
         }
 
-        public Mono<Result> send() {
-            return SendMessage.this.send(this.from, this.toType, this.tos, this.message, this.extensions)
-                    .map(rsp -> parseResult(this.tos, rsp));
+        public Mono<EMSentMessages> send() {
+            return SendMessage.this.send(this.from, this.toType, this.tos, this.message, this.extensions);
         }
 
-        public Result parseResult(Set<String> tos, SendMessageResponse rsp) {
-            Map<String, String> messageIdsByEntityId = new HashMap<>();
-            if (rsp.getAllMessageIdsByReceiver() == null) {
-                for (String entityId : tos) {
-                    messageIdsByEntityId.put(entityId, null);
-                }
-            } else {
-                for (String entityId : tos) {
-                    String messageId = rsp.getAllMessageIdsByReceiver().get(entityId);
-                    messageIdsByEntityId.put(entityId, messageId);
-                }
-            }
-            return new Result(messageIdsByEntityId);
-        }
     }
-
-    public class Result {
-
-        private Map<String, String> messageIdsByEntityId;
-
-        public Result(Map<String, String> messageIdsByEntityId) {
-            this.messageIdsByEntityId = messageIdsByEntityId;
-        }
-
-        public Map<String, String> getMessageIdsByEntityId() {
-            return this.messageIdsByEntityId;
-        }
-    }
-
 
 }

@@ -23,4 +23,8 @@ public class GroupMemberResource {
         return this.memberUsername != null ? EMGroupMember.asMember(this.memberUsername) : EMGroupMember.asOwner(this.ownerUsername);
     }
 
+    public String getUsername() {
+        return this.memberUsername != null ? this.memberUsername : this.ownerUsername;
+    }
+
 }

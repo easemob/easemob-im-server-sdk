@@ -24,8 +24,8 @@ class GroupMemberListTest extends AbstractApiTest {
 
     @Test
     public void testListGroupMemberAll() {
-        List<EMGroupMember> members = this.groupMemberList.all("1", 10).collect(Collectors.toList()).block(Duration.ofSeconds(3));
-        assertEquals(15, members.size());
+        List<String> usernames = this.groupMemberList.all("1", 10).collect(Collectors.toList()).block(Duration.ofSeconds(3));
+        assertEquals(15, usernames.size());
     }
 
     private JsonNode handleGroupMemberListRequest1(JsonNode jsonNode) {

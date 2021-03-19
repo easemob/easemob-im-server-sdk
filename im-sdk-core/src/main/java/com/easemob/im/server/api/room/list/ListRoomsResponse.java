@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.room.list;
 
+import com.easemob.im.server.model.EMPage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -59,6 +60,11 @@ public class ListRoomsResponse {
 
     public String getCursor() {
         return this.cursor;
+    }
+
+    public EMPage<String> toEMPage() {
+        List<String> roomIds = this.rooms.stream().map(Room::getId).collect(Collectors.toList());
+        return new EMPage<>(roomIds, this.cursor);
     }
 
     @JsonCreator

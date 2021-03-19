@@ -86,10 +86,10 @@ public class GetCmd {
                     .blockLast();
         } else if (limit != null) {
             service.user().listUsers(limit, cursor)
-                    .doOnNext(rsp -> {
-                        System.out.println("cursor: " + rsp.getCursor());
+                    .doOnNext(page -> {
+                        System.out.println("cursor: " + page.getCursor());
                         System.out.println("users:");
-                        for (String user : rsp.getUsernames()) {
+                        for (String user : page.getValues()) {
                             System.out.println("\t" + user);
                         }
                     }).doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -165,12 +165,12 @@ public class GetCmd {
                     .blockLast();
         } else if (limit != null) {
             this.service.group().listGroups(limit, cursor)
-                    .doOnNext(rsp -> {
-                        List<String> groupIds = rsp.getGroupIds();
+                    .doOnNext(page -> {
+                        List<String> groupIds = page.getValues();
                         for (int i = 0; i < groupIds.size(); i++) {
                             System.out.println("group: " + groupIds.get(i));
                         }
-                        System.out.println("cursor: " + rsp.getCursor());
+                        System.out.println("cursor: " + page.getCursor());
                     })
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())

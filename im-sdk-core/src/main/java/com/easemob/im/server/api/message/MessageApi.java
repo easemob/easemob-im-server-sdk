@@ -11,6 +11,7 @@ import com.easemob.im.server.api.message.status.MessageStatus;
 import com.easemob.im.server.model.EMKeyValue;
 import com.easemob.im.server.model.EMMessage;
 import com.easemob.im.server.model.EMMessageStatus;
+import com.easemob.im.server.model.EMSentMessages;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -91,7 +92,7 @@ public class MessageApi {
      * @see com.easemob.im.server.model.EMMessage
      * @see com.easemob.im.server.model.EMKeyValue
      */
-    public Mono<SendMessageResponse> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
+    public Mono<EMSentMessages> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
         return this.sendMessage.send(from, toType, tos, message, extensions);
     }
 

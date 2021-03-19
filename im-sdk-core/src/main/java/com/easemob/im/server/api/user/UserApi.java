@@ -9,6 +9,7 @@ import com.easemob.im.server.api.user.password.UpdateUserPassword;
 import com.easemob.im.server.api.user.create.CreateUser;
 import com.easemob.im.server.api.user.unregister.DeleteUser;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
+import com.easemob.im.server.model.EMPage;
 import com.easemob.im.server.model.EMUser;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -85,8 +86,9 @@ public class UserApi {
      * @param cursor 开始位置
      * @return 获取用户响应或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7">获取用户列表</a>
+     * @see com.easemob.im.server.model.EMPage
      */
-    public Mono<UserListResponse> listUsers(int limit, String cursor) {
+    public Mono<EMPage<String>> listUsers(int limit, String cursor) {
         return this.listUsers.next(limit, cursor);
     }
 

@@ -17,6 +17,7 @@ import com.easemob.im.server.api.room.superadmin.list.ListRoomSuperAdmins;
 import com.easemob.im.server.api.room.superadmin.promote.PromoteRoomSuperAdmin;
 import com.easemob.im.server.api.room.update.UpdateRoom;
 import com.easemob.im.server.api.room.update.UpdateRoomRequest;
+import com.easemob.im.server.model.EMPage;
 import com.easemob.im.server.model.EMRoom;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -122,7 +123,7 @@ public class RoomApi {
      * @return 获取聊天室响应或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96_app_%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取聊天室列表</a>
      */
-    public Mono<ListRoomsResponse> listRooms(int limit, String cursor) {
+    public Mono<EMPage<String>> listRooms(int limit, String cursor) {
         return ListRooms.next(this.context, limit, cursor);
     }
 
@@ -157,7 +158,7 @@ public class RoomApi {
      * @return 获取聊天室成员响应或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
      */
-    public Mono<ListRoomMembersResponse> listRoomMembers(String roomId, int limit, String cursor) {
+    public Mono<EMPage<String>> listRoomMembers(String roomId, int limit, String cursor) {
         return ListRoomMembers.next(this.context, roomId, limit, cursor);
     }
 

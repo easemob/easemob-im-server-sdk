@@ -19,6 +19,7 @@ import com.easemob.im.server.api.group.settings.UpdateGroupRequest;
 import com.easemob.im.server.model.EMGroupAdmin;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupMember;
+import com.easemob.im.server.model.EMPage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -167,10 +168,10 @@ public class GroupApi {
      * @param limit 每次取回多少个群id
      * @param cursor 上次返回的{@code cursor}
      * @return 群列表响应或错误
-     * @see GroupListResponse
+     * @see com.easemob.im.server.model.EMPage
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96app%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%BE%A4%E7%BB%84_%E5%8F%AF%E5%88%86%E9%A1%B5">获取群列表</a>
      */
-    public Mono<GroupListResponse> listGroups(int limit, String cursor) {
+    public Mono<EMPage<String>> listGroups(int limit, String cursor) {
         return this.groupList.next(limit, cursor);
     }
 
@@ -257,7 +258,7 @@ public class GroupApi {
      * @see com.easemob.im.server.model.EMGroupMember
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
-    public Flux<EMGroupMember> listAllGroupMembers(String groupId) {
+    public Flux<String> listAllGroupMembers(String groupId) {
         return this.groupMemberList.all(groupId, 20);
     }
 
@@ -288,7 +289,7 @@ public class GroupApi {
      * @see com.easemob.im.server.api.group.member.list.GroupMemberListResponse
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
-    public Mono<GroupMemberListResponse> listGroupMembers(String groupId, int limit, String cursor) {
+    public Mono<EMPage<String>> listGroupMembers(String groupId, int limit, String cursor) {
         return this.groupMemberList.next(groupId, limit, cursor);
     }
 

@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.user.list;
 
 import com.easemob.im.server.api.user.UserResource;
+import com.easemob.im.server.model.EMPage;
 import com.easemob.im.server.model.EMUser;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,6 +32,11 @@ public class UserListResponse {
         return this.entities.stream()
             .filter(user -> user.getUsername().equals(username)).findFirst()
             .map(UserResource::toEMUser).orElse(null);
+    }
+
+    public EMPage<String> toEMPage() {
+        List<String> usernames = this.entities.stream().map(UserResource::getUsername).collect(Collectors.toList());
+        return new EMPage<>(usernames, this.cursor);
     }
 
     public String getCursor() {

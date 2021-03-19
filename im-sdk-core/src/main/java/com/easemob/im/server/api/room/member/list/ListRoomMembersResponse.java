@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.room.member.list;
 
+import com.easemob.im.server.model.EMPage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -52,5 +53,9 @@ public class ListRoomMembersResponse {
         return this.cursor;
     }
 
+    public EMPage<String> toEMPage() {
+        List<String> usernames = this.members.stream().map(Member::getUsername).collect(Collectors.toList());
+        return new EMPage<>(usernames, this.cursor);
+    }
 
 }

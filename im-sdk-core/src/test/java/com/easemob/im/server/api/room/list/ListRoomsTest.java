@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.room.list;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.model.EMPage;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -70,14 +71,14 @@ class ListRoomsTest extends AbstractApiTest {
 
     @Test
     void testListFirstPage() {
-        ListRoomsResponse response = ListRooms.next(this.context,  2, null).block(Duration.ofSeconds(3));
-        assertEquals(2, response.getRoomIds().size());
+        EMPage<String> page = ListRooms.next(this.context,  2, null).block(Duration.ofSeconds(3));
+        assertEquals(2, page.getValues().size());
     }
 
     @Test
     void testListSecondPage() {
-        ListRoomsResponse response = ListRooms.next(this.context,  2, "1").block(Duration.ofSeconds(3));
-        assertEquals(1, response.getRoomIds().size());
+        EMPage<String> page = ListRooms.next(this.context,  2, "1").block(Duration.ofSeconds(3));
+        assertEquals(1, page.getValues().size());
     }
 
     @Test

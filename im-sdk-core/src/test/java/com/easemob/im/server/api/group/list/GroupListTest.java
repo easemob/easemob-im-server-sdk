@@ -37,7 +37,7 @@ public class GroupListTest extends AbstractApiTest {
     public void testGroupListLowLevelApi() {
         this.groupList.next(10, "1")
             .as(StepVerifier::create)
-            .expectNextMatches(rsp -> rsp.getGroupIds().size() == 10 && rsp.getCursor().equals("2"))
+            .expectNextMatches(page -> page.getValues().size() == 10 && page.getCursor().equals("2"))
             .expectComplete()
             .verify(Duration.ofSeconds(3));
     }
