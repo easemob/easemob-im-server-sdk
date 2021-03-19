@@ -5,11 +5,18 @@ import reactor.core.publisher.Mono;
 
 public class GroupMemberAdd {
 
-    public static Mono<Void> single(Context context, String groupId, String username) {
-        return context.getHttpClient()
+    private Context context;
+
+    public GroupMemberAdd(Context context) {
+        this.context = context;
+    }
+
+
+    public Mono<Void> single(String groupId, String username) {
+        return this.context.getHttpClient()
             .post()
             .uri(String.format("/chatgroups/%s/users/%s", groupId, username))
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
     }
 
 }

@@ -10,21 +10,24 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GroupSettingsTest extends AbstractApiTest {
+class UpdateGroupTest extends AbstractApiTest {
 
-    public GroupSettingsTest() {
+    UpdateGroup updateGroup = new UpdateGroup(this.context);
+
+    public UpdateGroupTest() {
         this.server.addHandler("PUT /easemob/demo/chatgroups/1", this::handleGroupUpdateRequestSuccess);
         this.server.addHandler("PUT /easemob/demo/chatgroups/2", this::handleGroupUpdateRequestFailure);
+        this.server.addHandler("PUT /easemob/demo/chatgroups/3", this::handleGroupUpdateOwnerRequest);
     }
 
     @Test
     public void testGroupUpdateSuccess() {
-        assertDoesNotThrow(() -> GroupSettings.update(this.context, "1", settings -> settings.setMaxMembers(10)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.updateGroup.update("1", settings -> settings.setMaxMembers(10)).block(Duration.ofSeconds(3)));
     }
 
     @Test
     public void testGroupUpdateFailure() {
-        assertThrows(EMUnknownException.class, () -> GroupSettings.update(this.context, "2", settings -> settings.setMaxMembers(1000000).setCanMemberInviteOthers(false)).block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> this.updateGroup.update( "2", settings -> settings.setMaxMembers(1000000).setCanMemberInviteOthers(false)).block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupUpdateRequestSuccess(JsonNode jsonNode) {
@@ -43,6 +46,17 @@ class GroupSettingsTest extends AbstractApiTest {
         rsp.set("data", data);
 
         return rsp;
+    }
+
+    @Test
+    void testUpdateGroupOwner() {
+        assertDoesNotThrow(() -> {
+            this.updateGroup.updateOwner("3", "rabbit").block(Duration.ofSeconds(3));
+        });
+    }
+
+    private JsonNode handleGroupUpdateOwnerRequest(JsonNode jsonNode) {
+        return this.objectMapper.createObjectNode();
     }
 
     private JsonNode handleGroupUpdateRequestFailure(JsonNode jsonNode) {

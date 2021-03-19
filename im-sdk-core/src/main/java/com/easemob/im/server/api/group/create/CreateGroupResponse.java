@@ -1,9 +1,9 @@
-package com.easemob.im.server.api.group.crud;
+package com.easemob.im.server.api.group.create;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GroupCreateResponse {
+public class CreateGroupResponse {
 
     @JsonProperty("data")
     private GroupCreateResource group;

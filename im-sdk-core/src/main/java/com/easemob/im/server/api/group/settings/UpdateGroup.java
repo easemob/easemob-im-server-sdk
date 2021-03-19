@@ -6,18 +6,24 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Consumer;
 
-public class GroupSettings {
+public class UpdateGroup {
 
-    public static Mono<Void> update(Context context, String groupId, Consumer<GroupUpdateRequest> customizer) {
-        GroupUpdateRequest request = new GroupUpdateRequest();
+    private Context context;
+
+    public UpdateGroup(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Void> update(String groupId, Consumer<UpdateGroupRequest> customizer) {
+        UpdateGroupRequest request = new UpdateGroupRequest();
         customizer.accept(request);
 
-        return context.getHttpClient()
+        return this.context.getHttpClient()
             .put()
             .uri(String.format("/chatgroups/%s", groupId))
-            .send(Mono.create(sink -> sink.success(context.getCodec().encode(request))))
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> context.getCodec().decode(buf, GroupSettingsUpdateResponse.class))
+            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(request))))
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> this.context.getCodec().decode(buf, UpdateGroupResponse.class))
             .doOnNext(rsp -> {
                 if (request.getMaxMembers() != null && (rsp.getMaxMembersUpdated() == null || !rsp.getMaxMembersUpdated())) {
                     throw new EMUnknownException("maxMembers");
@@ -32,5 +38,13 @@ public class GroupSettings {
                 }
             })
             .then();
+    }
+
+    public Mono<Void> updateOwner(String groupId, String owner) {
+        return this.context.getHttpClient()
+                .put()
+                .uri(String.format("/chatgroups/%s", groupId))
+                .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new UpdateGroupOwnerRequest(owner)))))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
     }
 }

@@ -3,13 +3,13 @@ package com.easemob.im.server.api.group.settings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GroupSettingsUpdateResponse {
+public class UpdateGroupResponse {
 
     @JsonProperty("data")
     private GroupUpdateResource resource;
 
     @JsonCreator
-    public GroupSettingsUpdateResponse(@JsonProperty("data") GroupUpdateResource resource) {
+    public UpdateGroupResponse(@JsonProperty("data") GroupUpdateResource resource) {
         this.resource = resource;
     }
 

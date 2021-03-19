@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.group.detail;
+package com.easemob.im.server.api.group.get;
 
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.model.EMGroup;
@@ -15,7 +15,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GroupDetailTest extends AbstractApiTest {
+class GroupDetailTest extends AbstractApiTest {
+
+    private GetGroup getGroup = new GetGroup(this.context);
 
     public GroupDetailTest() {
         this.server.addHandler("GET /easemob/demo/chatgroups/1", this::handleGroupDetailRequest1);
@@ -23,7 +25,7 @@ public class GroupDetailTest extends AbstractApiTest {
 
     @Test
     public void testGroupDetails() {
-        EMGroup detail = GroupDetails.execute(this.context, "1").block(Duration.ofSeconds(3));
+        EMGroup detail = this.getGroup.execute("1").block(Duration.ofSeconds(3));
         assertEquals("1", detail.getGroupId());
         assertEquals(true, detail.getIsPublic());
         assertEquals(false, detail.getNeedApproveToJoin());

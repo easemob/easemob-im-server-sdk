@@ -1,13 +1,13 @@
-package com.easemob.im.server.api.group.crud;
+package com.easemob.im.server.api.group.delete;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMNotFoundException;
 import reactor.core.publisher.Mono;
 
-public class GroupDestroy {
+public class DeleteGroup {
     private Context context;
 
-    public GroupDestroy(Context context) {
+    public DeleteGroup(Context context) {
         this.context = context;
     }
 

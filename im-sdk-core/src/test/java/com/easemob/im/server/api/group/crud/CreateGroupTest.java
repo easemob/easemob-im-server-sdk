@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.group.crud;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.api.group.create.CreateGroup;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -11,11 +12,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GroupCreateTest extends AbstractApiTest {
+class CreateGroupTest extends AbstractApiTest {
 
-    GroupCreate groupCreate = new GroupCreate(this.context);
+    CreateGroup createGroup = new CreateGroup(this.context);
 
-    public GroupCreateTest() {
+    public CreateGroupTest() {
         this.server.addHandler("POST /easemob/demo/chatgroups", this::handleGroupCreateRequest);
     }
 
@@ -24,7 +25,7 @@ class GroupCreateTest extends AbstractApiTest {
         List<String> members = new ArrayList<>();
         members.add("madhat");
         members.add("rabbit");
-        assertEquals("group-create-test", this.groupCreate.publicGroup("alice", members, 10, true).block(Duration.ofSeconds(3)));
+        assertEquals("group-create-test", this.createGroup.publicGroup("alice", members, 10, true).block(Duration.ofSeconds(3)));
     }
 
     @Test
@@ -32,7 +33,7 @@ class GroupCreateTest extends AbstractApiTest {
         List<String> members = new ArrayList<>();
         members.add("madhat");
         members.add("rabbit");
-        assertEquals("group-create-test", this.groupCreate.privateGroup("alice", members, 10, true).block(Duration.ofSeconds(3)));
+        assertEquals("group-create-test", this.createGroup.privateGroup("alice", members, 10, true).block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupCreateRequest(JsonNode jsonNode) {

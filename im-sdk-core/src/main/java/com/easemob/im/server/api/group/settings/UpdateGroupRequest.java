@@ -3,7 +3,7 @@ package com.easemob.im.server.api.group.settings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GroupUpdateRequest {
+public class UpdateGroupRequest {
 
     @JsonProperty("allowinvites")
     private Boolean canMemberInviteOthers;
@@ -14,14 +14,14 @@ public class GroupUpdateRequest {
     @JsonProperty("maxusers")
     private Integer maxMembers;
 
-    public GroupUpdateRequest() {
+    public UpdateGroupRequest() {
         this.canMemberInviteOthers = null;
         this.needApproveToJoin = null;
         this.maxMembers = null;
     }
 
     @JsonCreator
-    public GroupUpdateRequest(@JsonProperty("allowinvites") Boolean canMemberInviteOthers,
+    public UpdateGroupRequest(@JsonProperty("allowinvites") Boolean canMemberInviteOthers,
                               @JsonProperty("membersonly") Boolean needApproveToJoin,
                               @JsonProperty("maxusers") Integer maxMembers) {
         this.canMemberInviteOthers = canMemberInviteOthers;
@@ -29,17 +29,17 @@ public class GroupUpdateRequest {
         this.maxMembers = maxMembers;
     }
 
-    public GroupUpdateRequest setCanMemberInviteOthers(boolean canMemberInviteOthers) {
+    public UpdateGroupRequest setCanMemberInviteOthers(boolean canMemberInviteOthers) {
         this.canMemberInviteOthers = canMemberInviteOthers;
         return this;
     }
 
-    public GroupUpdateRequest setNeedApproveToJoin(boolean needApproveToJoin) {
+    public UpdateGroupRequest setNeedApproveToJoin(boolean needApproveToJoin) {
         this.needApproveToJoin = needApproveToJoin;
         return this;
     }
 
-    public GroupUpdateRequest setMaxMembers(int maxMembers) {
+    public UpdateGroupRequest setMaxMembers(int maxMembers) {
         this.maxMembers = maxMembers;
         return this;
     }

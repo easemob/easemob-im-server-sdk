@@ -11,21 +11,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GroupMemberAddTest extends AbstractApiTest {
 
-    public GroupMemberAddTest() {
+    GroupMemberAdd groupMemberAdd = new GroupMemberAdd(this.context);
+
+    GroupMemberAddTest() {
         this.server.addHandler("POST /easemob/demo/chatgroups/1/users/alice", this::handleGroupMemberAddRequest);
     }
 
     @Test
     void testAddGroupMember() {
         assertDoesNotThrow(() -> {
-            GroupMemberAdd.single(this.context, "1", "alice").block(Duration.ofSeconds(3));
+            this.groupMemberAdd.single("1", "alice").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     void testAddGroupMemberNotFound() {
         assertThrows(EMNotFoundException.class, () -> {
-            GroupMemberAdd.single(this.context, "1", "bob").block(Duration.ofSeconds(3));
+            this.groupMemberAdd.single("1", "bob").block(Duration.ofSeconds(3));
         });
     }
 

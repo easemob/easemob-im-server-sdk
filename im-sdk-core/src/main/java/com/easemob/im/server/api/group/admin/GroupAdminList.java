@@ -6,12 +6,18 @@ import reactor.core.publisher.Flux;
 
 public class GroupAdminList {
 
-    public static Flux<EMGroupAdmin> all(Context context, String groupId) {
-        return context.getHttpClient()
+    private Context context;
+
+    public GroupAdminList(Context context) {
+        this.context = context;
+    }
+
+    public Flux<EMGroupAdmin> all(String groupId) {
+        return this.context.getHttpClient()
             .get()
             .uri(String.format("/chatgroups/%s/admin", groupId))
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> context.getCodec().decode(buf, GroupAdminListResponse.class))
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> this.context.getCodec().decode(buf, GroupAdminListResponse.class))
             .flatMapIterable(GroupAdminListResponse::getAdmins)
             .map(username -> new EMGroupAdmin(username, groupId));
     }

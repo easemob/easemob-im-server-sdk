@@ -5,14 +5,17 @@ import com.easemob.im.server.api.group.admin.GroupAdminAdd;
 import com.easemob.im.server.api.group.admin.GroupAdminList;
 import com.easemob.im.server.api.group.admin.GroupAdminRemove;
 import com.easemob.im.server.api.group.announcement.GroupAnnouncement;
-import com.easemob.im.server.api.group.crud.*;
-import com.easemob.im.server.api.group.detail.GroupDetails;
+import com.easemob.im.server.api.group.create.CreateGroup;
+import com.easemob.im.server.api.group.delete.DeleteGroup;
+import com.easemob.im.server.api.group.get.GetGroup;
+import com.easemob.im.server.api.group.list.GroupList;
+import com.easemob.im.server.api.group.list.GroupListResponse;
 import com.easemob.im.server.api.group.member.add.GroupMemberAdd;
 import com.easemob.im.server.api.group.member.list.GroupMemberList;
 import com.easemob.im.server.api.group.member.list.GroupMemberListResponse;
 import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
-import com.easemob.im.server.api.group.settings.GroupSettings;
-import com.easemob.im.server.api.group.settings.GroupUpdateRequest;
+import com.easemob.im.server.api.group.settings.UpdateGroup;
+import com.easemob.im.server.api.group.settings.UpdateGroupRequest;
 import com.easemob.im.server.model.EMGroupAdmin;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMGroupMember;
@@ -52,16 +55,40 @@ public class GroupApi {
     private Context context;
 
     private GroupList groupList;
-    private GroupCreate groupCreate;
-    private GroupDestroy groupDestroy;
-    private GroupUpdate groupUpdate;
+    private CreateGroup createGroup;
+    private DeleteGroup deleteGroup;
+
+    private GetGroup getGroup;
+    private UpdateGroup updateGroup;
+
+    private GroupAnnouncement groupAnnouncement;
+    private GroupMemberList groupMemberList;
+    private GroupMemberAdd groupMemberAdd;
+    private GroupMemberRemove groupMemberRemove;
+
+    private GroupAdminList groupAdminList;
+    private GroupAdminAdd groupAdminAdd;
+    private GroupAdminRemove groupAdminRemove;
 
     public GroupApi(Context context) {
         this.context = context;
         this.groupList = new GroupList(context);
-        this.groupCreate = new GroupCreate(context);
-        this.groupDestroy = new GroupDestroy(context);
-        this.groupUpdate = new GroupUpdate(context);
+        this.createGroup = new CreateGroup(context);
+        this.deleteGroup = new DeleteGroup(context);
+
+        this.getGroup = new GetGroup(context);
+        this.updateGroup = new UpdateGroup(context);
+
+        this.groupAnnouncement = new GroupAnnouncement(context);
+
+        this.groupMemberList = new GroupMemberList(context);
+        this.groupMemberAdd = new GroupMemberAdd(context);
+        this.groupMemberRemove = new GroupMemberRemove(context);
+
+        this.groupAdminList = new GroupAdminList(context);
+        this.groupAdminAdd = new GroupAdminAdd(context);
+        this.groupAdminRemove = new GroupAdminRemove(context);
+
     }
 
     /**
@@ -80,7 +107,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createPublicGroup(String owner, List<String> members, int maxMembers, boolean needApproveToJoin) {
-        return this.groupCreate.publicGroup(owner, members, maxMembers, needApproveToJoin);
+        return this.createGroup.publicGroup(owner, members, maxMembers, needApproveToJoin);
     }
 
     /**
@@ -94,7 +121,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createPrivateGroup(String owner, List<String> members, int maxMembers, boolean canMemberInvite) {
-        return this.groupCreate.privateGroup(owner, members, maxMembers, canMemberInvite);
+        return this.createGroup.privateGroup(owner, members, maxMembers, canMemberInvite);
     }
 
     /**
@@ -104,7 +131,7 @@ public class GroupApi {
      * @return 成功或错误
      */
     public Mono<Void> destroyGroup(String groupId) {
-        return this.groupDestroy.execute(groupId);
+        return this.deleteGroup.execute(groupId);
     }
 
     /**
@@ -140,7 +167,7 @@ public class GroupApi {
      * @param limit 每次取回多少个群id
      * @param cursor 上次返回的{@code cursor}
      * @return 群列表响应或错误
-     * @see com.easemob.im.server.api.group.crud.GroupListResponse
+     * @see GroupListResponse
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96app%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%BE%A4%E7%BB%84_%E5%8F%AF%E5%88%86%E9%A1%B5">获取群列表</a>
      */
     public Mono<GroupListResponse> listGroups(int limit, String cursor) {
@@ -165,7 +192,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E8%AF%A6%E6%83%85">获取群详情</a>
      */
     public Mono<EMGroup> getGroup(String groupId) {
-        return GroupDetails.execute(this.context, groupId);
+        return this.getGroup.execute(groupId);
     }
 
     /**
@@ -180,11 +207,23 @@ public class GroupApi {
      * @param groupId 群id
      * @param customizer 请求定制器
      * @return 成功或错误
-     * @see GroupUpdateRequest
+     * @see UpdateGroupRequest
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E4%BF%AE%E6%94%B9%E7%BE%A4%E7%BB%84%E4%BF%A1%E6%81%AF">修改群详情</a>
      */
-    public Mono<Void> updateGroup(String groupId, Consumer<GroupUpdateRequest> customizer) {
-        return GroupSettings.update(this.context, groupId, customizer);
+    public Mono<Void> updateGroup(String groupId, Consumer<UpdateGroupRequest> customizer) {
+        return this.updateGroup.update(groupId, customizer);
+    }
+
+    /**
+     * 修改群主。新群主需要已经是群成员，否则会报错{@code EMForbiddenException}。
+     *
+     * @param groupId 群id
+     * @param username 新群主的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%BD%AC%E8%AE%A9%E7%BE%A4%E7%BB%84">修改群主</a>
+     */
+    public Mono<Void> updateGroupOwner(String groupId, String username) {
+        return this.updateGroup.updateOwner(groupId, username);
     }
 
     /**
@@ -195,7 +234,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E5%85%AC%E5%91%8A">获取群公告</a>
      */
     public Mono<String> getGroupAnnouncement(String groupId) {
-        return GroupAnnouncement.get(this.context, groupId);
+        return this.groupAnnouncement.get(groupId);
     }
 
     /**
@@ -207,7 +246,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E4%BF%AE%E6%94%B9%E7%BE%A4%E7%BB%84%E5%85%AC%E5%91%8A">更新群公告</a>
      */
     public Mono<Void> updateGroupAnnouncement(String groupId, String announcement) {
-        return GroupAnnouncement.update(this.context, groupId, announcement);
+        return this.groupAnnouncement.set(groupId, announcement);
     }
 
     /**
@@ -219,7 +258,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
     public Flux<EMGroupMember> listAllGroupMembers(String groupId) {
-        return GroupMemberList.all(this.context, groupId, 20);
+        return this.groupMemberList.all(groupId, 20);
     }
 
     /**
@@ -250,7 +289,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
     public Mono<GroupMemberListResponse> listGroupMembers(String groupId, int limit, String cursor) {
-        return GroupMemberList.next(this.context, groupId, limit, cursor);
+        return this.groupMemberList.next(groupId, limit, cursor);
     }
 
     /**
@@ -262,7 +301,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">添加群成员</a>
      */
     public Mono<Void> addGroupMember(String groupId, String username) {
-        return GroupMemberAdd.single(this.context, groupId, username);
+        return this.groupMemberAdd.single(groupId, username);
     }
 
     /**
@@ -274,7 +313,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E5%8D%95%E4%B8%AA%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">移除群成员</a>
      */
     public Mono<Void> removeGroupMember(String groupId, String username) {
-        return GroupMemberRemove.single(this.context, groupId, username);
+        return this.groupMemberRemove.single(groupId, username);
     }
 
     /**
@@ -285,7 +324,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">获取群管理员</a>
      */
     public Flux<EMGroupAdmin> listGroupAdmins(String groupId) {
-        return GroupAdminList.all(this.context, groupId);
+        return this.groupAdminList.all(groupId);
     }
 
     /**
@@ -297,7 +336,7 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98">升级群成员</a>
      */
     public Mono<Void> addGroupAdmin(String groupId, String username) {
-        return GroupAdminAdd.single(this.context, groupId, username);
+        return this.groupAdminAdd.single(groupId, username);
     }
 
     /**
@@ -309,19 +348,9 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98">降级群管理员</a>
      */
     public Mono<Void> removeGroupAdmin(String groupId, String username) {
-        return GroupAdminRemove.single(this.context, groupId, username);
+        return this.groupAdminRemove.single(groupId, username);
     }
 
-    /**
-     * 修改群主。新群主需要已经是群成员，否则会报错{@code EMForbiddenException}。
-     *
-     * @param groupId 群id
-     * @param username 新群主的用户名
-     * @return 成功或错误
-     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%BD%AC%E8%AE%A9%E7%BE%A4%E7%BB%84">修改群主</a>
-     */
-    public Mono<Void> updateGroupOwner(String groupId, String username) {
-        return this.groupUpdate.owner(groupId, username);
-    }
+
 
 }

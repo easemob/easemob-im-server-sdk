@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.group.crud;
+package com.easemob.im.server.api.group.list;
 
 import com.easemob.im.server.api.Context;
 import reactor.core.publisher.Flux;

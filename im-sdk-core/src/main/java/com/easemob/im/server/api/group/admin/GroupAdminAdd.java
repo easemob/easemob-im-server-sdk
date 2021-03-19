@@ -5,12 +5,19 @@ import com.easemob.im.server.exception.EMNotFoundException;
 import reactor.core.publisher.Mono;
 
 public class GroupAdminAdd {
-    public static Mono<Void> single(Context context, String groupId, String username) {
-        return context.getHttpClient()
+
+    private Context context;
+
+    public GroupAdminAdd(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Void> single(String groupId, String username) {
+        return this.context.getHttpClient()
             .post()
             .uri(String.format("/chatgroups/%s/admin", groupId))
-            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new GroupAdminAddRequest(username)))))
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then())
+            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new GroupAdminAddRequest(username)))))
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then())
             .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty());
     }
 }

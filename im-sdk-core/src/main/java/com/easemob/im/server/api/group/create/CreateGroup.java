@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.group.crud;
+package com.easemob.im.server.api.group.create;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMUnknownException;
@@ -6,11 +6,11 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public class GroupCreate {
+public class CreateGroup {
 
     private Context context;
 
-    public GroupCreate(Context context) {
+    public CreateGroup(Context context) {
         this.context = context;
     }
 
@@ -18,9 +18,9 @@ public class GroupCreate {
         return this.context.getHttpClient()
             .post()
             .uri("/chatgroups")
-            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new GroupCreateRequest(true, owner, members, maxMembers, false, needApproveToJoin)))))
+            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new CreateGroupRequest(true, owner, members, maxMembers, false, needApproveToJoin)))))
             .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, GroupCreateResponse.class))
+            .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
             .handle((rsp, sink) -> {
                 String groupId = rsp.getGroupId();
                 if (groupId == null) {
@@ -34,9 +34,9 @@ public class GroupCreate {
         return this.context.getHttpClient()
             .post()
             .uri("/chatgroups")
-            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new GroupCreateRequest(false, owner, members, maxMembers, canMemberInvite, !canMemberInvite)))))
+            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new CreateGroupRequest(false, owner, members, maxMembers, canMemberInvite, !canMemberInvite)))))
             .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, GroupCreateResponse.class))
+            .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
             .handle((rsp, sink) -> {
                 String groupId = rsp.getGroupId();
                 if (groupId == null) {

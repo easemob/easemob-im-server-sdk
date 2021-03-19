@@ -1,19 +1,23 @@
-package com.easemob.im.server.api.group.detail;
+package com.easemob.im.server.api.group.get;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMGroup;
 import reactor.core.publisher.Mono;
 
-// TODO: move GroupDetails into group settings
-public class GroupDetails {
+public class GetGroup {
+    private Context context;
 
-    public static Mono<EMGroup> execute(Context context, String groupId) {
-        return context.getHttpClient()
+    public GetGroup(Context context) {
+        this.context = context;
+    }
+
+    public Mono<EMGroup> execute(String groupId) {
+        return this.context.getHttpClient()
                 .get()
                 .uri(String.format("/chatgroups/%s", groupId))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, GroupDetailResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, GetGroupResponse.class))
                 .map(rsp -> {
                     EMGroup detail = rsp.toGroupDetail(groupId);
                     if (detail == null) {

@@ -1,14 +1,14 @@
-package com.easemob.im.server.api.group.crud;
+package com.easemob.im.server.api.group.settings;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GroupUpdateOwnerRequest {
+public class UpdateGroupOwnerRequest {
     @JsonProperty("newowner")
     private String owner;
 
     @JsonCreator
-    public GroupUpdateOwnerRequest(@JsonProperty("newowner") String owner) {
+    public UpdateGroupOwnerRequest(@JsonProperty("newowner") String owner) {
         this.owner = owner;
     }
 }

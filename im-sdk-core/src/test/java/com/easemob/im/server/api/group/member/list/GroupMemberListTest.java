@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GroupMemberListTest extends AbstractApiTest {
 
+    GroupMemberList groupMemberList = new GroupMemberList(this.context);
+
     public GroupMemberListTest() {
         this.server.addHandler("GET /easemob/demo/chatgroups/1/users?limit=10", this::handleGroupMemberListRequest1);
         this.server.addHandler("GET /easemob/demo/chatgroups/1/users?limit=10&cursor=1", this::handleGroupMemberListRequest2);
@@ -22,7 +24,7 @@ class GroupMemberListTest extends AbstractApiTest {
 
     @Test
     public void testListGroupMemberAll() {
-        List<EMGroupMember> members = GroupMemberList.all(this.context, "1", 10).collect(Collectors.toList()).block(Duration.ofSeconds(3));
+        List<EMGroupMember> members = this.groupMemberList.all("1", 10).collect(Collectors.toList()).block(Duration.ofSeconds(3));
         assertEquals(15, members.size());
     }
 

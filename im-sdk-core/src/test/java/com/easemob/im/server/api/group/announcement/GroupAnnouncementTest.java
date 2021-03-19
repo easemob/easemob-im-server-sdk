@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GroupAnnouncementTest extends AbstractApiTest {
 
+    GroupAnnouncement groupAnnouncement = new GroupAnnouncement(this.context);
+
     public GroupAnnouncementTest() {
         this.server.addHandler("GET /easemob/demo/chatgroups/1/announcement", this::handleGroupAnnouncementGetRequest);
         this.server.addHandler("POST /easemob/demo/chatgroups/1/announcement", this::handleGroupAnnouncementUpdateRequest);
@@ -18,13 +20,13 @@ class GroupAnnouncementTest extends AbstractApiTest {
 
     @Test
     public void testGroupAnnouncementGet() {
-        String announcement = GroupAnnouncement.get(this.context, "1").block(Duration.ofSeconds(3));
+        String announcement = this.groupAnnouncement.get("1").block(Duration.ofSeconds(3));
         assertEquals("Hello World", announcement);
     }
 
     @Test
     public void testGroupAnnouncementSet() {
-        assertDoesNotThrow(() -> GroupAnnouncement.update(this.context, "1", "你好,世界").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.groupAnnouncement.set("1", "你好,世界").block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupAnnouncementGetRequest(JsonNode jsonNode) {

@@ -1,4 +1,4 @@
-package com.easemob.im.server.api.group.crud;
+package com.easemob.im.server.api.group.create;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,7 +14,7 @@ import java.util.List;
 //owner	群组的管理员，此属性为必须的
 //members	群组成员，此属性为可选的，但是如果加了此项，数组元素至少一个，不能超过100个（注：群主user1不需要写入到members里面）
 
-public class GroupCreateRequest {
+public class CreateGroupRequest {
 
     @JsonProperty("groupname")
     private String groupName = "";
@@ -40,7 +40,7 @@ public class GroupCreateRequest {
     @JsonProperty("membersonly")
     private boolean needApproveToJoin;
 
-    public GroupCreateRequest(boolean isPublic, String owner, List<String> members, int maxMembers, boolean memberCanInviteOthers, boolean needApproveToJoin) {
+    public CreateGroupRequest(boolean isPublic, String owner, List<String> members, int maxMembers, boolean memberCanInviteOthers, boolean needApproveToJoin) {
         this.isPublic = isPublic;
         this.owner = owner;
         this.members = members;

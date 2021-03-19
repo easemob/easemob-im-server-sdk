@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GroupMemberRemoveTest extends AbstractApiTest {
 
+    private GroupMemberRemove groupMemberRemove = new GroupMemberRemove(this.context);
+
     public GroupMemberRemoveTest() {
         this.server.addHandler("DELETE /easemob/demo/chatgroups/1/users/alice", this::handleGroupMemberRemoveRequest);
     }
@@ -17,7 +19,7 @@ class GroupMemberRemoveTest extends AbstractApiTest {
     @Test
     void testRemoveGroupMember() {
         assertDoesNotThrow(() -> {
-            GroupMemberRemove.single(this.context, "1", "alice").block(Duration.ofSeconds(3));
+            this.groupMemberRemove.single("1", "alice").block(Duration.ofSeconds(3));
         });
     }
 
@@ -25,7 +27,7 @@ class GroupMemberRemoveTest extends AbstractApiTest {
     @Test
     void testRemoveGroupMemberNotFound() {
         assertDoesNotThrow(() -> {
-            GroupMemberRemove.single(this.context, "1", "bob").block(Duration.ofSeconds(3));
+            this.groupMemberRemove.single("1", "bob").block(Duration.ofSeconds(3));
         });
     }
 

@@ -16,13 +16,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GroupAdminListTest extends AbstractApiTest {
 
+    GroupAdminList groupAdminList = new GroupAdminList(this.context);
+
     public GroupAdminListTest() {
         this.server.addHandler("GET /easemob/demo/chatgroups/1/admin", this::handleGroupAdminListRequest);
     }
 
     @Test
     void testListGroupAdmin() {
-        Map<String, EMGroupAdmin> admins = GroupAdminList.all(this.context, "1").collect(Collectors.toMap(a -> a.getUsername(), a -> a)).block(Duration.ofSeconds(3));
+        Map<String, EMGroupAdmin> admins = this.groupAdminList.all("1").collect(Collectors.toMap(a -> a.getUsername(), a -> a)).block(Duration.ofSeconds(3));
         assertTrue(admins.containsKey("madhat"));
         assertTrue(admins.containsKey("rabbit"));
     }
