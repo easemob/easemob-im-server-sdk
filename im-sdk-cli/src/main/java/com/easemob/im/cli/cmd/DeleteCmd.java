@@ -38,7 +38,7 @@ public class DeleteCmd {
     }
 
     @Command(name = "block", description = "Unblock user from resource.")
-    public void block(@Parameters(index = "0", description = "user to unblock") String username,
+    public void block(@Parameters(description = "user to unblock") String username,
                       @ArgGroup(multiplicity = "1", exclusive = false) UnBlockArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.msgToUsername)) {
             this.service.block().unblockUserSendMsgToUser(username, argGroup.msgToUsername)
@@ -78,7 +78,7 @@ public class DeleteCmd {
     }
 
     static class DeleteUserArgGroup {
-        @Parameters(index = "0", description = "delete one user")
+        @Parameters(description = "delete one user")
         String username;
 
         @Option(names = {"--all"}, description = "delete all users")
@@ -103,8 +103,8 @@ public class DeleteCmd {
     }
 
     @Command(name = "contact", description = "Remove a contact from the user.")
-    public void contact(@Parameters(index = "0", description = "the user's username") String user,
-                        @Parameters(index = "1", description = "the contact's username") String contact) {
+    public void contact(@Parameters(description = "the user's username") String user,
+                        @Parameters(description = "the contact's username") String contact) {
         this.service.contact().remove(user, contact)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -114,7 +114,7 @@ public class DeleteCmd {
 
     @Command(name = "group", description = "Delete a group.\n" +
             "Messages will be destroyed with the group, while the chat history is reserved.")
-    public void group(@Parameters(index = "0", description = "the group's id") String groupId) {
+    public void group(@Parameters(description = "the group's id") String groupId) {
         this.service.group().destroyGroup(groupId)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -123,7 +123,7 @@ public class DeleteCmd {
     }
 
     @Command(name = "session", description = "Force user logout, default to logout all devices if missing --device")
-    public void session(@Parameters(index = "0", description = "the username") String username,
+    public void session(@Parameters(description = "the username") String username,
                         @Option(names = "--device", description = "logout specific device") String deviceName) {
         if (StringUtils.hasText(deviceName)) {
             this.service.user().forceLogoutOneDevice(username, deviceName)

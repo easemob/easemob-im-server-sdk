@@ -52,7 +52,7 @@ public class CreateCmd {
     }
 
     @Command(name = "block", description = "Block user from resource.")
-    public void block(@Parameters(index = "0", paramLabel = "username", description = "user to block") String username,
+    public void block(@Parameters(description = "user to block") String username,
                       @ArgGroup(multiplicity = "1", exclusive = false) BlockArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.msgToUsername)) {
             this.service.block().blockUserSendMsgToUser(username, argGroup.msgToUsername)
@@ -78,6 +78,8 @@ public class CreateCmd {
         if (StringUtils.hasText(argGroup.joinGroupId)) {
             this.service.block().blockUserJoinGroup(username, argGroup.joinGroupId)
                     .doOnSuccess(ignored -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
         if (argGroup.login) {
@@ -90,8 +92,8 @@ public class CreateCmd {
     }
 
     @Command(name = "user", description = "Create a user.", mixinStandardHelpOptions = true)
-    public void user(@Parameters(index = "0", description = "the username") String username,
-                     @Parameters(index = "1", description = "the password") String password) {
+    public void user(@Parameters(description = "the username") String username,
+                     @Parameters(description = "the password") String password) {
         service.user().create(username, password)
                 .doOnSuccess(ignore -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -100,8 +102,8 @@ public class CreateCmd {
     }
 
     @Command(name = "contact", description = "Add a contact to the user.")
-    public void contact(@Parameters(index = "0", description = "the user's username") String user,
-                        @Parameters(index = "1", description = "the contact's username") String contact) {
+    public void contact(@Parameters(description = "the user's username") String user,
+                        @Parameters(description = "the contact's username") String contact) {
         this.service.contact().add(user, contact)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -112,12 +114,11 @@ public class CreateCmd {
     @Command(name = "group", description = "Create a group.\n" +
             "Public(by default) groups can be listed using Android, iOS, Web SDKs. So that end user can discover and join public groups.\n" +
             "Private groups can NOT be listed using Android, iOS, Web SDKs.")
-    public void group(@Parameters(index = "0", arity = "1..*", description = "the member's username list") List<String> members,
+    public void group(@Parameters(arity = "1", description = "the member's username list") List<String> members,
                       @Option(names = "--owner", required = true, description = "the owner's username") String owner,
                       @Option(names = "--private", description = "create a private group") boolean isPrivate,
                       @Option(names = "--max-members", defaultValue = "200", description = "max number of members") int maxMembers,
-                      @Option(names = "--can-member-invite", description = "can member invite others to join") boolean canMemberInvite,
-                      @Option(names = {"--need-approve-to-join"}, description = "need approve to join") boolean needApproveToJoin) {
+                      @Option(names = "--can-member-invite", description = "can member invite others to join") boolean canMemberInvite) {
         if (isPrivate) {
             this.service.group().createPrivateGroup(owner, members, maxMembers, canMemberInvite)
                     .doOnSuccess(groupId -> System.out.println("group: " + groupId))
@@ -125,7 +126,7 @@ public class CreateCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         } else {
-            this.service.group().createPublicGroup(owner, members, maxMembers, needApproveToJoin)
+            this.service.group().createPublicGroup(owner, members, maxMembers, !canMemberInvite)
                     .doOnSuccess(groupId -> System.out.println("group: " + groupId))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -134,25 +135,24 @@ public class CreateCmd {
     }
 
     static class MemberArgGroup {
-        @Option(names = "--group", description = "add a group member")
-        boolean group;
+        @Option(names = "--to-group", description = "add user to this group")
+        String toGroup;
 
-        @Option(names = "--room", description = "add a room member")
-        boolean room;
+        @Option(names = "--to-room", description = "add user to this room")
+        String toRoom;
     }
 
     @Command(name = "member", description = "Add user to group or room.")
-    public void member(@Parameters(index = "0", description = "the group or room's id") String id,
-                       @Parameters(index = "1", description = "the user") String username,
+    public void member(@Parameters(description = "the user") String username,
                        @ArgGroup(multiplicity = "1") MemberArgGroup argGroup) {
-        if (argGroup.room) {
-            this.service.room().addRoomMember(id, username)
+        if (StringUtils.hasText(argGroup.toGroup)) {
+            this.service.room().addRoomMember(argGroup.toGroup, username)
                     .doOnSuccess(ig -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
-        } else if (argGroup.group) {
-            this.service.group().addGroupMember(id, username)
+        } else if (StringUtils.hasText(argGroup.toRoom)) {
+            this.service.group().addGroupMember(argGroup.toRoom, username)
                     .doOnSuccess(ig -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
