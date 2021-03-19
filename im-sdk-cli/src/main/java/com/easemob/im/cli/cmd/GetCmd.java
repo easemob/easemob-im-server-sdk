@@ -63,7 +63,7 @@ public class GetCmd {
 
     @Command(name = "user", description = "Get a user's info or list users.")
     public void user(@Parameters(arity = "0..1", description = "The username, if miss, list users") String username,
-                     @ArgGroup(exclusive = false) PageArgGroup pageArgGroup) {
+                     @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(username)) {
             this.service.user().get(username)
                     .doOnNext(user -> {
@@ -72,8 +72,8 @@ public class GetCmd {
                     }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
-        } else if (pageArgGroup != null) {
-            service.user().listUsers(pageArgGroup.limit, pageArgGroup.cursor)
+        } else if (limitArgGroup != null) {
+            service.user().listUsers(limitArgGroup.limit, limitArgGroup.cursor)
                     .doOnNext(emPage -> {
                         emPage.getValues().forEach(System.out::println);
                         System.out.println("cursor: " + emPage.getCursor());
@@ -99,15 +99,15 @@ public class GetCmd {
 
     @Command(name = "group", description = "Get a group's info or list groups")
     public void group(@Parameters(description = "the group's id, if miss, list groups") String groupId,
-                      @Option(names = "--have-user", description = "search groups have this user") String username,
-                      @ArgGroup(exclusive = false, heading = "Only for list all groups:\n") PageArgGroup pageArgGroup) {
+                      @Option(names = "--have-user", description = "search groups have this user, not support limit and cursor") String username,
+                      @ArgGroup(exclusive = false, heading = "If missing, list all groups\n") LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(groupId)) {
             this.service.group().getGroup(groupId)
                     .doOnSuccess(group -> {
-                        System.out.println("group: " + group.getGroupId());
+                        System.out.println("groupId: " + group.getGroupId());
+                        // TODO 没有description和name
                         System.out.println("\tisPublic: " + group.getIsPublic());
                         System.out.println("\tmaxMembers: " + group.getMaxMembers());
-                        System.out.println("\tneedApproveToJoin: " + group.getNeedApproveToJoin());
                         System.out.println("\tcanMemberInviteOthers: " + group.getCanMemberInviteOthers());
                         System.out.println("\towner: " + group.getOwner());
                     })
@@ -121,12 +121,12 @@ public class GetCmd {
                     .block();
         } else if (StringUtils.hasText(username)) {
             this.service.group().listGroupsUserJoined(username)
-                    .doOnNext(gid -> System.out.println("group: " + gid))
+                    .doOnNext(gid -> System.out.println("groupId: " + gid))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
-        } else if (pageArgGroup != null) {
-            this.service.group().listGroups(pageArgGroup.limit, pageArgGroup.cursor)
+        } else if (limitArgGroup != null) {
+            this.service.group().listGroups(limitArgGroup.limit, limitArgGroup.cursor)
                     .doOnNext(emPage -> {
                         emPage.getValues().forEach(System.out::println);
                         System.out.println("cursor: " + emPage.getCursor());
@@ -137,7 +137,50 @@ public class GetCmd {
         } else {
             this.service.group().listAllGroups()
                     .doOnNext(gid -> {
-                        System.out.println("group: " + gid);
+                        System.out.println("groupId: " + gid);
+                    })
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        }
+    }
+
+    @Command(name = "room", description = "Get a room's info or list rooms")
+    public void room(@Parameters(description = "the room's id, if miss, list rooms") String roomId,
+                     @Option(names = "--have-user", description = "search rooms have this user, not support limit and cursor") String username,
+                     @ArgGroup(exclusive = false, heading = "If missing, list all rooms\n") LimitArgGroup limitArgGroup) {
+        if (StringUtils.hasText(roomId)) {
+            this.service.room().getRoom(roomId)
+                    .doOnSuccess(room -> {
+                        System.out.println("roomId: " + room.id());
+                        System.out.println("\tname: " + room.name());
+                        System.out.println("\tdescription: " + room.description());
+                        System.out.println("\tmaxMembers: " + room.maxMembers());
+                        System.out.println("\tcanMemberInviteOthers: " + !room.needApprove());
+                        System.out.println("\towner: " + room.owner());
+                    })
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        } else if (StringUtils.hasText(username)) {
+            this.service.room().listRoomsUserJoined(username)
+                    .doOnNext(rid -> System.out.println("roomId: " + rid))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        } else if (limitArgGroup != null) {
+            this.service.room().listRooms(limitArgGroup.limit, limitArgGroup.cursor)
+                    .doOnNext(emPage -> {
+                        emPage.getValues().forEach(System.out::println);
+                        System.out.println("cursor: " + emPage.getCursor());
+                    })
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        } else {
+            this.service.room().listRoomsAll()
+                    .doOnNext(rid -> {
+                        System.out.println("roomId: " + rid);
                     })
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -203,10 +246,10 @@ public class GetCmd {
 
     @Command(name = "member", description = "List group or room members.")
     public void member(@ArgGroup(multiplicity = "1") MemberArgGroup memberArgGroup,
-                       @ArgGroup(exclusive = false) PageArgGroup pageArgGroup) {
+                       @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
         if (memberArgGroup.roomId != null) {
-            if (pageArgGroup != null) {
-                this.service.room().listRoomMembers(memberArgGroup.roomId, pageArgGroup.limit, pageArgGroup.cursor)
+            if (limitArgGroup != null) {
+                this.service.room().listRoomMembers(memberArgGroup.roomId, limitArgGroup.limit, limitArgGroup.cursor)
                         .doOnSuccess(emPage -> {
                             emPage.getValues().forEach(System.out::println);
                             System.out.println("cursor: " + emPage.getCursor());
@@ -222,8 +265,8 @@ public class GetCmd {
                         .blockLast();
             }
         } else {
-            if (pageArgGroup != null) {
-                this.service.group().listGroupMembers(memberArgGroup.groupId, pageArgGroup.limit, pageArgGroup.cursor)
+            if (limitArgGroup != null) {
+                this.service.group().listGroupMembers(memberArgGroup.groupId, limitArgGroup.limit, limitArgGroup.cursor)
                         .doOnSuccess(emPage -> {
                             emPage.getValues().forEach(System.out::println);
                             System.out.println("cursor: " + emPage.getCursor());
@@ -273,18 +316,30 @@ public class GetCmd {
 
         @Option(names = "--room", description = "list room's admin")
         String roomId;
+
+        @Option(names = "--super", description = "list super admin")
+        boolean superAdmin;
     }
 
-    @Command(name = "admin", description = "List a group or room's admin")
-    public void admin(@ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
+    @Command(name = "admin", description = "List admin")
+    public void admin(@ArgGroup(multiplicity = "1") AdminArgGroup argGroup,
+                      @ArgGroup(exclusive = false) PageArgGroup pageArgGroup) {
+        // TODO group和room管理员API没有分页
         if (argGroup.groupId != null) {
             this.service.group().listGroupAdmins(argGroup.groupId)
                     .doOnNext(System.out::println)
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
-        } else {
+        } else if (argGroup.roomId != null) {
             this.service.room().listRoomAdminsAll(argGroup.roomId)
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        } else if (argGroup.superAdmin) {
+            // TODO pagesize和pagenum 与limit和cursor对应吗？
+            this.service.room().listRoomSuperAdminsAll(pageArgGroup.limit, Integer.parseInt(pageArgGroup.cursor))
                     .doOnNext(System.out::println)
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -292,11 +347,19 @@ public class GetCmd {
         }
     }
 
-    private static class PageArgGroup {
+    private static class LimitArgGroup {
         @Option(names = "--limit", description = "the limit", required = true)
         Integer limit;
 
         @Option(names = "--cursor", description = "the cursor", required = true)
+        String cursor;
+    }
+
+    private static class PageArgGroup {
+        @Option(names = "--pagesize", description = "the pagesize", required = true)
+        Integer limit;
+
+        @Option(names = "--pagenum", description = "the pagenum", required = true)
         String cursor;
     }
 }

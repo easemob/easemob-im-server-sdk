@@ -122,6 +122,12 @@ public class DeleteCmd {
                 .block();
     }
 
+    @Command(name = "room", description = "Delete a room.\n" +
+            "Messages will be destroyed with the room, while the chat history is reserved.")
+    public void room(@Parameters(description = "the room's id") String roomId) {
+        System.out.println("Not implemented.");
+    }
+
     @Command(name = "session", description = "Force user logout, default to logout all devices if missing --device")
     public void session(@Parameters(description = "the username") String username,
                         @Option(names = "--device", description = "logout specific device") String deviceName) {
@@ -172,9 +178,12 @@ public class DeleteCmd {
 
         @Option(names = "--room", description = "remove this room admin")
         String roomId;
+
+        @Option(names = "--super", description = "remove this super admin")
+        String superAdminUsername;
     }
 
-    @Command(name = "admin", description = "Remove a group or room's admin")
+    @Command(name = "admin", description = "Remove a admin")
     public void admin(@Parameters(description = "admin username") String username,
                       @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {
@@ -183,14 +192,18 @@ public class DeleteCmd {
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
+        } else if (argGroup.roomId != null) {
+            this.service.room().demoteRoomAdmin(argGroup.roomId, username)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
         } else {
-            // TODO 缺少 removeRoomAdmin API
-//            this.service.room().removeRoomAdmin(argGroup.roomId, username)
-//                    .doOnNext(System.out::println)
-//                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
-//                    .onErrorResume(EMException.class, ignore -> Mono.empty())
-//                    .blockLast();
-            System.out.println("Not implemented.");
+            this.service.room().demoteRoomSuperAdmin(argGroup.superAdminUsername)
+                    .doOnSuccess(ig -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
         }
     }
 }
