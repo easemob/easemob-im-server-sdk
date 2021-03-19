@@ -6,11 +6,9 @@ import com.easemob.im.server.api.message.history.MessageHistory;
 import com.easemob.im.server.api.message.missed.MessageMissed;
 import com.easemob.im.server.api.message.missed.MissedMessageCount;
 import com.easemob.im.server.api.message.send.SendMessage;
-import com.easemob.im.server.api.message.send.SendMessageResponse;
 import com.easemob.im.server.api.message.status.MessageStatus;
 import com.easemob.im.server.model.EMKeyValue;
 import com.easemob.im.server.model.EMMessage;
-import com.easemob.im.server.model.EMMessageStatus;
 import com.easemob.im.server.model.EMSentMessages;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -55,7 +53,7 @@ public class MessageApi {
         return this.missed.count(username);
     }
 
-    public Mono<EMMessageStatus> isMessageDeliveredToUser(String messageId, String toUser) {
+    public Mono<Boolean> isMessageDeliveredToUser(String messageId, String toUser) {
         return MessageStatus.isMessageDeliveredToUser(this.context, messageId, toUser);
     }
 

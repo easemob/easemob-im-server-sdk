@@ -2,8 +2,6 @@ package com.easemob.im.cli.cmd;
 
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
-import com.easemob.im.server.model.EMGroupMember;
-import com.easemob.im.server.model.EMUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -134,8 +132,8 @@ public class GetCmd {
                     }
                     if (members) {
                         System.out.println("\tmembers: [");
-                        for (EMGroupMember member : group.getMembers()) {
-                            System.out.println("\t\t" + member.getUsername() + " (" + member.getRole().name() + ")");
+                        for (String member : group.getMembers()) {
+                            System.out.println("\t\t" + member);
                         }
                         System.out.println("\t]");
                     }
@@ -184,20 +182,6 @@ public class GetCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         }
-    }
-
-    @Command(name = "user-setting", description = "Get notification setting for the user.")
-    public void userSetting(@Parameters(index = "0", description = "username") String username) {
-        System.out.println("username : " + username);
-        this.service.notification()
-                .getUserSetting(username)
-                .doOnSuccess(settings -> {
-                    System.out.println("username: " + settings.getUsername());
-                    System.out.println("nickname: " + settings.getNickname());
-                    System.out.println("showMessageContent: " + settings.getShowMessageContent());
-                }).doOnError(err -> System.out.println("error: " + err.getMessage()))
-                .onErrorResume(EMException.class, ignore -> Mono.empty())
-                .block();
     }
 
     @Command(name = "block", description = "List block list for user or group")

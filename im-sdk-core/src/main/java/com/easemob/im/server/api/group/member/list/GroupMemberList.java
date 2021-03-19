@@ -1,7 +1,6 @@
 package com.easemob.im.server.api.group.member.list;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.model.EMGroupMember;
 import com.easemob.im.server.model.EMPage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

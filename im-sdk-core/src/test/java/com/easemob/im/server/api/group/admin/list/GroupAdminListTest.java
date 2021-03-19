@@ -2,14 +2,13 @@ package com.easemob.im.server.api.group.admin.list;
 
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.api.group.admin.GroupAdminList;
-import com.easemob.im.server.model.EMGroupAdmin;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,9 +23,9 @@ class GroupAdminListTest extends AbstractApiTest {
 
     @Test
     void testListGroupAdmin() {
-        Map<String, EMGroupAdmin> admins = this.groupAdminList.all("1").collect(Collectors.toMap(a -> a.getUsername(), a -> a)).block(Duration.ofSeconds(3));
-        assertTrue(admins.containsKey("madhat"));
-        assertTrue(admins.containsKey("rabbit"));
+        Set<String> admins = this.groupAdminList.all("1").collect(Collectors.toSet()).block(Duration.ofSeconds(3));
+        assertTrue(admins.contains("madhat"));
+        assertTrue(admins.contains("rabbit"));
     }
 
     private JsonNode handleGroupAdminListRequest(JsonNode jsonNode) {

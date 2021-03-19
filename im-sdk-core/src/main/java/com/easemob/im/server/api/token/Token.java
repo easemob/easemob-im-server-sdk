@@ -1,14 +1,14 @@
-package com.easemob.im.server.model;
+package com.easemob.im.server.api.token;
 
 import java.time.Instant;
 
-public class EMToken {
+public class Token {
 
     private String value;
 
     private Instant expireAt;
 
-    public EMToken(String value, Instant expireAt) {
+    public Token(String value, Instant expireAt) {
         this.value = value;
         this.expireAt = expireAt;
     }

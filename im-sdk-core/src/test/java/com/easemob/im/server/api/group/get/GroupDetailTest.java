@@ -2,16 +2,14 @@ package com.easemob.im.server.api.group.get;
 
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.model.EMGroup;
-import com.easemob.im.server.model.EMGroupMember;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,12 +31,12 @@ class GroupDetailTest extends AbstractApiTest {
         assertEquals("alice", detail.getOwner());
         assertEquals(200, detail.getMaxMembers());
 
-        List<EMGroupMember> members = detail.getMembers();
-        Collections.sort(members, Comparator.comparing(EMGroupMember::getUsername));
+        Set<String> members = detail.getMembers().stream().collect(Collectors.toSet());
+
         assertEquals(3, members.size());
-        assertEquals(EMGroupMember.asOwner("user1"), members.get(0));
-        assertEquals(EMGroupMember.asMember("user2"), members.get(1));
-        assertEquals(EMGroupMember.asMember("user3"), members.get(2));
+        assertTrue(members.contains("user1"));
+        assertTrue(members.contains("user2"));
+        assertTrue(members.contains("user3"));
     }
 
     private JsonNode handleGroupDetailRequest1(JsonNode jsonNode) {

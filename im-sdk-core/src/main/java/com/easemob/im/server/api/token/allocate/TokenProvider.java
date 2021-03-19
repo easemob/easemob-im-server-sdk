@@ -1,12 +1,12 @@
 package com.easemob.im.server.api.token.allocate;
 
-import com.easemob.im.server.model.EMToken;
+import com.easemob.im.server.api.token.Token;
 import reactor.core.publisher.Mono;
 
 public interface TokenProvider {
 
-    Mono<EMToken> fetchAppToken();
+    Mono<Token> fetchAppToken();
 
-    Mono<EMToken> fetchUserToken(String username, String password);
+    Mono<Token> fetchUserToken(String username, String password);
 
 }

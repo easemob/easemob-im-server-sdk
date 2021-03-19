@@ -9,16 +9,12 @@ import com.easemob.im.server.api.group.create.CreateGroup;
 import com.easemob.im.server.api.group.delete.DeleteGroup;
 import com.easemob.im.server.api.group.get.GetGroup;
 import com.easemob.im.server.api.group.list.GroupList;
-import com.easemob.im.server.api.group.list.GroupListResponse;
 import com.easemob.im.server.api.group.member.add.GroupMemberAdd;
 import com.easemob.im.server.api.group.member.list.GroupMemberList;
-import com.easemob.im.server.api.group.member.list.GroupMemberListResponse;
 import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
 import com.easemob.im.server.api.group.settings.UpdateGroup;
 import com.easemob.im.server.api.group.settings.UpdateGroupRequest;
-import com.easemob.im.server.model.EMGroupAdmin;
 import com.easemob.im.server.model.EMGroup;
-import com.easemob.im.server.model.EMGroupMember;
 import com.easemob.im.server.model.EMPage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -255,7 +251,6 @@ public class GroupApi {
      *
      * @param groupId 群id
      * @return 每个群成员或错误
-     * @see com.easemob.im.server.model.EMGroupMember
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
     public Flux<String> listAllGroupMembers(String groupId) {
@@ -324,7 +319,7 @@ public class GroupApi {
      * @return 每个管理员或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">获取群管理员</a>
      */
-    public Flux<EMGroupAdmin> listGroupAdmins(String groupId) {
+    public Flux<String> listGroupAdmins(String groupId) {
         return this.groupAdminList.all(groupId);
     }
 

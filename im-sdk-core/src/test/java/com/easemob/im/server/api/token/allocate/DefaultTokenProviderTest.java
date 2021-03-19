@@ -1,19 +1,13 @@
 package com.easemob.im.server.api.token.allocate;
 
-import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.MockingContext;
-import com.easemob.im.server.api.MockingHttpServer;
 import com.easemob.im.server.api.loadbalance.Endpoint;
 import com.easemob.im.server.api.loadbalance.EndpointRegistry;
 import com.easemob.im.server.api.loadbalance.LoadBalancer;
-import com.easemob.im.server.model.EMToken;
+import com.easemob.im.server.api.token.Token;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
@@ -39,7 +33,7 @@ public class DefaultTokenProviderTest extends AbstractApiTest {
 
     @Test
     public void testFetchAppToken() {
-        EMToken appToken = this.tokenProvider.fetchAppToken().block(Duration.ofSeconds(3));
+        Token appToken = this.tokenProvider.fetchAppToken().block(Duration.ofSeconds(3));
         assertEquals("access_token", appToken.getValue());
         assertTrue(appToken.isValid());
     }
@@ -52,7 +46,7 @@ public class DefaultTokenProviderTest extends AbstractApiTest {
 
     @Test
     public void testFetchUserToken() {
-        EMToken appToken = this.tokenProvider.fetchUserToken("username", "password").block(Duration.ofSeconds(3));
+        Token appToken = this.tokenProvider.fetchUserToken("username", "password").block(Duration.ofSeconds(3));
         assertEquals("access_token", appToken.getValue());
         assertTrue(appToken.isValid());
     }

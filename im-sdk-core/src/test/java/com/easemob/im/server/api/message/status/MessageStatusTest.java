@@ -1,12 +1,7 @@
 package com.easemob.im.server.api.message.status;
 
-import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.MockingContext;
-import com.easemob.im.server.api.MockingHttpServer;
-import com.easemob.im.server.model.EMMessageStatus;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +17,8 @@ public class MessageStatusTest extends AbstractApiTest {
 
     @Test
     public void testMessageStatus() {
-        EMMessageStatus status = MessageStatus.isMessageDeliveredToUser(this.context, "123456789", "alice").block(Duration.ofSeconds(3));
-        assertEquals("123456789", status.getMessageId());
-        assertEquals(true, status.isDelivered());
-        assertEquals("alice", status.getToUsername());
+        boolean messageIsDelivered = MessageStatus.isMessageDeliveredToUser(this.context, "123456789", "alice").block(Duration.ofSeconds(3));
+        assertEquals(true, messageIsDelivered);
     }
 
     private JsonNode handleMessageStatusRequest(JsonNode jsonNode) {

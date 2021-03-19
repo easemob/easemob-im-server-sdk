@@ -2,7 +2,6 @@ package com.easemob.im.server.api.group.get;
 
 import com.easemob.im.server.api.group.GroupMemberResource;
 import com.easemob.im.server.model.EMGroup;
-import com.easemob.im.server.model.EMGroupMember;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -56,8 +55,8 @@ public class GetGroupResponse {
         private List<GroupMemberResource> members;
 
         public EMGroup toEMGroup() {
-            List<EMGroupMember> memberList = this.members.stream()
-                .map(GroupMemberResource::toGroupMember)
+            List<String> memberList = this.members.stream()
+                .map(GroupMemberResource::getUsername)
                 .collect(Collectors.toList());
             return new EMGroup(this.groupId, this.isPublic, this.needApproveToJoin, this.memberCanInviteOthers,
                     this.owner, this.maxMembers, memberList);

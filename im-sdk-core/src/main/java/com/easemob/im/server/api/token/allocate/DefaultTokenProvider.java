@@ -6,7 +6,7 @@ import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.loadbalance.Endpoint;
 import com.easemob.im.server.api.loadbalance.EndpointRegistry;
 import com.easemob.im.server.api.loadbalance.LoadBalancer;
-import com.easemob.im.server.model.EMToken;
+import com.easemob.im.server.api.token.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -31,7 +31,7 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
 
     private final ErrorMapper errorMapper;
 
-    private final Mono<EMToken> appToken;
+    private final Mono<Token> appToken;
 
     public DefaultTokenProvider(EMProperties properties, HttpClient httpClient, EndpointRegistry endpointRegistry, LoadBalancer loadBalancer, Codec codec, ErrorMapper errorMapper) {
         this.properties = properties;
@@ -48,16 +48,16 @@ public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
     }
 
     @Override
-    public Mono<EMToken> fetchAppToken() {
+    public Mono<Token> fetchAppToken() {
         return this.appToken;
     }
 
     @Override
-    public Mono<EMToken> fetchUserToken(String username, String password) {
+    public Mono<Token> fetchUserToken(String username, String password) {
         return fetchToken(UserTokenRequest.of(username, password));
     }
 
-    private Mono<EMToken> fetchToken(TokenRequest tokenRequest) {
+    private Mono<Token> fetchToken(TokenRequest tokenRequest) {
         List<Endpoint> endpoints = endpointRegistry.endpoints();
         Endpoint endpoint = this.loadBalancer.loadBalance(endpoints);
 

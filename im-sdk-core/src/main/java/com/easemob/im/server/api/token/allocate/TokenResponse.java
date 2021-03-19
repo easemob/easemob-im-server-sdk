@@ -1,6 +1,6 @@
 package com.easemob.im.server.api.token.allocate;
 
-import com.easemob.im.server.model.EMToken;
+import com.easemob.im.server.api.token.Token;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,9 +24,9 @@ public class TokenResponse {
         this.expiresIn = expiresIn;
     }
 
-    public EMToken asToken() {
+    public Token asToken() {
         Instant expireAt = Instant.now().plus(Duration.ofSeconds(this.expiresIn));
-        return new EMToken(this.accessToken, expireAt);
+        return new Token(this.accessToken, expireAt);
     }
 
 }

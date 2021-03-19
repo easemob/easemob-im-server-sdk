@@ -14,10 +14,10 @@ public class EMGroup extends EMEntity {
 
     private final int maxMembers;
 
-    private final List<EMGroupMember> members;
+    private final List<String> members;
 
     public EMGroup(String groupId, boolean isPublic, boolean needApproveToJoin, boolean canMemberInviteOthers,
-                   String owner, int maxMembers, List<EMGroupMember> members) {
+                   String owner, int maxMembers, List<String> members) {
         super(EntityType.GROUP);
         super.id(groupId);
         this.isPublic = isPublic;
@@ -52,7 +52,7 @@ public class EMGroup extends EMEntity {
         return this.maxMembers;
     }
 
-    public List<EMGroupMember> getMembers() {
+    public List<String> getMembers() {
         return this.members;
     }
 
