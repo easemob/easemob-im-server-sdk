@@ -19,8 +19,8 @@ public class UpdateCmd {
     private EMService service;
 
     @Command(name = "password", description = "Reset password for the user.", mixinStandardHelpOptions = true)
-    public void password(@Parameters(index = "0", description = "the username") String username,
-                         @Parameters(index = "1", description = "the password") String password) {
+    public void password(@Parameters(description = "the username") String username,
+                         @Parameters(description = "the password") String password) {
         this.service.user().updateUserPassword(username, password)
                 .doOnSuccess(ignore -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -38,27 +38,21 @@ public class UpdateCmd {
         @Option(names = {"--max-members"}, description = "the max number of members")
         Integer maxMembers;
 
-        // Use Boolean but boolean is because this is update action.
-        @Option(names = {"--need-approve-to-join"}, description = "need approve to join")
-        Boolean needApproveToJoin;
-
         @Option(names = {"--can-member-invite"}, description = "can member invite others to join")
         Boolean canMemberInvite;
     }
 
     @Command(name = "group", description = "Update a group's settings.")
-    public void group(@Parameters(index = "0", description = "the group's id") String groupId,
+    public void group(@Parameters(description = "the group's id") String groupId,
                       @ArgGroup(multiplicity = "1", exclusive = false) GroupArgGroup argGroup) {
-        if (argGroup.maxMembers != null || argGroup.needApproveToJoin != null || argGroup.canMemberInvite != null) {
+        if (argGroup.maxMembers != null || argGroup.canMemberInvite != null) {
             this.service.group().updateGroup(groupId, request -> {
                 if (argGroup.maxMembers != null) {
                     request.setMaxMembers(argGroup.maxMembers);
                 }
-                if (argGroup.needApproveToJoin != null) {
-                    request.setNeedApproveToJoin(argGroup.needApproveToJoin);
-                }
                 if (argGroup.canMemberInvite != null) {
                     request.setCanMemberInviteOthers(argGroup.canMemberInvite);
+                    request.setNeedApproveToJoin(!argGroup.canMemberInvite);
                 }
             }).doOnSuccess(ignored -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))

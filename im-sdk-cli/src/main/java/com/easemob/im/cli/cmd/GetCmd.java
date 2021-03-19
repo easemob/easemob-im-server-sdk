@@ -17,7 +17,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Component
 @Command(name = "get", description = "Get a resource.")
@@ -42,7 +41,7 @@ public class GetCmd {
     }
 
 
-    @Command(name = "history", description = "Download the history file uri by time")
+    @Command(name = "history", description = "Get the history file uri by time")
     public void history(@Parameters(description = "The ISO8601 date time. e.g. 2020-12-12T13:00") String datetime,
                         @Option(names = {"--download"}, description = "Download the file if specified. The file is compressed, use `zless` to read it.") boolean download) {
 
@@ -63,7 +62,7 @@ public class GetCmd {
     }
 
     @Command(name = "user", description = "Get a user's info or list users.")
-    public void user(@Parameters(index = "0", arity = "0..1", description = "The username, if miss, list users") String username,
+    public void user(@Parameters(arity = "0..1", description = "The username, if miss, list users") String username,
                      @ArgGroup(exclusive = false) PageArgGroup pageArgGroup) {
         if (StringUtils.hasText(username)) {
             this.service.user().get(username)
@@ -90,7 +89,7 @@ public class GetCmd {
     }
 
     @Command(name = "contact", description = "List contacts of a user.")
-    public void contact(@Parameters(index = "0", description = "the user") String username) {
+    public void contact(@Parameters(description = "the user") String username) {
         this.service.contact().list(username)
                 .doOnNext(System.out::println)
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -99,7 +98,7 @@ public class GetCmd {
     }
 
     @Command(name = "group", description = "Get a group's info or list groups")
-    public void group(@Parameters(index = "0", description = "the group's id, if miss, list groups") String groupId,
+    public void group(@Parameters(description = "the group's id, if miss, list groups") String groupId,
                       @Option(names = "--have-user", description = "search groups have this user") String username,
                       @ArgGroup(exclusive = false, heading = "Only for list all groups:\n") PageArgGroup pageArgGroup) {
         if (StringUtils.hasText(groupId)) {
@@ -203,7 +202,7 @@ public class GetCmd {
     }
 
     @Command(name = "member", description = "List group or room members.")
-    public void member(@Parameters(arity = "1", index = "0", description = "the group or room's id") String id,
+    public void member(@Parameters(arity = "1", description = "the group or room's id") String id,
                        @ArgGroup(multiplicity = "1") MemberArgGroup memberArgGroup,
                        @ArgGroup(exclusive = false) PageArgGroup pageArgGroup) {
         if (memberArgGroup.room) {
