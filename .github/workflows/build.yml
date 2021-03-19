@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Maven
-        run: mvn --batch-mode clean package
+        run: mvn --batch-mode -Pci clean package
       - name: CodeCov
         uses: codecov/codecov-action@v1
   integration:
@@ -33,4 +33,4 @@ jobs:
         with:
           java-version: 1.8
       - name: Maven
-        run: mvn --batch-mode clean verify
+        run: mvn --batch-mode -Pci clean verify

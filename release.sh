@@ -17,4 +17,4 @@ mvn versions:set -DnewVersion="$SNAPSHOT-SNAPSHOT" -DgenerateBackupPoms=false
 git add .
 git commit --message "v$SNAPSHOT Development"
 
-git push --tags
+git push && git push --tags
