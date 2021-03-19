@@ -21,16 +21,16 @@ jobs:
   integration:
     needs: build
     runs-on: ubuntu-latest
-      env:
-        IM_APPKEY: ${{ secrets.IM_APPKEY }}
-        IM_CLIENT_ID: ${{ secrets.IM_CLIENT_ID }}
-        IM_CLIENT_SECRET: ${{ secrets.IM_CLIENT_SECRET }}
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: JDK
-          uses: actions/setup-java@v1
-          with:
-            java-version: 1.8
-        - name: Maven
-          run: mvn --batch-mode clean verify
+    env:
+      IM_APPKEY: ${{ secrets.IM_APPKEY }}
+      IM_CLIENT_ID: ${{ secrets.IM_CLIENT_ID }}
+      IM_CLIENT_SECRET: ${{ secrets.IM_CLIENT_SECRET }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Maven
+        run: mvn --batch-mode clean verify
