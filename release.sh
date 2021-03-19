@@ -5,7 +5,7 @@
 RELEASE=$1
 SNAPSHOT=$2
 
-./mvnw versions:set -DnewVersion=$RELEASE -DgenerateBackupPoms=false
+mvn versions:set -DnewVersion=$RELEASE -DgenerateBackupPoms=false
 git add .
 git commit --message "v$RELEASE Release"
 
@@ -13,6 +13,6 @@ git commit --message "v$RELEASE Release"
 git tag -s v$RELEASE -m "v$RELEASE"
 
 # Bump up the version in pom.xml to the next snapshot
-./mvnw versions:set -DnewVersion="$SNAPSHOT-SNAPSHOT" -DgenerateBackupPoms=false
+mvn versions:set -DnewVersion="$SNAPSHOT-SNAPSHOT" -DgenerateBackupPoms=false
 git add .
 git commit --message "v$SNAPSHOT Development"
