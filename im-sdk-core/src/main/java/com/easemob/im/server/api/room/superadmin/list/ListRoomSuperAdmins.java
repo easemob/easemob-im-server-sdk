@@ -4,6 +4,9 @@ import com.easemob.im.server.api.Context;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListRoomSuperAdmins {
 
     public static Mono<ListRoomSuperAdminsResponse> next(Context context, int pagesize, int pagenum) {
@@ -16,8 +19,15 @@ public class ListRoomSuperAdmins {
                 .map(buf -> context.getCodec().decode(buf, ListRoomSuperAdminsResponse.class));
     }
 
-    public static Flux<String> all(Context context, int pagesize, int pagenum) {
-        return next(context, pagesize, pagenum)
-                .flatMapIterable(ListRoomSuperAdminsResponse::getAdmins);
+    public static Flux<String> all(Context context, int pagesize) {
+        return Flux.create(sink -> {
+            int pagenum = 1;
+            List<String> admins;
+            do {
+                admins = next(context, pagesize, pagenum++).block().getAdmins();
+                admins.forEach(sink::next);
+            } while (admins.size() > 0);
+            sink.complete();
+        });
     }
 }

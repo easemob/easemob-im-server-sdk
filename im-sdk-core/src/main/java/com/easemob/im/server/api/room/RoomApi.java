@@ -223,12 +223,10 @@ public class RoomApi {
     /**
      * List Room Super Admins
      *
-     * @param pagesize where to start
-     * @param pagenum how many super admins to return
      * @return A {@code Flux} of super admin's username
      */
-    public Flux<String> listRoomSuperAdminsAll(int pagesize, int pagenum){
-        return ListRoomSuperAdmins.all(this.context, pagesize, pagenum);
+    public Flux<String> listRoomSuperAdminsAll(){
+        return ListRoomSuperAdmins.all(this.context, 10);
     }
 
     /**
