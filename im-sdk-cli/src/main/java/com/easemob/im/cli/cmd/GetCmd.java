@@ -322,9 +322,7 @@ public class GetCmd {
     }
 
     @Command(name = "admin", description = "List admin")
-    public void admin(@ArgGroup(multiplicity = "1") AdminArgGroup argGroup,
-                      @ArgGroup(exclusive = false) PageArgGroup pageArgGroup) {
-        // TODO group和room管理员API没有分页
+    public void admin(@ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {
             this.service.group().listGroupAdmins(argGroup.groupId)
                     .doOnNext(System.out::println)
@@ -338,8 +336,7 @@ public class GetCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         } else if (argGroup.superAdmin) {
-            // TODO pagesize和pagenum 与limit和cursor对应吗？
-            this.service.room().listRoomSuperAdminsAll(pageArgGroup.limit, Integer.parseInt(pageArgGroup.cursor))
+            this.service.room().listRoomSuperAdminsAll()
                     .doOnNext(System.out::println)
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -351,15 +348,10 @@ public class GetCmd {
         @Option(names = "--limit", description = "the limit", required = true)
         Integer limit;
 
-        @Option(names = "--cursor", description = "the cursor", required = true)
-        String cursor;
-    }
-
-    private static class PageArgGroup {
-        @Option(names = "--pagesize", description = "the pagesize", required = true)
-        Integer limit;
-
-        @Option(names = "--pagenum", description = "the pagenum", required = true)
+        /**
+         * 游标，第一次请求分页不需要指定，之后分页cursor用上一次请求返回的cursor
+         */
+        @Option(names = "--cursor", description = "the cursor in latest response.")
         String cursor;
     }
 }

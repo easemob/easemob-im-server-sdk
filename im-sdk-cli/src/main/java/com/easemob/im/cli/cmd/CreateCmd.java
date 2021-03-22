@@ -217,7 +217,7 @@ public class CreateCmd {
         String roomId;
 
         @Option(names = "--super", description = "add a super admin, who is the only person that can create a room")
-        String superAdminUsername;
+        boolean superAdmin;
     }
 
     @Command(name = "admin", description = "Add admin")
@@ -235,8 +235,8 @@ public class CreateCmd {
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
-        } else {
-            this.service.room().promoteRoomSuperAdmin(argGroup.superAdminUsername)
+        } else if (argGroup.superAdmin){
+            this.service.room().promoteRoomSuperAdmin(username)
                     .doOnSuccess(ig -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
