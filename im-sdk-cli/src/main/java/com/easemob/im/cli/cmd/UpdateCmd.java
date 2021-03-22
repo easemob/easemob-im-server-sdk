@@ -32,6 +32,12 @@ public class UpdateCmd {
         @Option(names = {"--owner"}, description = "the new owner's username, who must be member of this group")
         String owner;
 
+        @Option(names = "--name", description = "the group's name")
+        String name;
+
+        @Option(names = "--description", description = "the group's description")
+        String description;
+
         @Option(names = {"--announcement"}, description = "the announcement")
         String announcement;
 
@@ -46,13 +52,11 @@ public class UpdateCmd {
     public void group(@Parameters(description = "the group's id") String groupId,
                       @ArgGroup(multiplicity = "1", exclusive = false) GroupArgGroup argGroup) {
         this.service.group().updateGroup(groupId, request -> {
-            if (argGroup.maxMembers != null) {
-                request.setMaxMembers(argGroup.maxMembers);
-            }
-            if (argGroup.canMemberInvite != null) {
-                request.setCanMemberInviteOthers(argGroup.canMemberInvite);
-                request.setNeedApproveToJoin(!argGroup.canMemberInvite);
-            }
+            request.setName(argGroup.name)
+                    .setDescription(argGroup.description)
+                    .setMaxMembers(argGroup.maxMembers)
+                    .setCanMemberInviteOthers(argGroup.canMemberInvite)
+                    .setNeedApproveToJoin(argGroup.canMemberInvite == null ? null : !argGroup.canMemberInvite);
         }).doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())

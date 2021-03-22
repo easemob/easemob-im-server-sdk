@@ -103,8 +103,8 @@ public class GroupApi {
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
-    public Mono<String> createPublicGroup(String owner, List<String> members, int maxMembers, boolean needApproveToJoin) {
-        return this.createGroup.publicGroup(owner, members, maxMembers, needApproveToJoin);
+    public Mono<String> createPublicGroup(String owner, String groupName, String description, List<String> members, int maxMembers, boolean needApproveToJoin) {
+        return this.createGroup.publicGroup(owner, groupName, description, members, maxMembers, needApproveToJoin);
     }
 
     /**
@@ -117,8 +117,8 @@ public class GroupApi {
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
-    public Mono<String> createPrivateGroup(String owner, List<String> members, int maxMembers, boolean canMemberInvite) {
-        return this.createGroup.privateGroup(owner, members, maxMembers, canMemberInvite);
+    public Mono<String> createPrivateGroup(String owner, String groupName, String description, List<String> members, int maxMembers, boolean canMemberInvite) {
+        return this.createGroup.privateGroup(owner, groupName, description, members, maxMembers, canMemberInvite);
     }
 
     /**

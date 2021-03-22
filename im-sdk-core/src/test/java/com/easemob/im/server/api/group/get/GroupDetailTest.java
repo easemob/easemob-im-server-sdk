@@ -8,10 +8,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GroupDetailTest extends AbstractApiTest {
 
@@ -25,18 +23,13 @@ class GroupDetailTest extends AbstractApiTest {
     public void testGroupDetails() {
         EMGroup detail = this.getGroup.execute("1").block(Duration.ofSeconds(3));
         assertEquals("1", detail.getGroupId());
+        assertEquals("test-group", detail.getName());
+        assertEquals("test-description", detail.getDescription());
         assertEquals(true, detail.getIsPublic());
         assertEquals(false, detail.getNeedApproveToJoin());
         assertEquals(false, detail.getCanMemberInviteOthers());
         assertEquals("alice", detail.getOwner());
         assertEquals(200, detail.getMaxMembers());
-
-        Set<String> members = detail.getMembers().stream().collect(Collectors.toSet());
-
-        assertEquals(3, members.size());
-        assertTrue(members.contains("user1"));
-        assertTrue(members.contains("user2"));
-        assertTrue(members.contains("user3"));
     }
 
     private JsonNode handleGroupDetailRequest1(JsonNode jsonNode) {
@@ -52,25 +45,15 @@ class GroupDetailTest extends AbstractApiTest {
     }
 
     private ObjectNode buildGroupJson(String groupId) {
-        ObjectNode member1 = this.objectMapper.createObjectNode();
-        member1.put("owner", "user1");
-        ObjectNode member2 = this.objectMapper.createObjectNode();
-        member2.put("member", "user2");
-        ObjectNode member3 = this.objectMapper.createObjectNode();
-        member3.put("member", "user3");
-        ArrayNode members = this.objectMapper.createArrayNode();
-        members.add(member1);
-        members.add(member2);
-        members.add(member3);
-
         ObjectNode group1 = this.objectMapper.createObjectNode();
         group1.put("id", groupId);
+        group1.put("name", "test-group");
+        group1.put("description", "test-description");
         group1.put("public", true);
         group1.put("membersonly", false);
         group1.put("allowinvites", false);
         group1.put("owner", "alice");
         group1.put("maxusers", 200);
-        group1.set("affiliations", members);
         return group1;
     }
 
