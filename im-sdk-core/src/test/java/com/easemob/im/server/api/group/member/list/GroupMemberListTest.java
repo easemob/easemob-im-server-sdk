@@ -17,8 +17,8 @@ class GroupMemberListTest extends AbstractApiTest {
     GroupMemberList groupMemberList = new GroupMemberList(this.context);
 
     public GroupMemberListTest() {
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/users?limit=10", this::handleGroupMemberListRequest1);
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/users?limit=10&cursor=1", this::handleGroupMemberListRequest2);
+        this.server.addHandler("GET /easemob/demo/chatgroups/1/users?version=v3&limit=10", this::handleGroupMemberListRequest1);
+        this.server.addHandler("GET /easemob/demo/chatgroups/1/users?version=v3&limit=10&cursor=1", this::handleGroupMemberListRequest2);
     }
 
     @Test
@@ -29,15 +29,8 @@ class GroupMemberListTest extends AbstractApiTest {
 
     private JsonNode handleGroupMemberListRequest1(JsonNode jsonNode) {
         ArrayNode data = this.objectMapper.createArrayNode();
-
-        ObjectNode owner = this.objectMapper.createObjectNode();
-        owner.put("owner", "user-0");
-        data.add(owner);
-
-        for (int i = 1; i < 10; i++) {
-            ObjectNode member = this.objectMapper.createObjectNode();
-            member.put("member", String.format("user-%d", i));
-            data.add(member);
+        for (int i = 0; i < 10; i++) {
+            data.add(String.format("user-%d", i));
         }
 
         ObjectNode rsp = this.objectMapper.createObjectNode();
@@ -50,11 +43,8 @@ class GroupMemberListTest extends AbstractApiTest {
 
     private JsonNode handleGroupMemberListRequest2(JsonNode jsonNode) {
         ArrayNode data = this.objectMapper.createArrayNode();
-
         for (int i = 10; i < 15; i++) {
-            ObjectNode member = this.objectMapper.createObjectNode();
-            member.put("member", String.format("user-%d", i));
-            data.add(member);
+            data.add(String.format("user-%d", i));
         }
 
         ObjectNode rsp = this.objectMapper.createObjectNode();

@@ -20,7 +20,7 @@ public class GroupMemberList {
     }
 
     public Mono<EMPage<String>> next(String groupId, int limit, String cursor) {
-        String uri = String.format("/chatgroups/%s/users?limit=%d", groupId, limit);
+        String uri = String.format("/chatgroups/%s/users?version=v3&limit=%d", groupId, limit);
         if (cursor != null) {
             uri += String.format("&cursor=%s", cursor);
         }

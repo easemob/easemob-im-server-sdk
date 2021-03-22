@@ -13,16 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ListRoomMembersTest extends AbstractApiTest {
     ListRoomMembersTest() {
-        this.server.addHandler("GET /easemob/demo/chatrooms/r1/users?limit=2", this::handleListMembersFirst);
-        this.server.addHandler("GET /easemob/demo/chatrooms/r1/users?limit=2&cursor=1", this::handleListMembersLast);
+        this.server.addHandler("GET /easemob/demo/chatrooms/r1/users?version=v3&limit=2", this::handleListMembersFirst);
+        this.server.addHandler("GET /easemob/demo/chatrooms/r1/users?version=v3&limit=2&cursor=1", this::handleListMembersLast);
     }
 
     private JsonNode handleListMembersLast(JsonNode jsonNode) {
         ArrayNode data = this.objectMapper.createArrayNode();
-
-        ObjectNode member = this.objectMapper.createObjectNode();
-        member.put("member", "madhat");
-        data.add(member);
+        data.add("madhat");
 
         ObjectNode rsp = this.objectMapper.createObjectNode();
         rsp.set("data", data);
@@ -32,14 +29,8 @@ class ListRoomMembersTest extends AbstractApiTest {
 
     private JsonNode handleListMembersFirst(JsonNode jsonNode) {
         ArrayNode data = this.objectMapper.createArrayNode();
-
-        ObjectNode owner = this.objectMapper.createObjectNode();
-        owner.put("owner", "alice");
-        data.add(owner);
-
-        ObjectNode member = this.objectMapper.createObjectNode();
-        member.put("member", "rabbit");
-        data.add(member);
+        data.add("alice");
+        data.add("rabbit");
 
         ObjectNode rsp = this.objectMapper.createObjectNode();
         rsp.set("data", data);

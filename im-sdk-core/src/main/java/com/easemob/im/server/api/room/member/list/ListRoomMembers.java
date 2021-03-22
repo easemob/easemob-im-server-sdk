@@ -14,7 +14,7 @@ public class ListRoomMembers {
     }
 
     public static Mono<EMPage<String>> next(Context context, String roomId, int limit, String cursor) {
-        String uri = String.format("/chatrooms/%s/users?limit=%d", roomId, limit);
+        String uri = String.format("/chatrooms/%s/users?version=v3&limit=%d", roomId, limit);
         if (cursor != null) {
             uri += String.format("&cursor=%s", cursor);
         }

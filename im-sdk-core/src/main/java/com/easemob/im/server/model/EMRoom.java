@@ -1,8 +1,5 @@
 package com.easemob.im.server.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EMRoom extends EMEntity {
 
     /**
@@ -30,11 +27,6 @@ public class EMRoom extends EMEntity {
      */
     private int maxMembers;
 
-    /**
-     * The members of this room.
-     */
-    private List<String> members;
-
     public String name() {
         return this.name;
     }
@@ -55,11 +47,7 @@ public class EMRoom extends EMEntity {
         return this.maxMembers;
     }
 
-    public List<String> members() {
-        return this.members;
-    }
-
-    public EMRoom(String roomId, String name, String description, boolean needApproveToJoin, String owner, int maxMembers, List<String> members) {
+    public EMRoom(String roomId, String name, String description, boolean needApproveToJoin, String owner, int maxMembers) {
         super(EntityType.ROOM);
         super.id(roomId);
 
@@ -68,6 +56,5 @@ public class EMRoom extends EMEntity {
         this.needApproveToJoin = needApproveToJoin;
         this.owner = owner;
         this.maxMembers = maxMembers;
-        this.members = members;
     }
 }
