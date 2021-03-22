@@ -1,8 +1,10 @@
 package com.easemob.im.server.model;
 
-import java.util.List;
-
 public class EMGroup extends EMEntity {
+
+    private final String name;
+
+    private final String description;
 
     private final boolean isPublic;
 
@@ -14,22 +16,29 @@ public class EMGroup extends EMEntity {
 
     private final int maxMembers;
 
-    private final List<String> members;
-
-    public EMGroup(String groupId, boolean isPublic, boolean needApproveToJoin, boolean canMemberInviteOthers,
-                   String owner, int maxMembers, List<String> members) {
+    public EMGroup(String groupId, String name, String description, boolean isPublic, boolean needApproveToJoin, boolean canMemberInviteOthers,
+                   String owner, int maxMembers) {
         super(EntityType.GROUP);
         super.id(groupId);
+        this.name = name;
+        this.description = description;
         this.isPublic = isPublic;
         this.needApproveToJoin = needApproveToJoin;
         this.canMemberInviteOthers = canMemberInviteOthers;
         this.owner = owner;
         this.maxMembers = maxMembers;
-        this.members = members;
     }
 
     public String getGroupId() {
         return super.id();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public boolean getIsPublic() {
@@ -51,9 +60,4 @@ public class EMGroup extends EMEntity {
     public int getMaxMembers() {
         return this.maxMembers;
     }
-
-    public List<String> getMembers() {
-        return this.members;
-    }
-
 }
