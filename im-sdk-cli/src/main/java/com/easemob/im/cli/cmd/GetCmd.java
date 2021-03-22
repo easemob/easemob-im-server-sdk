@@ -98,14 +98,15 @@ public class GetCmd {
     }
 
     @Command(name = "group", description = "Get a group's info or list groups")
-    public void group(@Parameters(description = "the group's id, if miss, list groups") String groupId,
+    public void group(@Parameters(arity = "0..1", description = "the group's id, if miss, list groups") String groupId,
                       @Option(names = "--have-user", description = "search groups have this user, not support limit and cursor") String username,
                       @ArgGroup(exclusive = false, heading = "If missing, list all groups\n") LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(groupId)) {
             this.service.group().getGroup(groupId)
                     .doOnSuccess(group -> {
                         System.out.println("groupId: " + group.getGroupId());
-                        // TODO 没有description和name
+                        System.out.println("name: " + group.getName());
+                        System.out.println("description: " + group.getDescription());
                         System.out.println("\tisPublic: " + group.getIsPublic());
                         System.out.println("\tmaxMembers: " + group.getMaxMembers());
                         System.out.println("\tcanMemberInviteOthers: " + group.getCanMemberInviteOthers());
@@ -146,7 +147,7 @@ public class GetCmd {
     }
 
     @Command(name = "room", description = "Get a room's info or list rooms")
-    public void room(@Parameters(description = "the room's id, if miss, list rooms") String roomId,
+    public void room(@Parameters(arity = "0..1", description = "the room's id, if miss, list rooms") String roomId,
                      @Option(names = "--have-user", description = "search rooms have this user, not support limit and cursor") String username,
                      @ArgGroup(exclusive = false, heading = "If missing, list all rooms\n") LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(roomId)) {
@@ -244,7 +245,7 @@ public class GetCmd {
         String roomId;
     }
 
-    @Command(name = "member", description = "List group or room members.")
+    @Command(name = "member", description = "List group or room members, not include the owner and admins.")
     public void member(@ArgGroup(multiplicity = "1") MemberArgGroup memberArgGroup,
                        @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
         if (memberArgGroup.roomId != null) {

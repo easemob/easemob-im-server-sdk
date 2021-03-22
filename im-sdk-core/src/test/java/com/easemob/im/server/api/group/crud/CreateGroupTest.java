@@ -25,7 +25,7 @@ class CreateGroupTest extends AbstractApiTest {
         List<String> members = new ArrayList<>();
         members.add("madhat");
         members.add("rabbit");
-        assertEquals("group-create-test", this.createGroup.publicGroup("alice", members, 10, true).block(Duration.ofSeconds(3)));
+        assertEquals("group-create-test", this.createGroup.publicGroup("alice", "test-group", "test-desc", members, 10, true).block(Duration.ofSeconds(3)));
     }
 
     @Test
@@ -33,7 +33,7 @@ class CreateGroupTest extends AbstractApiTest {
         List<String> members = new ArrayList<>();
         members.add("madhat");
         members.add("rabbit");
-        assertEquals("group-create-test", this.createGroup.privateGroup("alice", members, 10, true).block(Duration.ofSeconds(3)));
+        assertEquals("group-create-test", this.createGroup.privateGroup("alice", "test-group", "test-desc", members, 10, true).block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupCreateRequest(JsonNode jsonNode) {

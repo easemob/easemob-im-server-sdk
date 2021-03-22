@@ -30,48 +30,23 @@ public class GetRoomDetailResponse {
         @JsonProperty("maxusers")
         private int maxMembers;
 
-        @JsonProperty("affiliations")
-        private List<Member> members;
-
-        private static class Member {
-            @JsonProperty("member")
-            private String member;
-            @JsonProperty("owner")
-            private String owner;
-
-            @JsonCreator
-            public Member(@JsonProperty("member") String member,
-                          @JsonProperty("owner") String owner) {
-                this.member = member;
-                this.owner = owner;
-            }
-
-            public String getUsername() {
-                return this.member != null ? this.member : this.owner;
-            }
-
-        }
-
         @JsonCreator
         public Room(@JsonProperty("id") String id,
                     @JsonProperty("name") String name,
                     @JsonProperty("description") String description,
                     @JsonProperty("owner") String owner,
                     @JsonProperty("membersonly") boolean needApprove,
-                    @JsonProperty("maxusers") int maxMembers,
-                    @JsonProperty("affiliations") List<Member> members) {
+                    @JsonProperty("maxusers") int maxMembers) {
             this.id = id;
             this.name = name;
             this.description = description;
             this.owner = owner;
             this.needApprove = needApprove;
             this.maxMembers = maxMembers;
-            this.members = members;
         }
 
         public EMRoom toRoom() {
-            return new EMRoom(this.id, this.name, this.description, this.needApprove, this.owner, this.maxMembers,
-                    this.members.stream().map(Member::getUsername).collect(Collectors.toList()));
+            return new EMRoom(this.id, this.name, this.description, this.needApprove, this.owner, this.maxMembers);
         }
     }
 

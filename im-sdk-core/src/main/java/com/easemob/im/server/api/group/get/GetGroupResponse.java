@@ -1,6 +1,5 @@
 package com.easemob.im.server.api.group.get;
 
-import com.easemob.im.server.api.group.GroupMemberResource;
 import com.easemob.im.server.model.EMGroup;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,21 +18,27 @@ public class GetGroupResponse {
 
     public EMGroup toGroupDetail(String groupId) {
         return this.groupDetails.stream()
-            .filter(groupDetailResource -> groupDetailResource.groupId.equals(groupId))
-            .map(GroupDetailResource::toEMGroup)
-            .findFirst()
-            .orElse(null);
+                .filter(groupDetailResource -> groupDetailResource.groupId.equals(groupId))
+                .map(GroupDetailResource::toEMGroup)
+                .findFirst()
+                .orElse(null);
     }
 
     public List<EMGroup> toGroupDetails() {
         return this.groupDetails.stream()
-            .map(GroupDetailResource::toEMGroup)
-            .collect(Collectors.toList());
+                .map(GroupDetailResource::toEMGroup)
+                .collect(Collectors.toList());
     }
 
     private static class GroupDetailResource {
         @JsonProperty("id")
         private String groupId;
+
+        @JsonProperty("name")
+        private String name;
+
+        @JsonProperty("description")
+        private String description;
 
         @JsonProperty("membersonly")
         private boolean needApproveToJoin;
@@ -49,17 +54,10 @@ public class GetGroupResponse {
 
         @JsonProperty("public")
         private boolean isPublic;
-        // TODO: investigate how to avoid return members in get group detail api
-        //      then, we can move group member resource into group member package
-        @JsonProperty("affiliations")
-        private List<GroupMemberResource> members;
 
         public EMGroup toEMGroup() {
-            List<String> memberList = this.members.stream()
-                .map(GroupMemberResource::getUsername)
-                .collect(Collectors.toList());
-            return new EMGroup(this.groupId, this.isPublic, this.needApproveToJoin, this.memberCanInviteOthers,
-                    this.owner, this.maxMembers, memberList);
+            return new EMGroup(this.groupId, this.name, this.description, this.isPublic, this.needApproveToJoin, this.memberCanInviteOthers,
+                    this.owner, this.maxMembers);
         }
     }
 

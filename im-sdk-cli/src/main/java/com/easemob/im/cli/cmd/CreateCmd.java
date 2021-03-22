@@ -117,17 +117,19 @@ public class CreateCmd {
             "Private groups can NOT be listed using Android, iOS, Web SDKs.")
     public void group(@Parameters(arity = "1", description = "the member's username list") List<String> members,
                       @Option(names = "--owner", required = true, description = "the owner's username") String owner,
+                      @Option(names = "--name", required = true, description = "the group's name") String name,
+                      @Option(names = "--description", required = true, description = "the group's description") String description,
                       @Option(names = "--private", description = "create a private group") boolean isPrivate,
                       @Option(names = "--max-members", defaultValue = "200", description = "max number of members") int maxMembers,
                       @Option(names = "--can-member-invite", description = "can member invite others to join") boolean canMemberInvite) {
         if (isPrivate) {
-            this.service.group().createPrivateGroup(owner, members, maxMembers, canMemberInvite)
+            this.service.group().createPrivateGroup(owner, name, description, members, maxMembers, canMemberInvite)
                     .doOnSuccess(groupId -> System.out.println("group: " + groupId))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         } else {
-            this.service.group().createPublicGroup(owner, members, maxMembers, !canMemberInvite)
+            this.service.group().createPublicGroup(owner, name, description, members, maxMembers, !canMemberInvite)
                     .doOnSuccess(groupId -> System.out.println("group: " + groupId))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -141,7 +143,6 @@ public class CreateCmd {
                      @Option(names = "--owner", required = true, description = "the owner's username") String owner,
                      @Option(names = "--description", description = "the room's description", defaultValue = "") String description,
                      @Option(names = "--max-members", defaultValue = "200", description = "max number of members") int maxMembers) {
-        // TODO 没有canMemberInvite？
         this.service.room().createRoom(name, description, owner, members, maxMembers)
                 .doOnSuccess(roomId -> System.out.println("roomId: " + roomId))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -235,7 +236,7 @@ public class CreateCmd {
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
-        } else if (argGroup.superAdmin){
+        } else if (argGroup.superAdmin) {
             this.service.room().promoteRoomSuperAdmin(username)
                     .doOnSuccess(ig -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))

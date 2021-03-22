@@ -17,10 +17,10 @@ import java.util.List;
 public class CreateGroupRequest {
 
     @JsonProperty("groupname")
-    private String groupName = "";
+    private String groupName;
 
     @JsonProperty("desc")
-    private String description = "";
+    private String description;
 
     @JsonProperty("public")
     private boolean isPublic;
@@ -40,13 +40,23 @@ public class CreateGroupRequest {
     @JsonProperty("membersonly")
     private boolean needApproveToJoin;
 
-    public CreateGroupRequest(boolean isPublic, String owner, List<String> members, int maxMembers, boolean memberCanInviteOthers, boolean needApproveToJoin) {
+    public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner, List<String> members, int maxMembers, boolean memberCanInviteOthers, boolean needApproveToJoin) {
+        this.groupName = groupName;
+        this.description = description;
         this.isPublic = isPublic;
         this.owner = owner;
         this.members = members;
         this.maxMembers = maxMembers;
         this.memberCanInviteOthers = memberCanInviteOthers;
         this.needApproveToJoin = needApproveToJoin;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public boolean isPublic() {
