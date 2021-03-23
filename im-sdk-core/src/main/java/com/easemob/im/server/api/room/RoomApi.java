@@ -5,6 +5,7 @@ import com.easemob.im.server.api.room.admin.demote.DemoteRoomAdmin;
 import com.easemob.im.server.api.room.admin.promote.PromoteRoomAdmin;
 import com.easemob.im.server.api.room.admin.list.ListRoomAdmins;
 import com.easemob.im.server.api.room.create.CreateRoom;
+import com.easemob.im.server.api.room.delete.DeleteRoom;
 import com.easemob.im.server.api.room.detail.GetRoomDetail;
 import com.easemob.im.server.api.room.list.ListRooms;
 import com.easemob.im.server.api.room.list.ListRoomsResponse;
@@ -249,5 +250,13 @@ public class RoomApi {
         return DemoteRoomSuperAdmin.singnle(this.context, username);
     }
 
-
+    /**
+     * 注销聊天室
+     *
+     * @param roomId 聊天室id
+     * @return 成功或错误
+     */
+    public Mono<Void> destroyRoom(String roomId) {
+        return DeleteRoom.byId(this.context, roomId);
+    }
 }
