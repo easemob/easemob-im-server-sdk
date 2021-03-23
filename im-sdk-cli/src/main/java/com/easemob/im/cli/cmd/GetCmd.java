@@ -223,7 +223,11 @@ public class GetCmd {
                     .blockLast();
         }
         if (StringUtils.hasText(argGroup.msgToRoomId)) {
-            System.out.println("Not implemented");
+            this.service.block().listUsersBlockedSendMsgToRoom(argGroup.msgToRoomId)
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
         }
         if (StringUtils.hasText(argGroup.joinGroupId)) {
             this.service.block().getUsersBlockedJoinGroup(argGroup.joinGroupId)

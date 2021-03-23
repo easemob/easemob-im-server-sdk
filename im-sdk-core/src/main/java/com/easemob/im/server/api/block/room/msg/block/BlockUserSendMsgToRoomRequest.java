@@ -22,15 +22,9 @@ public class BlockUserSendMsgToRoomRequest {
         this.durationInMillis = durationInMillis;
     }
 
-    public static BlockUserSendMsgToRoomRequest of(String username) {
-        List<String> usernames = new ArrayList<>();
-        usernames.add(username);
-        return new BlockUserSendMsgToRoomRequest(usernames, -1);
-    }
-
     public static BlockUserSendMsgToRoomRequest of(String username, Duration duration) {
         List<String> usernames = new ArrayList<>();
         usernames.add(username);
-        return new BlockUserSendMsgToRoomRequest(usernames, duration.toMillis());
+        return new BlockUserSendMsgToRoomRequest(usernames, duration == null ? -1 : duration.toMillis());
     }
 }

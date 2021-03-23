@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 public class BlockUserSendMsgToRoom {
+
     public static Mono<Void> single(Context context, String username, String roomId, Duration duration) {
         return context.getHttpClient()
                 .post()

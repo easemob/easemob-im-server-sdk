@@ -149,7 +149,7 @@ public class BlockApi {
      *
      * @param username 被禁言的用户的用户名
      * @param groupId 群id
-     * @param duration 禁言多长时间
+     * @param duration 禁言多长时间，为null则永久禁言
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80">添加禁言</a>
      */
@@ -185,7 +185,7 @@ public class BlockApi {
      *
      * @param username 被禁言的用户的用户名
      * @param roomId 聊天室id
-     * @param duration 禁言时长
+     * @param duration 禁言时长，为null则永久禁言
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80">添加禁言</a>
      */

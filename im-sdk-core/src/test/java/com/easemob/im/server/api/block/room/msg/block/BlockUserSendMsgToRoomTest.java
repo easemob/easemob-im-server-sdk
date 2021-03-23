@@ -1,6 +1,9 @@
-package com.easemob.im.server.api.block.group.msg;
+package com.easemob.im.server.api.block.room.msg.block;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroup;
+import com.easemob.im.server.api.block.room.msg.list.ListUsersBlockedSendMsgToRoom;
+import com.easemob.im.server.api.block.room.msg.unblock.UnblockUserSendMsgToRoom;
 import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.EMBlock;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,15 +17,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BlockUserSendMsgToGroupTest extends AbstractApiTest {
+class BlockUserSendMsgToRoomTest extends AbstractApiTest {
 
-    BlockUserSendMsgToGroupTest() {
+    BlockUserSendMsgToRoomTest() {
         super();
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/mute", this::handleGetBlockedUserRequest);
-        this.server.addHandler("POST /easemob/demo/chatgroups/1/mute", this::handleBlockUserRequestSuccess);
-        this.server.addHandler("POST /easemob/demo/chatgroups/2/mute", this::handleBlockUserRequestFail);
-        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/mute/alice", req -> handleUnblockUserRequestSuccess(req, "alice"));
-        this.server.addHandler("DELETE /easemob/demo/chatgroups/2/mute/alice", req -> handleUnblockUserRequestFail(req, "alice"));
+        this.server.addHandler("GET /easemob/demo/chatrooms/1/mute", this::handleGetBlockedUserRequest);
+        this.server.addHandler("POST /easemob/demo/chatrooms/1/mute", this::handleBlockUserRequestSuccess);
+        this.server.addHandler("POST /easemob/demo/chatrooms/2/mute", this::handleBlockUserRequestFail);
+        this.server.addHandler("DELETE /easemob/demo/chatrooms/1/mute/alice", req -> handleUnblockUserRequestSuccess(req, "alice"));
+        this.server.addHandler("DELETE /easemob/demo/chatrooms/2/mute/alice", req -> handleUnblockUserRequestFail(req, "alice"));
 
     }
 
@@ -101,7 +104,7 @@ class BlockUserSendMsgToGroupTest extends AbstractApiTest {
 
     @Test
     void testGetBlockedUsers() {
-        List<EMBlock> blocks = BlockUserSendMsgToGroup.getBlockedUsers(this.context, "1").collectList().block(Duration.ofSeconds(3));
+        List<EMBlock> blocks = ListUsersBlockedSendMsgToRoom.all(this.context, "1").collectList().block(Duration.ofSeconds(3));
         assertEquals(2, blocks.size());
         assertTrue(blocks.contains(new EMBlock("alice", Instant.ofEpochMilli(1000000))));
         assertTrue(blocks.contains(new EMBlock("rabbit", Instant.ofEpochMilli(1000000))));
@@ -109,28 +112,28 @@ class BlockUserSendMsgToGroupTest extends AbstractApiTest {
 
     @Test
     void testBlockUserSuccess() {
-        assertDoesNotThrow(() -> BlockUserSendMsgToGroup.blockUser(this.context, "alice",  "1", null).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> BlockUserSendMsgToRoom.single(this.context, "alice",  "1", null).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testBlockUserFail() {
-        assertThrows(EMUnknownException.class, () -> BlockUserSendMsgToGroup.blockUser(this.context, "alice",  "2", null).block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> BlockUserSendMsgToRoom.single(this.context, "alice",  "2", null).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testBlockUserMaxDuration() {
-        assertDoesNotThrow(() -> BlockUserSendMsgToGroup.blockUser(this.context, "alice",  "1", Duration.ofMillis(Integer.MAX_VALUE)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> BlockUserSendMsgToRoom.single(this.context, "alice",  "1", Duration.ofMillis(Integer.MAX_VALUE)).block(Duration.ofSeconds(3)));
     }
 
 
     @Test
     void testUnblockUserSuccess() {
-        assertDoesNotThrow(() -> BlockUserSendMsgToGroup.unblockUser(this.context, "alice",  "1").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> UnblockUserSendMsgToRoom.single(this.context, "alice",  "1").block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testUnblockUserFail() {
-        assertThrows(EMUnknownException.class, () -> BlockUserSendMsgToGroup.unblockUser(this.context, "alice",  "2").block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> UnblockUserSendMsgToRoom.single(this.context, "alice",  "2").block(Duration.ofSeconds(3)));
     }
 
 }

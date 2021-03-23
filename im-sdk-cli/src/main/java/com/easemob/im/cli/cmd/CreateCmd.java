@@ -48,7 +48,7 @@ public class CreateCmd {
         @Option(names = {"--login"}, description = "block user to login")
         boolean login;
 
-        @Option(names = "--duration", description = "block duration, required by block user send msg to group or room")
+        @Option(names = "--duration", description = "block duration, block user forever if missing")
         Duration duration;
     }
 
@@ -62,15 +62,15 @@ public class CreateCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
-        if (StringUtils.hasText(argGroup.msgToGroupId) && argGroup.duration != null) {
+        if (StringUtils.hasText(argGroup.msgToGroupId)) {
             this.service.block().blockUserSendMsgToGroup(username, argGroup.msgToGroupId, argGroup.duration)
                     .doOnSuccess(ignore -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
-        if (StringUtils.hasText(argGroup.msgToRoomId) && argGroup.duration != null) {
-            this.service.block().blockUserSendMsgToRoom(argGroup.msgToUsername, argGroup.msgToRoomId, argGroup.duration)
+        if (StringUtils.hasText(argGroup.msgToRoomId)) {
+            this.service.block().blockUserSendMsgToRoom(username, argGroup.msgToRoomId, argGroup.duration)
                     .doOnSuccess(ig -> System.out.println("done."))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
