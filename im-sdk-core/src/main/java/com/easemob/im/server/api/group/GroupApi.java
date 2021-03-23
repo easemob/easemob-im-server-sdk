@@ -97,6 +97,8 @@ public class GroupApi {
      * }</pre>
      *
      * @param owner 群主的用户名
+     * @param groupName 群名
+     * @param description 群介绍
      * @param members 初始群成员的用户名列表
      * @param maxMembers 群最大成员数
      * @param needApproveToJoin 新成员加入需要管理员审批
@@ -111,6 +113,8 @@ public class GroupApi {
      * 创建私有群。
      *
      * @param owner 群主的用户名
+     * @param groupName 群名
+     * @param description 群介绍
      * @param members 初始群成员的用户名列表
      * @param maxMembers 群最大成员数
      * @param canMemberInvite 新成员加入需要管理员审批
