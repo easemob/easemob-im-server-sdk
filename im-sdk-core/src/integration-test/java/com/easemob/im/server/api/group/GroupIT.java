@@ -26,7 +26,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPublicGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPublicGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
@@ -42,7 +42,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
@@ -58,7 +58,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
@@ -74,7 +74,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().listAllGroups().blockFirst(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -91,7 +91,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().listGroups(1, null).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -108,7 +108,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -125,7 +125,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().updateGroup(groupId, settings -> settings.setMaxMembers(100)).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -142,7 +142,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().updateGroupOwner(groupId, randomMemberUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -159,7 +159,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().getGroupAnnouncement(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -176,7 +176,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().updateGroupAnnouncement(groupId, "update group announcement").block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -193,8 +193,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
-        // 分页获取的有问题
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().listAllGroupMembers(groupId).blockFirst(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -211,8 +210,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
-        // 分页获取的有问题
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().listGroupMembers(groupId, 1, null).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -228,7 +226,7 @@ public class GroupIT extends AbstractIT {
         List<String> members = new ArrayList<>();
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().addGroupMember(groupId, randomMemberUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -245,7 +243,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().removeGroupMember(groupId, randomMemberUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -265,7 +263,7 @@ public class GroupIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomAdminUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().addGroupAdmin(groupId, randomAdminUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -286,7 +284,7 @@ public class GroupIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomAdminUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().addGroupAdmin(groupId, randomAdminUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().removeGroupAdmin(groupId, randomAdminUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
@@ -305,7 +303,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().blockUserJoinGroup(randomMemberUsername, groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().getUsersBlockedJoinGroup(groupId).blockFirst(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
@@ -323,7 +321,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().blockUserJoinGroup(randomMemberUsername, groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -340,7 +338,7 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().blockUserJoinGroup(randomMemberUsername, groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().unblockUserJoinGroup(randomMemberUsername, groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
@@ -358,8 +356,8 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofSeconds(60)).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofMillis(6000)).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().getUsersBlockedJoinGroup(groupId).blockFirst(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -376,8 +374,8 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofSeconds(60)).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofMillis(3000)).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
@@ -393,8 +391,8 @@ public class GroupIT extends AbstractIT {
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
-        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, members, 200, true).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofSeconds(60)).block(Duration.ofSeconds(3)));
+        String groupId = assertDoesNotThrow(() -> this.service.group().createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofMillis(6000)).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().unblockUserSendMsgToGroup(randomMemberUsername, groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));

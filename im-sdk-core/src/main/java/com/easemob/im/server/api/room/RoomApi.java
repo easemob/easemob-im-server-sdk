@@ -294,20 +294,11 @@ public class RoomApi {
 
     /**
      * 注销聊天室
-<<<<<<< HEAD
      *
      * @param roomId 聊天室id
      * @return 成功或错误
-=======
-     * @param roomId 聊天室id
-     * @return 成功或失败
->>>>>>> Added user/message/group/room integration test.
      */
     public Mono<Void> destroyRoom(String roomId) {
         return this.deleteRoom.byId(roomId);
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> Added user/message/group/room integration test.
 }

@@ -10,19 +10,19 @@ public class PromoteRoomAdminResponse {
 
     public static class Wrapper {
         @JsonProperty("result")
-        private boolean result;
+        private String result;
 
         @JsonProperty("newadmin")
         private String username;
 
         @JsonCreator
-        public Wrapper(@JsonProperty("result") boolean result,
+        public Wrapper(@JsonProperty("result") String result,
                        @JsonProperty("newadmin") String username) {
             this.result = result;
             this.username = username;
         }
 
-        private boolean getResult() {
+        private String getResult() {
             return this.result;
         }
     }
@@ -33,6 +33,6 @@ public class PromoteRoomAdminResponse {
     }
 
     public boolean isSuccess() {
-        return this.wrapper != null && this.wrapper.getResult();
+        return this.wrapper != null && this.wrapper.getResult().equals("success");
     }
 }
