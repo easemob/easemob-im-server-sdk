@@ -18,23 +18,6 @@ public class BlockUserSendMsgToGroup {
                 .map(rsp -> context.getCodec().decode(rsp, GetUsersBlockedSendMsgToGroupResponse.class))
                 .flatMapIterable(GetUsersBlockedSendMsgToGroupResponse::getEMBlocks);
     }
-
-    public static Mono<Void> blockUser(Context context, String username, String groupId) {
-        return context.getHttpClient()
-                .post()
-                .uri(String.format("/chatgroups/%s/mute", groupId))
-                .send(Mono.create(sink -> sink.success(context.getCodec().encode(BlockUserSendMsgToGroupRequest.of(username)))))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, BlockUserSendMsgToGroupResponse.class))
-                .handle((rsp, sink) -> {
-                    if (!rsp.getSuccess(username)) {
-                        sink.error(new EMUnknownException("unknown"));
-                        return;
-                    }
-                    sink.complete();
-                });
-    }
-
     public static Mono<Void> blockUser(Context context, String username, String groupId, Duration duration) {
         return context.getHttpClient()
                 .post()

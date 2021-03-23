@@ -21,15 +21,9 @@ public class BlockUserSendMsgToGroupRequest {
         this.durationInMillis = durationInMillis;
     }
 
-    public static BlockUserSendMsgToGroupRequest of(String username) {
-        List<String> usernames = new ArrayList<>();
-        usernames.add(username);
-        return new BlockUserSendMsgToGroupRequest(usernames, -1);
-    }
-
     public static BlockUserSendMsgToGroupRequest of(String username, Duration duration) {
         List<String> usernames = new ArrayList<>();
         usernames.add(username);
-        return new BlockUserSendMsgToGroupRequest(usernames, duration.toMillis());
+        return new BlockUserSendMsgToGroupRequest(usernames, duration == null ? -1 : duration.toMillis());
     }
 }
