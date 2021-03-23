@@ -1,8 +1,6 @@
 package com.easemob.im.server.api.block.room.msg.block;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroupRequest;
-import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroupResponse;
 import com.easemob.im.server.exception.EMUnknownException;
 import reactor.core.publisher.Mono;
 

@@ -43,7 +43,6 @@ public class SendMsgToUser {
         return this.context.getHttpClient()
             .delete()
             .uri(String.format("/users/%s/blocks/users/%s", fromUser, toUser))
-            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new UnblockUsersSendMsgToUserRequest(Arrays.asList(fromUser))))))
             .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
     }
 

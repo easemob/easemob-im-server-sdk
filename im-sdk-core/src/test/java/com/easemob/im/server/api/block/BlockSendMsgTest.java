@@ -22,7 +22,7 @@ public class BlockSendMsgTest extends AbstractApiTest {
     public BlockSendMsgTest() {
         super();
         this.server.addHandler("POST /easemob/demo/users/alice/blocks/users", this::handleUserBlockFromSendMsgRequest);
-        this.server.addHandler("DELETE /easemob/demo/users/alice/blocks/users", this::handleUserUnblockFromSendMsgRequest);
+        this.server.addHandler("DELETE /easemob/demo/users/rabbit/blocks/users/alice", this::handleUserUnblockFromSendMsgRequest);
         this.server.addHandler("GET /easemob/demo/users/alice/blocks/users", this::handleGetUserBlockedFromSendMsgRequest);
         this.server.addHandler("POST /easemob/demo/users/alice/deactivate", this::handleUserBlockFromLoginRequest);
         this.server.addHandler("POST /easemob/demo/users/alice/activate", this::handleUserUnblockFromLoginRequest);

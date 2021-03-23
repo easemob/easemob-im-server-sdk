@@ -20,7 +20,7 @@ class PromoteRoomAdminTest extends AbstractApiTest {
 
     private JsonNode handleAddRoomAdmin(JsonNode jsonNode) {
         ObjectNode data = this.objectMapper.createObjectNode();
-        data.put("result", true);
+        data.put("result", "success");
         data.put("newadmin", "rabbit");
 
         ObjectNode rsp = this.objectMapper.createObjectNode();
