@@ -122,10 +122,14 @@ public class DeleteCmd {
                 .block();
     }
 
-    @Command(name = "room", description = "Delete a room.\n" +
+    @Command(name = "room", description = "Destroy a room.\n" +
             "Messages will be destroyed with the room, while the chat history is reserved.")
-    public void room(@Parameters(description = "the room's id") String roomId) {
-        System.out.println("Not implemented.");
+    public void room(@Parameters(description = "the room id") String roomId) {
+        this.service.room().destroyRoom(roomId)
+                .doOnSuccess(ignored -> System.out.println("done"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
     }
 
     @Command(name = "session", description = "Force user logout, default to logout all devices if missing --device")
