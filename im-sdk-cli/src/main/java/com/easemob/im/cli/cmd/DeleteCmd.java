@@ -112,9 +112,9 @@ public class DeleteCmd {
                 .block();
     }
 
-    @Command(name = "group", description = "Delete a group.\n" +
+    @Command(name = "group", description = "Destroy a group.\n" +
             "Messages will be destroyed with the group, while the chat history is reserved.")
-    public void group(@Parameters(description = "the group's id") String groupId) {
+    public void group(@Parameters(description = "the group id") String groupId) {
         this.service.group().destroyGroup(groupId)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -173,17 +173,17 @@ public class DeleteCmd {
     }
 
     private static class AdminArgGroup {
-        @Option(names = "--group", description = "remove this group admin")
+        @Option(names = "--group", description = "demote a group admin")
         String groupId;
 
-        @Option(names = "--room", description = "remove this room admin")
+        @Option(names = "--room", description = "demote a room admin")
         String roomId;
 
-        @Option(names = "--super", description = "remove this super admin")
+        @Option(names = "--super", description = "demote a super admin")
         String superAdminUsername;
     }
 
-    @Command(name = "admin", description = "Remove a admin")
+    @Command(name = "admin", description = "Demote a admin")
     public void admin(@Parameters(description = "admin username") String username,
                       @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {

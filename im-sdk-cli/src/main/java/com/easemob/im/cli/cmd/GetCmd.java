@@ -98,7 +98,7 @@ public class GetCmd {
     }
 
     @Command(name = "group", description = "Get a group's info or list groups")
-    public void group(@Parameters(arity = "0..1", description = "the group's id, if miss, list groups") String groupId,
+    public void group(@Parameters(arity = "0..1", description = "the group's id, list all groups if missing") String groupId,
                       @Option(names = "--have-user", description = "search groups have this user, not support limit and cursor") String username,
                       @ArgGroup(exclusive = false, heading = "If missing, list all groups\n") LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(groupId)) {
