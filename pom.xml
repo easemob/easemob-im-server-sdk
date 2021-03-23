@@ -365,6 +365,11 @@
             <name>Harry Hao</name>
             <email>harry-hao(at)outlook.com</email>
         </developer>
+        <developer>
+            <id>yubing</id>
+            <name>Yubing</name>
+            <email>yubing.qi@easemob.com</email>
+        </developer>
     </developers>
 
     <scm>
