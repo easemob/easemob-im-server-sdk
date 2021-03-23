@@ -45,6 +45,9 @@ public class CreateCmd {
         @Option(names = {"--join-group"}, description = "block user to join group")
         String joinGroupId;
 
+        @Option(names = {"--join-room"}, description = "block user to join room")
+        String joinRoomId;
+
         @Option(names = {"--login"}, description = "block user to login")
         boolean login;
 
@@ -78,6 +81,13 @@ public class CreateCmd {
         }
         if (StringUtils.hasText(argGroup.joinGroupId)) {
             this.service.block().blockUserJoinGroup(username, argGroup.joinGroupId)
+                    .doOnSuccess(ignored -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        }
+        if (argGroup.joinRoomId != null) {
+            this.service.block().blockUserJoinRoom(username, argGroup.joinRoomId)
                     .doOnSuccess(ignored -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
