@@ -128,7 +128,6 @@ public class RoomIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
         String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
-        // 分页获取有问题
         assertDoesNotThrow(() -> this.service.room().listRoomMembersAll(roomId).blockFirst(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -146,7 +145,6 @@ public class RoomIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
         String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
-        // 分页获取有问题
         assertDoesNotThrow(() -> this.service.room().listRoomMembers(roomId, 1, null).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
@@ -204,5 +202,136 @@ public class RoomIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
     }
 
+    @Test
+    void testRoomPromoteAdmin() {
+        String randomOwnerUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomOwnerUsername;
+
+        String randomMemberUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().promoteRoomAdmin(roomId, randomMemberUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testRoomDemoteAdmin() {
+        String randomOwnerUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomOwnerUsername;
+
+        String randomMemberUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().promoteRoomAdmin(roomId, randomMemberUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().demoteRoomAdmin(roomId, randomMemberUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testRoomSuperAdminsAll() {
+        String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomUsername;
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().promoteRoomSuperAdmin(randomUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().listRoomSuperAdminsAll().blockFirst(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testRoomPromoteSuperAdmin() {
+        String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomUsername;
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().promoteRoomSuperAdmin(randomUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testRoomDemoteSuperAdmin() {
+        String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomUsername;
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().demoteRoomSuperAdmin(randomUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testRoomDestroy() {
+        String randomOwnerUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomOwnerUsername;
+
+        String randomMemberUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testRoomUsersBlockedSendMsg() {
+        String randomOwnerUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomOwnerUsername;
+
+        String randomMemberUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToRoom(randomMemberUsername, roomId ,Duration.ofMillis(6000)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().listUsersBlockedSendMsgToRoom(roomId).blockFirst(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testRoomBlockUserSendMsg() {
+        String randomOwnerUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomOwnerUsername;
+
+        String randomMemberUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToRoom(randomMemberUsername, roomId ,Duration.ofMillis(3000)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testRoomUnblockUserSendMsg() {
+        String randomOwnerUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomOwnerUsername;
+
+        String randomMemberUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToRoom(randomMemberUsername, roomId, Duration.ofMillis(6000)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().unblockUserSendMsgToRoom(randomMemberUsername, roomId).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));
+    }
 
 }
