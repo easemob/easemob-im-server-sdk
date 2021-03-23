@@ -33,6 +33,9 @@ public class DeleteCmd {
         @Option(names = {"--join-group"}, description = "unblock user to join group")
         String joinGroupId;
 
+        @Option(names = {"--join-room"}, description = "unblock user to join room")
+        String joinRoomId;
+
         @Option(names = {"--login"}, description = "unblock user to login")
         boolean login;
     }
@@ -63,6 +66,13 @@ public class DeleteCmd {
         }
         if (StringUtils.hasText(argGroup.joinGroupId)) {
             this.service.block().unblockUserJoinGroup(username, argGroup.joinGroupId)
+                    .doOnSuccess(ignore -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        }
+        if (argGroup.joinRoomId != null) {
+            this.service.block().unblockUserJoinRoom(username, argGroup.joinRoomId)
                     .doOnSuccess(ignore -> System.out.println("done"))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())

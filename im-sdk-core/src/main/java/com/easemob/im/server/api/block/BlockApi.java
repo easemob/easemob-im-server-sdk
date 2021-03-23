@@ -4,6 +4,7 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.block.group.join.BlockUserJoinGroup;
 import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroup;
 import com.easemob.im.server.api.block.login.BlockUserLogin;
+import com.easemob.im.server.api.block.room.join.BlockUserJoinRoom;
 import com.easemob.im.server.api.block.room.msg.block.BlockUserSendMsgToRoom;
 import com.easemob.im.server.api.block.room.msg.list.ListUsersBlockedSendMsgToRoom;
 import com.easemob.im.server.api.block.room.msg.unblock.UnblockUserSendMsgToRoom;
@@ -13,7 +14,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.List;
 
 /**
  * 封禁API，提供封禁相关的功能。
@@ -131,6 +131,38 @@ public class BlockApi {
      */
     public Mono<Void> unblockUserJoinGroup(String username, String groupId) {
         return BlockUserJoinGroup.unblockUser(this.context, username, groupId);
+    }
+
+    /**
+     * 获取阻止进聊天室的用户列表。
+     *
+     * @param roomId 聊天室id
+     * @return 被阻止进入的用户名
+     */
+    public Flux<EMBlock> getUsersBlockedJoinRoom(String roomId) {
+        return BlockUserJoinRoom.getBlockedUsers(this.context, roomId);
+    }
+
+    /**
+     * 阻止进聊天室。
+     *
+     * @param username 被阻止的用户的用户名
+     * @param roomId 聊天室id
+     * @return 成功或错误
+     */
+    public Mono<Void> blockUserJoinRoom(String username, String roomId) {
+        return BlockUserJoinRoom.blockUser(this.context, username, roomId);
+    }
+
+    /**
+     * 解除阻止进聊天室。
+     *
+     * @param username 被阻止的用户的用户名
+     * @param roomId 聊天室id
+     * @return 成功或错误
+     */
+    public Mono<Void> unblockUserJoinRoom(String username, String roomId) {
+        return BlockUserJoinRoom.unblockUser(this.context, username, roomId);
     }
 
     /**

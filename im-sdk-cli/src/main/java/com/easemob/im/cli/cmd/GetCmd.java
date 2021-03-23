@@ -202,6 +202,9 @@ public class GetCmd {
         @Option(names = {"--join-group"}, description = "list users who can not join this group")
         String joinGroupId;
 
+        @Option(names = {"--join-room"}, description = "list users who can not join this room")
+        String joinRoomId;
+
         @Option(names = {"--login"}, description = "list users who can not login")
         boolean login;
     }
@@ -231,6 +234,13 @@ public class GetCmd {
         }
         if (StringUtils.hasText(argGroup.joinGroupId)) {
             this.service.block().getUsersBlockedJoinGroup(argGroup.joinGroupId)
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        }
+        if (argGroup.joinRoomId != null) {
+            this.service.block().getUsersBlockedJoinRoom(argGroup.joinRoomId)
                     .doOnNext(System.out::println)
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
