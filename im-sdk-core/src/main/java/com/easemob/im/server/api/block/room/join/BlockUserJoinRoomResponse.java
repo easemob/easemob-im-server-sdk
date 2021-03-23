@@ -13,7 +13,7 @@ public class BlockUserJoinRoomResponse {
         this.resource = resource;
     }
 
-    public boolean getSuccess() {
+    public boolean isSuccess() {
         return this.resource != null && this.resource.success;
     }
 

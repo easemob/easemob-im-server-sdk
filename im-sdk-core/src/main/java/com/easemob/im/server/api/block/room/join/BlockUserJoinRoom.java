@@ -25,7 +25,7 @@ public class BlockUserJoinRoom {
                 .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
                 .map(buf -> context.getCodec().decode(buf, BlockUserJoinRoomResponse.class))
                 .handle((rsp, sink) -> {
-                    if (!rsp.getSuccess()) {
+                    if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));
                         return;
                     }
@@ -40,7 +40,7 @@ public class BlockUserJoinRoom {
                 .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
                 .map(buf -> context.getCodec().decode(buf, UnblockUserJoinRoomResponse.class))
                 .handle((rsp, sink) -> {
-                    if (!rsp.getSuccess()) {
+                    if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));
                         return;
                     }
