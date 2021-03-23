@@ -6,7 +6,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class BlockUserSendMsgToRoomResponse {
+
+    @JsonProperty("data")
     private List<BlockResult> results;
+
+    @JsonCreator
+    public BlockUserSendMsgToRoomResponse(@JsonProperty("data") List<BlockResult> results) {
+        this.results = results;
+    }
+
+    public boolean getSuccess(String username) {
+        return this.results.stream()
+                .filter(result -> result.getUsername().equals(username))
+                .findFirst()
+                .map(result -> result.isSuccess)
+                .orElse(false);
+    }
 
     public static class BlockResult {
         @JsonProperty("result")
@@ -31,22 +46,8 @@ public class BlockUserSendMsgToRoomResponse {
             return this.username;
         }
 
-        public boolean isSuccess() {
+        public boolean getSuccess() {
             return this.isSuccess;
         }
     }
-
-    @JsonCreator
-    public BlockUserSendMsgToRoomResponse(@JsonProperty("data") List<BlockResult> results) {
-        this.results = results;
-    }
-
-    public boolean isSuccess(String username) {
-        return this.results.stream()
-                .filter(result -> result.getUsername().equals(username))
-                .findFirst()
-                .map(result -> result.isSuccess)
-                .orElse(false);
-    }
-
 }
