@@ -20,14 +20,14 @@ public class ListRoomSuperAdmins {
     }
 
     public static Flux<String> all(Context context, int pagesize) {
-        return Flux.create(sink -> {
-            int pagenum = 1;
-            List<String> admins;
-            do {
-                admins = next(context, pagesize, pagenum++).block().getAdmins();
-                admins.forEach(sink::next);
-            } while (admins.size() > 0);
-            sink.complete();
-        });
+        return Flux.<List<String>, Integer> generate(() -> 1, (pagenum, sink) -> {
+            List<String> admins = next(context, pagesize, pagenum).doOnError(sink::error).block().getAdmins();
+            if (admins.isEmpty()) {
+                sink.complete();
+            } else {
+                sink.next(admins);
+            }
+            return pagenum + 1;
+        }).flatMap(Flux::fromIterable);
     }
 }
