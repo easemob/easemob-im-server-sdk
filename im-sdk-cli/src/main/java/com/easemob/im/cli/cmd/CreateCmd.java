@@ -211,17 +211,19 @@ public class CreateCmd {
     }
 
     private static class AdminArgGroup {
-        @Option(names = "--group", description = "add a group admin")
+        @Option(names = "--group", description = "promote the specified user to group admin, group admin is some user who can block user from joining or " +
+                "sending messages in this group")
         String groupId;
 
-        @Option(names = "--room", description = "add a room admin")
+        @Option(names = "--room", description = "promote the specified user to room admin, room admin is some user who can block user from joining or " +
+                "sending message in this room")
         String roomId;
 
-        @Option(names = "--super", description = "add a super admin, who is the only person that can create a room")
+        @Option(names = "--super", description = "promote the specified user to super admin, super admin is some user who can create room")
         boolean superAdmin;
     }
 
-    @Command(name = "admin", description = "Add admin")
+    @Command(name = "admin", description = "Promote a admin.")
     public void admin(@Parameters(description = "admin username") String username,
                       @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {
