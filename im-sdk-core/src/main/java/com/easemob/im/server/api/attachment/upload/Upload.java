@@ -2,6 +2,7 @@ package com.easemob.im.server.api.attachment.upload;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMUnknownException;
+import com.easemob.im.server.model.EMAttachment;
 import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
@@ -14,9 +15,9 @@ public class Upload {
         this.context = context;
     }
 
-    public Mono<String> fromLocalFile(Path path, boolean restrictAccess) {
+    public Mono<EMAttachment> fromLocalFile(Path path, boolean restrictAccess) {
         return this.context.getHttpClient()
-                .headers(headers -> headers.add("restrict-access", false))
+                .headers(headers -> headers.add("restrict-access", restrictAccess))
                 //.headers(headers -> headers.remove("Authorization"))
                 .post()
                 .uri("/chatfiles")
@@ -31,7 +32,9 @@ public class Upload {
                         sink.error(new EMUnknownException("unknown"));
                         return;
                     }
-                    sink.next(rsp.getFiles().get(0).getId());
+                    String id = rsp.getFiles().get(0).getId();
+                    String secret = rsp.getFiles().get(0).getSecret();
+                    sink.next(new EMAttachment(id, secret));
                 });
     }
 

@@ -42,7 +42,7 @@ public class SendMsgToUser {
     public Mono<Void> unblockUser(String fromUser, String toUser) {
         return this.context.getHttpClient()
             .delete()
-            .uri(String.format("/users/%s/blocks/users/%s", fromUser, toUser))
+            .uri(String.format("/users/%s/blocks/users/%s", toUser, fromUser))
             .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
     }
 
