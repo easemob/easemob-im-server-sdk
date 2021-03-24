@@ -1,6 +1,8 @@
 package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.exception.EMNotFoundException;
+import com.easemob.im.server.model.EMBlock;
 import com.easemob.im.server.model.EMUser;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +25,7 @@ class UserIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().get(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+        assertThrows(EMNotFoundException.class, () -> this.service.user().get(randomUsername).block(Duration.ofSeconds(3)));
     }
 
     @Test
@@ -57,7 +60,10 @@ class UserIT extends AbstractIT {
         String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().listAllUsers().blockFirst(Duration.ofSeconds(10)));
+        String username = assertDoesNotThrow(() -> this.service.user().listAllUsers().blockLast(Duration.ofSeconds(10)));
+        if (!username.equals(randomUsername)) {
+            throw new RuntimeException(String.format("%s is not found in the user list", randomUsername));
+        }
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
     }
 
@@ -71,6 +77,10 @@ class UserIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomContactUsername, randomContactPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomContactUsername).block(Duration.ofSeconds(3)));
+        String username = assertDoesNotThrow(() -> this.service.contact().list(randomUsername).blockLast(Duration.ofSeconds(3)));
+        if (!username.equals(randomContactUsername)) {
+            throw new RuntimeException(String.format("%s did not found %s in his contact list", randomUsername, randomContactUsername));
+        }
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomContactUsername).block(Duration.ofSeconds(3)));
     }
@@ -87,7 +97,10 @@ class UserIT extends AbstractIT {
 
         assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomContactUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.contact().remove(randomUsername, randomContactUsername).block(Duration.ofSeconds(3)));
-
+        String username = assertDoesNotThrow(() -> this.service.contact().list(randomUsername).blockLast(Duration.ofSeconds(3)));
+        if (username != null) {
+            throw new RuntimeException(String.format("%s contact remove fail", username));
+        }
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomContactUsername).block(Duration.ofSeconds(3)));
     }
@@ -98,18 +111,20 @@ class UserIT extends AbstractIT {
         String randomPassword = randomUsername;
 
         String randomUsernameCodeJack = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        String randomUsernameCodeTom = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeTom, randomPassword).block(Duration.ofSeconds(3)));
 
         assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomUsernameCodeJack).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomUsernameCodeTom).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.contact().list(randomUsername)).blockFirst(Duration.ofSeconds(3));
+        String username = assertDoesNotThrow(() -> this.service.contact().list(randomUsername)).blockFirst(Duration.ofSeconds(3));
+        if (username == null) {
+            throw new RuntimeException(String.format("%s contact list is null", randomUsername));
+        }
 
+        if (!username.equals(randomUsernameCodeJack)) {
+            throw new RuntimeException(String.format("%s did not found %s in his contact list", randomUsername, randomUsernameCodeJack));
+        }
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeTom).block(Duration.ofSeconds(3)));
     }
 
     @Test
@@ -118,18 +133,16 @@ class UserIT extends AbstractIT {
         String randomPassword = randomUsername;
 
         String randomUsernameCodeJack = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        String randomUsernameCodeTom = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeTom, randomPassword).block(Duration.ofSeconds(3)));
 
         assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToUser(randomUsernameCodeJack, randomUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToUser(randomUsernameCodeTom, randomUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.block().getUsersBlockedFromSendMsgToUser(randomUsername)).blockFirst(Duration.ofSeconds(3));
-
+        EMBlock block = assertDoesNotThrow(() -> this.service.block().getUsersBlockedFromSendMsgToUser(randomUsername)).blockFirst(Duration.ofSeconds(3));
+        if (!block.getUsername().equals(randomUsernameCodeJack)) {
+            throw new RuntimeException(String.format("%s did not found %s in his block list", randomUsername, randomUsernameCodeJack));
+        }
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeTom).block(Duration.ofSeconds(3)));
     }
 
     @Test
@@ -140,7 +153,18 @@ class UserIT extends AbstractIT {
         String randomUsernameCodeJack = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword).block(Duration.ofSeconds(3)));
+
+        assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomUsernameCodeJack).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToUser(randomUsernameCodeJack, randomUsername).block(Duration.ofSeconds(3)));
+        EMBlock block = assertDoesNotThrow(() -> this.service.block().getUsersBlockedFromSendMsgToUser(randomUsername).blockLast(Duration.ofSeconds(3)));
+        String username = assertDoesNotThrow(() -> this.service.contact().list(randomUsername).blockLast(Duration.ofSeconds(3)));
+        if (!block.getUsername().equals(randomUsernameCodeJack)) {
+            throw new RuntimeException(String.format("%s did not found %s in his block list", randomUsername, randomUsernameCodeJack));
+        }
+
+        if (username == null) {
+            throw new RuntimeException(String.format("%s does not exist in %s contact list", randomUsernameCodeJack, randomUsername));
+        }
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack).block(Duration.ofSeconds(3)));
     }
@@ -153,8 +177,17 @@ class UserIT extends AbstractIT {
         String randomUsernameCodeJack = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomUsernameCodeJack).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToUser(randomUsernameCodeJack, randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.block().unblockUserSendMsgToUser(randomUsernameCodeJack, randomUsername).block(Duration.ofSeconds(3)));
+        EMBlock block = assertDoesNotThrow(() -> this.service.block().getUsersBlockedFromSendMsgToUser(randomUsername).blockLast(Duration.ofSeconds(3)));
+        String username = assertDoesNotThrow(() -> this.service.contact().list(randomUsername).blockLast(Duration.ofSeconds(3)));
+        if (block != null) {
+            throw new RuntimeException(String.format("%s unblock %s fail", randomUsername, randomUsernameCodeJack));
+        }
+        if (!username.equals(randomUsernameCodeJack)) {
+            throw new RuntimeException(String.format("%s does not exist in %s contact list", randomUsernameCodeJack, randomUsername));
+        }
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack).block(Duration.ofSeconds(3)));
     }

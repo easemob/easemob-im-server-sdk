@@ -3,6 +3,7 @@ package com.easemob.im.server.api.attachment;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.attachment.download.Download;
 import com.easemob.im.server.api.attachment.upload.Upload;
+import com.easemob.im.server.model.EMAttachment;
 import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
@@ -32,7 +33,7 @@ public class AttachmentApi {
      * @return 上传完成后返回附件的id
      * @see <a href="http://docs-im.easemob.com/im/server/basics/fileoperation#%E4%B8%8A%E4%BC%A0%E8%AF%AD%E9%9F%B3%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6">上传附件</a>
      */
-    public Mono<String> uploadFile(Path path) {
+    public Mono<EMAttachment> uploadFile(Path path) {
         return this.upload.fromLocalFile(path, false);
     }
 

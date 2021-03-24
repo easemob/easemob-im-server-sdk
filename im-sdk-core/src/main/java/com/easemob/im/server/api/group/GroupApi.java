@@ -282,7 +282,7 @@ public class GroupApi {
      * }</pre>
 
      * @param groupId 群id
-     * @param limit 返回多少群id
+     * @param limit 返回多少群成员id
      * @param cursor 开始位置
      * @return 获取群成员响应或错误
      * @see com.easemob.im.server.api.group.member.list.GroupMemberListResponse

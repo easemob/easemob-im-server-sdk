@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.room;
 
 import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.model.EMBlock;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -310,7 +311,13 @@ public class RoomIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
         String roomId = assertDoesNotThrow(() -> this.service.room().createRoom("chat room", "room description", randomOwnerUsername, members, 200).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToRoom(randomMemberUsername, roomId ,Duration.ofMillis(3000)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.block().blockUserSendMsgToRoom(randomMemberUsername, roomId ,Duration.ofMillis(30000)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().removeRoomMember(roomId ,randomMemberUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.room().addRoomMember(roomId ,randomMemberUsername).block(Duration.ofSeconds(3)));
+        EMBlock block = assertDoesNotThrow(() -> this.service.block().listUsersBlockedSendMsgToRoom(roomId).blockFirst(Duration.ofSeconds(3)));
+        if (!block.getUsername().equals(randomMemberUsername)) {
+            throw new RuntimeException(String.format("%s does not exist in %s room mute list", randomMemberUsername, roomId));
+        }
         assertDoesNotThrow(() -> this.service.room().destroyRoom(roomId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername).block(Duration.ofSeconds(3)));

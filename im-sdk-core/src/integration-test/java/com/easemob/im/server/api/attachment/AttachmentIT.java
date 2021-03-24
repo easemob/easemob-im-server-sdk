@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.attachment;
 
 import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.model.EMAttachment;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ClassLoaderUtils;
 
@@ -26,10 +27,10 @@ public class AttachmentIT extends AbstractIT {
     @Test
     void testAttachmentDownload() {
         Path uploadPath = FileSystems.getDefault().getPath(ClassLoaderUtils.getDefaultClassLoader().getResource("upload/image.png").getPath());
-        String uuid = assertDoesNotThrow(() -> this.service.attachment().uploadFile(uploadPath).block(Duration.ofSeconds(3)));
+        EMAttachment attachment = assertDoesNotThrow(() -> this.service.attachment().uploadFile(uploadPath).block(Duration.ofSeconds(3)));
 
         Path downloadPath = FileSystems.getDefault().getPath(ClassLoaderUtils.getDefaultClassLoader().getResource("download/attachment/").getPath());
-        assertDoesNotThrow(() -> this.service.attachment().downloadFile(uuid, downloadPath, "file.png").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.attachment().downloadFile(attachment.getId(), downloadPath, "file.png").block(Duration.ofSeconds(3)));
     }
 
 }
