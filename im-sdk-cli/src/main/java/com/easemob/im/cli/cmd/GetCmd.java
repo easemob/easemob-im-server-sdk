@@ -40,27 +40,6 @@ public class GetCmd {
                 .block();
     }
 
-
-    @Command(name = "history", description = "Get the history file uri by time")
-    public void history(@Parameters(description = "The ISO8601 date time. e.g. 2020-12-12T13:00") String datetime,
-                        @Option(names = {"--download"}, description = "Download the file if specified. The file is compressed, use `zless` to read it.") boolean download) {
-
-        ZonedDateTime localDatetime = ZonedDateTime.parse(datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()));
-        Instant instant = localDatetime.toInstant();
-
-        if (!download) {
-            this.service.message().getHistoryAsUri(instant)
-                    .doOnNext(uri -> System.out.println(String.format("uri: %s", uri)))
-                    .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
-                    .block();
-        } else {
-            this.service.message().getHistoryAsLocalFile(instant, this.historyDir, datetime.replaceAll("[-T:]", "_") + ".gz")
-                    .doOnNext(uri -> System.out.println(String.format("uri: %s", uri)))
-                    .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
-                    .block();
-        }
-    }
-
     @Command(name = "user", description = "Get a user's info or list users.")
     public void user(@Parameters(arity = "0..1", description = "The username, if miss, list users") String username,
                      @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
@@ -299,29 +278,77 @@ public class GetCmd {
         }
     }
 
-    private static class MessageArgGroup {
-        @Option(names = "--count", description = "count message")
+    private static class MessageHistoryArgGroup {
+
+        @Option(names = "--history", description = "get the history file uri by time", required = true)
+        private boolean history;
+
+        @Option(names = "--download", description = "download the file if specified. The file is compressed, use `zless` to read it")
+        private boolean download;
+
+        @Parameters(description = "the ISO8601 date time. e.g. 2020-12-12T13:00")
+        String datetime;
+    }
+
+    private static class MessageCountArgGroup {
+
+        @Option(names = "--count", description = "count messages", required = true)
         boolean count;
 
-        @Option(names = "--status", description = "get one message status")
-        String messageId;
+        @Option(names = "--missed", description = "count missed messages.")
+        boolean missed;
+    }
+
+    private static class MessageArgGroup {
+
+        @ArgGroup(exclusive = false, heading = "Message history args.\n") MessageHistoryArgGroup history;
+
+        @ArgGroup(exclusive = false, heading = "Message count args.\n") MessageCountArgGroup count;
+
+        @Option(names = "--status", description = "get specific message status")
+        String statusMessageId;
     }
 
     @Command(name = "message", description = "List or count messages.")
-    public void message(@ArgGroup(multiplicity = "1") MessageArgGroup argGroup,
-                        @Option(names = "--missed", description = "list this user's missed messages") String username) {
-        if (argGroup.count) {
-            if (StringUtils.hasText(username)) {
-                this.service.message().countMissedMessages(username)
-                        .doOnNext(msg -> {
-                            System.out.printf("%s : %s \n", msg.getQueueName(), msg.getMessageCount());
-                        })
-                        .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                        .onErrorResume(EMException.class, ignore -> Mono.empty())
-                        .blockLast();
+    public void message(@ArgGroup MessageArgGroup argGroup,
+                        @Option(names = "--user", description = "the message receiver") String username) {
+        if (argGroup.history != null) {
+            ZonedDateTime localDatetime = ZonedDateTime.parse(argGroup.history.datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()));
+            Instant instant = localDatetime.toInstant();
+
+            if (!argGroup.history.download) {
+                this.service.message().getHistoryAsUri(instant)
+                        .doOnNext(uri -> System.out.println(String.format("uri: %s", uri)))
+                        .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
+                        .block();
+            } else {
+                this.service.message().getHistoryAsLocalFile(instant, this.historyDir, argGroup.history.datetime.replaceAll("[-T:]", "_") + ".gz")
+                        .doOnNext(uri -> System.out.println(String.format("uri: %s", uri)))
+                        .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
+                        .block();
             }
-        } else if (StringUtils.hasText(argGroup.messageId)) {
-            System.out.println("Not implemented.");
+        } else if (argGroup.count != null) {
+            if (username == null || !argGroup.count.missed) {
+                System.out.println("Must specify --user and add --missed for now.");
+                return;
+            }
+            this.service.message().countMissedMessages(username)
+                    .doOnNext(msg -> {
+                        System.out.printf("queueName: %s | messageCount: %s \n", msg.getQueueName(), msg.getMessageCount());
+                    })
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .blockLast();
+        } else if (argGroup.statusMessageId != null) {
+            if (username == null) {
+                System.out.println("Must specify --user");
+                return;
+            }
+            this.service.message().isMessageDeliveredToUser(argGroup.statusMessageId, username)
+                    .doOnSuccess(isDelivered -> System.out.println(isDelivered ? "Delivered." : "UnDelivered."))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
         }
     }
 

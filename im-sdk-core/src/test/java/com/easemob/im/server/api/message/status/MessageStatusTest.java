@@ -11,13 +11,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageStatusTest extends AbstractApiTest {
 
+    private MessageStatus messageStatus;
+
     public MessageStatusTest() {
         this.server.addHandler("GET /easemob/demo/users/alice/offline_msg_status/123456789", this::handleMessageStatusRequest);
+        this.messageStatus = new MessageStatus(this.context);
     }
 
     @Test
     public void testMessageStatus() {
-        boolean messageIsDelivered = MessageStatus.isMessageDeliveredToUser(this.context, "123456789", "alice").block(Duration.ofSeconds(3));
+        boolean messageIsDelivered = this.messageStatus.isMessageDeliveredToUser("123456789", "alice").block(Duration.ofSeconds(3));
         assertEquals(true, messageIsDelivered);
     }
 
