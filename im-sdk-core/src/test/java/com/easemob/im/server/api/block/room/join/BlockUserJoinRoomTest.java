@@ -15,11 +15,15 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockUserJoinRoomTest extends AbstractApiTest {
+    
+    private BlockUserJoinRoom blockUserJoinRoom;
+    
     BlockUserJoinRoomTest() {
         super();
         this.server.addHandler("GET /easemob/demo/chatrooms/1/blocks/users", this::handleGetBlockedUserRequest);
         this.server.addHandler("POST /easemob/demo/chatrooms/1/blocks/users/alice", req -> handleBlockUserRequest(req, "alice"));
         this.server.addHandler("DELETE /easemob/demo/chatrooms/1/blocks/users/alice", req -> handleUnblockUserRequest(req, "alice"));
+        this.blockUserJoinRoom = new BlockUserJoinRoom(this.context);
     }
 
     private JsonNode handleGetBlockedUserRequest(JsonNode jsonNode) {
@@ -56,21 +60,21 @@ class BlockUserJoinRoomTest extends AbstractApiTest {
     @Test
     public void testBlockUserJoinRoom() {
         assertDoesNotThrow(() -> {
-            BlockUserJoinRoom.blockUser(this.context,"alice", "1").block(Duration.ofSeconds(3));
+            this.blockUserJoinRoom.blockUser("alice", "1").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testUnBlockUserJoinRoom() {
         assertDoesNotThrow(() -> {
-            BlockUserJoinRoom.unblockUser(this.context,"alice", "1").block(Duration.ofSeconds(3));
+            this.blockUserJoinRoom.unblockUser("alice", "1").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testGetUsersBlockedJoinRoom() {
         assertDoesNotThrow(() -> {
-            List<EMBlock> blocks = BlockUserJoinRoom.getBlockedUsers(this.context,"1")
+            List<EMBlock> blocks = this.blockUserJoinRoom.getBlockedUsers("1")
                     .collect(Collectors.toList())
                     .block(Duration.ofSeconds(3));
 

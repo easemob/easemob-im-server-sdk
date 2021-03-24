@@ -10,8 +10,12 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class DeleteRoomTest extends AbstractApiTest {
+
+    private DeleteRoom deleteRoom;
+
     DeleteRoomTest() {
         this.server.addHandler("DELETE /easemob/demo/chatrooms/r1", this::handleDeleteRoomRequest);
+        this.deleteRoom = new DeleteRoom(this.context);
     }
 
     private JsonNode handleDeleteRoomRequest(JsonNode jsonNode) {
@@ -27,6 +31,6 @@ class DeleteRoomTest extends AbstractApiTest {
 
     @Test
     void testDeleteRoom() {
-        assertDoesNotThrow(() -> DeleteRoom.byId(this.context, "r1").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.deleteRoom.byId( "r1").block(Duration.ofSeconds(3)));
     }
 }

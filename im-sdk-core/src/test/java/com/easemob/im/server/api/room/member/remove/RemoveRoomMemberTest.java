@@ -11,8 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RemoveRoomMemberTest extends AbstractApiTest {
 
+    private RemoveRoomMember removeRoomMember;
+
     RemoveRoomMemberTest() {
         this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/users/alice", this::handleRemoveMemberRequest);
+        removeRoomMember = new RemoveRoomMember(this.context);
     }
 
     private JsonNode handleRemoveMemberRequest(JsonNode jsonNode) {
@@ -25,6 +28,6 @@ class RemoveRoomMemberTest extends AbstractApiTest {
 
     @Test
     void testRemoveRoomMember() {
-        assertDoesNotThrow(() -> RemoveRoomMember.single(this.context, "r1", "alice").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.removeRoomMember.single("r1", "alice").block(Duration.ofSeconds(3)));
     }
 }

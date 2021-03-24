@@ -16,25 +16,29 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ContactUserTest extends AbstractApiTest {
+    
+    private ContactUser contactUser;
+    
     public ContactUserTest() {
         this.server.addHandler("POST /easemob/demo/users/alice/contacts/users/bob", this::handleContactUserAdd);
         this.server.addHandler("DELETE /easemob/demo/users/alice/contacts/users/bob", this::handleContactUserRemove);
         this.server.addHandler("GET /easemob/demo/users/alice/contacts/users", this::handleContactUserList);
+        this.contactUser = new ContactUser(this.context);
     }
 
     @Test
     public void testAddContact() {
-        assertDoesNotThrow(() -> ContactUser.add(this.context, "alice", "bob").block());
+        assertDoesNotThrow(() -> this.contactUser.add("alice", "bob").block());
     }
 
     @Test
     public void testRemoveContact() {
-        assertDoesNotThrow(() -> ContactUser.remove(this.context, "alice", "bob"));
+        assertDoesNotThrow(() -> this.contactUser.remove("alice", "bob"));
     }
 
     @Test
     public void testListContacts() {
-        Set<String> contacts = ContactUser.list(this.context, "alice").collect(Collectors.toSet())
+        Set<String> contacts = this.contactUser.list("alice").collect(Collectors.toSet())
                 .block(Duration.ofSeconds(3));
         assertEquals(3, contacts.size());
         assertTrue(contacts.contains("queen"));

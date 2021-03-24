@@ -6,12 +6,18 @@ import reactor.core.publisher.Mono;
 
 public class DeleteRoom {
 
-    public static Mono<Void> byId(Context context, String roomId) {
-        return context.getHttpClient()
+    private Context context;
+
+    public DeleteRoom(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Void> byId(String roomId) {
+        return this.context.getHttpClient()
                 .delete()
                 .uri(String.format("/chatrooms/%s", roomId))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, DeleteRoomResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, DeleteRoomResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess()) {
                         sink.error(new EMUnknownException("unknown"));

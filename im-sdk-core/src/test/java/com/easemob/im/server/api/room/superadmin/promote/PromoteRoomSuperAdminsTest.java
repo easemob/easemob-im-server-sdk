@@ -10,8 +10,12 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class PromoteRoomSuperAdminsTest extends AbstractApiTest {
+
+    private PromoteRoomSuperAdmin promoteRoomSuperAdmin;
+
     PromoteRoomSuperAdminsTest() {
         this.server.addHandler("POST /easemob/demo/chatrooms/super_admin", this::handleAddRoomSuperAdmin);
+        this.promoteRoomSuperAdmin = new PromoteRoomSuperAdmin(this.context);
     }
 
     private JsonNode handleAddRoomSuperAdmin(JsonNode jsonNode) {
@@ -27,6 +31,6 @@ class PromoteRoomSuperAdminsTest extends AbstractApiTest {
 
     @Test
     void testPromoteRoomSuperAdmin() {
-        assertDoesNotThrow(() -> PromoteRoomSuperAdmin.single(this.context, "rabbit").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.promoteRoomSuperAdmin.single("rabbit").block(Duration.ofSeconds(3)));
     }
 }

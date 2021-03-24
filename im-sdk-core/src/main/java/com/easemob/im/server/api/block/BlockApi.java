@@ -28,9 +28,33 @@ import java.time.Duration;
 public class BlockApi {
 
     private Context context;
+    
+    private SendMsgToUser sendMsgToUser;
+    
+    private BlockUserLogin blockUserLogin;
+    
+    private BlockUserJoinGroup blockUserJoinGroup;
+    
+    private BlockUserJoinRoom blockUserJoinRoom;
+    
+    private BlockUserSendMsgToGroup blockUserSendMsgToGroup;
+    
+    private UnblockUserSendMsgToRoom unblockUserSendMsgToRoom;
+
+    private BlockUserSendMsgToRoom blockUserSendMsgToRoom;
+
+    private ListUsersBlockedSendMsgToRoom listUsersBlockedSendMsgToRoom;
 
     public BlockApi(Context context) {
         this.context = context;
+        this.sendMsgToUser = new SendMsgToUser(context);
+        this.blockUserLogin = new BlockUserLogin(context);
+        this.blockUserJoinGroup = new BlockUserJoinGroup(context);
+        this.blockUserJoinRoom = new BlockUserJoinRoom(context);
+        this.blockUserSendMsgToGroup = new BlockUserSendMsgToGroup(context);
+        this.unblockUserSendMsgToRoom = new UnblockUserSendMsgToRoom(context);
+        this.blockUserSendMsgToRoom = new BlockUserSendMsgToRoom(context);
+        this.listUsersBlockedSendMsgToRoom = new ListUsersBlockedSendMsgToRoom(context);
     }
 
     /**
@@ -41,7 +65,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E9%BB%91%E5%90%8D%E5%8D%95">获取用户禁言列表</a>
      */
     public Flux<EMBlock> getUsersBlockedFromSendMsgToUser(String username) {
-        return SendMsgToUser.getUsersBlocked(this.context, username);
+        return this.sendMsgToUser.getUsersBlocked(username);
     }
 
     /**
@@ -61,7 +85,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%B7%BB%E5%8A%A0%E9%BB%91%E5%90%8D%E5%8D%95">添加用户禁言</a>
      */
     public Mono<Void> blockUserSendMsgToUser(String fromUser, String toUser) {
-        return SendMsgToUser.blockUser(this.context, fromUser, toUser);
+        return this.sendMsgToUser.blockUser(fromUser, toUser);
     }
 
     /**
@@ -73,7 +97,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E7%A7%BB%E9%99%A4%E9%BB%91%E5%90%8D%E5%8D%95">解除用户禁言</a>
      */
     public Mono<Void> unblockUserSendMsgToUser(String fromUser, String toUser) {
-        return SendMsgToUser.unblockUser(this.context, fromUser, toUser);
+        return this.sendMsgToUser.unblockUser(fromUser, toUser);
     }
 
     /**
@@ -84,7 +108,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E7%94%A8%E6%88%B7%E8%B4%A6%E5%8F%B7%E7%A6%81%E7%94%A8">用户账号禁用</a>
      */
     public Mono<Void> blockUserLogin(String username) {
-        return BlockUserLogin.blockUser(this.context, username);
+        return this.blockUserLogin.blockUser(username);
     }
 
     /**
@@ -95,7 +119,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#">用户账号解禁</a>
      */
     public Mono<Void> unblockUserLogin(String username) {
-        return BlockUserLogin.unblockUser(this.context, username);
+        return this.blockUserLogin.unblockUser(username);
     }
 
     /**
@@ -106,7 +130,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%9F%A5%E8%AF%A2%E7%BE%A4%E7%BB%84%E9%BB%91%E5%90%8D%E5%8D%95">获取阻止进群列表</a>
      */
     public Flux<EMBlock> getUsersBlockedJoinGroup(String groupId) {
-        return BlockUserJoinGroup.getBlockedUsers(this.context, groupId);
+        return this.blockUserJoinGroup.getBlockedUsers(groupId);
     }
 
     /**
@@ -118,7 +142,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7%E8%87%B3%E7%BE%A4%E7%BB%84%E9%BB%91%E5%90%8D%E5%8D%95">阻止进群</a>
      */
     public Mono<Void> blockUserJoinGroup(String username, String groupId) {
-        return BlockUserJoinGroup.blockUser(this.context, username, groupId);
+        return this.blockUserJoinGroup.blockUser(username, groupId);
     }
 
     /**
@@ -130,7 +154,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E4%BB%8E%E7%BE%A4%E7%BB%84%E9%BB%91%E5%90%8D%E5%8D%95%E7%A7%BB%E9%99%A4%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7"></a>
      */
     public Mono<Void> unblockUserJoinGroup(String username, String groupId) {
-        return BlockUserJoinGroup.unblockUser(this.context, username, groupId);
+        return this.blockUserJoinGroup.unblockUser(username, groupId);
     }
 
     /**
@@ -140,7 +164,7 @@ public class BlockApi {
      * @return 被阻止进入的用户名
      */
     public Flux<EMBlock> getUsersBlockedJoinRoom(String roomId) {
-        return BlockUserJoinRoom.getBlockedUsers(this.context, roomId);
+        return this.blockUserJoinRoom.getBlockedUsers(roomId);
     }
 
     /**
@@ -151,7 +175,7 @@ public class BlockApi {
      * @return 成功或错误
      */
     public Mono<Void> blockUserJoinRoom(String username, String roomId) {
-        return BlockUserJoinRoom.blockUser(this.context, username, roomId);
+        return this.blockUserJoinRoom.blockUser(username, roomId);
     }
 
     /**
@@ -162,7 +186,7 @@ public class BlockApi {
      * @return 成功或错误
      */
     public Mono<Void> unblockUserJoinRoom(String username, String roomId) {
-        return BlockUserJoinRoom.unblockUser(this.context, username, roomId);
+        return this.blockUserJoinRoom.unblockUser(username, roomId);
     }
 
     /**
@@ -173,7 +197,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%A6%81%E8%A8%80%E5%88%97%E8%A1%A8">获取禁言列表</a>
      */
     public Flux<EMBlock> getUsersBlockedSendMsgToGroup(String groupId) {
-        return BlockUserSendMsgToGroup.getBlockedUsers(this.context, groupId);
+        return this.blockUserSendMsgToGroup.getBlockedUsers(groupId);
     }
 
     /**
@@ -186,7 +210,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80">添加禁言</a>
      */
     public Mono<Void> blockUserSendMsgToGroup(String username, String groupId, Duration duration) {
-        return BlockUserSendMsgToGroup.blockUser(this.context, username, groupId, duration);
+        return this.blockUserSendMsgToGroup.blockUser(username, groupId, duration);
     }
 
     /**
@@ -198,7 +222,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E7%A6%81%E8%A8%80">移除禁言</a>
      */
     public Mono<Void> unblockUserSendMsgToGroup(String username, String groupId) {
-        return BlockUserSendMsgToGroup.unblockUser(this.context, username, groupId);
+        return this.blockUserSendMsgToGroup.unblockUser(username, groupId);
     }
 
     /**
@@ -209,7 +233,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E7%A6%81%E8%A8%80%E5%88%97%E8%A1%A8">获取禁言列表</a>
      */
     public Flux<EMBlock> listUsersBlockedSendMsgToRoom(String roomId) {
-        return ListUsersBlockedSendMsgToRoom.all(this.context, roomId);
+        return this.listUsersBlockedSendMsgToRoom.all(roomId);
     }
 
     /**
@@ -222,7 +246,7 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80">添加禁言</a>
      */
     public Mono<Void> blockUserSendMsgToRoom(String username, String roomId, Duration duration) {
-        return BlockUserSendMsgToRoom.single(this.context, username, roomId, duration);
+        return this.blockUserSendMsgToRoom.single(username, roomId, duration);
     }
 
     /**
@@ -234,6 +258,6 @@ public class BlockApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E7%A6%81%E8%A8%80">移除禁言</a>
      */
     public Mono<Void> unblockUserSendMsgToRoom(String username, String roomId) {
-        return UnblockUserSendMsgToRoom.single(this.context, username, roomId);
+        return this.unblockUserSendMsgToRoom.single(username, roomId);
     }
 }

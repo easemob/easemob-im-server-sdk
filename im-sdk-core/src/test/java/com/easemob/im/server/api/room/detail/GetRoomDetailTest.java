@@ -13,8 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GetRoomDetailTest extends AbstractApiTest {
 
+    private GetRoomDetail getRoomDetail;
+
     GetRoomDetailTest() {
         this.server.addHandler("GET /easemob/demo/chatrooms/r1", this::handleGetRoomDetailRequest);
+        this.getRoomDetail = new GetRoomDetail(this.context);
     }
 
     private JsonNode handleGetRoomDetailRequest(JsonNode jsonNode) {
@@ -35,7 +38,7 @@ class GetRoomDetailTest extends AbstractApiTest {
 
     @Test
     void testGetRoomDetail() {
-        EMRoom r1 = GetRoomDetail.byId(this.context, "r1").block(Duration.ofSeconds(3));
+        EMRoom r1 = this.getRoomDetail.byId("r1").block(Duration.ofSeconds(3));
         assertEquals("r1", r1.id());
         assertEquals("room1", r1.name());
         assertEquals("The first room.", r1.description());

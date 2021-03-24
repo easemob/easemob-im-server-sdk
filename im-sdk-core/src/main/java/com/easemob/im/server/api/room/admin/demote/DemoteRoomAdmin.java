@@ -6,12 +6,18 @@ import reactor.core.publisher.Mono;
 
 public class DemoteRoomAdmin {
 
-    public static Mono<Void> single(Context context, String roomId, String username) {
-        return context.getHttpClient()
+    private Context context;
+
+    public DemoteRoomAdmin(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Void> single(String roomId, String username) {
+        return this.context.getHttpClient()
                 .delete()
                 .uri(String.format("/chatrooms/%s/admin/%s", roomId, username))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, DemoteRoomAdminResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, DemoteRoomAdminResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));

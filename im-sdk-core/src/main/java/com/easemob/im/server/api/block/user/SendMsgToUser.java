@@ -11,36 +11,40 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SendMsgToUser {
+    private Context context;
 
+    public SendMsgToUser(Context context) {
+        this.context = context;
+    }
 
-    public static Flux<EMBlock> getUsersBlocked(Context context, String username) {
-        return context.getHttpClient()
+    public Flux<EMBlock> getUsersBlocked(String username) {
+        return this.context.getHttpClient()
                 .get()
                 .uri(String.format("/users/%s/blocks/users", username))
-                .responseSingle((httpRsp, buf) -> context.getErrorMapper().apply(httpRsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, GetUsersBlockedSendMsgToUserResponse.class))
+                .responseSingle((httpRsp, buf) -> this.context.getErrorMapper().apply(httpRsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, GetUsersBlockedSendMsgToUserResponse.class))
                 .flatMapIterable(GetUsersBlockedSendMsgToUserResponse::getUsernames)
                 .map(blockedUsername -> new EMBlock(blockedUsername, null));
     }
 
-    public static Mono<Void> blockUser(Context context, String fromUser, String toUser) {
+    public Mono<Void> blockUser(String fromUser, String toUser) {
         if (fromUser.equals(toUser)) {
             return Mono.error(new EMInvalidArgumentException("user could not block himself"));
         }
-        return context.getHttpClient()
+        return this.context.getHttpClient()
                 .post()
                 .uri(String.format("/users/%s/blocks/users", toUser))
-                .send(Mono.create(sink -> sink.success(context.getCodec().encode(new BlockUsersSendMsgToUserRequest(Arrays.asList(fromUser))))))
+                .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new BlockUsersSendMsgToUserRequest(Arrays.asList(fromUser))))))
                 .response()
-                .flatMap(rsp -> context.getErrorMapper().apply(rsp).then());
+                .flatMap(rsp -> this.context.getErrorMapper().apply(rsp).then());
     }
 
-    public static Mono<Void> unblockUser(Context context, String fromUser, String toUser) {
-        return context.getHttpClient()
+    public Mono<Void> unblockUser(String fromUser, String toUser) {
+        return this.context.getHttpClient()
             .delete()
             .uri(String.format("/users/%s/blocks/users", toUser))
-            .send(Mono.create(sink -> sink.success(context.getCodec().encode(new UnblockUsersSendMsgToUserRequest(Arrays.asList(fromUser))))))
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
+            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new UnblockUsersSendMsgToUserRequest(Arrays.asList(fromUser))))))
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
     }
 
 

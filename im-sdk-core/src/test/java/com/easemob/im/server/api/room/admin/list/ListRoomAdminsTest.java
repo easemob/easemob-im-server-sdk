@@ -12,8 +12,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ListRoomAdminsTest extends AbstractApiTest {
+
+    private ListRoomAdmins listRoomAdmins;
+
     ListRoomAdminsTest() {
         this.server.addHandler("GET /easemob/demo/chatrooms/r1/admin", this::handleListRoomAdmins);
+        this.listRoomAdmins = new ListRoomAdmins(this.context);
     }
 
     private JsonNode handleListRoomAdmins(JsonNode jsonNode) {
@@ -27,7 +31,7 @@ class ListRoomAdminsTest extends AbstractApiTest {
 
     @Test
     void testListRoomAdmins() {
-        List<String> admins = ListRoomAdmins.all(this.context, "r1").collectList().block(Duration.ofSeconds(3));
+        List<String> admins = this.listRoomAdmins.all("r1").collectList().block(Duration.ofSeconds(3));
         assertEquals(2, admins.size());
         assertEquals("rabbit", admins.get(0));
         assertEquals("madhat", admins.get(1));

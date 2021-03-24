@@ -5,13 +5,19 @@ import com.easemob.im.server.model.EMRoom;
 import reactor.core.publisher.Mono;
 
 public class GetRoomDetail {
+    
+    private Context context;
 
-    public static Mono<EMRoom> byId(Context context, String roomId) {
-        return context.getHttpClient()
+    public GetRoomDetail(Context context) {
+        this.context = context;
+    }
+
+    public Mono<EMRoom> byId(String roomId) {
+        return this.context.getHttpClient()
                 .get()
                 .uri(String.format("/chatrooms/%s", roomId))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, GetRoomDetailResponse.class).toRoomDetails().get(0));
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, GetRoomDetailResponse.class).toRoomDetails().get(0));
     }
 
 

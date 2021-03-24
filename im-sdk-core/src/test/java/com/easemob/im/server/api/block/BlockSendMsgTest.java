@@ -15,6 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BlockSendMsgTest extends AbstractApiTest {
 
+    private SendMsgToUser sendMsgToUser;
+    
+    private BlockUserLogin blockUserLogin;
+    
     public BlockSendMsgTest() {
         super();
         this.server.addHandler("POST /easemob/demo/users/alice/blocks/users", this::handleUserBlockFromSendMsgRequest);
@@ -22,25 +26,27 @@ public class BlockSendMsgTest extends AbstractApiTest {
         this.server.addHandler("GET /easemob/demo/users/alice/blocks/users", this::handleGetUserBlockedFromSendMsgRequest);
         this.server.addHandler("POST /easemob/demo/users/alice/deactivate", this::handleUserBlockFromLoginRequest);
         this.server.addHandler("POST /easemob/demo/users/alice/activate", this::handleUserUnblockFromLoginRequest);
+        sendMsgToUser = new SendMsgToUser(this.context);
+        blockUserLogin = new BlockUserLogin(this.context);
     }
 
     @Test
     public void testBlockUserFromSendMsg() {
         assertDoesNotThrow(() -> {
-            SendMsgToUser.blockUser(this.context, "rabbit", "alice").block(Duration.ofSeconds(3));
+            this.sendMsgToUser.blockUser("rabbit", "alice").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testUnBlockUserFromSendMsg() {
         assertDoesNotThrow(() -> {
-            SendMsgToUser.unblockUser(this.context, "rabbit", "alice").block(Duration.ofSeconds(3));
+            this.sendMsgToUser.unblockUser("rabbit", "alice").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testGetUserBlockedFromSendMsg() {
-        Set<EMBlock> blockedUsers = SendMsgToUser.getUsersBlocked(this.context, "alice").collect(Collectors.toSet()).block(Duration.ofSeconds(3));
+        Set<EMBlock> blockedUsers = this.sendMsgToUser.getUsersBlocked("alice").collect(Collectors.toSet()).block(Duration.ofSeconds(3));
         Set<String> blockedUsernames = blockedUsers.stream().map(EMBlock::getUsername).collect(Collectors.toSet());
         assertTrue(blockedUsernames.contains("queen"));
         assertTrue(blockedUsernames.contains("madhat"));
@@ -50,14 +56,14 @@ public class BlockSendMsgTest extends AbstractApiTest {
     @Test
     public void testBlockUserFromLogin() {
         assertDoesNotThrow(() -> {
-            BlockUserLogin.blockUser(context, "alice").block(Duration.ofSeconds(3));
+            this.blockUserLogin.blockUser("alice").block(Duration.ofSeconds(3));
         });
     }
 
     @Test
     public void testUnblockUserFromLogin() {
         assertDoesNotThrow(() -> {
-            BlockUserLogin.unblockUser(context, "alice").block(Duration.ofSeconds(3));
+            this.blockUserLogin.unblockUser("alice").block(Duration.ofSeconds(3));
         });
     }
 

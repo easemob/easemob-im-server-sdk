@@ -11,8 +11,12 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnblockUserSendMsgToRoomTest extends AbstractApiTest {
+
+    private UnblockUserSendMsgToRoom unblockUserSendMsgToRoom;
+
     UnblockUserSendMsgToRoomTest() {
         this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/mute/rabbit", this::handleUnblockUserSendMsgToRoom);
+        this.unblockUserSendMsgToRoom = new UnblockUserSendMsgToRoom(this.context);
     }
 
     private JsonNode handleUnblockUserSendMsgToRoom(JsonNode jsonNode) {
@@ -31,6 +35,6 @@ class UnblockUserSendMsgToRoomTest extends AbstractApiTest {
 
     @Test
     void testUnblockUserSendMsgToRoom() {
-        assertDoesNotThrow(() -> UnblockUserSendMsgToRoom.single(this.context, "rabbit", "r1").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.unblockUserSendMsgToRoom.single("rabbit", "r1").block(Duration.ofSeconds(3)));
     }
 }

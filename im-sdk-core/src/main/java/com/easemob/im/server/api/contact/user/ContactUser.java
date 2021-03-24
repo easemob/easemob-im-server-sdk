@@ -6,26 +6,32 @@ import reactor.core.publisher.Mono;
 
 public class ContactUser {
 
-    public static Mono<Void> add(Context context, String user, String contact) {
-        return context.getHttpClient()
+    private Context context;
+
+    public ContactUser(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Void> add(String user, String contact) {
+        return this.context.getHttpClient()
             .post()
             .uri(String.format("/users/%s/contacts/users/%s", user, contact))
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
     }
 
-    public static Mono<Void> remove(Context context, String user, String contact) {
-        return context.getHttpClient()
+    public Mono<Void> remove(String user, String contact) {
+        return this.context.getHttpClient()
             .delete()
             .uri(String.format("/users/%s/contacts/users/%s", user, contact))
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
     }
 
-    public static Flux<String> list(Context context, String user) {
-        return context.getHttpClient()
+    public Flux<String> list(String user) {
+        return this.context.getHttpClient()
             .get()
             .uri(String.format("/users/%s/contacts/users", user))
-            .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> context.getCodec().decode(buf, ContactUserListResponse.class))
+            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+            .map(buf -> this.context.getCodec().decode(buf, ContactUserListResponse.class))
             .flatMapIterable(ContactUserListResponse::getUsernames);
     }
 

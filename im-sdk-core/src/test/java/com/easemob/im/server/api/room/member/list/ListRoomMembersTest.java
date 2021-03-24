@@ -12,9 +12,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ListRoomMembersTest extends AbstractApiTest {
+
+    private ListRoomMembers listRoomMembers;
+
     ListRoomMembersTest() {
         this.server.addHandler("GET /easemob/demo/chatrooms/r1/users?version=v3&limit=2", this::handleListMembersFirst);
         this.server.addHandler("GET /easemob/demo/chatrooms/r1/users?version=v3&limit=2&cursor=1", this::handleListMembersLast);
+        this.listRoomMembers = new ListRoomMembers(this.context);
     }
 
     private JsonNode handleListMembersLast(JsonNode jsonNode) {
@@ -41,7 +45,7 @@ class ListRoomMembersTest extends AbstractApiTest {
 
     @Test
     void testListRoomMembers() {
-        List<String> members = ListRoomMembers.all(this.context, "r1", 2).collectList().block(Duration.ofSeconds(3));
+        List<String> members = this.listRoomMembers.all("r1", 2).collectList().block(Duration.ofSeconds(3));
         assertEquals(3, members.size());
         assertEquals("alice", members.get(0));
         assertEquals("rabbit", members.get(1));

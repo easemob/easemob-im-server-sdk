@@ -9,23 +9,29 @@ import reactor.core.publisher.Mono;
 
 // TODO: add block/unblock user join group in batch
 public class BlockUserJoinGroup {
+    
+    private Context context;
 
-    public static Flux<EMBlock> getBlockedUsers(Context context, String groupId) {
-        return context.getHttpClient()
+    public BlockUserJoinGroup(Context context) {
+        this.context = context;
+    }
+
+    public Flux<EMBlock> getBlockedUsers(String groupId) {
+        return this.context.getHttpClient()
                 .get()
                 .uri(String.format("/chatgroups/%s/blocks/users", groupId))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, GetBlockedUsersResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, GetBlockedUsersResponse.class))
                 .flatMapIterable(GetBlockedUsersResponse::getUsernames)
                 .map(username -> new EMBlock(username, null));
     }
 
-    public static Mono<Void> blockUser(Context context, String username, String groupId) {
-        return context.getHttpClient()
+    public Mono<Void> blockUser(String username, String groupId) {
+        return this.context.getHttpClient()
                 .post()
                 .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, BlockUserJoinGroupResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, BlockUserJoinGroupResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess()) {
                         sink.error(new EMUnknownException("unknown"));
@@ -35,12 +41,12 @@ public class BlockUserJoinGroup {
                 });
     }
 
-    public static Mono<Void> unblockUser(Context context, String username, String groupId) {
-        return context.getHttpClient()
+    public Mono<Void> unblockUser(String username, String groupId) {
+        return this.context.getHttpClient()
                 .delete()
                 .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, UnblockUserJoinGroupResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, UnblockUserJoinGroupResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess()) {
                         sink.error(new EMUnknownException("unknown"));

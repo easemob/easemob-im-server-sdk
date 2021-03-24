@@ -52,9 +52,51 @@ public class RoomApi {
     private static final int DEFAULT_MAX_MEMBERS = 200;
 
     private Context context;
+    
+    private CreateRoom createRoom;
+    
+    private GetRoomDetail getRoomDetail;
+    
+    private UpdateRoom updateRoom;
+    
+    private ListRooms listRooms;
+    
+    private ListRoomMembers listRoomMembers;
+
+    private AddRoomMember addRoomMember;
+
+    private RemoveRoomMember removeRoomMember;
+
+    private ListRoomAdmins listRoomAdmins;
+
+    private PromoteRoomAdmin promoteRoomAdmin;
+
+    private DemoteRoomAdmin demoteRoomAdmin;
+
+    private ListRoomSuperAdmins listRoomSuperAdmins;
+
+    private PromoteRoomSuperAdmin promoteRoomSuperAdmin;
+
+    private DemoteRoomSuperAdmin demoteRoomSuperAdmin;
+
+    private DeleteRoom deleteRoom;
 
     public RoomApi(Context context) {
         this.context = context;
+        this.createRoom = new CreateRoom(context);
+        this.getRoomDetail = new GetRoomDetail(context);
+        this.updateRoom = new UpdateRoom(context);
+        this.listRooms = new ListRooms(context);
+        this.listRoomMembers = new ListRoomMembers(context);
+        this.addRoomMember = new AddRoomMember(context);
+        this.removeRoomMember = new RemoveRoomMember(context);
+        this.listRoomAdmins = new ListRoomAdmins(context);
+        this.promoteRoomAdmin = new PromoteRoomAdmin(context);
+        this.demoteRoomAdmin = new DemoteRoomAdmin(context);
+        this.listRoomSuperAdmins = new ListRoomSuperAdmins(context);
+        this.promoteRoomSuperAdmin = new PromoteRoomSuperAdmin(context);
+        this.demoteRoomSuperAdmin = new DemoteRoomSuperAdmin(context);
+        this.deleteRoom = new DeleteRoom(context);
     }
 
     /**
@@ -70,7 +112,7 @@ public class RoomApi {
      *
      */
     public Mono<String> createRoom(String name, String description, String owner, List<String> members, int maxMembers) {
-        return CreateRoom.createRoom(this.context, name, description, owner, members, maxMembers);
+        return this.createRoom.createRoom(name, description, owner, members, maxMembers);
     }
 
     /**
@@ -81,7 +123,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E8%AF%A6%E6%83%85">获取聊天室详情</a>
      */
     public Mono<EMRoom> getRoom(String id) {
-        return GetRoomDetail.byId(this.context, id);
+        return this.getRoomDetail.byId(id);
     }
 
 
@@ -103,7 +145,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E4%BF%AE%E6%94%B9%E8%81%8A%E5%A4%A9%E5%AE%A4%E4%BF%A1%E6%81%AF">修改聊天室</a>
      */
     public Mono<Void> updateRoom(String id, Consumer<UpdateRoomRequest> customizer) {
-        return UpdateRoom.byId(this.context, id, customizer);
+        return this.updateRoom.byId(id, customizer);
     }
 
     /**
@@ -113,7 +155,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96_app_%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取聊天室列表</a>
      */
     public Flux<String> listRoomsAll() {
-        return ListRooms.all(this.context, 10);
+        return this.listRooms.all(10);
     }
 
     /**
@@ -125,7 +167,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96_app_%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取聊天室列表</a>
      */
     public Mono<EMPage<String>> listRooms(int limit, String cursor) {
-        return ListRooms.next(this.context, limit, cursor);
+        return this.listRooms.next(limit, cursor);
     }
 
     /**
@@ -136,7 +178,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%8A%A0%E5%85%A5%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取用户加入的聊天室</a>
      */
     public Flux<String> listRoomsUserJoined(String username) {
-        return ListRooms.userJoined(this.context, username);
+        return this.listRooms.userJoined(username);
     }
 
     /**
@@ -147,7 +189,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
      */
     public Flux<String> listRoomMembersAll(String roomId) {
-        return ListRoomMembers.all(this.context, roomId, 10);
+        return this.listRoomMembers.all(roomId, 10);
     }
 
     /**
@@ -160,7 +202,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
      */
     public Mono<EMPage<String>> listRoomMembers(String roomId, int limit, String cursor) {
-        return ListRoomMembers.next(this.context, roomId, limit, cursor);
+        return this.listRoomMembers.next(roomId, limit, cursor);
     }
 
     /**
@@ -172,7 +214,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">聊天室添加成员</a>
      */
     public Mono<Void> addRoomMember(String roomId, String username) {
-        return AddRoomMember.single(this.context, roomId, username);
+        return this.addRoomMember.single(roomId, username);
     }
 
     /**
@@ -184,7 +226,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%A0%E9%99%A4%E5%8D%95%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">聊天室移除成员</a>
      */
     public Mono<Void> removeRoomMember(String roomId, String username) {
-        return RemoveRoomMember.single(this.context, roomId, username);
+        return this.removeRoomMember.single(roomId, username);
     }
 
     /**
@@ -195,7 +237,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">获取聊天室管理员</a>
      */
     public Flux<String> listRoomAdminsAll(String roomId) {
-        return ListRoomAdmins.all(this.context, roomId);
+        return this.listRoomAdmins.all(roomId);
     }
 
     /**
@@ -207,7 +249,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%AE%A1%E7%90%86%E5%91%98">添加聊天室管理员</a>
      */
     public Mono<Void> promoteRoomAdmin(String roomId, String username) {
-        return PromoteRoomAdmin.single(this.context, roomId, username);
+        return this.promoteRoomAdmin.single(roomId, username);
     }
 
     /**
@@ -219,7 +261,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%AE%A1%E7%90%86%E5%91%98">移除聊天室管理员</a>
      */
     public Mono<Void> demoteRoomAdmin(String roomId, String username) {
-        return DemoteRoomAdmin.single(this.context, roomId, username);
+        return this.demoteRoomAdmin.single(roomId, username);
     }
     /**
      * List Room Super Admins
@@ -227,7 +269,7 @@ public class RoomApi {
      * @return A {@code Flux} of super admin's username
      */
     public Flux<String> listRoomSuperAdminsAll(){
-        return ListRoomSuperAdmins.all(this.context, 10);
+        return this.listRoomSuperAdmins.all(10);
     }
 
     /**
@@ -237,7 +279,7 @@ public class RoomApi {
      * @return A {code Mono} which completes upon success.
      */
     public Mono<Void> promoteRoomSuperAdmin(String username){
-        return PromoteRoomSuperAdmin.single(this.context, username);
+        return this.promoteRoomSuperAdmin.single(username);
     }
 
     /**
@@ -247,7 +289,7 @@ public class RoomApi {
      * @return A {@code Mono} which completes upon success.
      */
     public Mono<Void> demoteRoomSuperAdmin(String username) {
-        return DemoteRoomSuperAdmin.singnle(this.context, username);
+        return this.demoteRoomSuperAdmin.singnle(username);
     }
 
     /**
@@ -257,6 +299,6 @@ public class RoomApi {
      * @return 成功或错误
      */
     public Mono<Void> destroyRoom(String roomId) {
-        return DeleteRoom.byId(this.context, roomId);
+        return this.deleteRoom.byId(roomId);
     }
 }
