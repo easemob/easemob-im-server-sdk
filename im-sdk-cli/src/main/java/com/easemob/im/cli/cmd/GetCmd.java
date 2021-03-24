@@ -46,8 +46,9 @@ public class GetCmd {
         if (StringUtils.hasText(username)) {
             this.service.user().get(username)
                     .doOnNext(user -> {
-                        System.out.println("user: " + user.getUsername());
-                        System.out.println("canLogin: " + user.getCanLogin());
+                        System.out.printf("username: %s\n", user.getUsername());
+                        System.out.printf("nickname: %s \n", user.getNickname());
+                        System.out.printf("canLogin: %b \n", user.getCanLogin());
                     }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
@@ -329,12 +330,12 @@ public class GetCmd {
             }
         } else if (argGroup.count != null) {
             if (username == null || !argGroup.count.missed) {
-                System.out.println("Must specify --user and add --missed for now.");
+                System.out.println("Only support specify --user and --missed for now.");
                 return;
             }
             this.service.message().countMissedMessages(username)
                     .doOnNext(msg -> {
-                        System.out.printf("queueName: %s | messageCount: %s \n", msg.getQueueName(), msg.getMessageCount());
+                        System.out.printf("count: %s\n", msg.getMessageCount());
                     })
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())

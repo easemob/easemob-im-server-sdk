@@ -13,13 +13,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserGetTest extends AbstractApiTest {
 
+    private UserGet userGet;
+
     public UserGetTest() {
         this.server.addHandler("GET /easemob/demo/users/username", this::handleUserGetSingle);
+        this.userGet = new UserGet(this.context);
     }
 
     @Test
     public void testUserGetSingle() {
-        EMUser user = UserGet.single(this.context, "username").block(Duration.ofSeconds(3));
+        EMUser user = this.userGet.single("username").block(Duration.ofSeconds(3));
         assertEquals("username", user.getUsername());
     }
 
