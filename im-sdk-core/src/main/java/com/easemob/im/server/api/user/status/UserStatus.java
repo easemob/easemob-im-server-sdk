@@ -5,7 +5,13 @@ import reactor.core.publisher.Mono;
 
 public class UserStatus {
 
-    public static Mono<Boolean> isUserOnline(Context context, String username) {
+    private Context context;
+
+    public UserStatus(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Boolean> isUserOnline(String username) {
         return context.getHttpClient()
             .get()
             .uri(String.format("/users/%s/status", username))

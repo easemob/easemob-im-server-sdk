@@ -7,6 +7,7 @@ import com.easemob.im.server.api.user.list.ListUsers;
 import com.easemob.im.server.api.user.list.UserListResponse;
 import com.easemob.im.server.api.user.password.UpdateUserPassword;
 import com.easemob.im.server.api.user.create.CreateUser;
+import com.easemob.im.server.api.user.status.UserStatus;
 import com.easemob.im.server.api.user.unregister.DeleteUser;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMPage;
@@ -30,6 +31,8 @@ public class UserApi {
     private UpdateUserPassword updateUserPassword;
     private ForceLogoutUser forceLogoutUser;
 
+    private UserStatus userStatus;
+
     public UserApi(Context context) {
         this.context = context;
         this.createUser = new CreateUser(context);
@@ -37,6 +40,7 @@ public class UserApi {
         this.listUsers = new ListUsers(context);
         this.updateUserPassword = new UpdateUserPassword(context);
         this.forceLogoutUser = new ForceLogoutUser(context);
+        this.userStatus = new UserStatus(context);
     }
 
 
@@ -156,5 +160,13 @@ public class UserApi {
         return this.forceLogoutUser.byUsernameAndResource(username, resource);
     }
 
-
+    /**
+     * 获取用户在线状态。
+     * @param username 要查询的用户的用户名
+     * @return 是否在线或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9C%A8%E7%BA%BF%E7%8A%B6%E6%80%81">获取用户在线状态</a>
+     */
+    public Mono<Boolean> isUserOnline(String username) {
+        return this.userStatus.isUserOnline(username);
+    }
 }
