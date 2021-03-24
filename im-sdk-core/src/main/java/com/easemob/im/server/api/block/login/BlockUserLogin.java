@@ -5,17 +5,23 @@ import reactor.core.publisher.Mono;
 
 public class BlockUserLogin {
 
-    public static Mono<Void> blockUser(Context context, String username) {
-        return context.getHttpClient()
-                .post()
-                .uri(String.format("/users/%s/deactivate", username))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
+    private Context context;
+
+    public BlockUserLogin(Context context) {
+        this.context = context;
     }
 
-    public static Mono<Void> unblockUser(Context context, String username) {
-        return context.getHttpClient()
+    public Mono<Void> blockUser(String username) {
+        return this.context.getHttpClient()
+                .post()
+                .uri(String.format("/users/%s/deactivate", username))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
+    }
+
+    public Mono<Void> unblockUser(String username) {
+        return this.context.getHttpClient()
                 .post()
                 .uri(String.format("/users/%s/activate", username))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then());
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
     }
 }

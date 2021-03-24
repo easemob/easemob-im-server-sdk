@@ -18,6 +18,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockUserSendMsgToRoomTest extends AbstractApiTest {
+    
+    private ListUsersBlockedSendMsgToRoom listUsersBlockedSendMsgToRoom;
+    
+    private BlockUserSendMsgToRoom blockUserSendMsgToRoom;
+
+    private UnblockUserSendMsgToRoom unblockUserSendMsgToRoom;
 
     BlockUserSendMsgToRoomTest() {
         super();
@@ -26,7 +32,9 @@ class BlockUserSendMsgToRoomTest extends AbstractApiTest {
         this.server.addHandler("POST /easemob/demo/chatrooms/2/mute", this::handleBlockUserRequestFail);
         this.server.addHandler("DELETE /easemob/demo/chatrooms/1/mute/alice", req -> handleUnblockUserRequestSuccess(req, "alice"));
         this.server.addHandler("DELETE /easemob/demo/chatrooms/2/mute/alice", req -> handleUnblockUserRequestFail(req, "alice"));
-
+        this.listUsersBlockedSendMsgToRoom = new ListUsersBlockedSendMsgToRoom(this.context);
+        this.blockUserSendMsgToRoom = new BlockUserSendMsgToRoom(this.context);
+        this.unblockUserSendMsgToRoom = new UnblockUserSendMsgToRoom(this.context);
     }
 
     private JsonNode handleUnblockUserRequestSuccess(JsonNode req, String username) {
@@ -104,7 +112,7 @@ class BlockUserSendMsgToRoomTest extends AbstractApiTest {
 
     @Test
     void testGetBlockedUsers() {
-        List<EMBlock> blocks = ListUsersBlockedSendMsgToRoom.all(this.context, "1").collectList().block(Duration.ofSeconds(3));
+        List<EMBlock> blocks = this.listUsersBlockedSendMsgToRoom.all("1").collectList().block(Duration.ofSeconds(3));
         assertEquals(2, blocks.size());
         assertTrue(blocks.contains(new EMBlock("alice", Instant.ofEpochMilli(1000000))));
         assertTrue(blocks.contains(new EMBlock("rabbit", Instant.ofEpochMilli(1000000))));
@@ -112,28 +120,28 @@ class BlockUserSendMsgToRoomTest extends AbstractApiTest {
 
     @Test
     void testBlockUserSuccess() {
-        assertDoesNotThrow(() -> BlockUserSendMsgToRoom.single(this.context, "alice",  "1", null).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.blockUserSendMsgToRoom.single("alice",  "1", null).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testBlockUserFail() {
-        assertThrows(EMUnknownException.class, () -> BlockUserSendMsgToRoom.single(this.context, "alice",  "2", null).block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> this.blockUserSendMsgToRoom.single("alice",  "2", null).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testBlockUserMaxDuration() {
-        assertDoesNotThrow(() -> BlockUserSendMsgToRoom.single(this.context, "alice",  "1", Duration.ofMillis(Integer.MAX_VALUE)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.blockUserSendMsgToRoom.single("alice",  "1", Duration.ofMillis(Integer.MAX_VALUE)).block(Duration.ofSeconds(3)));
     }
 
 
     @Test
     void testUnblockUserSuccess() {
-        assertDoesNotThrow(() -> UnblockUserSendMsgToRoom.single(this.context, "alice",  "1").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.unblockUserSendMsgToRoom.single("alice",  "1").block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testUnblockUserFail() {
-        assertThrows(EMUnknownException.class, () -> UnblockUserSendMsgToRoom.single(this.context, "alice",  "2").block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> this.unblockUserSendMsgToRoom.single("alice",  "2").block(Duration.ofSeconds(3)));
     }
 
 }

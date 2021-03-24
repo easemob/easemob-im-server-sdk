@@ -11,8 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PromoteRoomAdminTest extends AbstractApiTest {
 
+    private PromoteRoomAdmin promoteRoomAdmin;
+
     PromoteRoomAdminTest() {
         this.server.addHandler("POST /easemob/demo/chatrooms/r1/admin", this::handleAddRoomAdmin);
+        this.promoteRoomAdmin = new PromoteRoomAdmin(this.context);
     }
 
     private JsonNode handleAddRoomAdmin(JsonNode jsonNode) {
@@ -28,6 +31,6 @@ class PromoteRoomAdminTest extends AbstractApiTest {
 
     @Test
     void testPromoteRoomAdmin() {
-        assertDoesNotThrow(() -> PromoteRoomAdmin.single(this.context, "r1", "rabbit").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.promoteRoomAdmin.single("r1", "rabbit").block(Duration.ofSeconds(3)));
     }
 }

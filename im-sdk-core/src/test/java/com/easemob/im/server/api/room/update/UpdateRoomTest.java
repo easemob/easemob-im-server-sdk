@@ -11,10 +11,13 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UpdateRoomTest extends AbstractApiTest {
+    
+    private UpdateRoom updateRoom;
 
     UpdateRoomTest() {
         this.server.addHandler("PUT /easemob/demo/chatrooms/r1", this::handleUpdateRoomRequestSuccess);
         this.server.addHandler("PUT /easemob/demo/chatrooms/r2", this::handleUpdateRoomRequestFail);
+        this.updateRoom = new UpdateRoom(this.context);
     }
 
     private JsonNode handleUpdateRoomRequestSuccess(JsonNode jsonNode) {
@@ -55,11 +58,11 @@ class UpdateRoomTest extends AbstractApiTest {
 
     @Test
     void testUpdateRoomSuccess() {
-        assertDoesNotThrow(() -> UpdateRoom.byId(this.context, "r1", req -> req.withName("room-one")).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.updateRoom.byId("r1", req -> req.withName("room-one")).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testUpdateRoomFail() {
-        assertThrows(EMUnknownException.class, () -> UpdateRoom.byId(this.context, "r2", req -> req.withMaxMembers(1000)).block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> this.updateRoom.byId("r2", req -> req.withMaxMembers(1000)).block(Duration.ofSeconds(3)));
     }
 }

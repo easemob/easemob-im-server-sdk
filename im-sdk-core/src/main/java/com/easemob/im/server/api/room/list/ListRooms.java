@@ -6,32 +6,38 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class ListRooms {
+    
+    private Context context;
 
-    public static Flux<String> all(Context context, int limit) {
-        return next(context, limit, null)
-                .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(context, limit, rsp.getCursor()))
+    public ListRooms(Context context) {
+        this.context = context;
+    }
+
+    public Flux<String> all(int limit) {
+        return next(limit, null)
+                .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(limit, rsp.getCursor()))
                 .concatMapIterable(EMPage::getValues);
     }
 
-    public static Mono<EMPage<String>> next(Context context, int limit, String cursor) {
+    public Mono<EMPage<String>> next(int limit, String cursor) {
         String uri = String.format("/chatrooms?limit=%d", limit);
         if (cursor != null) {
             uri += String.format("&cursor=%s", cursor);
         }
-        return context.getHttpClient()
+        return this.context.getHttpClient()
                 .get()
                 .uri(uri)
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, ListRoomsResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
                 .map(ListRoomsResponse::toEMPage);
     }
 
-    public static Flux<String> userJoined(Context context, String username) {
-        return context.getHttpClient()
+    public Flux<String> userJoined(String username) {
+        return this.context.getHttpClient()
                 .get()
                 .uri(String.format("/users/%s/joined_chatrooms", username))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, ListRoomsResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
                 .flatMapIterable(ListRoomsResponse::getRoomIds);
     }
 }

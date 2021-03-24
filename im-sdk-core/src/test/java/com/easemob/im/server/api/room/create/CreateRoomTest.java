@@ -13,8 +13,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CreateRoomTest extends AbstractApiTest {
 
+    private CreateRoom createRoom;
+
     CreateRoomTest() {
         this.server.addHandler("POST /easemob/demo/chatrooms", this::handleCreateRoomRequest);
+        this.createRoom = new CreateRoom(this.context);
     }
 
     private JsonNode handleCreateRoomRequest(JsonNode jsonNode) {
@@ -32,7 +35,7 @@ class CreateRoomTest extends AbstractApiTest {
         List<String> members = new ArrayList<>();
         members.add("rabbit");
         members.add("madhat");
-        String id = CreateRoom.createRoom(this.context, "room one", "have a nice day", "alice", members, 200)
+        String id = this.createRoom.createRoom("room one", "have a nice day", "alice", members, 200)
             .block(Duration.ofSeconds(3));
         assertEquals("r1", id);
     }

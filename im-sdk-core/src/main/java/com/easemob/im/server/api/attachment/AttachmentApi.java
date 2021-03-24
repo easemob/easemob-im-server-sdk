@@ -14,9 +14,15 @@ import java.nio.file.Path;
 public class AttachmentApi {
 
     private Context context;
+    
+    private Upload upload;
+
+    private Download download;
 
     public AttachmentApi(Context context) {
         this.context = context;
+        this.upload = new Upload(context);
+        this.download =  new Download(context);
     }
 
     /**
@@ -27,7 +33,7 @@ public class AttachmentApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/fileoperation#%E4%B8%8A%E4%BC%A0%E8%AF%AD%E9%9F%B3%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6">上传附件</a>
      */
     public Mono<String> uploadFile(Path path) {
-        return Upload.fromLocalFile(this.context, path, false);
+        return this.upload.fromLocalFile(path, false);
     }
 
     /* TODO: 上传带有密码保护的附件 */
@@ -42,7 +48,7 @@ public class AttachmentApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/fileoperation#%E4%B8%8B%E8%BD%BD%E8%AF%AD%E9%9F%B3%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6">下载附件</a>
      */
     public Mono<Path> downloadFile(String fileId, Path dir, String filename) {
-        return Download.toLocalFile(this.context, fileId, dir, filename);
+        return this.download.toLocalFile(fileId, dir, filename);
     }
 
 

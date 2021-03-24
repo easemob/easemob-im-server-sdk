@@ -13,11 +13,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ListRoomsTest extends AbstractApiTest {
+    
+    private ListRooms listRooms;
 
     public ListRoomsTest() {
         this.server.addHandler("GET /easemob/demo/chatrooms?limit=2", req -> handleListRoomsRequest(req, 0, 2, "1"));
         this.server.addHandler("GET /easemob/demo/chatrooms?limit=2&cursor=1", req -> handleListRoomsRequest(req, 2,1, null));
         this.server.addHandler("GET /easemob/demo/users/alice/joined_chatrooms", this::handleListRoomsUserJoined);
+        this.listRooms = new ListRooms(this.context);
     }
 
     private JsonNode handleListRoomsUserJoined(JsonNode jsonNode) {
@@ -62,7 +65,7 @@ class ListRoomsTest extends AbstractApiTest {
 
     @Test
     void testListAll() {
-        List<String> rooms = ListRooms.all(this.context, 2).collectList().block(Duration.ofSeconds(3));
+        List<String> rooms = this.listRooms.all(2).collectList().block(Duration.ofSeconds(3));
         assertEquals(3, rooms.size());
         assertEquals("r1", rooms.get(0));
         assertEquals("r2", rooms.get(1));
@@ -71,19 +74,19 @@ class ListRoomsTest extends AbstractApiTest {
 
     @Test
     void testListFirstPage() {
-        EMPage<String> page = ListRooms.next(this.context,  2, null).block(Duration.ofSeconds(3));
+        EMPage<String> page = this.listRooms.next(2, null).block(Duration.ofSeconds(3));
         assertEquals(2, page.getValues().size());
     }
 
     @Test
     void testListSecondPage() {
-        EMPage<String> page = ListRooms.next(this.context,  2, "1").block(Duration.ofSeconds(3));
+        EMPage<String> page = this.listRooms.next(2, "1").block(Duration.ofSeconds(3));
         assertEquals(1, page.getValues().size());
     }
 
     @Test
     void testListUserJoined() {
-        List<String> rooms = ListRooms.userJoined(this.context, "alice").collectList().block(Duration.ofSeconds(3));
+        List<String> rooms = this.listRooms.userJoined("alice").collectList().block(Duration.ofSeconds(3));
         assertEquals(2, rooms.size());
         assertEquals("r1", rooms.get(0));
         assertEquals("r2", rooms.get(1));

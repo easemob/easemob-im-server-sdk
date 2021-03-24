@@ -6,12 +6,18 @@ import reactor.core.publisher.Flux;
 
 public class ListUsersBlockedSendMsgToRoom {
 
-    public static Flux<EMBlock> all(Context context, String roomId) {
-        return context.getHttpClient()
+    private Context context;
+
+    public ListUsersBlockedSendMsgToRoom(Context context) {
+        this.context = context;
+    }
+
+    public Flux<EMBlock> all(String roomId) {
+        return this.context.getHttpClient()
                 .get()
                 .uri(String.format("/chatrooms/%s/mute", roomId))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, ListUsersBlockedSendMsgToRoomResponse.class))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, ListUsersBlockedSendMsgToRoomResponse.class))
                 .flatMapIterable(ListUsersBlockedSendMsgToRoomResponse::getEMBlocks);
     }
 

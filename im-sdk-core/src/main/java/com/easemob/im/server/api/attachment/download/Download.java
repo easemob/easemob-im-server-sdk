@@ -15,13 +15,19 @@ import java.nio.file.StandardOpenOption;
 
 public class Download {
 
-    public static Mono<Path> toLocalFile(Context context, String id, Path dir, String filename) {
+    private Context context;
+
+    public Download(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Path> toLocalFile(String id, Path dir, String filename) {
         Path local = FileSystem.choosePath(dir, filename);
         return Mono.<OutputStream>create(sink -> sink.success(FileSystem.open(local)))
-                .flatMap(out -> context.getHttpClient()
+                .flatMap(out -> this.context.getHttpClient()
                         .get()
                         .uri(String.format("/chatfiles/%s", id))
-                        .response((rsp, buf) -> context.getErrorMapper().apply(rsp).thenMany(buf))
+                        .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp).thenMany(buf))
                         .doOnNext(buf -> FileSystem.append(out, buf))
                         .doFinally(sig -> FileSystem.close(out))
                         .then())

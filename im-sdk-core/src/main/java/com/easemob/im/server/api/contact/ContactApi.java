@@ -11,9 +11,12 @@ import reactor.core.publisher.Mono;
 public class ContactApi {
 
     private Context context;
+    
+    private ContactUser contactUser;
 
     public ContactApi(Context context) {
         this.context = context;
+        this.contactUser = new ContactUser(context);
     }
 
     /**
@@ -26,7 +29,7 @@ public class ContactApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%B7%BB%E5%8A%A0%E5%A5%BD%E5%8F%8B">添加联系人</a>
      */
     public Mono<Void> add(String user, String contact) {
-        return ContactUser.add(this.context, user, contact);
+        return this.contactUser.add(user, contact);
     }
 
     /**
@@ -39,7 +42,7 @@ public class ContactApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E7%A7%BB%E9%99%A4%E5%A5%BD%E5%8F%8B">移除联系人</a>
      */
     public Mono<Void> remove(String user, String contact) {
-        return ContactUser.remove(this.context, user, contact);
+        return this.contactUser.remove(user, contact);
     }
 
     /**
@@ -50,7 +53,7 @@ public class ContactApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8">获取联系人列表</a>
      */
     public Flux<String> list(String user) {
-        return ContactUser.list(this.context, user);
+        return this.contactUser.list(user);
     }
 
 }

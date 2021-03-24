@@ -6,13 +6,19 @@ import reactor.core.publisher.Mono;
 
 public class PromoteRoomAdmin {
 
-    public static Mono<Void> single(Context context, String roomId, String username) {
-        return context.getHttpClient()
+    private Context context;
+
+    public PromoteRoomAdmin(Context context) {
+        this.context = context;
+    }
+
+    public Mono<Void> single(String roomId, String username) {
+        return this.context.getHttpClient()
                 .post()
                 .uri(String.format("/chatrooms/%s/admin", roomId))
-                .send(Mono.create(sink -> sink.success(context.getCodec().encode(new PromoteRoomAdminRequest(username)))))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, PromoteRoomAdminResponse.class))
+                .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new PromoteRoomAdminRequest(username)))))
+                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .map(buf -> this.context.getCodec().decode(buf, PromoteRoomAdminResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));
