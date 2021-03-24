@@ -11,13 +11,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserStatusTest extends AbstractApiTest {
 
+    private UserStatus userStatus;
+
     public UserStatusTest() {
         this.server.addHandler("GET /easemob/demo/users/alice/status", this::handleUserStatusRequest);
+        this.userStatus = new UserStatus(this.context);
     }
 
     @Test
     public void testUserStatusSingle() {
-        boolean aliceIsOnline = UserStatus.isUserOnline(this.context, "alice").block(Duration.ofSeconds(3));
+        boolean aliceIsOnline = this.userStatus.isUserOnline("alice").block(Duration.ofSeconds(3));
         assertEquals(true, aliceIsOnline);
     }
 

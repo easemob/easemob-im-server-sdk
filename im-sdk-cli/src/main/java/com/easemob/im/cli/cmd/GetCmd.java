@@ -359,6 +359,15 @@ public class GetCmd {
         }
     }
 
+    @Command(name = "session", description = "Get specific user's online status.")
+    public void session(@Parameters(description = "the username") String username) {
+        this.service.user().isUserOnline(username)
+                .doOnSuccess(isOnlie -> System.out.printf("%s : %s\n", username, isOnlie ? "online" : "offline"))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, error -> Mono.empty())
+                .block();
+    }
+
     private static class LimitArgGroup {
         @Option(names = "--limit", description = "the limit", required = true)
         Integer limit;
