@@ -264,29 +264,32 @@ public class RoomApi {
         return this.demoteRoomAdmin.single(roomId, username);
     }
     /**
-     * List Room Super Admins
+     * 获取所有超级管理员列表。
      *
-     * @return A {@code Flux} of super admin's username
+     * @return 所有超级管理员的用户名
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">分页获取聊天室超级管理员列表</a>
      */
     public Flux<String> listRoomSuperAdminsAll(){
         return this.listRoomSuperAdmins.all(10);
     }
 
     /**
-     * Promote room super admin to member
+     * 升级用户为超级管理员，只有超级管理员有权限创建聊天室。
      *
-     * @param username the member's username
-     * @return A {code Mono} which completes upon success.
+     * @param username 要升级的用户的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98">添加超级管理员</a>
      */
     public Mono<Void> promoteRoomSuperAdmin(String username){
         return this.promoteRoomSuperAdmin.single(username);
     }
 
     /**
-     * Demote room super admin to member
+     * 降级超级管理员为普通用户
      *
-     * @param username the super admin's username
-     * @return A {@code Mono} which completes upon success.
+     * @param username 要降级的超级管理员的用户名
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98">移除超级管理员</a>
      */
     public Mono<Void> demoteRoomSuperAdmin(String username) {
         return this.demoteRoomSuperAdmin.singnle(username);
@@ -297,6 +300,7 @@ public class RoomApi {
      *
      * @param roomId 聊天室id
      * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%A0%E9%99%A4%E8%81%8A%E5%A4%A9%E5%AE%A4">删除聊天室</a>
      */
     public Mono<Void> destroyRoom(String roomId) {
         return this.deleteRoom.byId(roomId);
