@@ -1,12 +1,11 @@
 package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.user.create.CreateUser;
 import com.easemob.im.server.api.user.forcelogout.ForceLogoutUser;
 import com.easemob.im.server.api.user.get.UserGet;
 import com.easemob.im.server.api.user.list.ListUsers;
-import com.easemob.im.server.api.user.list.UserListResponse;
 import com.easemob.im.server.api.user.password.UpdateUserPassword;
-import com.easemob.im.server.api.user.create.CreateUser;
 import com.easemob.im.server.api.user.status.UserStatus;
 import com.easemob.im.server.api.user.unregister.DeleteUser;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
@@ -33,6 +32,8 @@ public class UserApi {
 
     private UserStatus userStatus;
 
+    private UserGet userGet;
+
     public UserApi(Context context) {
         this.context = context;
         this.createUser = new CreateUser(context);
@@ -41,6 +42,7 @@ public class UserApi {
         this.updateUserPassword = new UpdateUserPassword(context);
         this.forceLogoutUser = new ForceLogoutUser(context);
         this.userStatus = new UserStatus(context);
+        this.userGet = new UserGet(context);
     }
 
 
@@ -114,7 +116,7 @@ public class UserApi {
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7">获取用户详情</a>
      */
     public Mono<EMUser> get(String username) {
-        return UserGet.single(this.context, username);
+        return this.userGet.single(username);
     }
 
     /**
