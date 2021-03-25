@@ -1,5 +1,7 @@
 package com.easemob.im.server.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.net.URI;
 import java.util.Objects;
 

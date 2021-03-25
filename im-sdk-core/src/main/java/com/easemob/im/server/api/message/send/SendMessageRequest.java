@@ -26,7 +26,7 @@ public class SendMessageRequest {
     @JsonProperty("msg")
     private Message message;
 
-    @JsonProperty("exts")
+    @JsonProperty("ext")
     private Map<String, Object> extensions;
 
     @JsonCreator
@@ -34,7 +34,7 @@ public class SendMessageRequest {
                               @JsonProperty("target_type") String targetType,
                               @JsonProperty("target") Set<String> targets,
                               @JsonProperty("msg") EMMessage message,
-                              @JsonProperty("exts") Map<String, Object> extensions) {
+                              @JsonProperty("ext") Map<String, Object> extensions) {
         this.from = from;
         this.targetType = targetType;
         this.targets = targets;
@@ -102,6 +102,12 @@ public class SendMessageRequest {
         @JsonProperty("size")
         private Dimensions dimensions;
 
+        @JsonProperty("thumb")
+        private String thumb;
+
+        @JsonProperty("thumb_secret")
+        private String thumbSecret;
+
         @JsonProperty("customEvent")
         private String customEvent;
 
@@ -115,7 +121,7 @@ public class SendMessageRequest {
                        @JsonProperty("lat") Double latitude,
                        @JsonProperty("addr") String address,
                        @JsonProperty("filename") String displayName,
-                       @JsonProperty("remotePath") String uri,
+                       @JsonProperty("url") String uri,
                        @JsonProperty("secret") String secretKey,
                        @JsonProperty("file_length") Integer bytes,
                        @JsonProperty("action") String action,
@@ -204,6 +210,8 @@ public class SendMessageRequest {
             send.bytes = msg.bytes();
             send.secret = msg.secret();
             send.duration = msg.duration();
+            send.thumb = msg.thumb();
+            send.thumbSecret = msg.thumbSecret();
             return send;
         }
 

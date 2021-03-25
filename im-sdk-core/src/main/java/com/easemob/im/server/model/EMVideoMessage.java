@@ -1,5 +1,7 @@
 package com.easemob.im.server.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.net.URI;
 import java.util.Objects;
 
@@ -13,6 +15,12 @@ public class EMVideoMessage extends EMMessage {
     private Integer bytes;
     /** the time unit depends on usage **/
     private Integer duration;
+
+    private String thumb;
+
+    @JsonProperty("thumb_secret")
+    private String thumbSecret;
+
 
     public EMVideoMessage() {
         super(MessageType.VIDEO);
@@ -63,18 +71,68 @@ public class EMVideoMessage extends EMMessage {
         return this;
     }
 
+    public String thumb() {
+        return this.thumb;
+    }
+
+    public EMVideoMessage thumb(String thumb) {
+        this.thumb = thumb;
+        return this;
+    }
+
+    public String thumbSecret() {
+        return this.thumbSecret;
+    }
+
+    public EMVideoMessage thumbSecret(String thumbSecret) {
+        this.thumbSecret = thumbSecret;
+        return this;
+    }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        if (!super.equals(o)) return false;
+//        EMVideoMessage that = (EMVideoMessage) o;
+//        return Objects.equals(uri, that.uri) && Objects.equals(displayName, that.displayName) && Objects.equals(secret, that.secret) && Objects.equals(bytes, that.bytes) && Objects.equals(duration, that.duration);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(super.hashCode(), uri, displayName, secret, bytes, duration);
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "EMVideoMessage{" +
+//                "uri=" + uri +
+//                ", displayName='" + displayName + '\'' +
+//                ", secret='" + secret + '\'' +
+//                ", bytes=" + bytes +
+//                ", duration=" + duration +
+//                '}';
+//    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         EMVideoMessage that = (EMVideoMessage) o;
-        return Objects.equals(uri, that.uri) && Objects.equals(displayName, that.displayName) && Objects.equals(secret, that.secret) && Objects.equals(bytes, that.bytes) && Objects.equals(duration, that.duration);
+        return Objects.equals(uri, that.uri) &&
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(secret, that.secret) &&
+                Objects.equals(bytes, that.bytes) &&
+                Objects.equals(duration, that.duration) &&
+                Objects.equals(thumb, that.thumb) &&
+                Objects.equals(thumbSecret, that.thumbSecret);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), uri, displayName, secret, bytes, duration);
+        return Objects.hash(super.hashCode(), uri, displayName, secret, bytes, duration, thumb, thumbSecret);
     }
 
     @Override
@@ -85,6 +143,8 @@ public class EMVideoMessage extends EMMessage {
                 ", secret='" + secret + '\'' +
                 ", bytes=" + bytes +
                 ", duration=" + duration +
+                ", thumb='" + thumb + '\'' +
+                ", thumbSecret='" + thumbSecret + '\'' +
                 '}';
     }
 }

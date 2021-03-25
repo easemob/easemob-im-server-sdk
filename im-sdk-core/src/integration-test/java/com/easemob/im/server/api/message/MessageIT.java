@@ -46,10 +46,15 @@ public class MessageIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
-                .image(msg -> msg.uri(URI.create("http://example/image.jpg")).height(100.000).width(200.000))
+                .image(msg -> msg.uri(URI.create("http://example/image.png"))
+                        .height(1709.000)
+                        .width(2573.000)
+                        .secret("secret")
+                        .displayName("image.png")
+                )
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(6)));
         assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
@@ -65,7 +70,12 @@ public class MessageIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
-                .voice(msg -> msg.uri(URI.create("http://example/voice.amr")).duration(18))
+                .voice(msg -> msg.uri(URI.create("http://example/voice.amr"))
+                        .duration(3)
+                        .secret("secret")
+                        .displayName("voice.amr")
+                        .bytes(5158)
+                )
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
@@ -84,7 +94,35 @@ public class MessageIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
-                .video(msg -> msg.uri(URI.create("http://example/video.mp4")).duration(18))
+                .video(msg -> msg.uri(URI.create("http://example/video.mp4"))
+                        .duration(3)
+                        .secret("secret")
+                        .displayName("video.mp4")
+                        .thumb("http://example/videoThumbnail")
+                        .thumbSecret("thumbSecret")
+                )
+                .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                .send()
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testMessageSendFile() {
+        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomFromUsername;
+
+        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.message().send()
+                .fromUser(randomFromUsername)
+                .toUser(randomToUsername)
+                .file(msg -> msg.uri(URI.create("http://example/file.txt"))
+                        .secret("secret")
+                        .displayName("file.txt")
+                )
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
