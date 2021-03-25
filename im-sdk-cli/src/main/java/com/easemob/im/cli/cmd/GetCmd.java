@@ -3,7 +3,6 @@ package com.easemob.im.cli.cmd;
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import picocli.CommandLine.ArgGroup;
@@ -25,15 +24,10 @@ public class GetCmd {
     @Autowired
     private EMService service;
 
-    @Value("${im.cli.download.attachment-dir}")
-    private Path attachmentDir;
-
-    @Value("${im.cli.download.history-dir}")
-    private Path historyDir;
-
     @Command(name = "attachment", description = "Download attachment by id.")
-    public void attachment(@Parameters String id) {
-        this.service.attachment().downloadFile(id, this.attachmentDir, id)
+    public void attachment(@Parameters String id,
+                           @Option(names = "--path", defaultValue = ".", description = "attachment download path") Path path) {
+        this.service.attachment().downloadFile(id, path, id)
                 .doOnSuccess(downloaded -> System.out.println(String.format("downloaded: %s", downloaded.toString())))
                 .doOnError(error -> System.out.println(String.format("error: %s", error.getMessage())))
                 .onErrorResume(EMException.class, error -> Mono.empty())
@@ -282,10 +276,10 @@ public class GetCmd {
     private static class MessageHistoryArgGroup {
 
         @Option(names = "--history", description = "get the history file uri by time", required = true)
-        private boolean history;
+        boolean history;
 
-        @Option(names = "--download", description = "download the file if specified. The file is compressed, use `zless` to read it")
-        private boolean download;
+        @Option(names = "--download-path", description = "download the file if specified the download path. the file is compressed, use `zless` to read it")
+        Path downloadPath;
 
         @Parameters(description = "the ISO8601 date time. e.g. 2020-12-12T13:00")
         String datetime;
@@ -317,13 +311,13 @@ public class GetCmd {
             ZonedDateTime localDatetime = ZonedDateTime.parse(argGroup.history.datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()));
             Instant instant = localDatetime.toInstant();
 
-            if (!argGroup.history.download) {
+            if (argGroup.history.downloadPath == null) {
                 this.service.message().getHistoryAsUri(instant)
                         .doOnNext(uri -> System.out.println(String.format("uri: %s", uri)))
                         .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
                         .block();
             } else {
-                this.service.message().getHistoryAsLocalFile(instant, this.historyDir, argGroup.history.datetime.replaceAll("[-T:]", "_") + ".gz")
+                this.service.message().getHistoryAsLocalFile(instant, argGroup.history.downloadPath, argGroup.history.datetime.replaceAll("[-T:]", "_") + ".gz")
                         .doOnNext(uri -> System.out.println(String.format("uri: %s", uri)))
                         .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
                         .block();
