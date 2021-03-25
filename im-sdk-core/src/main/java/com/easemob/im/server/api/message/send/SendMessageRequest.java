@@ -81,7 +81,7 @@ public class SendMessageRequest {
         @JsonProperty("filename")
         private String displayName;
 
-        @JsonProperty("remotePath")
+        @JsonProperty("url")
         private String uri;
 
         @JsonProperty("secret")
