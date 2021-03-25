@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class EMAttachment {
     private String id;
+    private String url;
     private String secret;
 
     public EMAttachment(String id, String secret) {
@@ -11,8 +12,18 @@ public class EMAttachment {
         this.secret = secret;
     }
 
+    public EMAttachment(String id, String url, String secret) {
+        this.id = id;
+        this.url = url;
+        this.secret = secret;
+    }
+
     public String getId() {
         return id;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public String getSecret() {
@@ -30,13 +41,14 @@ public class EMAttachment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, secret);
+        return Objects.hash(id, url, secret);
     }
 
     @Override
     public String toString() {
         return "EMAttachment{" +
                 "id='" + id + '\'' +
+                ", url='" + url + '\'' +
                 ", secret='" + secret + '\'' +
                 '}';
     }
