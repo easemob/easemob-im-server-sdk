@@ -21,7 +21,6 @@
     </modules>
 
     <properties>
-        <caffeine.version>2.6.2</caffeine.version>
         <jackson.version>2.11.3</jackson.version>
         <java.version>1.8</java.version>
         <junit.version>5.7.0</junit.version>
@@ -316,11 +315,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.ben-manes.caffeine</groupId>
-            <artifactId>caffeine</artifactId>
-            <version>${caffeine.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
