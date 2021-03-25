@@ -1,8 +1,10 @@
 package com.easemob.im.cli.cmd;
 
+import com.easemob.im.cli.model.MessageFile;
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
-import com.easemob.im.server.api.message.send.SendMessage;
+import com.easemob.im.server.model.*;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -12,9 +14,11 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Command(name = "create", description = "Create a resource.")
@@ -26,7 +30,8 @@ public class CreateCmd {
     @Command(name = "attachment", description = "Create an attachment.")
     public void attachment(@Option(names = "-f", description = "from file") Path file) {
         this.service.attachment().uploadFile(file)
-                .doOnNext(id -> System.out.println(String.format("id: %s", id)))
+                .doOnNext(resp ->
+                        System.out.printf("id = %s\nurl = %s\nsecret = %s\n", resp.getId(), resp.getUrl(), resp.getSecret()))
                 .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
                 .onErrorResume(EMException.class, err -> Mono.empty())
                 .block();
@@ -113,9 +118,9 @@ public class CreateCmd {
     }
 
     @Command(name = "contact", description = "Add a contact to the user.")
-    public void contact(@Parameters(description = "the user's username") String user,
+    public void contact(@Parameters(description = "the user's username") String user1,
                         @Parameters(description = "the contact's username") String contact) {
-        this.service.contact().add(user, contact)
+        this.service.contact().add(user1, contact)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())
@@ -186,34 +191,96 @@ public class CreateCmd {
         }
     }
 
-    private static class MessageArgGroup {
-        @Option(names = "--to-user", description = "send message to this user")
-        String toUsername;
+    private static class MessageToGroup {
+        @Option(names = "--to-user", split = ",", description = "send message to these user, split each username by `,`")
+        Set<String> toUsernames;
 
-        @Option(names = "--to-group", description = "send message to this group")
-        String toGroupId;
+        @Option(names = "--to-group", split = ",", description = "send message to these groups, split each groupId by `,`")
+        Set<String> toGroupIds;
 
-        @Option(names = "--to-room", description = "send message to this room")
-        String toRoomId;
+        @Option(names = "--to-room", split = ",", description = "send message to these rooms, split each roomId by `,`")
+        Set<String> toRoomIds;
+    }
+
+    private static class MessageTypeArgGroup {
+        @Option(names = "--text", description = "text message, value is the ")
+        String text;
+
+        @Option(names = "--img", description = "send image message, value is image url")
+        String img;
+
+        @Option(names = "--audio", description = "send audio message, value is image url")
+        String audio;
+
+        @Option(names = "--video", description = "video message, value is video url")
+        String video;
+
+        @Option(names = "--loc", split = ":", description = "location message, value format is longitude:latitude:address")
+        String[] loc;
+
+        @Option(names = "--file", description = "file message, value is file url")
+        String file;
+
+        @Option(names = "--cmd", description = "command message, value format is key:value")
+        String cmd;
+
+        @Option(names = "--custom", description = "custom message, value format is event:extensionKey:extensionValue")
+        String custom;
     }
 
     @Command(name = "message", description = "Send messages.")
-    public void message(@Parameters(description = "message sender") String sender,
-                        @ArgGroup(multiplicity = "1", heading = "To whom.") MessageArgGroup argGroup,
-                        @Option(names = "--text", description = "send this text message") String text) {
-        // TODO 目前只支持控制台发送文本，后续将支持从文件读取以及多种消息类型。
-        if (text != null) {
-            SendMessage.RouteSpec routeSpec = this.service.message().send().fromUser(sender);
-            SendMessage.MessageSpec messageSpec;
-            if (argGroup.toUsername != null) {
-                messageSpec = routeSpec.toUser(argGroup.toUsername);
-            } else if (argGroup.toGroupId != null) {
-                messageSpec = routeSpec.toGroup(argGroup.toGroupId);
+    public void message(
+            @Option(names = "--from", description = "message sender username", required = true) String from,
+            @ArgGroup(multiplicity = "1", heading = "To whom.\n") MessageToGroup to,
+            @ArgGroup(multiplicity = "1", heading = "Message type\n") MessageTypeArgGroup msg,
+            @Option(names = "--secret", description = "secret returned by attachment upload service") String secret,
+            @Option(names = "--filename", description = "filename", defaultValue = "未命名") String filename,
+            @Option(names = "--bytes", description = "file size, unit is B(byte)", defaultValue = "0") Integer bytes,
+            @Option(names = "--duration", description = "video or audio duration, unit is s(second)", defaultValue = "0") Integer duration,
+            @Option(names = "--ext", description = "message extension") Map<String, Object> extensions,
+            @Option(names = "--param", description = "message extension") Map<String, Object> params,
+            @Option(names = "-f", description = "send message by file") Path messageFilePath) throws IOException {
+
+        EMMessage message;
+        if (msg != null) {
+            if (msg.text != null) {
+                message = new EMTextMessage().text(msg.text);
+            } else if (msg.img != null) {
+                message = new EMImageMessage().displayName(filename).uri(URI.create(msg.img)).secret(secret).bytes(bytes);
+            } else if (msg.audio != null) {
+                message = new EMVoiceMessage().displayName(filename).uri(URI.create(msg.audio)).secret(secret).duration(duration).bytes(bytes);
+            } else if (msg.video != null) {
+                message = new EMVideoMessage().displayName(filename).uri(URI.create(msg.video)).secret(secret).duration(duration).bytes(bytes);
+            } else if (msg.loc != null) {
+                message = new EMLocationMessage().longitude(Double.parseDouble(msg.loc[0])).latitude(Double.parseDouble(msg.loc[1])).address(msg.loc[2]);
+            } else if (msg.file != null) {
+                message = new EMFileMessage().displayName(filename).uri(URI.create(msg.file)).secret(secret).bytes(bytes);
+            } else if (msg.cmd != null) {
+                message = new EMCommandMessage().action(msg.cmd).params(EMKeyValue.of(params));
             } else {
-                messageSpec = routeSpec.toRoom(argGroup.toRoomId);
+                message = new EMCustomMessage().customEvent(msg.custom).customExtensions(EMKeyValue.of(params));
             }
-            messageSpec.text(emTextMessage -> emTextMessage.text(text)).send()
-                    .doOnSuccess(ig -> System.out.println("done"))
+            String toType = to.toUsernames != null ? "users" : to.toGroupIds != null ? "chatgroups" : "chatrooms";
+            Set<String> toIds = to.toUsernames != null ? to.toUsernames : to.toGroupIds != null ? to.toGroupIds : to.toRoomIds;
+            this.service.message()
+                    .send(from, toType, toIds, message, EMKeyValue.of(extensions))
+                    .doOnSuccess(sentMessages -> {
+                        sentMessages.getMessageIdsByEntityId().forEach((toId, messageId) -> {
+                            System.out.printf("toId = %s : messageId = %s\n", toId, messageId);
+                        });
+                    })
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        } else {
+            JsonMapper mapper = new JsonMapper();
+            mapper.readValue(messageFilePath.toFile(), MessageFile.class)
+                    .send(this.service.message())
+                    .doOnSuccess(sentMessages -> {
+                        sentMessages.getMessageIdsByEntityId().forEach((toId, messageId) -> {
+                            System.out.printf("toId = %s : messageId = %s\n", toId, messageId);
+                        });
+                    })
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();

@@ -1,5 +1,10 @@
 package com.easemob.im.server.model;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class EMKeyValue {
 
     private final String key;
@@ -48,6 +53,33 @@ public class EMKeyValue {
 
     public static EMKeyValue of(String key, String value) {
         return new EMKeyValue(key, Type.STRING, value);
+    }
+
+    public static EMKeyValue of(String k, Object v) {
+        if (v instanceof Boolean) {
+            return EMKeyValue.of(k, (boolean) v);
+        } else if(v instanceof Integer) {
+            return EMKeyValue.of(k, (int) v);
+        } else if(v instanceof  Long) {
+            return EMKeyValue.of(k, (long) v);
+        } else if(v instanceof  Float) {
+            return EMKeyValue.of(k, (float) v);
+        } else if(v instanceof Double) {
+            return EMKeyValue.of(k, (double) v);
+        } else if(v instanceof String) {
+            return EMKeyValue.of(k, (String) v);
+        } else {
+            throw new IllegalArgumentException("can not convert the type: " + v.getClass());
+        }
+    }
+
+    public static Set<EMKeyValue> of(Map<String, Object> map) {
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
+        Set<EMKeyValue> emKeyValues = new LinkedHashSet<>(map.size());
+        map.forEach((k, v) -> emKeyValues.add(EMKeyValue.of(k, v)));
+        return emKeyValues;
     }
 
     public String key() {
