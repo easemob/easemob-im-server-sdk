@@ -33,10 +33,9 @@ public class Upload {
                         return;
                     }
                     String id = rsp.getFiles().get(0).getId();
+                    String url = rsp.getBaseUrl() + "/" + id;
                     String secret = rsp.getFiles().get(0).getSecret();
-                    sink.next(new EMAttachment(id, secret));
+                    sink.next(new EMAttachment(id, url, secret));
                 });
     }
-
-
 }

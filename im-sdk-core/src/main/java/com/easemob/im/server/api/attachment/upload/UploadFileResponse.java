@@ -7,6 +7,9 @@ import java.util.List;
 
 public class UploadFileResponse {
 
+    @JsonProperty("uri")
+    private String baseUrl;
+
     @JsonProperty("entities")
     private List<FileUploaded> files;
 
@@ -41,8 +44,14 @@ public class UploadFileResponse {
     }
 
     @JsonCreator
-    public UploadFileResponse(@JsonProperty("entities") List<FileUploaded> files) {
+    public UploadFileResponse(@JsonProperty("entities") List<FileUploaded> files,
+                              @JsonProperty("uri") String baseUrl) {
         this.files = files;
+        this.baseUrl = baseUrl;
+    }
+
+    public String getBaseUrl() {
+        return this.baseUrl;
     }
 
     public List<FileUploaded> getFiles() {
