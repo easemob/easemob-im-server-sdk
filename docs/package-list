@@ -7,6 +7,7 @@ com.easemob.im.server.api.block
 com.easemob.im.server.api.block.group.join
 com.easemob.im.server.api.block.group.msg
 com.easemob.im.server.api.block.login
+com.easemob.im.server.api.block.room.join
 com.easemob.im.server.api.block.room.msg.block
 com.easemob.im.server.api.block.room.msg.list
 com.easemob.im.server.api.block.room.msg.unblock
