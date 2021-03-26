@@ -15,19 +15,12 @@ public class EMUser extends EMEntity {
 
     private final String username;
 
-    private final String nickname;
-
     private final Boolean canLogin;
 
-    public EMUser(String username, String nickname) {
-        this(username, nickname, null);
-    }
-
-    public EMUser(String username, String nickname, Boolean canLogin) {
+    public EMUser(String username, Boolean canLogin) {
         super(EntityType.USER);
         super.id(username);
         this.username = username;
-        this.nickname = nickname;
         this.canLogin = canLogin;
     }
 
@@ -51,10 +44,6 @@ public class EMUser extends EMEntity {
 
     public String getUsername() {
         return this.username;
-    }
-
-    public String getNickname() {
-        return this.nickname;
     }
 
     public boolean getCanLogin() {
@@ -82,7 +71,6 @@ public class EMUser extends EMEntity {
     public String toString() {
         return "EMUser{" +
                 "username='" + username + '\'' +
-                ", nickname='" + nickname + '\'' +
                 ", canLogin=" + canLogin +
                 '}';
     }
