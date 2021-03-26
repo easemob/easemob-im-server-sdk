@@ -21,11 +21,9 @@ public class Upload {
                 //.headers(headers -> headers.remove("Authorization"))
                 .post()
                 .uri("/chatfiles")
-                .sendForm((req, form) -> {
-                    form.multipart(true)
-                            .attr("filename", path.getFileName().toString())
-                            .file("file", path.toFile());
-                }).responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                .sendForm((req, form) -> form.multipart(true)
+                        .attr("filename", path.getFileName().toString())
+                        .file("file", path.toFile())).responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
                 .map(buf -> this.context.getCodec().decode(buf, UploadFileResponse.class))
                 .handle((rsp, sink) -> {
                     if (rsp.getFiles().isEmpty()) {

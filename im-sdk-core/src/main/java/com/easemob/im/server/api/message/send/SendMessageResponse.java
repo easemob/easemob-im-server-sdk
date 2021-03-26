@@ -1,6 +1,6 @@
 package com.easemob.im.server.api.message.send;
 
-import com.easemob.im.server.model.EMSentMessages;
+import com.easemob.im.server.model.EMSentMessageIds;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -29,8 +29,8 @@ public class SendMessageResponse {
         return this.messageIdsByReceiverId.get(receiverId);
     }
 
-    public EMSentMessages toEMSentMessages() {
-        return new EMSentMessages(this.messageIdsByReceiverId);
+    public EMSentMessageIds toEMSentMessages() {
+        return new EMSentMessageIds(this.messageIdsByReceiverId);
     }
     /**
      * Get all message ids mapped by receiver id.

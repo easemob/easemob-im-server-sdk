@@ -9,13 +9,10 @@ import reactor.core.publisher.Mono;
  * 通讯录API。可以添加和移除联系人，目前联系人只作为通讯录之用。
  */
 public class ContactApi {
-
-    private Context context;
     
     private ContactUser contactUser;
 
     public ContactApi(Context context) {
-        this.context = context;
         this.contactUser = new ContactUser(context);
     }
 

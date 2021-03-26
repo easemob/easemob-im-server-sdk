@@ -3,18 +3,10 @@ package com.easemob.im.server.api;
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.exception.*;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientResponse;
 
-import java.lang.reflect.Constructor;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 public class DefaultErrorMapper implements ErrorMapper {
-
-    private static final Logger log = LoggerFactory.getLogger(DefaultErrorMapper.class);
 
     public Mono<HttpClientResponse> apply(HttpClientResponse response) {
         if (response.status().code() < 400) {

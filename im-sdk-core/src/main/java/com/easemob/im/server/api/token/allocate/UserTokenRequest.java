@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserTokenRequest implements TokenRequest {
-
+    @SuppressWarnings("java:S1170")
     @JsonProperty("grant_type")
     private final String grantType = "password";
 

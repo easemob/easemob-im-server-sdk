@@ -8,4 +8,7 @@ public class EMJsonException extends EMException {
         super(message);
     }
 
+    public EMJsonException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

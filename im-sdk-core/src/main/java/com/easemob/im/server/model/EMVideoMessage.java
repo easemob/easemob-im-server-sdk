@@ -3,8 +3,8 @@ package com.easemob.im.server.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.URI;
-import java.util.Objects;
 
+@SuppressWarnings("java:S2160")
 public class EMVideoMessage extends EMMessage {
     private URI uri;
 

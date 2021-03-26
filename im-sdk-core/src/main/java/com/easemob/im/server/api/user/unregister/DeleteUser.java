@@ -2,15 +2,10 @@ package com.easemob.im.server.api.user.unregister;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMUnknownException;
-import com.easemob.im.server.model.EMUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class DeleteUser {
-
-    private static final Logger log = LoggerFactory.getLogger(DeleteUser.class);
 
     private Context context;
 

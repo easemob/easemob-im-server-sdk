@@ -6,8 +6,6 @@ import com.easemob.im.server.model.EMBlock;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-
-// TODO: add block/unblock user join group in batch
 public class BlockUserJoinGroup {
     
     private Context context;

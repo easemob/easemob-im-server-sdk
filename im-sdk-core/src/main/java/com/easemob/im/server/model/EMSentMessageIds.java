@@ -2,11 +2,11 @@ package com.easemob.im.server.model;
 
 import java.util.Map;
 
-public class EMSentMessages {
+public class EMSentMessageIds {
 
     private Map<String, String> messageIdsByEntityId;
 
-    public EMSentMessages(Map<String, String> messageIdsByEntityId) {
+    public EMSentMessageIds(Map<String, String> messageIdsByEntityId) {
         this.messageIdsByEntityId = messageIdsByEntityId;
     }
 

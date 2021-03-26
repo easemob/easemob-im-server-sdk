@@ -2,9 +2,7 @@ package com.easemob.im.server.model;
 
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 
-import java.time.Instant;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class EMUser extends EMEntity {

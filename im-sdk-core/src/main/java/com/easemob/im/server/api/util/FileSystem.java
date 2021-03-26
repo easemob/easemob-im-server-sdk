@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 public class FileSystem {
+
     public static Path choosePath(Path dir, String filename) {
         if (!dir.toFile().exists()) {
             dir.toFile().mkdirs();
@@ -24,7 +25,6 @@ public class FileSystem {
     }
 
     public static OutputStream open(Path path) {
-        OutputStream outputStream = null;
         try {
             return Files.newOutputStream(path, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
         } catch (IOException e) {
@@ -59,4 +59,7 @@ public class FileSystem {
             throw new EMFileSystemException(e.getMessage());
         }
     }
+
+    // avoid instantiate
+    private FileSystem() {}
 }

@@ -26,8 +26,6 @@ import java.time.Duration;
  * - 禁止登录
  */
 public class BlockApi {
-
-    private Context context;
     
     private SendMsgToUser sendMsgToUser;
     
@@ -46,7 +44,6 @@ public class BlockApi {
     private ListUsersBlockedSendMsgToRoom listUsersBlockedSendMsgToRoom;
 
     public BlockApi(Context context) {
-        this.context = context;
         this.sendMsgToUser = new SendMsgToUser(context);
         this.blockUserLogin = new BlockUserLogin(context);
         this.blockUserJoinGroup = new BlockUserJoinGroup(context);

@@ -49,8 +49,6 @@ import java.util.function.Consumer;
  */
 public class GroupApi {
 
-    private Context context;
-
     private GroupList groupList;
     private CreateGroup createGroup;
     private DeleteGroup deleteGroup;
@@ -68,7 +66,6 @@ public class GroupApi {
     private GroupAdminRemove groupAdminRemove;
 
     public GroupApi(Context context) {
-        this.context = context;
         this.groupList = new GroupList(context);
         this.createGroup = new CreateGroup(context);
         this.deleteGroup = new DeleteGroup(context);
@@ -85,7 +82,6 @@ public class GroupApi {
         this.groupAdminList = new GroupAdminList(context);
         this.groupAdminAdd = new GroupAdminAdd(context);
         this.groupAdminRemove = new GroupAdminRemove(context);
-
     }
 
     /**

@@ -2,17 +2,15 @@ package com.easemob.im.server.api.room;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.room.admin.demote.DemoteRoomAdmin;
-import com.easemob.im.server.api.room.admin.promote.PromoteRoomAdmin;
 import com.easemob.im.server.api.room.admin.list.ListRoomAdmins;
+import com.easemob.im.server.api.room.admin.promote.PromoteRoomAdmin;
 import com.easemob.im.server.api.room.create.CreateRoom;
 import com.easemob.im.server.api.room.delete.DeleteRoom;
 import com.easemob.im.server.api.room.detail.GetRoomDetail;
 import com.easemob.im.server.api.room.list.ListRooms;
-import com.easemob.im.server.api.room.list.ListRoomsResponse;
 import com.easemob.im.server.api.room.member.add.AddRoomMember;
-import com.easemob.im.server.api.room.member.remove.RemoveRoomMember;
-import com.easemob.im.server.api.room.member.list.ListRoomMembersResponse;
 import com.easemob.im.server.api.room.member.list.ListRoomMembers;
+import com.easemob.im.server.api.room.member.remove.RemoveRoomMember;
 import com.easemob.im.server.api.room.superadmin.demote.DemoteRoomSuperAdmin;
 import com.easemob.im.server.api.room.superadmin.list.ListRoomSuperAdmins;
 import com.easemob.im.server.api.room.superadmin.promote.PromoteRoomSuperAdmin;
@@ -23,7 +21,6 @@ import com.easemob.im.server.model.EMRoom;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -42,16 +39,9 @@ import java.util.function.Consumer;
  * - 获取聊天室管理员
  * - 添加聊天室管理员
  *
- * TODO：支持聊天室超级管理员管理
- *
  * @see com.easemob.im.server.api.block.BlockApi
  */
 public class RoomApi {
-    private static final List<String> EMPTY_MEMBER_LIST = new ArrayList<>();
-
-    private static final int DEFAULT_MAX_MEMBERS = 200;
-
-    private Context context;
     
     private CreateRoom createRoom;
     
@@ -82,7 +72,6 @@ public class RoomApi {
     private DeleteRoom deleteRoom;
 
     public RoomApi(Context context) {
-        this.context = context;
         this.createRoom = new CreateRoom(context);
         this.getRoomDetail = new GetRoomDetail(context);
         this.updateRoom = new UpdateRoom(context);

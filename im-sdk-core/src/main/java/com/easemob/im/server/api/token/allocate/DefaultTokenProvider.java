@@ -7,8 +7,6 @@ import com.easemob.im.server.api.loadbalance.Endpoint;
 import com.easemob.im.server.api.loadbalance.EndpointRegistry;
 import com.easemob.im.server.api.loadbalance.LoadBalancer;
 import com.easemob.im.server.api.token.Token;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
@@ -16,8 +14,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-public class DefaultTokenProvider implements TokenProvider, UserTokenProvider {
-    private static final Logger log = LoggerFactory.getLogger(DefaultTokenProvider.class);
+public class DefaultTokenProvider implements TokenProvider {
 
     private final EMProperties properties;
 

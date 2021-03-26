@@ -18,7 +18,7 @@ public class SendMessage {
         return new RouteSpec(username);
     }
 
-    public Mono<EMSentMessages> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
         return this.context.getHttpClient()
                 .post()
                 .uri("/messages?useMsgId=true")
@@ -157,7 +157,7 @@ public class SendMessage {
             return this;
         }
 
-        public Mono<EMSentMessages> send() {
+        public Mono<EMSentMessageIds> send() {
             return SendMessage.this.send(this.from, this.toType, this.tos, this.message, this.extensions);
         }
 

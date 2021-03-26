@@ -2,16 +2,10 @@ package com.easemob.im.server.api.attachment.download;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.util.FileSystem;
-import com.easemob.im.server.exception.EMFileSystemException;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 
 public class Download {
 

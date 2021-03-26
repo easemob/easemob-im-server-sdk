@@ -22,8 +22,6 @@ import reactor.core.publisher.Mono;
  */
 public class UserApi {
 
-    private Context context;
-
     private CreateUser createUser;
     private DeleteUser deleteUser;
     private ListUsers listUsers;
@@ -35,7 +33,6 @@ public class UserApi {
     private UserGet userGet;
 
     public UserApi(Context context) {
-        this.context = context;
         this.createUser = new CreateUser(context);
         this.deleteUser = new DeleteUser(context);
         this.listUsers = new ListUsers(context);

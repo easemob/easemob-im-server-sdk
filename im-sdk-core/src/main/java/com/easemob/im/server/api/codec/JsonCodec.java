@@ -2,7 +2,6 @@ package com.easemob.im.server.api.codec;
 
 import com.easemob.im.server.api.Codec;
 import com.easemob.im.server.exception.EMJsonException;
-import com.easemob.im.server.exception.EMUnknownException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -15,7 +14,7 @@ import java.io.IOException;
 
 public class JsonCodec implements Codec {
 
-    public ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     public JsonCodec() {
         this.objectMapper = new ObjectMapper();
@@ -29,8 +28,7 @@ public class JsonCodec implements Codec {
             byte[] bytes = this.objectMapper.writeValueAsBytes(object);
             buffer.writeBytes(bytes);
         } catch (JsonProcessingException e) {
-            System.out.println(String.format("could not encode object: %s", e.getMessage()));
-            throw new EMJsonException(String.format("could not encode object: %s", e.getMessage()));
+            throw new EMJsonException(String.format("could not encode object: %s", e.getMessage()), e);
         }
 
         return buffer;
@@ -52,8 +50,7 @@ public class JsonCodec implements Codec {
         try {
             return this.objectMapper.readValue(array, offset, len, tClass);
         } catch (IOException e) {
-            System.out.println(String.format("could not decode class %s: %s", tClass.getName(), e.getMessage()));
-            throw new EMJsonException(String.format("could not decode class %s: %s", tClass.getName(), e.getMessage()));
+            throw new EMJsonException(String.format("could not decode class %s: %s", tClass.getName(), e.getMessage()), e);
         }
     }
 

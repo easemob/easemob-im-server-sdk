@@ -1,6 +1,5 @@
 package com.easemob.im.server.model;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -75,7 +74,7 @@ public class EMKeyValue {
 
     public static Set<EMKeyValue> of(Map<String, Object> map) {
         if (map == null || map.isEmpty()) {
-            return null;
+            return new LinkedHashSet<>();
         }
         Set<EMKeyValue> emKeyValues = new LinkedHashSet<>(map.size());
         map.forEach((k, v) -> emKeyValues.add(EMKeyValue.of(k, v)));

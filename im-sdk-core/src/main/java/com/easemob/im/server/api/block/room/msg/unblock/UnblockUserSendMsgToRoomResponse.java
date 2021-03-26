@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UnblockUserSendMsgToRoomResponse {
     @JsonProperty("data")
-    private List<Result> result;
+    private List<Result> results;
 
     public static class Result {
         @JsonProperty("result")
@@ -33,12 +33,12 @@ public class UnblockUserSendMsgToRoomResponse {
     }
 
     @JsonCreator
-    public UnblockUserSendMsgToRoomResponse(@JsonProperty("data") List<Result> result) {
-        this.result = result;
+    public UnblockUserSendMsgToRoomResponse(@JsonProperty("data") List<Result> results) {
+        this.results = results;
     }
 
     public boolean isSuccess(String username) {
-        return this.result.stream().filter(result -> result.getUsername().equals(username))
+        return this.results.stream().filter(result -> result.getUsername().equals(username))
                 .findFirst().map(result -> result.isSuccess).orElse(false);
     }
 

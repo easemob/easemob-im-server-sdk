@@ -28,7 +28,7 @@ public class MessageFile {
     @JsonProperty("exts")
     private Map<String, Object> extensions;
 
-    public Mono<EMSentMessages> send(MessageApi messageApi) {
+    public Mono<EMSentMessageIds> send(MessageApi messageApi) {
         return messageApi.send(from, this.toTypeStr(), toIds, body.toEMMessage(), EMKeyValue.of(extensions));
     }
 

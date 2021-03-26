@@ -9,7 +9,7 @@ import com.easemob.im.server.api.message.send.SendMessage;
 import com.easemob.im.server.api.message.status.MessageStatus;
 import com.easemob.im.server.model.EMKeyValue;
 import com.easemob.im.server.model.EMMessage;
-import com.easemob.im.server.model.EMSentMessages;
+import com.easemob.im.server.model.EMSentMessageIds;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -26,8 +26,6 @@ import java.util.Set;
  */
 public class MessageApi {
 
-    private Context context;
-
     private MessageMissed missed;
 
     private SendMessage sendMessage;
@@ -38,7 +36,6 @@ public class MessageApi {
 
     public MessageApi(Context context) {
         EMProperties properties = context.getProperties();
-        this.context = context;
         this.missed = new MessageMissed(context);
         this.sendMessage = new SendMessage(context);
         this.messageHistory = new MessageHistory(context, properties.getServerTimezone());
@@ -99,7 +96,7 @@ public class MessageApi {
      * @return 发消息响应或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
      */
-    public Mono<EMSentMessages> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
         return this.sendMessage.send(from, toType, tos, message, extensions);
     }
 
