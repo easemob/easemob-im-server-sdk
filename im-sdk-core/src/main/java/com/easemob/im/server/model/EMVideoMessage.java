@@ -89,52 +89,6 @@ public class EMVideoMessage extends EMMessage {
         return this;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        if (!super.equals(o)) return false;
-//        EMVideoMessage that = (EMVideoMessage) o;
-//        return Objects.equals(uri, that.uri) && Objects.equals(displayName, that.displayName) && Objects.equals(secret, that.secret) && Objects.equals(bytes, that.bytes) && Objects.equals(duration, that.duration);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(super.hashCode(), uri, displayName, secret, bytes, duration);
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "EMVideoMessage{" +
-//                "uri=" + uri +
-//                ", displayName='" + displayName + '\'' +
-//                ", secret='" + secret + '\'' +
-//                ", bytes=" + bytes +
-//                ", duration=" + duration +
-//                '}';
-//    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        EMVideoMessage that = (EMVideoMessage) o;
-        return Objects.equals(uri, that.uri) &&
-                Objects.equals(displayName, that.displayName) &&
-                Objects.equals(secret, that.secret) &&
-                Objects.equals(bytes, that.bytes) &&
-                Objects.equals(duration, that.duration) &&
-                Objects.equals(thumb, that.thumb) &&
-                Objects.equals(thumbSecret, that.thumbSecret);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), uri, displayName, secret, bytes, duration, thumb, thumbSecret);
-    }
-
     @Override
     public String toString() {
         return "EMVideoMessage{" +
