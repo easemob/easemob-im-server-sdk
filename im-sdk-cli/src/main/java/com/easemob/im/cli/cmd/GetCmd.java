@@ -25,8 +25,8 @@ public class GetCmd {
     private EMService service;
 
     @Command(name = "attachment", description = "Download attachment by id.")
-    public void attachment(@Parameters String id,
-                           @Option(names = "--path", defaultValue = ".", description = "attachment download path") Path path) {
+    public void attachment(@Parameters(description = "attachment file id, returned by upload service.") String id,
+                           @Option(names = "-o", defaultValue = "", description = "attachment download path, default is current dir") Path path) {
         this.service.attachment().downloadFile(id, path, id)
                 .doOnSuccess(downloaded -> System.out.println(String.format("downloaded: %s", downloaded.toString())))
                 .doOnError(error -> System.out.println(String.format("error: %s", error.getMessage())))
@@ -278,7 +278,7 @@ public class GetCmd {
         @Option(names = "--history", description = "get the history file uri by time", required = true)
         boolean history;
 
-        @Option(names = "--download-path", description = "download the file if specified the download path. the file is compressed, use `zless` to read it")
+        @Option(names = "-o", description = "download the history file, the file is compressed, use `zless` to read it")
         Path downloadPath;
 
         @Parameters(description = "the ISO8601 date time. e.g. 2020-12-12T13:00")
