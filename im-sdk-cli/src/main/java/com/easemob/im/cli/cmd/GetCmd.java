@@ -41,7 +41,6 @@ public class GetCmd {
             this.service.user().get(username)
                     .doOnNext(user -> {
                         System.out.printf("username: %s\n", user.getUsername());
-                        System.out.printf("nickname: %s \n", user.getNickname());
                         System.out.printf("canLogin: %b \n", user.getCanLogin());
                     }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
