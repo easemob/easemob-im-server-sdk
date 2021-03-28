@@ -1,10 +1,8 @@
 package com.easemob.im.cli.cmd;
 
-import com.easemob.im.cli.model.MessageFile;
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
 import com.easemob.im.server.model.*;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -14,11 +12,12 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @Command(name = "create", description = "Create a resource.")
@@ -238,53 +237,38 @@ public class CreateCmd {
             @Option(names = "--bytes", description = "file size, unit is B(byte)", defaultValue = "0") Integer bytes,
             @Option(names = "--duration", description = "video or audio duration, unit is s(second)", defaultValue = "0") Integer duration,
             @Option(names = "--ext", description = "message extension") Map<String, Object> extensions,
-            @Option(names = "--param", description = "message extension") Map<String, Object> params,
-            @Option(names = "-f", description = "send message by file") Path messageFilePath) throws IOException {
-
+            @Option(names = "--param", description = "message extension") Map<String, Object> params) {
         EMMessage message;
-        if (msg != null) {
-            if (msg.text != null) {
-                message = new EMTextMessage().text(msg.text);
-            } else if (msg.img != null) {
-                message = new EMImageMessage().displayName(filename).uri(URI.create(msg.img)).secret(secret).bytes(bytes);
-            } else if (msg.audio != null) {
-                message = new EMVoiceMessage().displayName(filename).uri(URI.create(msg.audio)).secret(secret).duration(duration).bytes(bytes);
-            } else if (msg.video != null) {
-                message = new EMVideoMessage().displayName(filename).uri(URI.create(msg.video)).secret(secret).duration(duration).bytes(bytes);
-            } else if (msg.loc != null) {
-                message = new EMLocationMessage().longitude(Double.parseDouble(msg.loc[0])).latitude(Double.parseDouble(msg.loc[1])).address(msg.loc[2]);
-            } else if (msg.file != null) {
-                message = new EMFileMessage().displayName(filename).uri(URI.create(msg.file)).secret(secret).bytes(bytes);
-            } else if (msg.cmd != null) {
-                message = new EMCommandMessage().action(msg.cmd).params(EMKeyValue.of(params));
-            } else {
-                message = new EMCustomMessage().customEvent(msg.custom).customExtensions(EMKeyValue.of(params));
-            }
-            String toType = to.toUsernames != null ? "users" : to.toGroupIds != null ? "chatgroups" : "chatrooms";
-            Set<String> toIds = to.toUsernames != null ? to.toUsernames : to.toGroupIds != null ? to.toGroupIds : to.toRoomIds;
-            this.service.message()
-                    .send(from, toType, toIds, message, EMKeyValue.of(extensions))
-                    .doOnSuccess(sentMessages -> {
-                        sentMessages.getMessageIdsByEntityId().forEach((toId, messageId) -> {
-                            System.out.printf("toId = %s : messageId = %s\n", toId, messageId);
-                        });
-                    })
-                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                    .onErrorResume(EMException.class, ignore -> Mono.empty())
-                    .block();
+
+        if (msg.text != null) {
+            message = new EMTextMessage().text(msg.text);
+        } else if (msg.img != null) {
+            message = new EMImageMessage().displayName(filename).uri(URI.create(msg.img)).secret(secret).bytes(bytes);
+        } else if (msg.audio != null) {
+            message = new EMVoiceMessage().displayName(filename).uri(URI.create(msg.audio)).secret(secret).duration(duration).bytes(bytes);
+        } else if (msg.video != null) {
+            message = new EMVideoMessage().displayName(filename).uri(URI.create(msg.video)).secret(secret).duration(duration).bytes(bytes);
+        } else if (msg.loc != null) {
+            message = new EMLocationMessage().longitude(Double.parseDouble(msg.loc[0])).latitude(Double.parseDouble(msg.loc[1])).address(msg.loc[2]);
+        } else if (msg.file != null) {
+            message = new EMFileMessage().displayName(filename).uri(URI.create(msg.file)).secret(secret).bytes(bytes);
+        } else if (msg.cmd != null) {
+            message = new EMCommandMessage().action(msg.cmd).params(EMKeyValue.of(params));
         } else {
-            JsonMapper mapper = new JsonMapper();
-            mapper.readValue(messageFilePath.toFile(), MessageFile.class)
-                    .send(this.service.message())
-                    .doOnSuccess(sentMessages -> {
-                        sentMessages.getMessageIdsByEntityId().forEach((toId, messageId) -> {
-                            System.out.printf("toId = %s : messageId = %s\n", toId, messageId);
-                        });
-                    })
-                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                    .onErrorResume(EMException.class, ignore -> Mono.empty())
-                    .block();
+            message = new EMCustomMessage().customEvent(msg.custom).customExtensions(EMKeyValue.of(params));
         }
+        String toType = to.toUsernames != null ? "users" : to.toGroupIds != null ? "chatgroups" : "chatrooms";
+        Set<String> toIds = to.toUsernames != null ? to.toUsernames : to.toGroupIds != null ? to.toGroupIds : to.toRoomIds;
+        this.service.message()
+                .send(from, toType, toIds, message, EMKeyValue.of(extensions))
+                .doOnSuccess(sentMessages -> {
+                    sentMessages.getMessageIdsByEntityId().forEach((toId, messageId) -> {
+                        System.out.printf("toId = %s : messageId = %s\n", toId, messageId);
+                    });
+                })
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, ignore -> Mono.empty())
+                .block();
     }
 
     private static class AdminArgGroup {
