@@ -4,24 +4,40 @@
 
 ## 快速开始
 
-### 全局安装
+### 安装
+
+#### 1. 自动安装
 
 ```bash
-sh -c "$(curl -fsSL https://github.com/easemob/easemob-im-server-sdk/tree/master/im-sdk-cli/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/easemob/easemob-im-server-sdk/master/im-sdk-cli/install.sh)"
 ```
 
 或：
 
 ```bash
-sh -c "$(wget https://github.com/easemob/easemob-im-server-sdk/tree/master/im-sdk-cli/install.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/easemob/easemob-im-server-sdk/master/im-sdk-cli/install.sh -O -)"
 ```
 
 这将会将程序安装至`~/.easemob/`中，并将相关命令加入系统环境变量
 
-### 临时使用
+#### 2. 手动安装
 
 ```bash
-alias im='java -jar {download_path}/im-sdk-cli-0.2.5.jar'
+git clone https://github.com/easemob/easemob-im-server-sdk.git
+cd /easemob-im-server-sdk
+mvn package -Dmaven.test.skip=true
+```
+
+对于Zsh
+
+```bash
+echo alias im='java -jar im-sdk-cli/im-sdk-cli-x.x.x.jar' >> ~/.zshrc
+```
+
+对于Bash
+
+```bash
+echo alias im='java -jar im-sdk-cli/im-sdk-cli-x.x.x.jar' >> ~/.bashrc
 ```
 
 ### 配置
@@ -37,8 +53,8 @@ im.client-secret=your-app-client-secret
 ### 体验
 
 ```bash
-# 创建一个用户，用户名为test-user，密码为test-password，昵称为user
-❯ im create user test-user test-password --nickname=user
+# 创建一个用户，用户名为test-user，密码为test-password
+❯ im create user test-user test-password
 
 done
 ```
@@ -55,7 +71,6 @@ done
 ❯ im get user test-user                 
 
 username: test-user
-nickname: user 
 canLogin: true
 ```
 
