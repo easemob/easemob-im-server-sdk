@@ -19,15 +19,16 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/easemob/easemob-im-server-
 sh -c "$(wget https://raw.githubusercontent.com/easemob/easemob-im-server-sdk/master/im-sdk-cli/install.sh -O -)"
 ```
 
-(2) 添加环境变量
+(2) 添加alias
 
 向`~/.zshrc`或`~/.bashrc`中添加以下命令(取决于您使用的SHELL)：
 
 ```bash
 alias im='java -jar ~/.easemob/im-sdk-cli.jar'
+source ~/.easemob/completion.sh
 ```
 
-(3) 刷新环境变量
+(3) 刷新配置
 
 ```bash
 source ~/.zshrc 或 ~/.bashrc
@@ -44,17 +45,19 @@ cd /easemob-im-server-sdk
 mvn package -Dmaven.test.skip=true
 mkdir ~/.easemob
 cp im-sdk-cli/target/im-sdk-cli-x.x.x.jar ~/.easemob/im-sdk-cli.jar
+cp im-sdk-cli/target/completion.sh ~/.easemob/completion.sh
 ```
 
-(2) 添加环境变量
+(2) 添加alias
 
 向`~/.zshrc`或`~/.bashrc`中添加以下命令(取决于您使用的SHELL)：
 
 ```bash
 alias im='java -jar ~/.easemob/im-sdk-cli.jar'
+source ~/.easemob/completion.sh
 ```
 
-(3) 刷新环境变量
+(3) 刷新配置
 
 ```bash
 source ~/.zshrc 或 ~/.bashrc
