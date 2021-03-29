@@ -8,6 +8,7 @@
 
 #### 1. 自动安装
 
+(1) 执行安装脚本
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/easemob/easemob-im-server-sdk/master/im-sdk-cli/install.sh)"
 ```
@@ -18,10 +19,25 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/easemob/easemob-im-server-
 sh -c "$(wget https://raw.githubusercontent.com/easemob/easemob-im-server-sdk/master/im-sdk-cli/install.sh -O -)"
 ```
 
+(2) 添加环境变量
+
+向`~/.zshrc`或`~/.bashrc`中添加以下命令(取决于您使用的SHELL)：
+
+```bash
+alias im='java -jar ~/.easemob/im-sdk-cli.jar'
+```
+
+(3) 刷新环境变量
+
+```bash
+source ~/.zshrc 或 ~/.bashrc
+```
+
 这将会将程序安装至`~/.easemob/`中，并将相关命令加入系统环境变量
 
 #### 2. 手动安装
 
+(1) 编译打包
 ```bash
 git clone https://github.com/easemob/easemob-im-server-sdk.git
 cd /easemob-im-server-sdk
@@ -30,23 +46,27 @@ mkdir ~/.easemob
 cp im-sdk-cli/target/im-sdk-cli-x.x.x.jar ~/.easemob/im-sdk-cli.jar
 ```
 
-对于Zsh
+(2) 添加环境变量
+
+向`~/.zshrc`或`~/.bashrc`中添加以下命令(取决于您使用的SHELL)：
 
 ```bash
-echo "alias im='java -jar $HOME/.easemob/im-sdk-cli.jar'" >> ~/.zshrc
+alias im='java -jar ~/.easemob/im-sdk-cli.jar'
 ```
 
-对于Bash
+(3) 刷新环境变量
 
 ```bash
-echo "alias im='java -jar $HOME/.easemob/im-sdk-cli.jar'" >> ~/.bashrc
+source ~/.zshrc 或 ~/.bashrc
 ```
 
 ### 配置
 
-IM CLI 会从`~/.easemob/config.properties`中读取配置文件，您需要从[环信通讯云管理后台](https://console.easemob.com/)来获取您的应用开发者密钥。
+IM CLI 会从`~/.easemob/config.properties`中读取配置文件，您需要从[环信通讯云管理后台](https://console.easemob.com/)来获取您的应用开发者密钥并填写到此处。
 
 ```properties
+vim ~/.easemob/config.properties
+
 im.appkey=your-appkey
 im.client-id=your-app-client-id
 im.client-secret=your-app-client-secret
