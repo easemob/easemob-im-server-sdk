@@ -26,18 +26,20 @@ sh -c "$(wget https://raw.githubusercontent.com/easemob/easemob-im-server-sdk/ma
 git clone https://github.com/easemob/easemob-im-server-sdk.git
 cd /easemob-im-server-sdk
 mvn package -Dmaven.test.skip=true
+mkdir ~/.easemob
+cp im-sdk-cli/target/im-sdk-cli-x.x.x.jar ~/.easemob/im-sdk-cli.jar
 ```
 
 对于Zsh
 
 ```bash
-echo alias im='java -jar im-sdk-cli/im-sdk-cli-x.x.x.jar' >> ~/.zshrc
+echo "alias im='java -jar $HOME/.easemob/im-sdk-cli.jar'" >> ~/.zshrc
 ```
 
 对于Bash
 
 ```bash
-echo alias im='java -jar im-sdk-cli/im-sdk-cli-x.x.x.jar' >> ~/.bashrc
+echo "alias im='java -jar $HOME/.easemob/im-sdk-cli.jar'" >> ~/.bashrc
 ```
 
 ### 配置
