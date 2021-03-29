@@ -231,4 +231,17 @@ class UserIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.block().unblockUserLogin(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
     }
+
+    @Test
+    void testUserOnlineStatus() {
+        String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomUsername;
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
+        boolean isOnline = assertDoesNotThrow(() -> this.service.user().isUserOnline(randomUsername).block(Duration.ofSeconds(3)));
+        if (isOnline) {
+            throw new RuntimeException(String.format("%s is online status", randomUsername));
+        }
+        assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+    }
+
 }
