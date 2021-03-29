@@ -29,19 +29,3 @@ else
   echo "downloading $jar_name."
   curl -fL -o $easemob_home/$jar_name https://repo1.maven.org/maven2/com/easemob/im/im-sdk-cli/$version/im-sdk-cli-$version.jar
 fi
-
-if [ $SHELL = "/bin/bash" ]; then
-    profile_file="${HOME}/.bashrc"
-fi
-
-if [ $SHELL = "/bin/zsh" ]; then
-  profile_file="${HOME}/.zshrc"
-fi
-
-if ! grep -q "IM SDK CLI" $profile_file; then
-  echo appending command to $profile_file
-  cat << EOF >> $profile_file
-# IM SDK CLI
-alias im='java -jar $easemob_home/$jar_name'
-EOF
-fi
