@@ -23,9 +23,22 @@ else
   echo "$config_file exists, skip creating file."
 fi
 
-if [ -f $easemob_home/$jar_name ]; then
-  echo "$easemob_home/$jar_name exists, skip downloading."
-else
-  echo "downloading $jar_name."
-  curl -fL -o $easemob_home/$jar_name https://repo1.maven.org/maven2/com/easemob/im/im-sdk-cli/$version/im-sdk-cli-$version.jar
-fi
+echo "downloading $jar_name."
+curl -fL -o $easemob_home/$jar_name https://repo1.maven.org/maven2/com/easemob/im/im-sdk-cli/$version/im-sdk-cli-$version.jar
+
+echo "downloading completion.sh."
+curl -fL -o $easemob_home/completion.sh https://raw.githubusercontent.com/easemob/easemob-im-server-sdk/master/im-sdk-cli/completion.sh
+
+echo -e "\nAll done!\n"
+
+echo "Please add the following script in your ~/.bashrc or ~/.zshrc:"
+echo ""
+echo "    alias im='java -jar ~/.easemob/im-sdk-cli.jar'"
+echo "    source ~/.easemob/completion.sh"
+echo ""
+echo "Then issue the following command:"
+echo ""
+echo "    source ~/.bashrc or ~/.zshrc"
+echo "    im -h"
+echo ""
+echo "Enjoy!!!"
