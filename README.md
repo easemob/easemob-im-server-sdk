@@ -57,8 +57,6 @@ EMService service = new EMService(properties);
   用于管理群组
 - [Message](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/message/MessageApi.html)
   用于发送消息
-- [Notification](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/notification/NotificationApi.html)
-  用于管理推送
 - [User](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/user/UserApi.html)
   用于管理用户
 - [Room](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/room/RoomApi.html)
