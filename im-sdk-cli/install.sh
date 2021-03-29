@@ -39,7 +39,9 @@ if [ $SHELL = "/bin/zsh" ]; then
 fi
 
 if ! grep -q "IM SDK CLI" $profile_file; then
-  echo -e "\n\n# IM SDK CLI #" >> $profile_file
-  echo -e "alias im='java -jar $easemob_home/$jar_name'" >> $profile_file
   echo appending command to $profile_file
+  cat << EOF >> $profile_file
+# IM SDK CLI
+alias im='java -jar $easemob_home/$jar_name'
+EOF
 fi
