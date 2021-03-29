@@ -20,13 +20,13 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-@Command(name = "create", description = "Create a resource.")
+@Command(name = "create", description = "Create a resource.", mixinStandardHelpOptions = true)
 public class CreateCmd {
 
     @Autowired
     private EMService service;
 
-    @Command(name = "attachment", description = "Create an attachment.")
+    @Command(name = "attachment", description = "Create an attachment.", mixinStandardHelpOptions = true)
     public void attachment(@Option(names = "-f", description = "from file") Path file) {
         this.service.attachment().uploadFile(file)
                 .doOnNext(resp ->
@@ -59,7 +59,7 @@ public class CreateCmd {
         Duration duration;
     }
 
-    @Command(name = "block", description = "Block user from resource.")
+    @Command(name = "block", description = "Block user from resource.", mixinStandardHelpOptions = true)
     public void block(@Parameters(description = "user to block") String username,
                       @ArgGroup(multiplicity = "1", exclusive = false) BlockArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.msgToUsername)) {
@@ -116,7 +116,7 @@ public class CreateCmd {
                 .block();
     }
 
-    @Command(name = "contact", description = "Add a contact to the user.")
+    @Command(name = "contact", description = "Add a contact to the user.", mixinStandardHelpOptions = true)
     public void contact(@Parameters(description = "the user's username") String user1,
                         @Parameters(description = "the contact's username") String contact) {
         this.service.contact().add(user1, contact)
@@ -128,7 +128,7 @@ public class CreateCmd {
 
     @Command(name = "group", description = "Create a group.\n" +
             "Public(by default) groups can be listed using Android, iOS, Web SDKs. So that end user can discover and join public groups.\n" +
-            "Private groups can NOT be listed using Android, iOS, Web SDKs.")
+            "Private groups can NOT be listed using Android, iOS, Web SDKs.", mixinStandardHelpOptions = true)
     public void group(@Parameters(arity = "1", description = "the member's username list") List<String> members,
                       @Option(names = "--owner", required = true, description = "the owner's username") String owner,
                       @Option(names = "--name", required = true, description = "the group's name") String name,
@@ -151,7 +151,7 @@ public class CreateCmd {
         }
     }
 
-    @Command(name = "room", description = "Create a room.")
+    @Command(name = "room", description = "Create a room.", mixinStandardHelpOptions = true)
     public void room(@Parameters(arity = "1", description = "the member's username list") List<String> members,
                      @Option(names = "--name", required = true, description = "the room name") String name,
                      @Option(names = "--owner", required = true, description = "the owner's username") String owner,
@@ -172,7 +172,7 @@ public class CreateCmd {
         String toRoom;
     }
 
-    @Command(name = "member", description = "Add user to group or room.")
+    @Command(name = "member", description = "Add user to group or room.", mixinStandardHelpOptions = true)
     public void member(@Parameters(description = "the user") String username,
                        @ArgGroup(multiplicity = "1") MemberArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.toGroup)) {
@@ -227,7 +227,7 @@ public class CreateCmd {
         String custom;
     }
 
-    @Command(name = "message", description = "Send messages.")
+    @Command(name = "message", description = "Send messages.", mixinStandardHelpOptions = true)
     public void message(
             @Option(names = "--from", description = "message sender username", required = true) String from,
             @ArgGroup(multiplicity = "1", heading = "To whom.\n") MessageToGroup to,
@@ -284,7 +284,7 @@ public class CreateCmd {
         boolean superAdmin;
     }
 
-    @Command(name = "admin", description = "Promote a admin.")
+    @Command(name = "admin", description = "Promote a admin.", mixinStandardHelpOptions = true)
     public void admin(@Parameters(description = "admin username") String username,
                       @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {

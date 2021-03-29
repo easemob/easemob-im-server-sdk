@@ -18,13 +18,13 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-@Command(name = "get", description = "Get a resource.")
+@Command(name = "get", description = "Get a resource.", mixinStandardHelpOptions = true)
 public class GetCmd {
 
     @Autowired
     private EMService service;
 
-    @Command(name = "attachment", description = "Download attachment by id.")
+    @Command(name = "attachment", description = "Download attachment by id.", mixinStandardHelpOptions = true)
     public void attachment(@Parameters(description = "attachment file id, returned by upload service.") String id,
                            @Option(names = "-o", defaultValue = "", description = "attachment download path, default is current dir") Path path) {
         this.service.attachment().downloadFile(id, path, id)
@@ -34,7 +34,7 @@ public class GetCmd {
                 .block();
     }
 
-    @Command(name = "user", description = "Get a user's info or list users.")
+    @Command(name = "user", description = "Get a user's info or list users.", mixinStandardHelpOptions = true)
     public void user(@Parameters(arity = "0..1", description = "The username, if miss, list users") String username,
                      @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(username)) {
@@ -61,7 +61,7 @@ public class GetCmd {
         }
     }
 
-    @Command(name = "contact", description = "List contacts of a user.")
+    @Command(name = "contact", description = "List contacts of a user.", mixinStandardHelpOptions = true)
     public void contact(@Parameters(description = "the user") String username) {
         this.service.contact().list(username)
                 .doOnNext(System.out::println)
@@ -70,7 +70,7 @@ public class GetCmd {
                 .blockLast();
     }
 
-    @Command(name = "group", description = "Get a group's info or list groups")
+    @Command(name = "group", description = "Get a group's info or list groups", mixinStandardHelpOptions = true)
     public void group(@Parameters(arity = "0..1", description = "the group's id, list all groups if missing") String groupId,
                       @Option(names = "--have-user", description = "search groups have this user, not support limit and cursor") String username,
                       @ArgGroup(exclusive = false, heading = "If missing, list all groups\n") LimitArgGroup limitArgGroup) {
@@ -119,7 +119,7 @@ public class GetCmd {
         }
     }
 
-    @Command(name = "room", description = "Get a room's info or list rooms")
+    @Command(name = "room", description = "Get a room's info or list rooms", mixinStandardHelpOptions = true)
     public void room(@Parameters(arity = "0..1", description = "the room's id, if miss, list rooms") String roomId,
                      @Option(names = "--have-user", description = "search rooms have this user, not support limit and cursor") String username,
                      @ArgGroup(exclusive = false, heading = "If missing, list all rooms\n") LimitArgGroup limitArgGroup) {
@@ -182,7 +182,7 @@ public class GetCmd {
         boolean login;
     }
 
-    @Command(name = "block", description = "List blocked user.")
+    @Command(name = "block", description = "List blocked user.", mixinStandardHelpOptions = true)
     public void block(@ArgGroup(multiplicity = "1", exclusive = false) BlockArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.msgToUsername)) {
             this.service.block().getUsersBlockedFromSendMsgToUser(argGroup.msgToUsername)
@@ -232,7 +232,7 @@ public class GetCmd {
         String roomId;
     }
 
-    @Command(name = "member", description = "List group or room members, not include the owner and admins.")
+    @Command(name = "member", description = "List group or room members, not include the owner and admins.", mixinStandardHelpOptions = true)
     public void member(@ArgGroup(multiplicity = "1") MemberArgGroup memberArgGroup,
                        @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
         if (memberArgGroup.roomId != null) {
@@ -303,7 +303,7 @@ public class GetCmd {
         String statusMessageId;
     }
 
-    @Command(name = "message", description = "List or count messages.")
+    @Command(name = "message", description = "List or count messages.", mixinStandardHelpOptions = true)
     public void message(@ArgGroup MessageArgGroup argGroup,
                         @Option(names = "--user", description = "the message receiver") String username) {
         if (argGroup.history != null) {
@@ -357,7 +357,7 @@ public class GetCmd {
         boolean superAdmin;
     }
 
-    @Command(name = "admin", description = "List admin")
+    @Command(name = "admin", description = "List admin", mixinStandardHelpOptions = true)
     public void admin(@ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {
             this.service.group().listGroupAdmins(argGroup.groupId)
@@ -380,7 +380,7 @@ public class GetCmd {
         }
     }
 
-    @Command(name = "session", description = "Get specific user's online status.")
+    @Command(name = "session", description = "Get specific user's online status.", mixinStandardHelpOptions = true)
     public void session(@Parameters(description = "the username") String username) {
         this.service.user().isUserOnline(username)
                 .doOnSuccess(isOnlie -> System.out.printf("%s : %s\n", username, isOnlie ? "online" : "offline"))

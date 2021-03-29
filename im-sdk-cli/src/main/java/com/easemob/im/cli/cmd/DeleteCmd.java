@@ -14,7 +14,7 @@ import static picocli.CommandLine.Parameters;
 
 
 @Component
-@Command(name = "delete", description = "Delete a resource.")
+@Command(name = "delete", description = "Delete a resource.", mixinStandardHelpOptions = true)
 public class DeleteCmd {
 
     @Autowired
@@ -40,7 +40,7 @@ public class DeleteCmd {
         boolean login;
     }
 
-    @Command(name = "block", description = "Unblock user from resource.")
+    @Command(name = "block", description = "Unblock user from resource.", mixinStandardHelpOptions = true)
     public void block(@Parameters(description = "user to unblock") String username,
                       @ArgGroup(multiplicity = "1", exclusive = false) UnBlockArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.msgToUsername)) {
@@ -112,7 +112,7 @@ public class DeleteCmd {
         }
     }
 
-    @Command(name = "contact", description = "Remove a contact from the user.")
+    @Command(name = "contact", description = "Remove a contact from the user.", mixinStandardHelpOptions = true)
     public void contact(@Parameters(description = "the user's username") String user,
                         @Parameters(description = "the contact's username") String contact) {
         this.service.contact().remove(user, contact)
@@ -123,7 +123,7 @@ public class DeleteCmd {
     }
 
     @Command(name = "group", description = "Destroy a group.\n" +
-            "Messages will be destroyed with the group, while the chat history is reserved.")
+            "Messages will be destroyed with the group, while the chat history is reserved.", mixinStandardHelpOptions = true)
     public void group(@Parameters(description = "the group id") String groupId) {
         this.service.group().destroyGroup(groupId)
                 .doOnSuccess(ignored -> System.out.println("done"))
@@ -133,7 +133,7 @@ public class DeleteCmd {
     }
 
     @Command(name = "room", description = "Destroy a room.\n" +
-            "Messages will be destroyed with the room, while the chat history is reserved.")
+            "Messages will be destroyed with the room, while the chat history is reserved.", mixinStandardHelpOptions = true)
     public void room(@Parameters(description = "the room id") String roomId) {
         this.service.room().destroyRoom(roomId)
                 .doOnSuccess(ignored -> System.out.println("done"))
@@ -142,7 +142,7 @@ public class DeleteCmd {
                 .block();
     }
 
-    @Command(name = "session", description = "Force user logout, default to logout all devices if missing --device")
+    @Command(name = "session", description = "Force user logout, default to logout all devices if missing --device", mixinStandardHelpOptions = true)
     public void session(@Parameters(description = "the username") String username,
                         @Option(names = "--device", description = "logout specific device") String deviceName) {
         if (StringUtils.hasText(deviceName)) {
@@ -168,7 +168,7 @@ public class DeleteCmd {
         String fromRoom;
     }
 
-    @Command(name = "member", description = "Remove user from group or room.")
+    @Command(name = "member", description = "Remove user from group or room.", mixinStandardHelpOptions = true)
     public void member(@Parameters(description = "the user") String username,
                        @ArgGroup(multiplicity = "1") MemberArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.fromGroup)) {
@@ -197,7 +197,7 @@ public class DeleteCmd {
         String superAdminUsername;
     }
 
-    @Command(name = "admin", description = "Demote a admin")
+    @Command(name = "admin", description = "Demote a admin", mixinStandardHelpOptions = true)
     public void admin(@Parameters(description = "admin username") String username,
                       @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {

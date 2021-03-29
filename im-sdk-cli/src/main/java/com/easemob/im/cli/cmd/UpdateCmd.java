@@ -12,20 +12,22 @@ import picocli.CommandLine.Parameters;
 import reactor.core.publisher.Mono;
 
 @Component
-@Command(name = "update", description = "Update a resource.")
+@Command(name = "update", description = "Update a resource.", mixinStandardHelpOptions = true)
 public class UpdateCmd {
 
     @Autowired
     private EMService service;
 
-    @Command(name = "password", description = "Reset password for the user.", mixinStandardHelpOptions = true)
-    public void password(@Parameters(description = "the username") String username,
-                         @Parameters(description = "the password") String password) {
-        this.service.user().updateUserPassword(username, password)
-                .doOnSuccess(ignore -> System.out.println("done"))
-                .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                .onErrorResume(EMException.class, ignore -> Mono.empty())
-                .block();
+    @Command(name = "user", description = "Update user info.", mixinStandardHelpOptions = true)
+    public void user(@Parameters(description = "the username") String username,
+                         @Option(names = "--password", description = "update user password") String password) {
+        if (password != null) {
+            this.service.user().updateUserPassword(username, password)
+                    .doOnSuccess(ignore -> System.out.println("done"))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, ignore -> Mono.empty())
+                    .block();
+        }
     }
 
     private static class GroupArgGroup {
@@ -48,7 +50,7 @@ public class UpdateCmd {
         Boolean canMemberInvite;
     }
 
-    @Command(name = "group", description = "Update a group's settings.")
+    @Command(name = "group", description = "Update a group's settings.", mixinStandardHelpOptions = true)
     public void group(@Parameters(description = "the group's id") String groupId,
                       @ArgGroup(multiplicity = "1", exclusive = false) GroupArgGroup argGroup) {
         this.service.group().updateGroup(groupId, request -> {
@@ -90,7 +92,7 @@ public class UpdateCmd {
         Integer maxMembers;
     }
 
-    @Command(name = "room", description = "Update a room's settings.")
+    @Command(name = "room", description = "Update a room's settings.", mixinStandardHelpOptions = true)
     public void room(@Parameters(description = "the room's id") String roomId,
                      @ArgGroup(multiplicity = "1", exclusive = false) RoomArgGroup argGroup) {
         this.service.room().updateRoom(roomId, request -> {
