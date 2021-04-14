@@ -15,17 +15,17 @@ public class UserGet {
 
     public Mono<EMUser> single(String username) {
         return this.context.getHttpClient()
-                .get()
-                .uri(String.format("/users/%s", username))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, UserGetResponse.class))
-                .handle((rsp, sink) -> {
-                    EMUser user = rsp.getEMUser(username);
-                    if (user == null) {
-                        sink.error(new EMUnknownException(String.format("user:%s", username)));
-                        return;
-                    }
-                    sink.next(user);
-                });
+                .flatMap(HttpClient -> HttpClient.get()
+                        .uri(String.format("/users/%s", username))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, UserGetResponse.class))
+                        .handle((rsp, sink) -> {
+                            EMUser user = rsp.getEMUser(username);
+                            if (user == null) {
+                                sink.error(new EMUnknownException(String.format("user:%s", username)));
+                                return;
+                            }
+                            sink.next(user);
+                        }));
     }
 }

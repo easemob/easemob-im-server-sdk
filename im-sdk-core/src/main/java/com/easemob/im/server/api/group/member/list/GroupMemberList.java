@@ -25,11 +25,12 @@ public class GroupMemberList {
             uri += String.format("&cursor=%s", cursor);
         }
 
+        String finalUri = uri;
         return this.context.getHttpClient()
-            .get()
-            .uri(uri)
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, GroupMemberListResponse.class))
-            .map(GroupMemberListResponse::toEMPage);
+                .flatMap(httpClient -> httpClient.get()
+                        .uri(finalUri)
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, GroupMemberListResponse.class))
+                        .map(GroupMemberListResponse::toEMPage));
     }
 }

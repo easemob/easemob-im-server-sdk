@@ -14,11 +14,11 @@ public class ListUsersBlockedSendMsgToRoom {
 
     public Flux<EMBlock> all(String roomId) {
         return this.context.getHttpClient()
-                .get()
-                .uri(String.format("/chatrooms/%s/mute", roomId))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, ListUsersBlockedSendMsgToRoomResponse.class))
-                .flatMapIterable(ListUsersBlockedSendMsgToRoomResponse::getEMBlocks);
+                .flatMapMany(HttpClient -> HttpClient.get()
+                        .uri(String.format("/chatrooms/%s/mute", roomId))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, ListUsersBlockedSendMsgToRoomResponse.class))
+                        .flatMapIterable(ListUsersBlockedSendMsgToRoomResponse::getEMBlocks));
     }
 
 }

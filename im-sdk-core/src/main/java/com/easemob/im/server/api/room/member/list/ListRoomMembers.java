@@ -25,12 +25,13 @@ public class ListRoomMembers {
             uri += String.format("&cursor=%s", cursor);
         }
 
+        String finalUri = uri;
         return this.context.getHttpClient()
-                .get()
-                .uri(uri)
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, ListRoomMembersResponse.class))
-                .map(ListRoomMembersResponse::toEMPage);
+                .flatMap(httpClient -> httpClient.get()
+                        .uri(finalUri)
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, ListRoomMembersResponse.class))
+                        .map(ListRoomMembersResponse::toEMPage));
     }
 
 

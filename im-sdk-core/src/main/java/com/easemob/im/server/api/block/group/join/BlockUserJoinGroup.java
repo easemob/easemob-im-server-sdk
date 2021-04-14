@@ -16,41 +16,41 @@ public class BlockUserJoinGroup {
 
     public Flux<EMBlock> getBlockedUsers(String groupId) {
         return this.context.getHttpClient()
-                .get()
-                .uri(String.format("/chatgroups/%s/blocks/users", groupId))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, GetBlockedUsersResponse.class))
-                .flatMapIterable(GetBlockedUsersResponse::getUsernames)
-                .map(username -> new EMBlock(username, null));
+                .flatMapMany(client -> client.get()
+                        .uri(String.format("/chatgroups/%s/blocks/users", groupId))
+                        .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> context.getCodec().decode(buf, GetBlockedUsersResponse.class))
+                        .flatMapIterable(GetBlockedUsersResponse::getUsernames)
+                        .map(username -> new EMBlock(username, null)));
     }
 
     public Mono<Void> blockUser(String username, String groupId) {
         return this.context.getHttpClient()
-                .post()
-                .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, BlockUserJoinGroupResponse.class))
-                .handle((rsp, sink) -> {
-                    if (!rsp.getSuccess()) {
-                        sink.error(new EMUnknownException("unknown"));
-                        return;
-                    }
-                    sink.complete();
-                });
+                .flatMap(httpClient -> httpClient.post()
+                        .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, BlockUserJoinGroupResponse.class))
+                        .handle((rsp, sink) -> {
+                            if (!rsp.getSuccess()) {
+                                sink.error(new EMUnknownException("unknown"));
+                                return;
+                            }
+                            sink.complete();
+                        }));
     }
 
     public Mono<Void> unblockUser(String username, String groupId) {
         return this.context.getHttpClient()
-                .delete()
-                .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, UnblockUserJoinGroupResponse.class))
-                .handle((rsp, sink) -> {
-                    if (!rsp.getSuccess()) {
-                        sink.error(new EMUnknownException("unknown"));
-                        return;
-                    }
-                    sink.complete();
-                });
+                .flatMap(httpClient -> httpClient.delete()
+                        .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, UnblockUserJoinGroupResponse.class))
+                        .handle((rsp, sink) -> {
+                            if (!rsp.getSuccess()) {
+                                sink.error(new EMUnknownException("unknown"));
+                                return;
+                            }
+                            sink.complete();
+                        }));
     }
 }

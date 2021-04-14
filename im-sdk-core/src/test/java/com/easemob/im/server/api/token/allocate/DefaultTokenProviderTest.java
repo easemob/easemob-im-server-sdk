@@ -8,6 +8,7 @@ import com.easemob.im.server.api.token.Token;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
@@ -27,7 +28,7 @@ public class DefaultTokenProviderTest extends AbstractApiTest {
     void init() {
         HttpClient httpClient = HttpClient.newConnection();
         LoadBalancer loadBalancer = endpoints -> endpoints.get(0);
-        EndpointRegistry endpointRegistry = () -> Arrays.asList(new Endpoint("http", "localhost", this.server.port()));
+        EndpointRegistry endpointRegistry = () -> Mono.just(Arrays.asList(new Endpoint("http", "localhost", this.server.port())));
         this.tokenProvider = new DefaultTokenProvider(this.context.getProperties(), httpClient, endpointRegistry, loadBalancer, this.context.getCodec(), this.context.getErrorMapper());
     }
 

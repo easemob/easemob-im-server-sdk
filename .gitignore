@@ -35,5 +35,6 @@ Icon
 release.properties
 migration/src/main/resources/application-local.properties
 pom.xml.releaseBackup
+pom.xml.versionsBackup
 apidoc/
 apidoc.json

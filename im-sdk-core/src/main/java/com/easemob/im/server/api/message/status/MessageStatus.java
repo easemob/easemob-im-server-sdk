@@ -13,10 +13,10 @@ public class MessageStatus {
 
     public Mono<Boolean> isMessageDeliveredToUser(String messageId, String username) {
         return this.context.getHttpClient()
-            .get()
-            .uri(String.format("/users/%s/offline_msg_status/%s", username, messageId))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, MessageStatusResponse.class))
-            .map(rsp -> rsp.isMessageDelivered(messageId));
+                .flatMap(HttpClient -> HttpClient.get()
+                        .uri(String.format("/users/%s/offline_msg_status/%s", username, messageId))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, MessageStatusResponse.class))
+                        .map(rsp -> rsp.isMessageDelivered(messageId)));
     }
 }

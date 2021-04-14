@@ -20,12 +20,12 @@ public class SendMessage {
 
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
         return this.context.getHttpClient()
-                .post()
-                .uri("/messages?useMsgId=true")
-                .send(Mono.create(sink -> sink.success(context.getCodec().encode(new SendMessageRequest(from, toType, tos, message, SendMessageRequest.parseExtensions(extensions))))))
-                .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> context.getCodec().decode(buf, SendMessageResponse.class))
-                .map(SendMessageResponse::toEMSentMessages);
+                .flatMap(HttpClient -> HttpClient.post()
+                        .uri("/messages?useMsgId=true")
+                        .send(Mono.create(sink -> sink.success(context.getCodec().encode(new SendMessageRequest(from, toType, tos, message, SendMessageRequest.parseExtensions(extensions))))))
+                        .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> context.getCodec().decode(buf, SendMessageResponse.class))
+                        .map(SendMessageResponse::toEMSentMessages));
     }
 
     public class RouteSpec {

@@ -4,17 +4,14 @@ import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.EMVersion;
 import com.easemob.im.server.api.codec.JsonCodec;
 import com.easemob.im.server.api.token.allocate.TokenProvider;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
-
-import java.net.URI;
 
 public class MockingContext implements Context {
 
     private EMProperties properties;
 
-    private HttpClient httpClient;
+    private Mono<HttpClient> httpClient;
 
     private TokenProvider tokenProvider;
 
@@ -26,9 +23,9 @@ public class MockingContext implements Context {
 
     public MockingContext(EMProperties properties, String serverUri) {
         this.properties = properties;
-        this.httpClient = HttpClient.newConnection()
-            .baseUrl(String.format("%s/%s", serverUri, properties.getAppkeySlashDelimited()))
-            .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())));
+        this.httpClient = Mono.just(HttpClient.newConnection()
+                .baseUrl(String.format("%s/%s", serverUri, properties.getAppkeySlashDelimited()))
+                .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion()))));
         this.tokenProvider = new MockingTokenProvider();
         this.bearerAuthorization = new BearerAuthorization(tokenProvider);
         this.codec = new JsonCodec();
@@ -41,7 +38,7 @@ public class MockingContext implements Context {
     }
 
     @Override
-    public HttpClient getHttpClient() {
+    public Mono<HttpClient> getHttpClient() {
         return this.httpClient;
     }
 
@@ -60,7 +57,7 @@ public class MockingContext implements Context {
         return this.errorMapper;
     }
 
-    public void setHttpClient(HttpClient httpClient) {
+    public void setHttpClient(Mono<HttpClient> httpClient) {
         this.httpClient = httpClient;
     }
 

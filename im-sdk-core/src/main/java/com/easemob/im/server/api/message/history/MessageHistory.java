@@ -23,11 +23,11 @@ public class MessageHistory {
 
     public Mono<String> toUri(Instant instant) {
         return this.context.getHttpClient()
-                .get()
-                .uri(String.format("/chatmessages/%s", toPath(instant)))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, MessageHistoryResponse.class))
-                .map(MessageHistoryResponse::getUrl);
+                .flatMap(httpClient -> httpClient.get()
+                        .uri(String.format("/chatmessages/%s", toPath(instant)))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, MessageHistoryResponse.class))
+                        .map(MessageHistoryResponse::getUrl));
     }
 
     public Mono<Path> toLocalFile(Instant instant, Path dir, String filename) {
@@ -46,13 +46,13 @@ public class MessageHistory {
                     Path local = FileSystem.choosePath(dir, finalFilename);
                     return Mono.<OutputStream>create(sink -> sink.success(FileSystem.open(local)))
                             .flatMap(out -> this.context.getHttpClient()
-                                    .get()
-                                    .uri(uri)
-                                    .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp).thenMany(buf))
-                                    .doOnNext(buf -> FileSystem.append(out, buf))
-                                    .doFinally(sig -> FileSystem.close(out))
-                                    .then()
-                                    .thenReturn(local));
+                                    .flatMap(httpClient -> httpClient.get()
+                                            .uri(uri)
+                                            .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp).thenMany(buf))
+                                            .doOnNext(buf -> FileSystem.append(out, buf))
+                                            .doFinally(sig -> FileSystem.close(out))
+                                            .then()
+                                            .thenReturn(local)));
                 });
     }
 
