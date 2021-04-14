@@ -14,16 +14,16 @@ public class GetGroup {
 
     public Mono<EMGroup> execute(String groupId) {
         return this.context.getHttpClient()
-                .get()
-                .uri(String.format("/chatgroups/%s", groupId))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, GetGroupResponse.class))
-                .map(rsp -> {
-                    EMGroup detail = rsp.toGroupDetail(groupId);
-                    if (detail == null) {
-                        throw new EMNotFoundException(String.format("group:%s", groupId));
-                    }
-                    return detail;
-                });
+                .flatMap(HttpClient -> HttpClient.get()
+                        .uri(String.format("/chatgroups/%s", groupId))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, GetGroupResponse.class))
+                        .map(rsp -> {
+                            EMGroup detail = rsp.toGroupDetail(groupId);
+                            if (detail == null) {
+                                throw new EMNotFoundException(String.format("group:%s", groupId));
+                            }
+                            return detail;
+                        }));
     }
 }

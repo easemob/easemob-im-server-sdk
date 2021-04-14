@@ -13,10 +13,10 @@ public class ListRoomAdmins {
 
     public Flux<String> all(String roomId) {
         return this.context.getHttpClient()
-                .get()
-                .uri(String.format("/chatrooms/%s/admin", roomId))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, ListRoomAdminsResponse.class))
-                .flatMapIterable(ListRoomAdminsResponse::getAdmins);
+                .flatMapMany(httpClient -> httpClient.get()
+                        .uri(String.format("/chatrooms/%s/admin", roomId))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, ListRoomAdminsResponse.class))
+                        .flatMapIterable(ListRoomAdminsResponse::getAdmins));
     }
 }

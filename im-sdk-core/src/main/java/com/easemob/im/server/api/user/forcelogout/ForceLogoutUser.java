@@ -21,17 +21,18 @@ public class ForceLogoutUser {
         if (resource != null) {
             path = String.format("%s/%s", path, resource);
         }
+        String finalPath = path;
         return this.context.getHttpClient()
-            .get()
-            .uri(path)
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, UserForceLogoutResponse.class))
-            .handle((rsp, sink) -> {
-                if (!rsp.isSuccessful()) {
-                    sink.error(new EMInternalServerErrorException("unknown"));
-                    return;
-                }
-                sink.complete();
-            });
+                .flatMap(httpClient -> httpClient.get()
+                        .uri(finalPath)
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, UserForceLogoutResponse.class))
+                        .handle((rsp, sink) -> {
+                            if (!rsp.isSuccessful()) {
+                                sink.error(new EMInternalServerErrorException("unknown"));
+                                return;
+                            }
+                            sink.complete();
+                        }));
     }
 }

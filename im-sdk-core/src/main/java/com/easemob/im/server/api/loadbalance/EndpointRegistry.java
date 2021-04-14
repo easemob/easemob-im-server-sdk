@@ -1,7 +1,9 @@
 package com.easemob.im.server.api.loadbalance;
 
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 
 public interface EndpointRegistry {
-    List<Endpoint> endpoints();
+    Mono<List<Endpoint>> endpoints();
 }

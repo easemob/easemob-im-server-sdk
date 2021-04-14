@@ -12,10 +12,10 @@ public class MessageMissed {
 
     public Flux<MissedMessageCount> count(String username) {
         return this.context.getHttpClient()
-            .get()
-            .uri(String.format("/users/%s/offline_msg_count", username))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, MessageMissedCountResponse.class))
-            .flatMapIterable(MessageMissedCountResponse::getMissedMessageCounts);
+                .flatMapMany(httpClient -> httpClient.get()
+                        .uri(String.format("/users/%s/offline_msg_count", username))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, MessageMissedCountResponse.class))
+                        .flatMapIterable(MessageMissedCountResponse::getMissedMessageCounts));
     }
 }

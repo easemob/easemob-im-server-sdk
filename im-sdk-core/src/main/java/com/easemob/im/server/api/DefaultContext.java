@@ -9,6 +9,7 @@ import com.easemob.im.server.api.token.allocate.TokenProvider;
 import io.netty.handler.logging.LogLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
@@ -42,13 +43,15 @@ public class DefaultContext implements Context {
     }
 
     @Override
-    public HttpClient getHttpClient() {
-        Endpoint endpoint = this.loadBalancer.loadBalance(this.endpointRegistry.endpoints());
-        String baseUri = String.format("%s/%s", endpoint.getUri(), this.properties.getAppkeySlashDelimited());
-        if (log.isDebugEnabled()) {
-            log.debug("load balanced base uri: {}", baseUri);
-        }
-        return this.httpClient.baseUrl(baseUri);
+    public Mono<HttpClient> getHttpClient() {
+        return this.endpointRegistry.endpoints().map(endpoints -> {
+            Endpoint endpoint = this.loadBalancer.loadBalance(endpoints);
+            String baseUri = String.format("%s/%s", endpoint.getUri(), this.properties.getAppkeySlashDelimited());
+            if (log.isDebugEnabled()) {
+                log.debug("load balanced base uri: {}", baseUri);
+             }
+            return this.httpClient.baseUrl(baseUri);
+        });
     }
 
     @Override

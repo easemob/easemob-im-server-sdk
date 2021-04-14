@@ -26,12 +26,14 @@ public class ListUsers {
         if (cursor != null) {
             query = String.format("%s&cursor=%s", query, cursor);
         }
+        String finalQuery = query;
         return this.context.getHttpClient()
-                .get()
-                .uri(String.format("/users?%s", query))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, UserListResponse.class))
-                .map(UserListResponse::toEMPage);
+                .flatMap(httpClient -> httpClient.get()
+                        .uri(String.format("/users?%s", finalQuery))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, UserListResponse.class))
+                        .map(UserListResponse::toEMPage));
+
     }
 
 }

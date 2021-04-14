@@ -2,13 +2,11 @@ package com.easemob.im.server.api.loadbalance;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.util.retry.Retry;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class TimedRefreshEndpointRegistry implements EndpointRegistry {
 
@@ -16,35 +14,18 @@ public class TimedRefreshEndpointRegistry implements EndpointRegistry {
 
     private final EndpointProvider endpointProvider;
 
-    private final AtomicReference<List<Endpoint>> endpoints;
-
-    private final Disposable refreshDisposable;
+    private Mono<List<Endpoint>> endpoints;
 
     public TimedRefreshEndpointRegistry(EndpointProvider endpointProvider, Duration refreshInterval) {
         this.endpointProvider = endpointProvider;
-        this.endpoints = new AtomicReference<>();
-
-        // make sure endpoints is not empty
-        endpointProvider.endpoints()
-                .timeout(Duration.ofSeconds(10))
-                .doOnNext(this.endpoints::set)
-                .doOnError(error -> log.warn("load endpoints error: {}", error.getMessage()))
-                .retryWhen(Retry.fixedDelay(10, Duration.ofSeconds(3)))
-                .doOnError(error -> log.warn("load endpoints error, retry exhausted: {}", error.getMessage()))
-                .block();
-
-        this.refreshDisposable = Flux.interval(refreshInterval)
-                .concatMap(i -> this.endpointProvider.endpoints().doOnNext(this.endpoints::set).then())
-                .retry()
-                .subscribe();
-    }
-
-    public void close() {
-        this.refreshDisposable.dispose();
+        this.endpoints = endpointProvider.endpoints()
+                .cache(endpoints -> Duration.between(Instant.now(), Instant.ofEpochSecond(10)).dividedBy(2),
+                        error -> Duration.ofSeconds(10),
+                        () -> Duration.ofSeconds(10));
     }
 
     @Override
-    public List<Endpoint> endpoints() {
-        return this.endpoints.get();
+    public Mono<List<Endpoint>> endpoints() {
+        return this.endpoints;
     }
 }

@@ -14,10 +14,10 @@ public class GroupAdminAdd {
 
     public Mono<Void> single(String groupId, String username) {
         return this.context.getHttpClient()
-            .post()
-            .uri(String.format("/chatgroups/%s/admin", groupId))
-            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new GroupAdminAddRequest(username)))))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then())
-            .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty());
+                .flatMap(HttpClient -> HttpClient.post()
+                        .uri(String.format("/chatgroups/%s/admin", groupId))
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new GroupAdminAddRequest(username)))))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then())
+                        .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty()));
     }
 }

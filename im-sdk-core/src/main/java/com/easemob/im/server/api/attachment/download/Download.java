@@ -19,13 +19,13 @@ public class Download {
         Path local = FileSystem.choosePath(dir, filename);
         return Mono.<OutputStream>create(sink -> sink.success(FileSystem.open(local)))
                 .flatMap(out -> this.context.getHttpClient()
-                        .get()
-                        .uri(String.format("/chatfiles/%s", id))
-                        .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp).thenMany(buf))
-                        .doOnNext(buf -> FileSystem.append(out, buf))
-                        .doFinally(sig -> FileSystem.close(out))
-                        .then())
-                .thenReturn(local);
+                        .flatMap(httpClient -> httpClient.get()
+                                .uri(String.format("/chatfiles/%s", id))
+                                .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp).thenMany(buf))
+                                .doOnNext(buf -> FileSystem.append(out, buf))
+                                .doFinally(sig -> FileSystem.close(out))
+                                .then())
+                .thenReturn(local));
     }
 
 

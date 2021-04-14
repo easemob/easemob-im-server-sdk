@@ -16,17 +16,17 @@ public class BlockUserSendMsgToRoom {
 
     public Mono<Void> single(String username, String roomId, Duration duration) {
         return this.context.getHttpClient()
-                .post()
-                .uri(String.format("/chatrooms/%s/mute", roomId))
-                .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(BlockUserSendMsgToRoomRequest.of(username, duration)))))
-                .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                .map(buf -> this.context.getCodec().decode(buf, BlockUserSendMsgToRoomResponse.class))
-                .handle((rsp, sink) -> {
-                    if (!rsp.getSuccess(username)) {
-                        sink.error(new EMUnknownException("unknown"));
-                        return;
-                    }
-                    sink.complete();
-                });
+                .flatMap(httpClient -> httpClient.post()
+                        .uri(String.format("/chatrooms/%s/mute", roomId))
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(BlockUserSendMsgToRoomRequest.of(username, duration)))))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, BlockUserSendMsgToRoomResponse.class))
+                        .handle((rsp, sink) -> {
+                            if (!rsp.getSuccess(username)) {
+                                sink.error(new EMUnknownException("unknown"));
+                                return;
+                            }
+                            sink.complete();
+                        }));
     }
 }

@@ -15,17 +15,17 @@ public class DeleteUser {
 
     public Mono<Void> single(String username) {
         return this.context.getHttpClient()
-            .delete()
-            .uri(String.format("/users/%s", username))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class))
-            .handle((rsp, sink) -> {
-                if (rsp.getError() != null) {
-                    sink.error(new EMUnknownException(rsp.getError()));
-                    return;
-                }
-                sink.complete();
-            });
+                .flatMap(HttpClient -> HttpClient.delete()
+                        .uri(String.format("/users/%s", username))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class))
+                        .handle((rsp, sink) -> {
+                            if (rsp.getError() != null) {
+                                sink.error(new EMUnknownException(rsp.getError()));
+                                return;
+                            }
+                            sink.complete();
+                        }));
     }
 
 
@@ -40,9 +40,11 @@ public class DeleteUser {
         if (cursor != null) {
             query = String.format("%s&cursor=%s", query, cursor);
         }
-        return this.context.getHttpClient().delete()
-            .uri(String.format("/users?%s", query))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class));
+        String finalQuery = query;
+        return this.context.getHttpClient()
+                .flatMap(HttpClient -> HttpClient.delete()
+                        .uri(String.format("/users?%s", finalQuery))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class)));
     }
 }

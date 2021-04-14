@@ -14,25 +14,25 @@ public class ContactUser {
 
     public Mono<Void> add(String user, String contact) {
         return this.context.getHttpClient()
-            .post()
-            .uri(String.format("/users/%s/contacts/users/%s", user, contact))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
+                .flatMap(httpClient -> httpClient.post()
+                        .uri(String.format("/users/%s/contacts/users/%s", user, contact))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }
 
     public Mono<Void> remove(String user, String contact) {
         return this.context.getHttpClient()
-            .delete()
-            .uri(String.format("/users/%s/contacts/users/%s", user, contact))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then());
+                .flatMap(httpClient -> httpClient.delete()
+                        .uri(String.format("/users/%s/contacts/users/%s", user, contact))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }
 
     public Flux<String> list(String user) {
         return this.context.getHttpClient()
-            .get()
-            .uri(String.format("/users/%s/contacts/users", user))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, ContactUserListResponse.class))
-            .flatMapIterable(ContactUserListResponse::getUsernames);
+                .flatMapMany(httpClient -> httpClient.get()
+                        .uri(String.format("/users/%s/contacts/users", user))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, ContactUserListResponse.class))
+                        .flatMapIterable(ContactUserListResponse::getUsernames));
     }
 
 }

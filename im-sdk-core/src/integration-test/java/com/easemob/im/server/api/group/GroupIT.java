@@ -32,10 +32,10 @@ public class GroupIT extends AbstractIT {
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword).block(Duration.ofSeconds(3)));
         String groupId = assertDoesNotThrow(() -> this.service.group().createPublicGroup(randomOwnerUsername, "group", "group description", members, 200, true).block(Duration.ofSeconds(3)));
-        EMPage<String> groupMemberPage = assertDoesNotThrow(() -> this.service.group().listGroups(2, null).block(Duration.ofSeconds(3)));
+        EMPage<String> groupMemberPage = assertDoesNotThrow(() -> this.service.group().listGroupMembers(groupId, 10, null).block(Duration.ofSeconds(3)));
         List<String> groupMembers = groupMemberPage.getValues();
         if (groupMembers.size() != members.size()) {
-            throw new RuntimeException(String.format("incorrect number of group %d members", groupId));
+            throw new RuntimeException(String.format("incorrect number of group %s members", groupId));
         }
         assertDoesNotThrow(() -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));

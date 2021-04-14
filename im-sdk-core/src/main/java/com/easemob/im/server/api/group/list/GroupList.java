@@ -24,20 +24,21 @@ public class GroupList {
         if (cursor != null) {
             path = String.format("%s&cursor=%s", path, cursor);
         }
+        String finalPath = path;
         return this.context.getHttpClient()
-            .get()
-            .uri(path)
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
-            .map(GroupListResponse::toEMPage);
+                .flatMap(HttpClient -> HttpClient.get()
+                        .uri(finalPath)
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
+                        .map(GroupListResponse::toEMPage));
     }
 
     public Flux<String> userJoined(String username) {
         return this.context.getHttpClient()
-            .get()
-            .uri(String.format("/users/%s/joined_chatgroups", username))
-            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-            .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
-            .flatMapIterable(GroupListResponse::getGroupIds);
+                .flatMapMany(HttpClient -> HttpClient.get()
+                        .uri(String.format("/users/%s/joined_chatgroups", username))
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
+                        .flatMapIterable(GroupListResponse::getGroupIds));
     }
 }

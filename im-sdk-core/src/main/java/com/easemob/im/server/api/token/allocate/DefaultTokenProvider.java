@@ -7,14 +7,19 @@ import com.easemob.im.server.api.loadbalance.Endpoint;
 import com.easemob.im.server.api.loadbalance.EndpointRegistry;
 import com.easemob.im.server.api.loadbalance.LoadBalancer;
 import com.easemob.im.server.api.token.Token;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DefaultTokenProvider implements TokenProvider {
+
+    private static final Logger log = LoggerFactory.getLogger(DefaultTokenProvider.class);
 
     private final EMProperties properties;
 
@@ -55,16 +60,15 @@ public class DefaultTokenProvider implements TokenProvider {
     }
 
     private Mono<Token> fetchToken(TokenRequest tokenRequest) {
-        List<Endpoint> endpoints = endpointRegistry.endpoints();
-        Endpoint endpoint = this.loadBalancer.loadBalance(endpoints);
-
-        return this.httpClient
-            .baseUrl(String.format("%s/%s", endpoint.getUri(), this.properties.getAppkeySlashDelimited()))
-            .post()
-            .uri("/token")
-            .send(Mono.create(sink -> sink.success(this.codec.encode(tokenRequest))))
-            .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
-            .map(buf -> this.codec.decode(buf, TokenResponse.class))
-            .map(TokenResponse::asToken);
+        return endpointRegistry.endpoints()
+                .map(this.loadBalancer::loadBalance)
+                .flatMap(endpoint -> this.httpClient
+                        .baseUrl(String.format("%s/%s", endpoint.getUri(), this.properties.getAppkeySlashDelimited()))
+                        .post()
+                        .uri("/token")
+                        .send(Mono.create(sink -> sink.success(this.codec.encode(tokenRequest))))
+                        .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
+                        .map(buf -> this.codec.decode(buf, TokenResponse.class))
+                        .map(TokenResponse::asToken));
     }
 }
