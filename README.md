@@ -7,7 +7,7 @@
 ## 依赖
 
 - Java 1.8
-- [Reactor](https://projectreactor.io)(io.projectreactor:reactor-bom:2020.0.2)
+- [Reactor](https://projectreactor.io)(io.projectreactor:reactor-bom:2020.0.4)
 
 ## 安装
 
