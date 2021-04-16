@@ -35,6 +35,8 @@ implementation 'com.easemob.im:im-sdk-core:0.2.5'
 
 如图点击查看后，可以看到自己的appkey、Client ID、ClientSecret，用于SDK的初始化
 
+
+
 如果您没有环信管理后台账号，请进入[这里](https://console.easemob.com/user/register) 进行注册账号，注册成功后请进行登录
 ![图片](https://user-images.githubusercontent.com/15087647/114997381-59180800-9ed2-11eb-968a-a29406c78021.png)
 
