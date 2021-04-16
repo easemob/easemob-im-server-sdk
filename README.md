@@ -27,6 +27,18 @@
 implementation 'com.easemob.im:im-sdk-core:0.2.5'
 ```
 
+## 准备
+使用Server SDK的前提需要您准备appkey相关信息:
+如果您有环信管理后台账号并创建过应用，请进入[这里](https://console.easemob.com/user/login) 进行登录
+![图片](https://user-images.githubusercontent.com/15087647/114996679-a34cb980-9ed1-11eb-89ae-a22c1af7d69d.png)
+如图点击查看后，可以看到自己的appkey、Client ID、ClientSecret，用于SDK的初始化
+
+如果您没有环信管理后台账号，请进入[这里](https://console.easemob.com/user/register) 进行注册账号，注册成功后请进行登录
+![图片](https://user-images.githubusercontent.com/15087647/114997381-59180800-9ed2-11eb-968a-a29406c78021.png)
+如图先添加应用(也就是创建appkey，自动生成Client ID、ClientSecret)，添加成功后在应用列表中可以看到应用信息，点击查看，
+可以看到自己的appkey、Client ID、ClientSecret，用于SDK的初始化
+
+
 ## 使用
 
 [EMService](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/EMService.html) 是所有API的入口，可以这样初始化：
