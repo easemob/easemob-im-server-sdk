@@ -27,7 +27,7 @@ public class EMUser extends EMEntity {
             throw new EMInvalidArgumentException("username must not be null or empty");
         }
         if (!USERNAME_PATTERN.matcher(username).matches()) {
-            throw new EMInvalidArgumentException(String.format("username should match regex %s", USERNAME_PATTERN.toString()));
+            throw new EMInvalidArgumentException(String.format("username '%s' should match regex %s", username, USERNAME_PATTERN.toString()));
         }
     }
 
@@ -36,7 +36,7 @@ public class EMUser extends EMEntity {
             throw new EMInvalidArgumentException("password must not be null or empty");
         }
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            throw new EMInvalidArgumentException(String.format("password should match regex %s", PASSWORD_PATTERN.toString()));
+            throw new EMInvalidArgumentException(String.format("password '%s' should match regex %s", password, PASSWORD_PATTERN.toString()));
         }
     }
 

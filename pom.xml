@@ -30,7 +30,7 @@
         <mockito.version>3.6.28</mockito.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <reactor.version>2020.0.2</reactor.version>
+        <reactor.version>2020.0.4</reactor.version>
         <netty.version>4.1.59.Final</netty.version>
         <resilience4j.version>1.1.0</resilience4j.version>
     </properties>
