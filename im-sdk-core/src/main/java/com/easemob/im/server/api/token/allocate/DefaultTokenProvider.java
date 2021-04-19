@@ -3,7 +3,6 @@ package com.easemob.im.server.api.token.allocate;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Codec;
 import com.easemob.im.server.api.ErrorMapper;
-import com.easemob.im.server.api.loadbalance.Endpoint;
 import com.easemob.im.server.api.loadbalance.EndpointRegistry;
 import com.easemob.im.server.api.loadbalance.LoadBalancer;
 import com.easemob.im.server.api.token.Token;
@@ -14,8 +13,6 @@ import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class DefaultTokenProvider implements TokenProvider {
 

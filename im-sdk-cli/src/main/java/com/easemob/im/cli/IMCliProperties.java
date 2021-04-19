@@ -4,9 +4,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "im")
 public class IMCliProperties {
+    private String domain;
     private String appkey;
     private String clientId;
     private String clientSecret;
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 
     public String getAppkey() {
         return appkey;

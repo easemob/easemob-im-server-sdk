@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import java.nio.file.Path;
 
 public class EMProperties {
+    private final String domain;
     private final String appkey;
     private final String clientId;
     private final String clientSecret;
@@ -19,6 +20,10 @@ public class EMProperties {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public String getDomain() {
+        return domain;
     }
 
     public String getAppkey() {
@@ -53,8 +58,8 @@ public class EMProperties {
         return this.serverTimezone;
     }
 
-    private EMProperties(String appkey, String clientId, String clientSecret,
-                         int httpConnectionPoolSize, String serverTimezone) {
+    public EMProperties(String domain, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+        this.domain = domain;
         this.appkey = appkey;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -65,21 +70,36 @@ public class EMProperties {
     @Override
     public String toString() {
         return "EMProperties{" +
-                "appkey='" + appkey + '\'' +
-                ", clientId='" + Sensitive.mask(clientId) + '\'' +
-                ", clientSecret='" + Sensitive.mask(clientSecret) + '\'' +
+                "domain='" + domain + '\'' +
+                ", appkey='" + appkey + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientSecret='" + clientSecret + '\'' +
                 ", httpConnectionPoolSize=" + httpConnectionPoolSize +
-                ", serverTimezone=" + serverTimezone +
+                ", serverTimezone='" + serverTimezone + '\'' +
                 '}';
     }
 
     public static class Builder {
+        private String domain;
         private String appkey;
         private String clientId;
         private String clientSecret;
         private Path downloadDir;
         private int httpConnectionPoolSize = 10;
         private String serverTimezone = "+8";
+
+        /**
+         * 设置rest服务域名。
+         * 该信息为可选，可以不进行设置，Server SDK会自动根据appkey请求到对应的rest服务域名。
+         * 主要用于环信内部的测试使用。
+         *
+         * @param domain domain
+         * @return {@code Builder}
+         */
+        public Builder setDomain(String domain) {
+            this.domain = domain;
+            return this;
+        }
 
         /**
          * 设置Appkey，可以到环信Console查询该值。
@@ -169,13 +189,14 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.appkey, this.clientId, this.clientSecret,
+            return new EMProperties(this.domain, this.appkey, this.clientId, this.clientSecret,
                     this.httpConnectionPoolSize, this.serverTimezone);
         }
 
         @Override
         public String toString() {
             return "Builder{" +
+                    "domain='" + domain + '\'' +
                     "appkey='" + appkey + '\'' +
                     ", clientId='" + Sensitive.mask(clientId) + '\'' +
                     ", clientSecret='" + Sensitive.mask(clientSecret) + '\'' +
