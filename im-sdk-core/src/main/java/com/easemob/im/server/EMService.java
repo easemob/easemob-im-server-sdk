@@ -8,6 +8,7 @@ import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.room.RoomApi;
 import com.easemob.im.server.api.group.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
+import com.easemob.im.server.api.sms.SmsApi;
 import com.easemob.im.server.api.user.UserApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,8 @@ public class EMService {
 
     private final UserApi userApi;
 
+    private final SmsApi smsApi;
+
 
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
@@ -44,6 +47,7 @@ public class EMService {
         this.groupApi = new GroupApi(this.context);
         this.roomApi = new RoomApi(this.context);
         this.userApi = new UserApi(this.context);
+        this.smsApi = new SmsApi(this.context);
     }
 
     public BlockApi block() {
@@ -72,6 +76,10 @@ public class EMService {
 
     public RoomApi room() {
         return this.roomApi;
+    }
+
+    public SmsApi sms() {
+        return this.smsApi;
     }
 
 

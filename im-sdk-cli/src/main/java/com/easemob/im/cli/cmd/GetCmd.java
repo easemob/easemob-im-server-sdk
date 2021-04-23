@@ -40,8 +40,8 @@ public class GetCmd {
         if (StringUtils.hasText(username)) {
             this.service.user().get(username)
                     .doOnNext(user -> {
-                        System.out.printf("username: %s\n", user.getUsername());
-                        System.out.printf("canLogin: %b \n", user.getCanLogin());
+                        System.out.printf("username: %s\n", user.getEntities().get("username"));
+                        System.out.printf("canLogin: %b \n", user.getEntities().get("activated"));
                     }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
