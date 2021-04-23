@@ -4,6 +4,7 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.user.create.CreateUser;
 import com.easemob.im.server.api.user.forcelogout.ForceLogoutUser;
 import com.easemob.im.server.api.user.get.UserGet;
+import com.easemob.im.server.api.user.get.UserGetResponse;
 import com.easemob.im.server.api.user.list.ListUsers;
 import com.easemob.im.server.api.user.password.UpdateUserPassword;
 import com.easemob.im.server.api.user.status.UserStatus;
@@ -112,7 +113,7 @@ public class UserApi {
      * @return A {@code Mono} emits {@code EMUser} on success.
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7">获取用户详情</a>
      */
-    public Mono<EMUser> get(String username) {
+    public Mono<UserGetResponse> get(String username) {
         return this.userGet.single(username);
     }
 
