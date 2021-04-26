@@ -16,7 +16,8 @@ public class SendSms {
 
     public Mono<SendSmsResponse> send(Set<String> mobiles, String tid, Map<String, String> tmap, String extendCode, String custom) {
         return this.context.getHttpClient()
-                .flatMap(httpClient -> httpClient.post()
+                .flatMap(httpClient -> httpClient.headersWhen(headers -> Mono.just(headers.add("Content-Type", "application/json")))
+                        .post()
                         .uri("/sms/send")
                         .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new SendSmsRequest(mobiles, tid, tmap, extendCode, custom)))))
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))

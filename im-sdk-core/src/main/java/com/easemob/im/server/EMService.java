@@ -5,6 +5,7 @@ import com.easemob.im.server.api.DefaultContext;
 import com.easemob.im.server.api.block.BlockApi;
 import com.easemob.im.server.api.attachment.AttachmentApi;
 import com.easemob.im.server.api.message.MessageApi;
+import com.easemob.im.server.api.metadata.MetadataApi;
 import com.easemob.im.server.api.room.RoomApi;
 import com.easemob.im.server.api.group.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
@@ -35,6 +36,8 @@ public class EMService {
 
     private final SmsApi smsApi;
 
+    private final MetadataApi metadataApi;
+
 
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
@@ -48,6 +51,7 @@ public class EMService {
         this.roomApi = new RoomApi(this.context);
         this.userApi = new UserApi(this.context);
         this.smsApi = new SmsApi(this.context);
+        this.metadataApi = new MetadataApi(this.context);
     }
 
     public BlockApi block() {
@@ -82,6 +86,9 @@ public class EMService {
         return this.smsApi;
     }
 
+    public MetadataApi metadata() {
+        return this.metadataApi;
+    }
 
 
 }
