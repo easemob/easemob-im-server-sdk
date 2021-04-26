@@ -3,6 +3,7 @@ package com.easemob.im.server.api.user;
 import com.easemob.im.server.api.AbstractIT;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
+import com.easemob.im.server.model.EMUser;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
