@@ -19,8 +19,7 @@ public class MetadataSet {
 
     public Mono<MetadataSetResponse> set(String username, Map<String, String> metadata) {
         return this.context.getHttpClient()
-                .flatMap(httpClient -> httpClient.headersWhen(headers -> Mono.just(headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")))
-                        .put()
+                .flatMap(httpClient -> httpClient.put()
                         .uri(String.format("/metadata/user/%s", username))
                         .sendForm((req, form) -> {
                             HttpClientForm clientForm = form.multipart(false).charset(StandardCharsets.UTF_8);
