@@ -1,6 +1,7 @@
 package com.easemob.im.server.api;
 
 import com.easemob.im.server.EMProperties;
+import com.easemob.im.server.api.codec.JsonCodec;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -15,6 +16,8 @@ public abstract class AbstractApiTest {
     protected EMProperties properties;
 
     protected MockingContext context;
+
+    protected JsonCodec codec;
 
     protected AbstractApiTest() {
 
@@ -31,5 +34,7 @@ public abstract class AbstractApiTest {
             .build();
 
         this.context = new MockingContext(properties, this.server.uri());
+
+         this.codec = new JsonCodec();
     }
 }

@@ -11,6 +11,10 @@ public class Endpoint {
         return String.format("%s://%s:%d", protocol, host, port);
     }
 
+    public String getHost() {
+        return host;
+    }
+
     public Endpoint(String protocol, String host, int port) {
         this.protocol = protocol;
         this.host = host;

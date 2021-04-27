@@ -2,6 +2,7 @@ package com.easemob.im.cli.cmd;
 
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
+import com.easemob.im.server.api.dnsconfig.DnsConfigApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -402,6 +403,15 @@ public class GetCmd {
     public void metadataCapacity() {
         this.service.metadata().getCapacity()
                 .doOnSuccess(rsp -> System.out.println("data: " + rsp))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, error -> Mono.empty())
+                .block();
+    }
+
+    @Command(name = "cluster", description = "Get appkey cluster.", mixinStandardHelpOptions = true)
+    public void cluster(@Parameters(description = "the appkey") String appkey) {
+        EMService.getCluster(appkey)
+                .doOnSuccess(rsp -> System.out.println("cluster: " + rsp))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, error -> Mono.empty())
                 .block();

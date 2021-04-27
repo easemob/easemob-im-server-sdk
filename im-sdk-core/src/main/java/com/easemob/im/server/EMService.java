@@ -2,8 +2,11 @@ package com.easemob.im.server;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
+import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.block.BlockApi;
 import com.easemob.im.server.api.attachment.AttachmentApi;
+import com.easemob.im.server.api.codec.JsonCodec;
+import com.easemob.im.server.api.dnsconfig.DnsConfigApi;
 import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.metadata.MetadataApi;
 import com.easemob.im.server.api.room.RoomApi;
@@ -13,6 +16,8 @@ import com.easemob.im.server.api.sms.SmsApi;
 import com.easemob.im.server.api.user.UserApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 public class EMService {
 
@@ -38,6 +43,9 @@ public class EMService {
 
     private final MetadataApi metadataApi;
 
+    public static Mono<String> getCluster(String appkey) {
+        return new DnsConfigApi(HttpClient.create(), new DefaultErrorMapper(), new JsonCodec()).getCluster(appkey);
+    }
 
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
