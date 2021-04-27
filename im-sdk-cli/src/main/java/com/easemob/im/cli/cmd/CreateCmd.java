@@ -165,7 +165,7 @@ public class CreateCmd {
     }
 
     @Command(name = "sms", description = "send sms.", mixinStandardHelpOptions = true)
-    public void sms(@Option(names = "--mobiles", split = "," ,required = true, description = "the receive sms mobiles") List<String> mobiles,
+    public void sms(@Option(names = "--mobiles", split = "," ,required = true, description = "the receive sms mobiles") Set<String> mobiles,
                      @Option(names = "--tid", required = true, description = "the sms template") String tid,
                      @Option(names = "--tmap", required = true, description = "the template variables") Map<String, String> tmap,
                      @Option(names = "--extendCode", description = "the extend code") String extendCode,
