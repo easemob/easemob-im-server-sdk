@@ -389,6 +389,24 @@ public class GetCmd {
                 .block();
     }
 
+    @Command(name = "metadata", description = "Get user metadata.", mixinStandardHelpOptions = true)
+    public void metadata(@Parameters(description = "the username") String username) {
+        this.service.metadata().get(username)
+                .doOnSuccess(rsp -> System.out.println("data: " + rsp.getData()))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, error -> Mono.empty())
+                .block();
+    }
+
+    @Command(name = "metadataCapacity", description = "Get user metadata.", mixinStandardHelpOptions = true)
+    public void metadataCapacity() {
+        this.service.metadata().getCapacity()
+                .doOnSuccess(rsp -> System.out.println("data: " + rsp))
+                .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                .onErrorResume(EMException.class, error -> Mono.empty())
+                .block();
+    }
+
     private static class LimitArgGroup {
         @Option(names = "--limit", description = "the limit", required = true)
         Integer limit;

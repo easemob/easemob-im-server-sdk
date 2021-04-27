@@ -1,18 +1,14 @@
 package com.easemob.im.server.api.metadata.user.set;
 
 import com.easemob.im.server.api.Context;
-import org.omg.CORBA.Any;
-import org.omg.CORBA.NameValuePair;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientForm;
-import reactor.netty.http.client.HttpClientRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 public class MetadataSet {
     private Context context;
