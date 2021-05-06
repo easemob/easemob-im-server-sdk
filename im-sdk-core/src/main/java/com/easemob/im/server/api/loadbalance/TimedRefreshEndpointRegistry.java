@@ -19,7 +19,7 @@ public class TimedRefreshEndpointRegistry implements EndpointRegistry {
     public TimedRefreshEndpointRegistry(EndpointProvider endpointProvider, Duration refreshInterval) {
         this.endpointProvider = endpointProvider;
         this.endpoints = endpointProvider.endpoints()
-                .cache(endpoints -> Duration.between(Instant.now(), Instant.ofEpochSecond(10)).dividedBy(2),
+                .cache(endpoints -> Duration.ofSeconds(86400),
                         error -> Duration.ofSeconds(10),
                         () -> Duration.ofSeconds(10));
     }
