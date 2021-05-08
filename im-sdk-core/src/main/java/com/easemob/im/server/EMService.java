@@ -19,6 +19,20 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
+/**
+ * Server SDK API服务类
+ * 主要API服务包括：
+ * - 封禁API
+ * - 通讯录API
+ * - 附件API
+ * - 群API
+ * - 消息API
+ * - 聊天室API
+ * - 用户API
+ * - 发送短信API
+ * - 用户属性API
+ *
+ */
 public class EMService {
 
     private static final Logger log = LoggerFactory.getLogger(EMService.class);
