@@ -8,6 +8,11 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 发送短信API。
+ * 支持:
+ * - 发送短信
+ */
 public class SmsApi {
 
     private SendSms sendSms;
@@ -24,6 +29,7 @@ public class SmsApi {
      * @param extendCode  扩展码
      * @param custom  用户自定义属性，长度不能超过64字符
      * @return 发送短信的数量以及成功信息
+     * @see com.easemob.im.server.api.sms.send.SendSmsResponse
      */
     public Mono<SendSmsResponse> send(Set<String> mobiles, String tid, Map<String, String> tmap, String extendCode, String custom) {
         return this.sendSms.send(mobiles, tid, tmap, extendCode, custom);

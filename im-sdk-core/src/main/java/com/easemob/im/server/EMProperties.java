@@ -9,6 +9,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Path;
 
+/**
+ * Server SDK配置类
+ * 主要可配置信息：
+ * - domain
+ * - appkey
+ * - clientId
+ * - clientSecret
+ *
+ * 无特殊情况下，domain无需配置(如需domain的配置可以到环信Console提交工单咨询)
+ * appkey、clientId、clientSecret可以到环信Console查询
+ */
 public class EMProperties {
     private final String domain;
     private final String appkey;
@@ -91,7 +102,6 @@ public class EMProperties {
         /**
          * 设置rest服务域名。
          * 该信息为可选，可以不进行设置，Server SDK会自动根据appkey请求到对应的rest服务域名。
-         * 主要用于环信内部的测试使用。
          *
          * @param domain domain
          * @return {@code Builder}
