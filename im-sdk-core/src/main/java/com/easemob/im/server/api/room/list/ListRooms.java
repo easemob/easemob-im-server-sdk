@@ -26,19 +26,19 @@ public class ListRooms {
         }
         String finalUri = uri;
         return this.context.getHttpClient()
-                .flatMap(HttpClient -> HttpClient.get()
+                .flatMap(httpClient -> httpClient.get()
                         .uri(finalUri)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
-                        .map(ListRoomsResponse::toEMPage));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
+                .map(ListRoomsResponse::toEMPage);
     }
 
     public Flux<String> userJoined(String username) {
         return this.context.getHttpClient()
-                .flatMapMany(HttpClient -> HttpClient.get()
+                .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/joined_chatrooms", username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
-                        .flatMapIterable(ListRoomsResponse::getRoomIds));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
+                .flatMapIterable(ListRoomsResponse::getRoomIds);
     }
 }

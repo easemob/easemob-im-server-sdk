@@ -24,22 +24,8 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.function.Consumer;
 
-/** 聊天室API。
- * 支持聊天室管理：
- * - 创建聊天室
- * - 获取聊天室详情
- * - 修改聊天室
- * - 获取聊天室列表
- * - 获取用户加入的聊天室列表
- * 支持聊天室成员管理：
- * - 获取聊天室成员列表
- * - 添加聊天室成员
- * - 移除聊天室成员
- * 支持聊天室管理员管理：
- * - 获取聊天室管理员
- * - 添加聊天室管理员
- *
- * @see com.easemob.im.server.api.block.BlockApi
+/**
+ * 聊天室API。
  */
 public class RoomApi {
     

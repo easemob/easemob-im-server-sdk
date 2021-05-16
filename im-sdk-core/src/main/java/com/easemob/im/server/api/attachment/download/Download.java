@@ -24,8 +24,8 @@ public class Download {
                                 .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp).thenMany(buf))
                                 .doOnNext(buf -> FileSystem.append(out, buf))
                                 .doFinally(sig -> FileSystem.close(out))
-                                .then())
-                .thenReturn(local));
+                                .then()))
+                .thenReturn(local);
     }
 
 

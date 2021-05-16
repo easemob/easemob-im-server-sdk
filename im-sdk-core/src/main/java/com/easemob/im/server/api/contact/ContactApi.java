@@ -6,7 +6,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * 通讯录API。可以添加和移除联系人，目前联系人只作为通讯录之用。
+ * 通讯录API。
  */
 public class ContactApi {
     

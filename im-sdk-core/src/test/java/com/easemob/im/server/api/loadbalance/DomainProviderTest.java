@@ -9,10 +9,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class DomainProviderTest extends AbstractApiTest {
-    DomainProviderTest() {
+class BaseUriProviderTest extends AbstractApiTest {
+    BaseUriProviderTest() {
         this.properties = EMProperties.builder()
-                .setDomain("test.easemob.com")
+                .setBaseUri("http://test.easemob.com")
                 .setAppkey("easemob#demo")
                 .setClientId("clientId")
                 .setClientSecret("ClientSecret")
@@ -21,8 +21,7 @@ class DomainProviderTest extends AbstractApiTest {
 
     @Test
     void testGetDnsConfig() {
-        HttpClient httpClient = HttpClient.newConnection().baseUrl(this.server.uri());
-        DnsConfigEndpointProvider provider = new DnsConfigEndpointProvider(this.properties, this.context.getCodec(), httpClient, this.context.getErrorMapper());
+        FixedEndpointProvider provider = new FixedEndpointProvider(this.properties);
         List<Endpoint> endpoints = provider.endpoints().block();
         assertEquals(1, endpoints.size());
         assertEquals(new Endpoint("http", "test.easemob.com", 80), endpoints.get(0));

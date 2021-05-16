@@ -2,13 +2,11 @@ package com.easemob.im.server;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultContext;
-import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.block.BlockApi;
 import com.easemob.im.server.api.attachment.AttachmentApi;
-import com.easemob.im.server.api.codec.JsonCodec;
-import com.easemob.im.server.api.dnsconfig.DnsConfigApi;
 import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.metadata.MetadataApi;
+import com.easemob.im.server.api.notification.NotificationApi;
 import com.easemob.im.server.api.room.RoomApi;
 import com.easemob.im.server.api.group.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
@@ -16,22 +14,9 @@ import com.easemob.im.server.api.sms.SmsApi;
 import com.easemob.im.server.api.user.UserApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
 
 /**
  * Server SDK API服务类
- * 主要API服务包括：
- * - 封禁API
- * - 通讯录API
- * - 附件API
- * - 群API
- * - 消息API
- * - 聊天室API
- * - 用户API
- * - 发送短信API
- * - 用户属性API
- *
  */
 public class EMService {
 
@@ -57,9 +42,7 @@ public class EMService {
 
     private final MetadataApi metadataApi;
 
-    public static Mono<String> getCluster(String appkey) {
-        return new DnsConfigApi(HttpClient.create(), new DefaultErrorMapper(), new JsonCodec()).getCluster(appkey);
-    }
+    private final NotificationApi notificationApi;
 
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
@@ -74,43 +57,173 @@ public class EMService {
         this.userApi = new UserApi(this.context);
         this.smsApi = new SmsApi(this.context);
         this.metadataApi = new MetadataApi(this.context);
+        this.notificationApi = new NotificationApi(this.context);
     }
 
+    /**
+     * 封禁API.<br>
+     * 支持：<br>
+     *  - 用户禁言<br>
+     *  - 群禁言（可以定时解除）<br>
+     *  - 聊天室禁言（可以定时解除）<br>
+     *  - 禁止加入群<br>
+     *  - 禁止加入聊天室<br>
+     *  - 禁止登录<br>
+     *
+     * @return {@code BlockApi}
+     */
     public BlockApi block() {
         return this.blockV1;
     }
 
+    /**
+     * 通讯录API.<br>
+     * 支持：<br>
+     *  - 添加联系人<br>
+     *  - 移除联系人<br>
+     *  - 获取联系人列表<br>
+     *
+     * 目前联系人只作为通讯录之用.
+     * @return {@code ContactApi}
+     */
     public ContactApi contact() {
         return this.contactApi;
     }
 
+    /**
+     * 附件API.<br>
+     * 支持：<br>
+     *  - 附件上传<br>
+     *  - 附件下载<br>
+     *
+     * 目前，只支持本地文件的上传和下载.
+     * @return {@code AttachmentApi}
+     */
     public AttachmentApi attachment() {
         return this.attachmentApi;
     }
 
+    /**
+     * 群API.<br>
+     * <p>支持群管理：<br>
+     *  - 创建群<br>
+     *  - 删除群<br>
+     *  - 获取群列表<br>
+     *  - 获取群详情<br>
+     *  - 获取用户加入的群<br>
+     *  - 修改群详情<br>
+     *  - 修改群主<br>
+     *  <br>
+     * <p>支持群成员管理：<br>
+     *  - 获取群成员列表<br>
+     *  - 添加群成员<br>
+     *  - 删除群成员<br>
+     *  <br>
+     * <p>支持群管理员管理：<br>
+     *  - 获取群管理员列表<br>
+     *  - 添加群管理员<br>
+     *  - 删除群管理员<br>
+     *
+     * 群与聊天室都是多人聊天，与聊天室主要差别在于群支持离线消息，即群成员上线时可以收到离线时错过的消息。
+     * 如果配置了推送，则离线消息也会产生推送。
+     * 群分为公开群和私有群，区别在于：在设备SDK中（指iOS、Android、Web、小程序等），私有群不会出现在群列表API的返回结果。
+     *
+     * @see com.easemob.im.server.api.block.BlockApi
+     * @return {@code GroupApi}
+     */
     public GroupApi group() {
         return this.groupApi;
     }
 
+    /**
+     * 消息API.<br>
+     * 支持：<br>
+     *  - 发送消息<br>
+     *  - 查询离线消息数<br>
+     *  - 获取/下载聊天历史<br>
+     *
+     * @return {@code MessageApi}
+     */
     public MessageApi message() {
         return this.messageApi;
     }
 
+    /**
+     * 用户API.<br>
+     * 支持：<br>
+     *  - 创建用户<br>
+     *  - 删除用户<br>
+     *  - 获取用户<br>
+     *  - 修改用户密码<br>
+     *  - 强制用户下线<br>
+     *  - 获取用户在线状态<br>
+     *  - 获取用户token<br>
+     *
+     * @return {@code UserApi}
+     */
     public UserApi user() {
         return this.userApi;
     }
 
+    /**
+     * 聊天室API.<br>
+     * 支持聊天室管理：<br>
+     *  - 创建聊天室<br>
+     *  - 获取聊天室详情<br>
+     *  - 修改聊天室<br>
+     *  - 获取聊天室列表<br>
+     *  - 获取用户加入的聊天室列表<br>
+     * <br>
+     * <p>支持聊天室成员管理：<br>
+     *  - 获取聊天室成员列表<br>
+     *  - 添加聊天室成员<br>
+     *  - 移除聊天室成员<br>
+     * <br>
+     * <p>支持聊天室管理员管理：<br>
+     *  - 获取聊天室管理员<br>
+     *  - 添加聊天室管理员<br>
+     *
+     * @see com.easemob.im.server.api.block.BlockApi
+     * @return {@code RoomApi}
+     */
     public RoomApi room() {
         return this.roomApi;
     }
 
+    /**
+     * 发送短信API.<br>
+     * 支持：<br>
+     *  - 发送短信<br>
+     *
+     * @return {@code SmsApi}
+     */
     public SmsApi sms() {
         return this.smsApi;
     }
 
+    /**
+     * 用户属性API.<br>
+     * 支持：<br>
+     *  - 设置用户属性<br>
+     *  - 获取用户属性<br>
+     *  - 获取app用户属性容量<br>
+     *  - 删除用户属性<br>
+     *
+     * @return {@code MetadataApi}
+     */
     public MetadataApi metadata() {
         return this.metadataApi;
     }
 
+    /**
+     * 推送通知免打扰API.<br>
+     * 支持：<br>
+     *  - 获取推送通知免打扰信息<br>
+     *
+     * @return {@code NotificationApi}
+     */
+    public NotificationApi notification() {
+        return this.notificationApi;
+    }
 
 }

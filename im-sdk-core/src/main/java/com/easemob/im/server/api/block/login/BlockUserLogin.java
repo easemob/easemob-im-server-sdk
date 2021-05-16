@@ -13,14 +13,14 @@ public class BlockUserLogin {
 
     public Mono<Void> blockUser(String username) {
         return this.context.getHttpClient()
-                .flatMap(HttpClient -> HttpClient.post()
+                .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/users/%s/deactivate", username))
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }
 
     public Mono<Void> unblockUser(String username) {
         return this.context.getHttpClient()
-                .flatMap(HttpClient -> HttpClient.post()
+                .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/users/%s/activate", username))
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }

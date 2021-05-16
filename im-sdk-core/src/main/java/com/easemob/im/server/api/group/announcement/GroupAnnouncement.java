@@ -16,9 +16,9 @@ public class GroupAnnouncement {
         return context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/announcement", groupId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, GroupAnnouncementGetResponse.class))
-                        .map(GroupAnnouncementGetResponse::getAnnouncement));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, GroupAnnouncementGetResponse.class))
+                .map(GroupAnnouncementGetResponse::getAnnouncement);
     }
 
     public Mono<Void> set(String groupId, String announcement) {
@@ -29,9 +29,9 @@ public class GroupAnnouncement {
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatgroups/%s/announcement", groupId))
                         .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new GroupAnnouncementResource(announcement)))))
-                        .response()
-                        .flatMap(rsp -> this.context.getErrorMapper().apply(rsp))
-                        .then());
+                        .response())
+                .flatMap(rsp -> this.context.getErrorMapper().apply(rsp))
+                .then();
     }
 }
 

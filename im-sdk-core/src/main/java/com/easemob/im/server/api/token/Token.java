@@ -25,4 +25,11 @@ public class Token {
         return this.expireAt;
     }
 
+    @Override
+    public String toString() {
+        return "Token{" +
+                "value='" + value + '\'' +
+                ", expireAt=" + expireAt +
+                '}';
+    }
 }

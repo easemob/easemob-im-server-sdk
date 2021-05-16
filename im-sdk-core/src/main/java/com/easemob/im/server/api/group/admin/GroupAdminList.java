@@ -13,11 +13,11 @@ public class GroupAdminList {
 
     public Flux<String> all(String groupId) {
         return this.context.getHttpClient()
-                .flatMapMany(HttpClient -> HttpClient.get()
+                .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/admin", groupId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, GroupAdminListResponse.class))
-                        .flatMapIterable(GroupAdminListResponse::getAdmins));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, GroupAdminListResponse.class))
+                .flatMapIterable(GroupAdminListResponse::getAdmins);
     }
 
 }

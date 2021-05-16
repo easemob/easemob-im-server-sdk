@@ -26,19 +26,19 @@ public class GroupList {
         }
         String finalPath = path;
         return this.context.getHttpClient()
-                .flatMap(HttpClient -> HttpClient.get()
+                .flatMap(httpClient -> httpClient.get()
                         .uri(finalPath)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
-                        .map(GroupListResponse::toEMPage));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
+                .map(GroupListResponse::toEMPage);
     }
 
     public Flux<String> userJoined(String username) {
         return this.context.getHttpClient()
-                .flatMapMany(HttpClient -> HttpClient.get()
+                .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/joined_chatgroups", username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
-                        .flatMapIterable(GroupListResponse::getGroupIds));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
+                .flatMapIterable(GroupListResponse::getGroupIds);
     }
 }

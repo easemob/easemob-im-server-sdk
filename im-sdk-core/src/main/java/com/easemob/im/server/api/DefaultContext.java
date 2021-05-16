@@ -78,7 +78,12 @@ public class DefaultContext implements Context {
         this.codec = new JsonCodec();
         this.errorMapper = new DefaultErrorMapper();
         this.loadBalancer = new UniformRandomLoadBalancer();
-        this.endpointProvider = new DnsConfigEndpointProvider(this.properties, this.codec, httpClient.baseUrl("http://rs.easemob.com"), this.errorMapper);
+
+        if (this.properties.getBaseUri() == null || this.properties.getBaseUri().isEmpty()) {
+            this.endpointProvider = new DnsConfigEndpointProvider(this.properties, this.codec, httpClient.baseUrl("http://rs.easemob.com"), this.errorMapper);
+        } else {
+            this.endpointProvider = new FixedEndpointProvider(this.properties);
+        }
         this.endpointRegistry = new TimedRefreshEndpointRegistry(this.endpointProvider, Duration.ofMinutes(5));
         this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.endpointRegistry, this.loadBalancer, this.codec, this.errorMapper);
         this.httpClient = httpClient.headersWhen(headers -> this.tokenProvider.fetchAppToken().map(token -> headers.set("Authorization", String.format("Bearer %s", token.getValue()))));

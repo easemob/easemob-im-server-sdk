@@ -18,7 +18,6 @@ public class HistoryMsgIT extends AbstractIT {
 
     @Test
     void testHistoryMsgGetAsUri() {
-//        assertDoesNotThrow(() -> this.service.message().getHistoryAsUri(Instant.ofEpochSecond(1618567200)).block(Duration.ofSeconds(3)));
         Instant now = Instant.parse("2021-04-16T18:00:00.631Z").minusMillis((TimeUnit.HOURS.toMillis(8)));
         this.service.message().getHistoryAsUri(now).block();
     }

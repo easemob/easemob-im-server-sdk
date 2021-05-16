@@ -16,15 +16,15 @@ public class DeleteRoom {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatrooms/%s", roomId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, DeleteRoomResponse.class))
-                        .handle((rsp, sink) -> {
-                            if (!rsp.getSuccess()) {
-                                sink.error(new EMUnknownException("unknown"));
-                                return;
-                            }
-                            sink.complete();
-                        }));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, DeleteRoomResponse.class))
+                .handle((rsp, sink) -> {
+                    if (!rsp.getSuccess()) {
+                        sink.error(new EMUnknownException("unknown"));
+                        return;
+                    }
+                    sink.complete();
+                });
     }
 
 }

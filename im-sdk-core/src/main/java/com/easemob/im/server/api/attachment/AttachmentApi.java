@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.nio.file.Path;
 
 /**
- * 附件API，提供附件上传和下载。目前，只支持本地文件的上传和下载。
+ * 附件API
  * TODO: 支持上传和下载带有密码的附件
  */
 public class AttachmentApi {

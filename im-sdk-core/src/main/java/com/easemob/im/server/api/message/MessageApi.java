@@ -17,12 +17,8 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Set;
 
-/** 消息API。
- * 支持：
- * - 发送消息
- * - 查询离线消息数
- * - 获取/下载聊天历史
- *
+/**
+ * 消息API。
  */
 public class MessageApi {
 

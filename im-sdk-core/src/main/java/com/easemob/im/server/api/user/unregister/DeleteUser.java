@@ -15,17 +15,17 @@ public class DeleteUser {
 
     public Mono<Void> single(String username) {
         return this.context.getHttpClient()
-                .flatMap(HttpClient -> HttpClient.delete()
+                .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/users/%s", username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class))
-                        .handle((rsp, sink) -> {
-                            if (rsp.getError() != null) {
-                                sink.error(new EMUnknownException(rsp.getError()));
-                                return;
-                            }
-                            sink.complete();
-                        }));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class))
+                .handle((rsp, sink) -> {
+                    if (rsp.getError() != null) {
+                        sink.error(new EMUnknownException(rsp.getError()));
+                        return;
+                    }
+                    sink.complete();
+                });
     }
 
 
@@ -42,9 +42,9 @@ public class DeleteUser {
         }
         String finalQuery = query;
         return this.context.getHttpClient()
-                .flatMap(HttpClient -> HttpClient.delete()
+                .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/users?%s", finalQuery))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class)));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class));
     }
 }

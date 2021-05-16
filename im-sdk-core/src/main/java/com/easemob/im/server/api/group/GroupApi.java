@@ -24,28 +24,6 @@ import java.util.function.Consumer;
 
 /**
  * 群API。
- * 支持群管理：
- * - 创建群
- * - 删除群
- * - 获取群列表
- * - 获取群详情
- * - 获取用户加入的群
- * - 修改群详情
- * - 修改群主
- * 支持群成员管理：
- * - 获取群成员列表
- * - 添加群成员
- * - 删除群成员
- * 支持群管理员管理：
- * - 获取群管理员列表
- * - 添加群管理员
- * - 删除群管理员
- *
- * 群与聊天室都是多人聊天，与聊天室主要差别在于群支持离线消息，即群成员上线时可以收到离线时错过的消息。
- * 如果配置了推送，则离线消息也会产生推送。
- * 群分为公开群和私有群，区别在于：在设备SDK中（指iOS、Android、Web、小程序等），私有群不会出现在群列表API的返回结果。
- *
- * @see com.easemob.im.server.api.block.BlockApi
  */
 public class GroupApi {
 
@@ -346,7 +324,5 @@ public class GroupApi {
     public Mono<Void> removeGroupAdmin(String groupId, String username) {
         return this.groupAdminRemove.single(groupId, username);
     }
-
-
 
 }
