@@ -11,17 +11,9 @@ import java.nio.file.Path;
 
 /**
  * Server SDK配置类
- * 主要可配置信息：
- * - domain
- * - appkey
- * - clientId
- * - clientSecret
- *
- * 无特殊情况下，domain无需配置(如需domain的配置可以到环信Console提交工单咨询)
- * appkey、clientId、clientSecret可以到环信Console查询
  */
 public class EMProperties {
-    private final String domain;
+    private final String baseUri;
     private final String appkey;
     private final String clientId;
     private final String clientSecret;
@@ -33,8 +25,8 @@ public class EMProperties {
         return new Builder();
     }
 
-    public String getDomain() {
-        return domain;
+    public String getBaseUri() {
+        return baseUri;
     }
 
     public String getAppkey() {
@@ -69,8 +61,8 @@ public class EMProperties {
         return this.serverTimezone;
     }
 
-    public EMProperties(String domain, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
-        this.domain = domain;
+    public EMProperties(String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+        this.baseUri = baseUri;
         this.appkey = appkey;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -81,7 +73,7 @@ public class EMProperties {
     @Override
     public String toString() {
         return "EMProperties{" +
-                "domain='" + domain + '\'' +
+                "baseUri='" + baseUri + '\'' +
                 ", appkey='" + appkey + '\'' +
                 ", clientId='" + clientId + '\'' +
                 ", clientSecret='" + clientSecret + '\'' +
@@ -91,7 +83,7 @@ public class EMProperties {
     }
 
     public static class Builder {
-        private String domain;
+        private String baseUri;
         private String appkey;
         private String clientId;
         private String clientSecret;
@@ -101,13 +93,13 @@ public class EMProperties {
 
         /**
          * 设置rest服务域名。
-         * 该信息为可选，可以不进行设置，Server SDK会自动根据appkey请求到对应的rest服务域名。
+         * 该信息为可选，可以不进行设置，Server SDK会自动根据appkey请求到对应的rest服务的baseUri。
          *
-         * @param domain domain
+         * @param baseUri baseUri
          * @return {@code Builder}
          */
-        public Builder setDomain(String domain) {
-            this.domain = domain;
+        public Builder setBaseUri(String baseUri) {
+            this.baseUri = baseUri;
             return this;
         }
 
@@ -199,15 +191,15 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.domain, this.appkey, this.clientId, this.clientSecret,
+            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret,
                     this.httpConnectionPoolSize, this.serverTimezone);
         }
 
         @Override
         public String toString() {
             return "Builder{" +
-                    "domain='" + domain + '\'' +
-                    "appkey='" + appkey + '\'' +
+                    "baseUri='" + baseUri + '\'' +
+                    ", appkey='" + appkey + '\'' +
                     ", clientId='" + Sensitive.mask(clientId) + '\'' +
                     ", clientSecret='" + Sensitive.mask(clientSecret) + '\'' +
                     ", downloadDir=" + downloadDir +

@@ -16,14 +16,14 @@ public class DemoteRoomSuperAdmin {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatrooms/super_admin/%s", username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, DemoteRoomSuperAdminResponse.class))
-                        .handle((rsp, sink) -> {
-                            if(!rsp.isSucess()) {
-                                sink.error(new EMUnknownException("unknown"));
-                                return;
-                            }
-                            sink.complete();
-                        }));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, DemoteRoomSuperAdminResponse.class))
+                .handle((rsp, sink) -> {
+                    if(!rsp.isSucess()) {
+                        sink.error(new EMUnknownException("unknown"));
+                        return;
+                    }
+                    sink.complete();
+                });
     }
 }

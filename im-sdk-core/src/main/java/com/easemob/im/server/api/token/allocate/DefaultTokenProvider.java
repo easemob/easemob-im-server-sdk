@@ -64,8 +64,8 @@ public class DefaultTokenProvider implements TokenProvider {
                         .post()
                         .uri("/token")
                         .send(Mono.create(sink -> sink.success(this.codec.encode(tokenRequest))))
-                        .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
-                        .map(buf -> this.codec.decode(buf, TokenResponse.class))
-                        .map(TokenResponse::asToken));
+                        .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf)))
+                .map(buf -> this.codec.decode(buf, TokenResponse.class))
+                .map(TokenResponse::asToken);
     }
 }

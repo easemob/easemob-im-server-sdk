@@ -17,15 +17,15 @@ public class CreateUser {
                 .flatMap(httpClient -> httpClient.post()
                         .uri("/users")
                         .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new CreateUserRequest(username, password)))))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, CreateUserResponse.class))
-                        .handle((rsp, sink) -> {
-                            if (rsp.getError() != null) {
-                                sink.error(new EMUnknownException(rsp.getError()));
-                                return;
-                            }
-                            sink.complete();
-                        }));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, CreateUserResponse.class))
+                .handle((rsp, sink) -> {
+                    if (rsp.getError() != null) {
+                        sink.error(new EMUnknownException(rsp.getError()));
+                        return;
+                    }
+                    sink.complete();
+                });
     }
 
 }

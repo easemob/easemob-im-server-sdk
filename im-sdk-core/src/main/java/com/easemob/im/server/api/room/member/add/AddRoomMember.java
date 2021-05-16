@@ -16,15 +16,15 @@ public class AddRoomMember {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatrooms/%s/users/%s", roomId, username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, AddRoomMemberResponse.class))
-                        .handle((rsp, sink) -> {
-                            if (!rsp.isSuccess()) {
-                                sink.error(new EMUnknownException("unknown"));
-                                return;
-                            }
-                            sink.complete();
-                        }));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, AddRoomMemberResponse.class))
+                .handle((rsp, sink) -> {
+                    if (!rsp.isSuccess()) {
+                        sink.error(new EMUnknownException("unknown"));
+                        return;
+                    }
+                    sink.complete();
+                });
 
     }
 

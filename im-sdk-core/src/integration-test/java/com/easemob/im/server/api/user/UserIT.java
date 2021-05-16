@@ -3,7 +3,6 @@ package com.easemob.im.server.api.user;
 import com.easemob.im.server.api.AbstractIT;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
-import com.easemob.im.server.model.EMUser;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -241,6 +240,14 @@ class UserIT extends AbstractIT {
             throw new RuntimeException(String.format("%s is online status", randomUsername));
         }
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+    }
+
+    @Test
+    void testGetUserToken() {
+        String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomPassword = randomUsername;
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block());
+        assertDoesNotThrow(() -> this.service.user().getToken(randomUsername, randomPassword).block());
     }
 
 }

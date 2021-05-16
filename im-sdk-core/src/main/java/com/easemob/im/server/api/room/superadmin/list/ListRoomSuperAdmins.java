@@ -18,10 +18,10 @@ public class ListRoomSuperAdmins {
         String uri = String.format("/chatrooms/super_admin?pagenum=%d&pagesize=%d", pagenum, pagesize);
 
         return this.context.getHttpClient()
-                .flatMap(HttpClient -> HttpClient.get()
+                .flatMap(httpClient -> httpClient.get()
                         .uri(uri)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, ListRoomSuperAdminsResponse.class)));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, ListRoomSuperAdminsResponse.class));
     }
 
     public Flux<String> all(int pagesize) {

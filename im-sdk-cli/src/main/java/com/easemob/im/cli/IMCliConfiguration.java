@@ -18,7 +18,7 @@ public class IMCliConfiguration {
     @Bean
     public EMService service(IMCliProperties cliProperties) {
         EMProperties properties = EMProperties.builder()
-                .setDomain(cliProperties.getDomain())
+                .setBaseUri(cliProperties.getBaseUri())
                 .setAppkey(cliProperties.getAppkey())
                 .setClientId(cliProperties.getClientId())
                 .setClientSecret(cliProperties.getClientSecret())

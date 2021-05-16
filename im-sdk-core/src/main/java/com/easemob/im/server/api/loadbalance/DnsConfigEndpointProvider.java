@@ -6,7 +6,6 @@ import com.easemob.im.server.api.ErrorMapper;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
-import java.util.Collections;
 import java.util.List;
 
 public class DnsConfigEndpointProvider implements EndpointProvider {
@@ -27,16 +26,10 @@ public class DnsConfigEndpointProvider implements EndpointProvider {
     }
 
     public Mono<List<Endpoint>> endpoints() {
-        String domain = this.properties.getDomain();
-        if (domain == null || domain.isEmpty()) {
-            return this.httpClient.get()
-                    .uri(String.format("/easemob/server.json?app_key=%s", this.properties.getAppkeyUrlEncoded()))
-                    .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
-                    .map(buf -> this.codec.decode(buf, GetDnsConfigResponse.class))
-                    .map(GetDnsConfigResponse::toEndpoints);
-        } else {
-            return Mono.just(Collections.singletonList(new Endpoint("http", domain, 80)));
-        }
-
+        return this.httpClient.get()
+                .uri(String.format("/easemob/server.json?app_key=%s", this.properties.getAppkeyUrlEncoded()))
+                .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
+                .map(buf -> this.codec.decode(buf, GetDnsConfigResponse.class))
+                .map(GetDnsConfigResponse::toEndpoints);
     }
 }

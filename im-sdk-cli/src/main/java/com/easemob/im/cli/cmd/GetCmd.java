@@ -2,7 +2,6 @@ package com.easemob.im.cli.cmd;
 
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.EMService;
-import com.easemob.im.server.api.dnsconfig.DnsConfigApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -41,8 +40,8 @@ public class GetCmd {
         if (StringUtils.hasText(username)) {
             this.service.user().get(username)
                     .doOnNext(user -> {
-                        System.out.printf("username: %s\n", user.getEntities().get("username"));
-                        System.out.printf("canLogin: %b \n", user.getEntities().get("activated"));
+                        System.out.printf("username: %s\n", user.getUsername());
+                        System.out.printf("canLogin: %b \n", user.getCanLogin());
                     }).doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
@@ -390,31 +389,23 @@ public class GetCmd {
                 .block();
     }
 
-    @Command(name = "metadata", description = "Get user metadata.", mixinStandardHelpOptions = true)
-    public void metadata(@Parameters(description = "the username") String username) {
-        this.service.metadata().get(username)
-                .doOnSuccess(rsp -> System.out.println("data: " + rsp.getData()))
-                .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                .onErrorResume(EMException.class, error -> Mono.empty())
-                .block();
-    }
-
-    @Command(name = "metadataCapacity", description = "Get user metadata.", mixinStandardHelpOptions = true)
-    public void metadataCapacity() {
-        this.service.metadata().getCapacity()
-                .doOnSuccess(rsp -> System.out.println("data: " + rsp))
-                .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                .onErrorResume(EMException.class, error -> Mono.empty())
-                .block();
-    }
-
-    @Command(name = "cluster", description = "Get appkey cluster.", mixinStandardHelpOptions = true)
-    public void cluster(@Parameters(description = "the appkey") String appkey) {
-        EMService.getCluster(appkey)
-                .doOnSuccess(rsp -> System.out.println("cluster: " + rsp))
-                .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                .onErrorResume(EMException.class, error -> Mono.empty())
-                .block();
+    @Command(name = "metadata", description = "Get user metadata or get metadata usage.", mixinStandardHelpOptions = true)
+    public void metadata(@Option(names = "--user", description = "the username") String username,
+                         @Option(names = "--usage", description = "the usage", defaultValue = "usage") String usage) {
+        System.out.println("usage = " + usage);
+        if (username != null) {
+            this.service.metadata().getUser(username)
+                    .doOnSuccess(rsp -> System.out.println("data: " + rsp))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, error -> Mono.empty())
+                    .block();
+        } else if (usage != null) {
+            this.service.metadata().getCapacity()
+                    .doOnSuccess(rsp -> System.out.println("data: " + rsp))
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .onErrorResume(EMException.class, error -> Mono.empty())
+                    .block();
+        }
     }
 
     private static class LimitArgGroup {

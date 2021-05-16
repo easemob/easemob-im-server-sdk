@@ -1,39 +1,41 @@
 package com.easemob.im.server.api.user.get;
 
+import com.easemob.im.server.api.user.UserResource;
+import com.easemob.im.server.model.EMUser;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UserGetResponse {
 
     @JsonProperty("entities")
-    private List<Map<String, Object>> entities;
+    private List<UserResource> entities;
 
     @JsonProperty("cursor")
     private String cursor;
 
     @JsonCreator
-    public UserGetResponse(@JsonProperty("entities") List<Map<String, Object>> entities,
+    public UserGetResponse(@JsonProperty("entities") List<UserResource> entities,
                            @JsonProperty("cursor") String cursor) {
         this.entities = entities;
         this.cursor = cursor;
     }
 
-    public Map<String, Object> getEntities() {
+    public UserResource getEntities() {
         return entities.get(0);
     }
 
-    //    public List<EMUser> getEMUsers() {
-//        return this.entities.stream().map(UserResource::toEMUser).collect(Collectors.toList());
-//    }
-//
-//    public EMUser getEMUser(String username) {
-//        return this.entities.stream()
-//            .filter(user -> user.getUsername().equals(username)).findFirst()
-//            .map(UserResource::toEMUser).orElse(null);
-//    }
+    public List<EMUser> getEMUsers(String username) {
+        return this.entities.stream().map(UserResource::toEMUser).collect(Collectors.toList());
+    }
+
+    public EMUser getEMUser(String username) {
+        return this.entities.stream()
+            .filter(user -> user.getUsername().equals(username)).findFirst()
+            .map(UserResource::toEMUser).orElse(null);
+    }
 
     public String getCursor() {
         return this.cursor;

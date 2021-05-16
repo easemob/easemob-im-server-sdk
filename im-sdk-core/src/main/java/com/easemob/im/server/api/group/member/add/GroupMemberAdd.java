@@ -14,7 +14,7 @@ public class GroupMemberAdd {
 
     public Mono<Void> single(String groupId, String username) {
         return this.context.getHttpClient()
-                .flatMap(HttpClient -> HttpClient.post()
+                .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatgroups/%s/users/%s", groupId, username))
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }

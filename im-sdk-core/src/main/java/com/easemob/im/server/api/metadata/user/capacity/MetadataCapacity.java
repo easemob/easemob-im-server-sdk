@@ -14,8 +14,8 @@ public class MetadataCapacity {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri("/metadata/user/capacity")
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, MetadataCapacityResponse.class))
-                        .map(MetadataCapacityResponse::getData));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, MetadataCapacityResponse.class))
+                .map(MetadataCapacityResponse::getData);
     }
 }

@@ -15,8 +15,8 @@ public class ListRoomAdmins {
         return this.context.getHttpClient()
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatrooms/%s/admin", roomId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, ListRoomAdminsResponse.class))
-                        .flatMapIterable(ListRoomAdminsResponse::getAdmins));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, ListRoomAdminsResponse.class))
+                .flatMapIterable(ListRoomAdminsResponse::getAdmins);
     }
 }

@@ -4,17 +4,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "im")
 public class IMCliProperties {
-    private String domain;
+    private String baseUri;
     private String appkey;
     private String clientId;
     private String clientSecret;
 
-    public String getDomain() {
-        return domain;
+    public String getBaseUri() {
+        return baseUri;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
     }
 
     public String getAppkey() {

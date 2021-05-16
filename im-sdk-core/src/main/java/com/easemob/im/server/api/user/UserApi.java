@@ -1,10 +1,10 @@
 package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.token.Token;
 import com.easemob.im.server.api.user.create.CreateUser;
 import com.easemob.im.server.api.user.forcelogout.ForceLogoutUser;
 import com.easemob.im.server.api.user.get.UserGet;
-import com.easemob.im.server.api.user.get.UserGetResponse;
 import com.easemob.im.server.api.user.list.ListUsers;
 import com.easemob.im.server.api.user.password.UpdateUserPassword;
 import com.easemob.im.server.api.user.status.UserStatus;
@@ -15,11 +15,8 @@ import com.easemob.im.server.model.EMUser;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** 用户API。
- * 支持：
- * - 创建用户
- * - 删除用户
- *
+/**
+ * 用户API。
  */
 public class UserApi {
 
@@ -33,6 +30,8 @@ public class UserApi {
 
     private UserGet userGet;
 
+    private Context context;
+
     public UserApi(Context context) {
         this.createUser = new CreateUser(context);
         this.deleteUser = new DeleteUser(context);
@@ -41,6 +40,7 @@ public class UserApi {
         this.forceLogoutUser = new ForceLogoutUser(context);
         this.userStatus = new UserStatus(context);
         this.userGet = new UserGet(context);
+        this.context = context;
     }
 
 
@@ -113,7 +113,7 @@ public class UserApi {
      * @return A {@code Mono} emits {@code EMUser} on success.
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7">获取用户详情</a>
      */
-    public Mono<UserGetResponse> get(String username) {
+    public Mono<EMUser> get(String username) {
         return this.userGet.single(username);
     }
 
@@ -168,5 +168,15 @@ public class UserApi {
      */
     public Mono<Boolean> isUserOnline(String username) {
         return this.userStatus.isUserOnline(username);
+    }
+
+    /**
+     * 获取用户token。
+     * @param username 要获取token的用户名
+     * @param password 要获取token的用户名密码
+     * @return 返回token或失败
+     */
+    public Mono<Token> getToken(String username, String password) {
+        return this.context.getTokenProvider().fetchUserToken(username, password);
     }
 }

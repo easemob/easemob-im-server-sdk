@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MetadataSet {
+public class MetadataSetUser {
     private Context context;
 
-    public MetadataSet(Context context) {
+    public MetadataSetUser(Context context) {
         this.context = context;
     }
 
-    public Mono<MetadataSetResponse> set(String username, Map<String, String> metadata) {
+    public Mono<Void> setUser(String username, Map<String, String> metadata) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.put()
                         .uri(String.format("/metadata/user/%s", username))
@@ -28,8 +28,6 @@ public class MetadataSet {
                             for (int i = 0; i < metadata.size(); i ++) {
                                 clientForm.attr(keyList.get(i), metadata.get(keyList.get(i)));
                             }
-                        })
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, MetadataSetResponse.class)));
+                        }).responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }
 }

@@ -116,8 +116,8 @@ public class UpdateCmd {
     @Command(name = "metadata", description = "Update user metadata.", mixinStandardHelpOptions = true)
     public void metadata(@Parameters(description = "the username") String username,
                      @Option(names = "--data", description = "set user metadata") Map<String, String> dataMap) {
-        this.service.metadata().set(username, dataMap)
-                .doOnSuccess(rsp -> System.out.println("data: " + rsp.getData()))
+        this.service.metadata().setUser(username, dataMap)
+                .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())
                 .block();

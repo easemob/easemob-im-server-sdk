@@ -25,9 +25,9 @@ public class MessageHistory {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/chatmessages/%s", toPath(instant)))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, MessageHistoryResponse.class))
-                        .map(MessageHistoryResponse::getUrl));
+                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, MessageHistoryResponse.class))
+                .map(MessageHistoryResponse::getUrl);
     }
 
     public Mono<Path> toLocalFile(Instant instant, Path dir, String filename) {
@@ -51,8 +51,8 @@ public class MessageHistory {
                                             .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp).thenMany(buf))
                                             .doOnNext(buf -> FileSystem.append(out, buf))
                                             .doFinally(sig -> FileSystem.close(out))
-                                            .then()
-                                            .thenReturn(local)));
+                                            .then()))
+                            .thenReturn(local);
                 });
     }
 
