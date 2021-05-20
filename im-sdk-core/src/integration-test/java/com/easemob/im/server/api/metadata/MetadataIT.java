@@ -26,7 +26,7 @@ public class MetadataIT extends AbstractIT {
         String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.metadata().setUser(randomUsername, map).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
     }
 
@@ -40,8 +40,8 @@ public class MetadataIT extends AbstractIT {
         String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.metadata().setUser(randomUsername, map).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.metadata().getUser(randomUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.metadata().getMetadataFromUser(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
     }
 
@@ -60,9 +60,9 @@ public class MetadataIT extends AbstractIT {
         String randomUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.metadata().setUser(randomUsername, map).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.metadata().getUser(randomUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.metadata().deleteUser(randomUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.metadata().getMetadataFromUser(randomUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.metadata().deleteMetadataFromUser(randomUsername).block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
     }
 

@@ -9,16 +9,16 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MetadataDeleteUserTest extends AbstractApiTest {
-    MetadataDeleteUser metadataDeleteUser = new MetadataDeleteUser(this.context);
+class MetadataDeleteTest extends AbstractApiTest {
+    MetadataDelete metadataDelete = new MetadataDelete(this.context);
 
-    public MetadataDeleteUserTest() {
+    public MetadataDeleteTest() {
         this.server.addHandler("DELETE /easemob/demo/metadata/user/bob", this::handleMetadataDelete);
     }
 
     @Test
-    public void testMetadataDelete() {
-        Boolean isSuc = assertDoesNotThrow(() -> this.metadataDeleteUser.deleteUser("bob").block(Duration.ofSeconds(3)));
+    public void testMetadataDeleteFromUser() {
+        Boolean isSuc = assertDoesNotThrow(() -> this.metadataDelete.fromUser("bob").block(Duration.ofSeconds(3)));
         assertEquals(true, isSuc);
     }
 

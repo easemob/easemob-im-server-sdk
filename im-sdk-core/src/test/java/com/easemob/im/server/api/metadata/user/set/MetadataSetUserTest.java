@@ -12,7 +12,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MetadataSetUserTest extends AbstractApiTest {
-    MetadataSetUser metadataSetUser = new MetadataSetUser(this.context);
+    MetadataSet metadataSetUser = new MetadataSet(this.context);
 
     public MetadataSetUserTest() {
         this.server.addHandler("PUT /easemob/demo/metadata/user/bob", this::handleMetadataSet);
@@ -21,7 +21,7 @@ class MetadataSetUserTest extends AbstractApiTest {
     @Test
     public void testMetadataSet() {
         Map<String, String> map = new HashMap<>();
-        assertDoesNotThrow(() -> this.metadataSetUser.setUser("bob", map).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.metadataSetUser.toUser("bob", map).block(Duration.ofSeconds(3)));
     }
 
     public JsonNode handleMetadataSet(JsonNode req) {

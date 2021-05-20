@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MetadataSetUser {
+public class MetadataSet {
     private Context context;
 
-    public MetadataSetUser(Context context) {
+    public MetadataSet(Context context) {
         this.context = context;
     }
 
-    public Mono<Void> setUser(String username, Map<String, String> metadata) {
+    public Mono<Void> toUser(String username, Map<String, String> metadata) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.put()
                         .uri(String.format("/metadata/user/%s", username))

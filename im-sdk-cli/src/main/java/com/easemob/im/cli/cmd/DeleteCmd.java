@@ -223,7 +223,7 @@ public class DeleteCmd {
 
     @Command(name = "metadata", description = "Delete user metadata.", mixinStandardHelpOptions = true)
     public void metadata(@Parameters(description = "the username") String username) {
-        this.service.metadata().deleteUser(username)
+        this.service.metadata().deleteMetadataFromUser(username)
                 .doOnSuccess(rsp -> System.out.println("isSuc: " + rsp))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, error -> Mono.empty())
