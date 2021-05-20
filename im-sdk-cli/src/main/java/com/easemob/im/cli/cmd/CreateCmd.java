@@ -165,12 +165,12 @@ public class CreateCmd {
     }
 
     @Command(name = "sms", description = "send sms.", mixinStandardHelpOptions = true)
-    public void sms(@Option(names = "--mobiles", split = "," ,required = true, description = "the receive sms mobiles") Set<String> mobiles,
-                     @Option(names = "--tid", required = true, description = "the sms template") String tid,
-                     @Option(names = "--tmap", required = true, description = "the template variables") Map<String, String> tmap,
+    public void sms(@Option(names = "--phoneNumbers", split = "," ,required = true, description = "the recipient phone numbers") Set<String> phoneNumbers,
+                     @Option(names = "--templateId", required = true, description = "the sms template ID") String templateId,
+                     @Option(names = "--templateVariableContent", required = true, description = "the template variables") Map<String, String> templateVariableContent,
                      @Option(names = "--extendCode", description = "the extend code") String extendCode,
-                     @Option(names = "--custom", description = "the user custom") String custom) {
-        this.service.sms().send(mobiles, tid, tmap, extendCode, custom)
+                     @Option(names = "--customAttributes", description = "the user customized attributes") String customAttributes) {
+        this.service.sms().send(phoneNumbers, templateId, templateVariableContent, extendCode, customAttributes)
                 .doOnSuccess(sendSms -> System.out.println("sendSms: " + sendSms))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, ignore -> Mono.empty())

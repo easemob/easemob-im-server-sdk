@@ -24,6 +24,6 @@ class BaseUriProviderTest extends AbstractApiTest {
         FixedEndpointProvider provider = new FixedEndpointProvider(this.properties);
         List<Endpoint> endpoints = provider.endpoints().block();
         assertEquals(1, endpoints.size());
-        assertEquals(new Endpoint("http", "test.easemob.com", 80), endpoints.get(0));
+        assertEquals(new Endpoint("http", "test.easemob.com", -1), endpoints.get(0));
     }
 }

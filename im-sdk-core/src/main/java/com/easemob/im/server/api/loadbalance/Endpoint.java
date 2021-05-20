@@ -8,17 +8,22 @@ public class Endpoint {
     private int port;
 
     public String getUri() {
-        return String.format("%s://%s:%d", protocol, host, port);
-    }
-
-    public String getHost() {
-        return host;
+        if (port > 0) {
+            return String.format("%s://%s:%d", protocol, host, port);
+        } else {
+            return String.format("%s://%s", protocol, host);
+        }
     }
 
     public Endpoint(String protocol, String host, int port) {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
+    }
+
+    public Endpoint(String protocol, String host) {
+        this.protocol = protocol;
+        this.host = host;
     }
 
     @Override

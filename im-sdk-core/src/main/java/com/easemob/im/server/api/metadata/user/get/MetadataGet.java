@@ -4,14 +4,14 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMMetadata;
 import reactor.core.publisher.Mono;
 
-public class MetadataGetUser {
+public class MetadataGet {
     private Context context;
 
-    public MetadataGetUser(Context context) {
+    public MetadataGet(Context context) {
         this.context = context;
     }
 
-    public Mono<EMMetadata> getUser(String username) {
+    public Mono<EMMetadata> fromUser(String username) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/metadata/user/%s", username))
