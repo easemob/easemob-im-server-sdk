@@ -1,10 +1,13 @@
 package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
 

@@ -9,16 +9,16 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MetadataGetUserTest extends AbstractApiTest {
-    MetadataGetUser metadataGetUser = new MetadataGetUser(this.context);
+class MetadataGetTest extends AbstractApiTest {
+    MetadataGet metadataGet = new MetadataGet(this.context);
 
-    public MetadataGetUserTest() {
+    public MetadataGetTest() {
         this.server.addHandler("GET /easemob/demo/metadata/user/bob", this::handleMetadataGet);
     }
 
     @Test
     public void testMetadataGet() {
-        assertDoesNotThrow(() -> this.metadataGetUser.getUser("bob").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.metadataGet.getUser("bob").block(Duration.ofSeconds(3)));
     }
 
     public JsonNode handleMetadataGet(JsonNode req) {

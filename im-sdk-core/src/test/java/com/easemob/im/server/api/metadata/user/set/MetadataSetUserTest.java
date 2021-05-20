@@ -12,7 +12,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MetadataSetUserTest extends AbstractApiTest {
-    MetadataSetUser metadataSetUser = new MetadataSetUser(this.context);
+    MetadataSet metadataSetUser = new MetadataSet(this.context);
 
     public MetadataSetUserTest() {
         this.server.addHandler("PUT /easemob/demo/metadata/user/bob", this::handleMetadataSet);

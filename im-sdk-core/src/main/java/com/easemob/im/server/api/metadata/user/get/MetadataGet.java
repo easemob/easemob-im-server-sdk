@@ -4,10 +4,10 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMMetadata;
 import reactor.core.publisher.Mono;
 
-public class MetadataGetUser {
+public class MetadataGet {
     private Context context;
 
-    public MetadataGetUser(Context context) {
+    public MetadataGet(Context context) {
         this.context = context;
     }
 

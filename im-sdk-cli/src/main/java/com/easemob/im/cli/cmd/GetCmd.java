@@ -394,7 +394,7 @@ public class GetCmd {
                          @Option(names = "--usage", description = "the usage", defaultValue = "usage") String usage) {
         System.out.println("usage = " + usage);
         if (username != null) {
-            this.service.metadata().getUser(username)
+            this.service.metadata().getMetadataFromUser(username)
                     .doOnSuccess(rsp -> System.out.println("data: " + rsp))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, error -> Mono.empty())
