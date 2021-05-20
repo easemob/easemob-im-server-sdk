@@ -71,19 +71,13 @@ public class DefaultContext implements Context {
 
     public DefaultContext(EMProperties properties) {
         this.properties = properties;
-        ConnectionProvider connectionProvider = ConnectionProvider.create("easemob-sdk", properties.getHttpConnectionPoolSize());
-        HttpClient httpClient = HttpClient.create(connectionProvider)
-            .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())))
-            .wiretap("com.easemob.im.http", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
+        DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+        HttpClient httpClient = defaultHttpClient.isSetProxy(properties);
         this.codec = new JsonCodec();
         this.errorMapper = new DefaultErrorMapper();
         this.loadBalancer = new UniformRandomLoadBalancer();
-
-        if (this.properties.getBaseUri() == null || this.properties.getBaseUri().isEmpty()) {
-            this.endpointProvider = new DnsConfigEndpointProvider(this.properties, this.codec, httpClient.baseUrl("http://rs.easemob.com"), this.errorMapper);
-        } else {
-            this.endpointProvider = new FixedEndpointProvider(this.properties);
-        }
+        EndPointProviderSelector selector = new EndPointProviderSelector(this.properties, this.codec, httpClient.baseUrl("http://rs.easemob.com"), this.errorMapper);
+        this.endpointProvider = selector.selectProvider();
         this.endpointRegistry = new TimedRefreshEndpointRegistry(this.endpointProvider, Duration.ofMinutes(5));
         this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.endpointRegistry, this.loadBalancer, this.codec, this.errorMapper);
         this.httpClient = httpClient.headersWhen(headers -> this.tokenProvider.fetchAppToken().map(token -> headers.set("Authorization", String.format("Bearer %s", token.getValue()))));
