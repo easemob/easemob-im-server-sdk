@@ -15,6 +15,7 @@ import java.nio.file.Path;
 public class EMProperties {
     private final String baseUri;
     private final String appkey;
+    private final EMProxy proxy;
     private final String clientId;
     private final String clientSecret;
 
@@ -31,6 +32,10 @@ public class EMProperties {
 
     public String getAppkey() {
         return this.appkey;
+    }
+
+    public EMProxy getProxy() {
+        return this.proxy;
     }
 
     public String getAppkeyUrlEncoded() {
@@ -61,9 +66,10 @@ public class EMProperties {
         return this.serverTimezone;
     }
 
-    public EMProperties(String baseUri, String appkey, String clientId, String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+    public EMProperties(String baseUri, String appkey, EMProxy proxy, String clientId, String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
         this.baseUri = baseUri;
         this.appkey = appkey;
+        this.proxy = proxy;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
@@ -75,6 +81,7 @@ public class EMProperties {
         return "EMProperties{" +
                 "baseUri='" + baseUri + '\'' +
                 ", appkey='" + appkey + '\'' +
+                ", proxy=" + proxy +
                 ", clientId='" + clientId + '\'' +
                 ", clientSecret='" + clientSecret + '\'' +
                 ", httpConnectionPoolSize=" + httpConnectionPoolSize +
@@ -85,6 +92,7 @@ public class EMProperties {
     public static class Builder {
         private String baseUri;
         private String appkey;
+        private EMProxy proxy;
         private String clientId;
         private String clientSecret;
         private Path downloadDir;
@@ -127,6 +135,16 @@ public class EMProperties {
             }
 
             this.appkey = appkey;
+            return this;
+        }
+
+        /**
+         * 设置代理
+         * @param proxy proxy
+         * @return {@code Builder}
+         */
+        public Builder setProxy(EMProxy proxy) {
+            this.proxy = proxy;
             return this;
         }
 
@@ -191,7 +209,7 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.baseUri, this.appkey, this.clientId, this.clientSecret,
+            return new EMProperties(this.baseUri, this.appkey, this.proxy, this.clientId, this.clientSecret,
                     this.httpConnectionPoolSize, this.serverTimezone);
         }
 
@@ -200,6 +218,7 @@ public class EMProperties {
             return "Builder{" +
                     "baseUri='" + baseUri + '\'' +
                     ", appkey='" + appkey + '\'' +
+                    ", proxy=" + proxy +
                     ", clientId='" + Sensitive.mask(clientId) + '\'' +
                     ", clientSecret='" + Sensitive.mask(clientSecret) + '\'' +
                     ", downloadDir=" + downloadDir +
