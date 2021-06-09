@@ -1,6 +1,6 @@
 package com.easemob.im.server.api.loadbalance;
 
 
-public interface Selector {
+public interface EndPointProviderSelector {
     EndpointProvider selectProvider();
 }

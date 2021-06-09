@@ -5,7 +5,7 @@ import com.easemob.im.server.api.Codec;
 import com.easemob.im.server.api.ErrorMapper;
 import reactor.netty.http.client.HttpClient;
 
-public class EndPointProviderSelector implements Selector {
+public class DefaultEndPointProviderSelector implements EndPointProviderSelector {
 
     private final EMProperties properties;
 
@@ -13,9 +13,9 @@ public class EndPointProviderSelector implements Selector {
 
     private final FixedEndpointProvider fixedEndpointProvider;
 
-    public EndPointProviderSelector(EMProperties properties, Codec codec, HttpClient httpClient, ErrorMapper errorMapper) {
+    public DefaultEndPointProviderSelector(EMProperties properties, Codec codec, HttpClient httpClient, ErrorMapper errorMapper) {
         this.properties = properties;
-        this.dnsConfigEndpointProvider = new DnsConfigEndpointProvider(this.properties, codec, httpClient.baseUrl("http://rs.easemob.com"), errorMapper);
+        this.dnsConfigEndpointProvider = new DnsConfigEndpointProvider(this.properties, codec, httpClient, errorMapper);
         this.fixedEndpointProvider = new FixedEndpointProvider(this.properties);
     }
 
