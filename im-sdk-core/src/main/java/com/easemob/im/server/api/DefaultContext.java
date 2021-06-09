@@ -67,8 +67,7 @@ public class DefaultContext implements Context {
 
     public DefaultContext(EMProperties properties) {
         this.properties = properties;
-        DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
-        HttpClient httpClient = defaultHttpClient.isSetProxy(properties);
+        HttpClient httpClient = EMHttpClientFactory.createHttpClient(properties);
         this.codec = new JsonCodec();
         this.errorMapper = new DefaultErrorMapper();
         this.loadBalancer = new UniformRandomLoadBalancer();
