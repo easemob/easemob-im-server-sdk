@@ -12,18 +12,15 @@ import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.net.InetSocketAddress;
 
-public class DefaultHttpClient implements Proxy {
-    private HttpClient httpClient;
-
-    @Override
-    public HttpClient isSetProxy(EMProperties properties) {
+public class EMHttpClientFactory {
+    public static HttpClient createHttpClient(EMProperties properties) {
         ConnectionProvider connectionProvider = ConnectionProvider.create("easemob-sdk", properties.getHttpConnectionPoolSize());
-        this.httpClient = HttpClient.create(connectionProvider)
+        HttpClient httpClient = HttpClient.create(connectionProvider)
                 .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())))
                 .wiretap("com.easemob.im.http", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
         EMProxy proxyInfo = properties.getProxy();
         if (proxyInfo == null) {
-            return this.httpClient;
+            return httpClient;
         } else {
             final String username = proxyInfo.getUsername();
             final String password = proxyInfo.getPassword();
@@ -31,14 +28,14 @@ public class DefaultHttpClient implements Proxy {
             final int port = proxyInfo.getPort();
 
             if (Strings.isNotBlank(username) && Strings.isNotBlank(password)) {
-                return this.httpClient.proxy(
+                return httpClient.proxy(
                     proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
                             .address(new InetSocketAddress(ip, port))
                             .username(username)
                             .password(p -> password)
                 );
             } else {
-                return this.httpClient.proxy(
+                return httpClient.proxy(
                         proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
                                 .address(new InetSocketAddress(ip, port))
                 );
