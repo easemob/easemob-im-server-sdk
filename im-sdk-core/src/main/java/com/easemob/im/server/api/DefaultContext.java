@@ -1,18 +1,14 @@
 package com.easemob.im.server.api;
 
 import com.easemob.im.server.EMProperties;
-import com.easemob.im.server.EMVersion;
 import com.easemob.im.server.api.codec.JsonCodec;
 import com.easemob.im.server.api.loadbalance.*;
 import com.easemob.im.server.api.token.allocate.DefaultTokenProvider;
 import com.easemob.im.server.api.token.allocate.TokenProvider;
-import io.netty.handler.logging.LogLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.resources.ConnectionProvider;
-import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.time.Duration;
 
@@ -76,7 +72,7 @@ public class DefaultContext implements Context {
         this.codec = new JsonCodec();
         this.errorMapper = new DefaultErrorMapper();
         this.loadBalancer = new UniformRandomLoadBalancer();
-        EndPointProviderSelector selector = new EndPointProviderSelector(this.properties, this.codec, httpClient.baseUrl("http://rs.easemob.com"), this.errorMapper);
+        EndPointProviderSelector selector = new DefaultEndPointProviderSelector(this.properties, this.codec, httpClient.baseUrl("http://rs.easemob.com"), this.errorMapper);
         this.endpointProvider = selector.selectProvider();
         this.endpointRegistry = new TimedRefreshEndpointRegistry(this.endpointProvider, Duration.ofMinutes(5));
         this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.endpointRegistry, this.loadBalancer, this.codec, this.errorMapper);
