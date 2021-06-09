@@ -25,14 +25,23 @@ public class DefaultHttpClient implements Proxy {
         if (proxyInfo == null) {
             return this.httpClient;
         } else {
-            if (Strings.isNotBlank(proxyInfo.getUsername()) && Strings.isNotBlank(proxyInfo.getPassword())) {
-                return this.httpClient.proxy(proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
-                        .address(new InetSocketAddress(proxyInfo.getIp(), proxyInfo.getPort()))
-                        .username(proxyInfo.getUsername())
-                        .password(p -> proxyInfo.getPassword()));
+            final String username = proxyInfo.getUsername();
+            final String password = proxyInfo.getPassword();
+            final String ip = proxyInfo.getIp();
+            final int port = proxyInfo.getPort();
+
+            if (Strings.isNotBlank(username) && Strings.isNotBlank(password)) {
+                return this.httpClient.proxy(
+                    proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
+                            .address(new InetSocketAddress(ip, port))
+                            .username(username)
+                            .password(p -> password)
+                );
             } else {
-                return this.httpClient.proxy(proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
-                        .address(new InetSocketAddress(proxyInfo.getIp(), proxyInfo.getPort())));
+                return this.httpClient.proxy(
+                        proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
+                                .address(new InetSocketAddress(ip, port))
+                );
             }
         }
     }
