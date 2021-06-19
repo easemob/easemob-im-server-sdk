@@ -24,17 +24,6 @@ public class GetNoDisturbing {
                         sink.error(new EMUnknownException(String.format("user:%s", username)));
                         return;
                     }
-                    if (noDisturbing.getNoDisturbing() == null) {
-                        noDisturbing.setNoDisturbing(false);
-                    }
-
-                    if (noDisturbing.getNoDisturbingStart() == null) {
-                        noDisturbing.setNoDisturbingStart(0);
-                    }
-
-                    if (noDisturbing.getNoDisturbingEnd() == null) {
-                        noDisturbing.setNoDisturbingEnd(0);
-                    }
                     sink.next(noDisturbing);
                 });
     }
