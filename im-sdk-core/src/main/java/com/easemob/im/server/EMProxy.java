@@ -79,7 +79,7 @@ public class EMProxy {
 
         public EMProxy build() {
             if (this.ip == null) {
-                throw new EMInvalidArgumentException("the IP of setting proxy cannot be empty");
+                throw new EMInvalidArgumentException("ip must not be empty");
             }
             return new EMProxy(this.ip, this.port, this.username, this.password);
         }
