@@ -2,7 +2,7 @@ package com.easemob.im.server.api.notification;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.notification.nodisturbing.get.GetNoDisturbing;
-import com.easemob.im.server.model.EMNotificationNoDisturbing;
+import com.easemob.im.server.model.EMNotificationUserSetting;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,7 +20,7 @@ public class NotificationApi {
      * @param username  用户名
      * @return 返回免打扰响应或错误
      */
-    public Mono<EMNotificationNoDisturbing> getNoDisturbing(String username) {
+    public Mono<EMNotificationUserSetting> getNoDisturbing(String username) {
         return this.noDisturbing.getNoDisturbing(username);
     }
 }

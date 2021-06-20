@@ -10,8 +10,7 @@ import org.apache.commons.lang3.StringUtils;
  * If noDisturb = true the user won't get notification during the [startHour,endHour] time interval
  * This time interval can be either within the same day or within 2 consecutive days
  */
-// EMNotificationUserSetting
-public class EMNotificationNoDisturbing {
+public class EMNotificationUserSetting {
 
     @JsonProperty("username")
     private String userName;
@@ -34,7 +33,7 @@ public class EMNotificationNoDisturbing {
      * @throws IllegalArgumentException if either startHour or endHour is out of [0,23] range
      */
     @JsonCreator
-    public EMNotificationNoDisturbing(
+    public EMNotificationUserSetting(
             @JsonProperty("username") String userName,
             @JsonProperty("notification_no_disturbing") Boolean noDisturb,
             @JsonProperty("notification_no_disturbing_start") Integer startHour,

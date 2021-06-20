@@ -2,7 +2,7 @@ package com.easemob.im.server.api.notification.nodisturbing.get;
 
 import com.easemob.im.server.api.AbstractApiTest;
 import com.easemob.im.server.exception.EMJsonException;
-import com.easemob.im.server.model.EMNotificationNoDisturbing;
+import com.easemob.im.server.model.EMNotificationUserSetting;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -27,7 +27,8 @@ class GetNoDisturbingTest extends AbstractApiTest {
 
     @Test
     void testBob() {
-        EMNotificationNoDisturbing noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("bob").block(Duration.ofSeconds(3)));
+        EMNotificationUserSetting
+                noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("bob").block(Duration.ofSeconds(3)));
         assertEquals(true, noDisturbing.getNoDisturb());
         assertEquals(10, noDisturbing.getStartHour());
         assertEquals(13, noDisturbing.getEndHour());
@@ -35,7 +36,8 @@ class GetNoDisturbingTest extends AbstractApiTest {
 
     @Test
     void testCat() {
-        EMNotificationNoDisturbing noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("cat").block(Duration.ofSeconds(3)));
+        EMNotificationUserSetting
+                noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("cat").block(Duration.ofSeconds(3)));
         assertEquals(false, noDisturbing.getNoDisturb());
         assertEquals(18, noDisturbing.getStartHour());
         assertEquals(9, noDisturbing.getEndHour());
@@ -50,7 +52,7 @@ class GetNoDisturbingTest extends AbstractApiTest {
 
     @Test
     void testElephant() {
-        EMNotificationNoDisturbing noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("elephant").block(Duration.ofSeconds(3)));
+        EMNotificationUserSetting noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("elephant").block(Duration.ofSeconds(3)));
         assertEquals(true, noDisturbing.getNoDisturb());
         assertEquals(0, noDisturbing.getStartHour());
         assertEquals(9, noDisturbing.getEndHour());
@@ -58,7 +60,8 @@ class GetNoDisturbingTest extends AbstractApiTest {
 
     @Test
     void testFly() {
-        EMNotificationNoDisturbing noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("fly").block(Duration.ofSeconds(3)));
+        EMNotificationUserSetting
+                noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("fly").block(Duration.ofSeconds(3)));
         assertEquals(true, noDisturbing.getNoDisturb());
         assertEquals(9, noDisturbing.getStartHour());
         assertEquals(23, noDisturbing.getEndHour());
@@ -66,7 +69,7 @@ class GetNoDisturbingTest extends AbstractApiTest {
 
     @Test
     void testGorilla() {
-        EMNotificationNoDisturbing noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("gorilla").block(Duration.ofSeconds(3)));
+        EMNotificationUserSetting noDisturbing = assertDoesNotThrow(() -> this.noDisturbing.getNoDisturbing("gorilla").block(Duration.ofSeconds(3)));
         assertEquals(true, noDisturbing.getNoDisturb());
         assertEquals(0, noDisturbing.getStartHour());
         assertEquals(23, noDisturbing.getEndHour());
