@@ -2,6 +2,7 @@ package com.easemob.im.server.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A immutable representation of no disturb settings
@@ -9,7 +10,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * If noDisturb = true the user won't get notification during the [startHour,endHour] time interval
  * This time interval can be either within the same day or within 2 consecutive days
  */
+// EMNotificationUserSetting
 public class EMNotificationNoDisturbing {
+
+    @JsonProperty("username")
+    private String userName;
+
     @JsonProperty("notification_no_disturbing")
     private boolean noDisturb;
 
@@ -21,30 +27,36 @@ public class EMNotificationNoDisturbing {
 
     /**
      *
+     * @param userName user's unique identifier
      * @param noDisturb true if no-disturb is turned on, false by default
      * @param startHour must be within [0-23]
      * @param endHour must be within [0-23]
      * @throws IllegalArgumentException if either startHour or endHour is out of [0,23] range
      */
     @JsonCreator
-    public EMNotificationNoDisturbing(@JsonProperty("notification_no_disturbing") Boolean noDisturb,
-                              @JsonProperty("notification_no_disturbing_start") Integer startHour,
-                              @JsonProperty("notification_no_disturbing_end") Integer endHour) {
+    public EMNotificationNoDisturbing(
+            @JsonProperty("username") String userName,
+            @JsonProperty("notification_no_disturbing") Boolean noDisturb,
+            @JsonProperty("notification_no_disturbing_start") Integer startHour,
+            @JsonProperty("notification_no_disturbing_end") Integer endHour) {
         /*
-        在REST API返回的json中, 这三个参数都可能为null
+        在REST API返回的json中, 后3个参数都可能为null
         这里依据im-push-service对null值的处理逻辑, 将其全部转换为基本类型
         从而使SDK的用户不需要再对null值做特殊处理
         */
-        if (noDisturb != null) {
-            this.noDisturb = noDisturb;
-        } else {
-            this.noDisturb = false;
+        if (StringUtils.isEmpty(userName)) {
+            throw new IllegalArgumentException(String.format("startHour = %s is valid", userName));
         }
         if (startHour != null && (startHour > 23 || startHour < 0)) {
             throw new IllegalArgumentException(String.format("startHour = %d is out of valid 24 hours bound", startHour));
         }
         if (endHour != null && (endHour > 23 || endHour < 0)) {
             throw new IllegalArgumentException(String.format("endHour = %d is out of valid 24 hours bound", endHour));
+        }
+        if (noDisturb != null) {
+            this.noDisturb = noDisturb;
+        } else {
+            this.noDisturb = false;
         }
         if (startHour == null && endHour == null) {
             this.startHour = 0;
@@ -62,6 +74,10 @@ public class EMNotificationNoDisturbing {
             this.startHour = startHour;
             this.endHour = 23;
         }
+    }
+
+    public String getUsername() {
+        return this.userName;
     }
 
     public boolean getNoDisturb() {
