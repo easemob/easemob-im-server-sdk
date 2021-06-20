@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * TODO: Ken need a standard javadoc for this POJO
- * no disturb settings
- * startHour and endHour must be within [0, 23] range
- * if startHour < endHour, within the same day
- * if startHour > endHour, today and the next day
+ * A immutable representation of no disturb settings
+ * startHour and endHour must be integers within [0,23] range
+ * If noDisturb = true the user won't get notification during the [startHour,endHour] time interval
+ * This time interval can be either within the same day or within 2 consecutive days
  */
 public class EMNotificationNoDisturbing {
     @JsonProperty("notification_no_disturbing")
@@ -23,14 +22,19 @@ public class EMNotificationNoDisturbing {
     /**
      *
      * @param noDisturb true if no-disturb is turned on, false by default
-     * @param startHour 0-23
-     * @param endHour 0-23
-     * @throws IllegalArgumentException if startHour of endHour is out of 0-23 range
+     * @param startHour must be within [0-23]
+     * @param endHour must be within [0-23]
+     * @throws IllegalArgumentException if either startHour or endHour is out of [0,23] range
      */
     @JsonCreator
     public EMNotificationNoDisturbing(@JsonProperty("notification_no_disturbing") Boolean noDisturb,
                               @JsonProperty("notification_no_disturbing_start") Integer startHour,
                               @JsonProperty("notification_no_disturbing_end") Integer endHour) {
+        /*
+        在REST API返回的json中, 这三个参数都可能为null
+        这里依据im-push-service对null值的处理逻辑, 将其全部转换为基本类型
+        从而使SDK的用户不需要再对null值做特殊处理
+        */
         if (noDisturb != null) {
             this.noDisturb = noDisturb;
         } else {
