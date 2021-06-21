@@ -5,10 +5,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientForm;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class MetadataSet {
     private Context context;
@@ -23,11 +20,7 @@ public class MetadataSet {
                         .uri(String.format("/metadata/user/%s", username))
                         .sendForm((req, form) -> {
                             HttpClientForm clientForm = form.multipart(false).charset(StandardCharsets.UTF_8);
-                            Set<String> keySet = metadata.keySet();
-                            List<String> keyList = new ArrayList<>(keySet);
-                            for (int i = 0; i < metadata.size(); i ++) {
-                                clientForm.attr(keyList.get(i), metadata.get(keyList.get(i)));
-                            }
+                            metadata.forEach(clientForm::attr);
                         }).responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }
 }
