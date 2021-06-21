@@ -164,19 +164,6 @@ public class CreateCmd {
                 .block();
     }
 
-    @Command(name = "sms", description = "send sms.", mixinStandardHelpOptions = true)
-    public void sms(@Option(names = "--phoneNumbers", split = "," ,required = true, description = "the recipient phone numbers") Set<String> phoneNumbers,
-                     @Option(names = "--templateId", required = true, description = "the sms template ID") String templateId,
-                     @Option(names = "--templateVariableContent", required = true, description = "the template variables") Map<String, String> templateVariableContent,
-                     @Option(names = "--extendCode", description = "the extend code") String extendCode,
-                     @Option(names = "--customAttributes", description = "the user customized attributes") String customAttributes) {
-        this.service.sms().send(phoneNumbers, templateId, templateVariableContent, extendCode, customAttributes)
-                .doOnSuccess(sendSms -> System.out.println("sendSms: " + sendSms))
-                .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                .onErrorResume(EMException.class, ignore -> Mono.empty())
-                .block();
-    }
-
     private static class MemberArgGroup {
         @Option(names = "--to-group", description = "add user to this group")
         String toGroup;
