@@ -16,7 +16,7 @@ public class MetadataDelete {
                         .uri(String.format("/metadata/user/%s", username))
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, MetadataDeleteResponse.class))
-                .map(MetadataDeleteResponse::getData);
+                .map(MetadataDeleteResponse::getSuccess);
     }
 
 }
