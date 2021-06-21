@@ -6,11 +6,9 @@ import com.easemob.im.server.api.block.BlockApi;
 import com.easemob.im.server.api.attachment.AttachmentApi;
 import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.metadata.MetadataApi;
-import com.easemob.im.server.api.notification.NotificationApi;
 import com.easemob.im.server.api.room.RoomApi;
 import com.easemob.im.server.api.group.GroupApi;
 import com.easemob.im.server.api.contact.ContactApi;
-import com.easemob.im.server.api.sms.SmsApi;
 import com.easemob.im.server.api.user.UserApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +36,9 @@ public class EMService {
 
     private final UserApi userApi;
 
-    private final SmsApi smsApi;
 
     private final MetadataApi metadataApi;
 
-    private final NotificationApi notificationApi;
 
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
@@ -55,9 +51,7 @@ public class EMService {
         this.groupApi = new GroupApi(this.context);
         this.roomApi = new RoomApi(this.context);
         this.userApi = new UserApi(this.context);
-        this.smsApi = new SmsApi(this.context);
         this.metadataApi = new MetadataApi(this.context);
-        this.notificationApi = new NotificationApi(this.context);
     }
 
     /**
@@ -191,17 +185,6 @@ public class EMService {
     }
 
     /**
-     * 发送短信API.<br>
-     * 支持：<br>
-     *  - 发送短信<br>
-     *
-     * @return {@code SmsApi}
-     */
-    public SmsApi sms() {
-        return this.smsApi;
-    }
-
-    /**
      * 用户属性API.<br>
      * 支持：<br>
      *  - 设置用户属性<br>
@@ -213,17 +196,6 @@ public class EMService {
      */
     public MetadataApi metadata() {
         return this.metadataApi;
-    }
-
-    /**
-     * 推送通知免打扰API.<br>
-     * 支持：<br>
-     *  - 获取推送通知免打扰信息<br>
-     *
-     * @return {@code NotificationApi}
-     */
-    public NotificationApi notification() {
-        return this.notificationApi;
     }
 
 }
