@@ -46,8 +46,8 @@ public class MetadataIT extends AbstractIT {
     }
 
     @Test
-    public void testMetadataGetCapacity() {
-        assertDoesNotThrow(() -> this.service.metadata().getCapacity().block(Duration.ofSeconds(3)));
+    public void testMetadataGetUsage() {
+        assertDoesNotThrow(() -> this.service.metadata().getUsage().block(Duration.ofSeconds(3)));
     }
 
     @Test

@@ -400,7 +400,7 @@ public class GetCmd {
                     .onErrorResume(EMException.class, error -> Mono.empty())
                     .block();
         } else if (usage != null) {
-            this.service.metadata().getCapacity()
+            this.service.metadata().getUsage()
                     .doOnSuccess(rsp -> System.out.println("data: " + rsp))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, error -> Mono.empty())
