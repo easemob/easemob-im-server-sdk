@@ -6,6 +6,7 @@ import com.easemob.im.server.api.metadata.user.delete.MetadataDelete;
 import com.easemob.im.server.api.metadata.user.get.MetadataGet;
 import com.easemob.im.server.api.metadata.user.set.MetadataSet;
 import com.easemob.im.server.model.EMMetadata;
+import com.easemob.im.server.model.EMMetadataUsage;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -56,7 +57,7 @@ public class MetadataApi {
      * @return 返回占用空间大小，单位Bytes
      * @see <a href="https://docs-im.easemob.com/im/server/ready/usermetadata#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E9%87%8F%E5%A4%A7%E5%B0%8F">获取app用户属性总量大小</a>
      */
-    public Mono<Long> getUsage() {
+    public Mono<EMMetadataUsage> getUsage() {
         return this.metadataUsage.getUsage();
     }
 

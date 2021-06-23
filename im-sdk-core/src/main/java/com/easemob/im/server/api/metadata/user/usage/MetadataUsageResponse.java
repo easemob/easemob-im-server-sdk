@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MetadataUsageResponse {
     @JsonProperty("data")
-    private Long usage;
+    private Long bytesUsed;
 
     @JsonCreator
-    public MetadataUsageResponse(@JsonProperty("data") Long usage) {
-        this.usage = usage;
+    public MetadataUsageResponse(@JsonProperty("data") Long bytesUsed) {
+        this.bytesUsed = bytesUsed;
     }
 
-    public Long getUsage() {
-        return usage;
+    public Long getBytesUsed() {
+        return bytesUsed;
     }
 }

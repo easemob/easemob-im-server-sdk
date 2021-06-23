@@ -1,6 +1,8 @@
 package com.easemob.im.server.api.metadata.user.usage;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.model.EMMetadata;
+import com.easemob.im.server.model.EMMetadataUsage;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -18,8 +20,8 @@ class MetadataUsageTest extends AbstractApiTest {
 
     @Test
     public void testUsage() {
-        long usage = assertDoesNotThrow(() -> this.metadataUsage.getUsage().block(Duration.ofSeconds(3)));
-        assertEquals(1600, usage);
+        EMMetadataUsage emMetadataUsage = assertDoesNotThrow(() -> this.metadataUsage.getUsage().block(Duration.ofSeconds(3)));
+        assertEquals(1600, emMetadataUsage.getBytesUsed());
     }
 
     private JsonNode handleMetadataUsage(JsonNode req) {
