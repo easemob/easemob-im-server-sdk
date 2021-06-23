@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.metadata;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.api.metadata.user.capacity.MetadataCapacity;
+import com.easemob.im.server.api.metadata.user.usage.MetadataUsage;
 import com.easemob.im.server.api.metadata.user.delete.MetadataDelete;
 import com.easemob.im.server.api.metadata.user.get.MetadataGet;
 import com.easemob.im.server.api.metadata.user.set.MetadataSet;
@@ -19,14 +19,14 @@ public class MetadataApi {
 
     private MetadataGet metadataGet;
 
-    private MetadataCapacity metadataCapacity;
+    private MetadataUsage metadataUsage;
 
     private MetadataDelete metadataDelete;
 
     public MetadataApi(Context context) {
         this.metadataSet = new MetadataSet(context);
         this.metadataGet = new MetadataGet(context);
-        this.metadataCapacity = new MetadataCapacity(context);
+        this.metadataUsage = new MetadataUsage(context);
         this.metadataDelete = new MetadataDelete(context);
     }
 
@@ -52,12 +52,12 @@ public class MetadataApi {
     }
 
     /**
-     * 获取app用户属性容量
-     * @return 返回获取到的容量大小，单位Bytes
-     * @see <a href="https://docs-im.easemob.com/im/server/ready/usermetadata#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E9%87%8F%E5%A4%A7%E5%B0%8F">获取app用户属性容量</a>
+     * 获取app用户属性当前所占空间
+     * @return 返回占用空间大小，单位Bytes
+     * @see <a href="https://docs-im.easemob.com/im/server/ready/usermetadata#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E9%87%8F%E5%A4%A7%E5%B0%8F">获取app用户属性总量大小</a>
      */
-    public Mono<Long> getCapacity() {
-        return this.metadataCapacity.getCapacity();
+    public Mono<Long> getUsage() {
+        return this.metadataUsage.getUsage();
     }
 
     /**
