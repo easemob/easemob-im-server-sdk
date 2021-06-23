@@ -401,7 +401,7 @@ public class GetCmd {
                     .block();
         } else if (usage != null) {
             this.service.metadata().getUsage()
-                    .doOnSuccess(rsp -> System.out.println("data: " + rsp))
+                    .doOnSuccess(emMetadataUsage -> System.out.println("bytesUsed: " + emMetadataUsage.getBytesUsed()))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, error -> Mono.empty())
                     .block();
