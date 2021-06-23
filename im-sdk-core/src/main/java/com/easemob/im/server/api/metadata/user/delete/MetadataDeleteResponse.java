@@ -1,6 +1,5 @@
 package com.easemob.im.server.api.metadata.user.delete;
 
-import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,9 +10,10 @@ public class MetadataDeleteResponse {
     @JsonCreator
     public MetadataDeleteResponse(@JsonProperty("data") Boolean success) {
         if (success == null) {
-            throw new EMInvalidArgumentException("metadata deletion success flag is null");
+            this.success = false;
+        } else {
+            this.success = success;
         }
-        this.success = success;
     }
 
     public boolean getSuccess() {
