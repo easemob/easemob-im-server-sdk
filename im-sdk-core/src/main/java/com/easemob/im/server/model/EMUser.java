@@ -1,6 +1,7 @@
 package com.easemob.im.server.model;
 
 import com.easemob.im.server.exception.EMInvalidArgumentException;
+import org.apache.logging.log4j.util.Strings;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -32,11 +33,12 @@ public class EMUser extends EMEntity {
     }
 
     public static void validatePassword(String password) {
-        if (password == null || password.isEmpty()) {
+        if (Strings.isBlank(password)) {
             throw new EMInvalidArgumentException("password must not be null or empty");
         }
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            throw new EMInvalidArgumentException(String.format("password '%s' should match regex %s", password, PASSWORD_PATTERN.toString()));
+            // DO NOT show password
+            throw new EMInvalidArgumentException(String.format("password should match regex %s", PASSWORD_PATTERN.toString()));
         }
     }
 

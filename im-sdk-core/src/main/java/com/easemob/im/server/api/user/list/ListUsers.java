@@ -2,6 +2,7 @@ package com.easemob.im.server.api.user.list;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMPage;
+import io.netty.handler.codec.http.QueryStringEncoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,14 +23,15 @@ public class ListUsers {
     }
 
     public Mono<EMPage<String>> next(int limit, String cursor) {
-        String query = String.format("limit=%d", limit);
+        QueryStringEncoder encoder = new QueryStringEncoder("/users");
+        encoder.addParam("limit", String.valueOf(limit));
         if (cursor != null) {
-            query = String.format("%s&cursor=%s", query, cursor);
+            encoder.addParam("cursor", cursor);
         }
-        String finalQuery = query;
+        final String uriString = encoder.toString();
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
-                        .uri(String.format("/users?%s", finalQuery))
+                        .uri(uriString)
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UserListResponse.class))
                 .map(UserListResponse::toEMPage);

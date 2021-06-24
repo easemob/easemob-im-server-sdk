@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserGetResponse {
 
@@ -21,14 +20,6 @@ public class UserGetResponse {
                            @JsonProperty("cursor") String cursor) {
         this.entities = entities;
         this.cursor = cursor;
-    }
-
-    public UserResource getEntities() {
-        return entities.get(0);
-    }
-
-    public List<EMUser> getEMUsers(String username) {
-        return this.entities.stream().map(UserResource::toEMUser).collect(Collectors.toList());
     }
 
     public EMUser getEMUser(String username) {

@@ -3,6 +3,7 @@ package com.easemob.im.server.api.loadbalance;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Codec;
 import com.easemob.im.server.api.ErrorMapper;
+import org.apache.logging.log4j.util.Strings;
 import reactor.netty.http.client.HttpClient;
 
 public class DefaultEndPointProviderSelector implements EndPointProviderSelector {
@@ -21,7 +22,8 @@ public class DefaultEndPointProviderSelector implements EndPointProviderSelector
 
     @Override
     public EndpointProvider selectProvider() {
-        if (this.properties.getBaseUri() == null || this.properties.getBaseUri().isEmpty()) {
+        final String baseUri = this.properties.getBaseUri();
+        if (Strings.isBlank(baseUri)) {
             return this.dnsConfigEndpointProvider;
         } else {
             return this.fixedEndpointProvider;

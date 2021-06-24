@@ -2,6 +2,7 @@ package com.easemob.im.server.api.group.list;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMPage;
+import io.netty.handler.codec.http.QueryStringEncoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,14 +21,15 @@ public class GroupList {
     }
 
     public Mono<EMPage<String>> next(int limit, String cursor) {
-        String path = String.format("/chatgroups?limit=%s", limit);
+        QueryStringEncoder encoder = new QueryStringEncoder("/chatgroups");
+        encoder.addParam("limit", String.valueOf(limit));
         if (cursor != null) {
-            path = String.format("%s&cursor=%s", path, cursor);
+            encoder.addParam("cursor", cursor);
         }
-        String finalPath = path;
+        String uriString = encoder.toString();
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
-                        .uri(finalPath)
+                        .uri(uriString)
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
                 .map(GroupListResponse::toEMPage);

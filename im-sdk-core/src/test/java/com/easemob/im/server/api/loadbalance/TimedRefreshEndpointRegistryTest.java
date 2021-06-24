@@ -18,5 +18,4 @@ class TimedRefreshEndpointRegistryTest extends AbstractApiTest {
         List<Endpoint> endpointList = endpointRegistry.endpoints().block(Duration.ofSeconds(3));
         assertEquals(2, endpointList.size());
     }
-
 }

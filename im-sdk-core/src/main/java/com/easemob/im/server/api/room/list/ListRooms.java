@@ -2,6 +2,7 @@ package com.easemob.im.server.api.room.list;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.model.EMPage;
+import io.netty.handler.codec.http.QueryStringEncoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,14 +21,15 @@ public class ListRooms {
     }
 
     public Mono<EMPage<String>> next(int limit, String cursor) {
-        String uri = String.format("/chatrooms?limit=%d", limit);
+        QueryStringEncoder encoder = new QueryStringEncoder("/chatrooms");
+        encoder.addParam("limit", String.valueOf(limit));
         if (cursor != null) {
-            uri += String.format("&cursor=%s", cursor);
+            encoder.addParam("cursor", cursor);
         }
-        String finalUri = uri;
+        String uriString = encoder.toString();
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
-                        .uri(finalUri)
+                        .uri(uriString)
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
                 .map(ListRoomsResponse::toEMPage);
