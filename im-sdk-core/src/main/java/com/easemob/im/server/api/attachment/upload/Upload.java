@@ -18,7 +18,6 @@ public class Upload {
     public Mono<EMAttachment> fromLocalFile(Path path, boolean restrictAccess) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.headers(headers -> headers.add("restrict-access", restrictAccess))
-                        //.headers(headers -> headers.remove("Authorization"))
                         .post()
                         .uri("/chatfiles")
                         .sendForm((req, form) -> form.multipart(true)

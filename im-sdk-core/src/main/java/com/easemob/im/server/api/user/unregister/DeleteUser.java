@@ -2,8 +2,10 @@ package com.easemob.im.server.api.user.unregister;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMUnknownException;
+import io.netty.handler.codec.http.QueryStringEncoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
 
 public class DeleteUser {
 
@@ -36,14 +38,16 @@ public class DeleteUser {
     }
 
     public Mono<UserUnregisterResponse> next(int limit, String cursor) {
-        String query = String.format("limit=%d", limit);
+        // try to avoid manually assembling uri string
+        QueryStringEncoder encoder = new QueryStringEncoder("/users");
+        encoder.addParam("limit", String.valueOf(limit));
         if (cursor != null) {
-            query = String.format("%s&cursor=%s", query, cursor);
+            encoder.addParam("cursor", cursor);
         }
-        String finalQuery = query;
+        String uirString = encoder.toString();
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
-                        .uri(String.format("/users?%s", finalQuery))
+                        .uri(uirString)
                         .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class));
     }

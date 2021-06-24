@@ -3,7 +3,6 @@ package com.easemob.im.server.api.loadbalance;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.AbstractApiTest;
 import org.junit.jupiter.api.Test;
-import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 

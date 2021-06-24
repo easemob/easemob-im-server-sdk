@@ -21,7 +21,8 @@ public class ForceLogoutUser {
         if (resource != null) {
             path = String.format("%s/%s", path, resource);
         }
-        String finalPath = path;
+        // immutable final uri path string
+        final String finalPath = String.valueOf(path);
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(finalPath)
