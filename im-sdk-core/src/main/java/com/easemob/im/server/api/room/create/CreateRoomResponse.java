@@ -10,6 +10,10 @@ public class CreateRoomResponse {
         this.wrapper = wrapper;
     }
 
+    public String getRoomId() {
+        return this.wrapper != null ? this.wrapper.roomId : null;
+    }
+
     public static class Wrapper {
         @JsonProperty("id")
         private String roomId;
@@ -21,9 +25,5 @@ public class CreateRoomResponse {
         public String getRoomId() {
             return this.roomId;
         }
-    }
-
-    public String getRoomId() {
-        return this.wrapper != null ? this.wrapper.roomId : null;
     }
 }

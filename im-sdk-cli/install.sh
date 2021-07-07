@@ -8,7 +8,7 @@ jar_name=im-sdk-cli.jar
 
 echo Begin installing Easemob SDK IM CLI v$version
 
-if [ ! -d $easemob_home  ]; then
+if [ ! -d $easemob_home ]; then
   echo "Create dir $easemob_home."
   mkdir $easemob_home
 else
@@ -18,7 +18,7 @@ fi
 if [ ! -f $config_file ]; then
   echo "Create file ${config_file}."
   touch $config_file
-  echo -e "# You can get configs from https://console.easemob.com/\nim.appkey=\nim.client-id=\nim.client-secret=" > ~/.easemob/config.properties
+  echo -e "# You can get configs from https://console.easemob.com/\nim.appkey=\nim.client-id=\nim.client-secret=" >~/.easemob/config.properties
 else
   echo "$config_file exists, skip creating file."
 fi

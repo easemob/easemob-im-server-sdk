@@ -15,6 +15,23 @@ public class UserTokenRequest implements TokenRequest {
     @JsonProperty("password")
     private final String password;
 
+    private UserTokenRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    @JsonCreator
+    public static UserTokenRequest of(@JsonProperty("username") String username,
+            @JsonProperty("password") String password) {
+        if (username == null || username.isEmpty()) {
+            throw new EMInvalidArgumentException("username must not be null or empty");
+        }
+        if (password == null || password.isEmpty()) {
+            throw new EMInvalidArgumentException("password must not be null or empty");
+        }
+        return new UserTokenRequest(username, password);
+    }
+
     public String getGrantType() {
         return grantType;
     }
@@ -25,23 +42,6 @@ public class UserTokenRequest implements TokenRequest {
 
     public String getPassword() {
         return password;
-    }
-
-    @JsonCreator
-    public static UserTokenRequest of(@JsonProperty("username") String username,
-                                      @JsonProperty("password") String password) {
-        if (username == null || username.isEmpty()) {
-            throw new EMInvalidArgumentException("username must not be null or empty");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new EMInvalidArgumentException("password must not be null or empty");
-        }
-        return new UserTokenRequest(username, password);
-    }
-
-    private UserTokenRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
     }
 
 }

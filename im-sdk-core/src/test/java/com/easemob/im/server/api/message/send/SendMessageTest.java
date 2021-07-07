@@ -17,7 +17,8 @@ class SendMessageTest extends AbstractApiTest {
     SendMessage sendMessage = new SendMessage(this.context);
 
     SendMessageTest() {
-        this.server.addHandler("POST /easemob/demo/messages?useMsgId=true", this::handleSendMessage);
+        this.server
+                .addHandler("POST /easemob/demo/messages?useMsgId=true", this::handleSendMessage);
     }
 
     private JsonNode handleSendMessage(JsonNode jsonNode) {
@@ -29,7 +30,7 @@ class SendMessageTest extends AbstractApiTest {
         ObjectNode messageIdsByReceiverId = this.objectMapper.createObjectNode();
         for (int i = 0; i < targets.size(); i++) {
             String target = targets.get(i).asText();
-            messageIdsByReceiverId.put(target, ThreadLocalRandom.current().nextLong(2^63-1));
+            messageIdsByReceiverId.put(target, ThreadLocalRandom.current().nextLong(2 ^ 63 - 1));
         }
 
         ObjectNode rsp = this.objectMapper.createObjectNode();
@@ -49,7 +50,8 @@ class SendMessageTest extends AbstractApiTest {
     @Test
     void testSendUser2UserImageMessage() {
         assertDoesNotThrow(() -> this.sendMessage.fromUser("alice").toUser("rabbit")
-                .image(msg -> msg.uri(URI.create("http://example/image.jpg")).height(100.000).width(200.000))
+                .image(msg -> msg.uri(URI.create("http://example/image.jpg")).height(100.000)
+                        .width(200.000))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));

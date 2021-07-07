@@ -14,7 +14,8 @@ class DemoteRoomAdminTest extends AbstractApiTest {
     private DemoteRoomAdmin demoteRoomAdmin;
 
     DemoteRoomAdminTest() {
-        this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/admin/rabbit", this::handleDemoteRoomAdmin);
+        this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/admin/rabbit",
+                this::handleDemoteRoomAdmin);
         this.demoteRoomAdmin = new DemoteRoomAdmin(this.context);
     }
 
@@ -29,6 +30,7 @@ class DemoteRoomAdminTest extends AbstractApiTest {
 
     @Test
     void testDemoteRoomAdmin() {
-        assertDoesNotThrow(() -> this.demoteRoomAdmin.single("r1", "rabbit").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.demoteRoomAdmin.single("r1", "rabbit").block(Duration.ofSeconds(3)));
     }
 }

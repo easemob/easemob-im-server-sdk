@@ -43,7 +43,6 @@ public class UserApi {
         this.context = context;
     }
 
-
     /**
      * 创建用户。
      *
@@ -86,7 +85,7 @@ public class UserApi {
     /**
      * 分页获取用户列表。
      *
-     * @param limit 返回多少用户
+     * @param limit  返回多少用户
      * @param cursor 开始位置
      * @return 获取用户响应或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7">获取用户列表</a>
@@ -148,7 +147,7 @@ public class UserApi {
 
     /**
      * 强制指定用户指定设备下线。
-     *
+     * <p>
      * TODO: 增加查询用户在线设备id的API
      *
      * @param username 要强制下线的用户的用户名
@@ -162,6 +161,7 @@ public class UserApi {
 
     /**
      * 获取用户在线状态。
+     *
      * @param username 要查询的用户的用户名
      * @return 是否在线或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9C%A8%E7%BA%BF%E7%8A%B6%E6%80%81">获取用户在线状态</a>
@@ -172,6 +172,7 @@ public class UserApi {
 
     /**
      * 获取用户token。
+     *
      * @param username 要获取token的用户名
      * @param password 要获取token的用户名密码
      * @return 返回token或失败

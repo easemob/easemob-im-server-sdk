@@ -15,14 +15,17 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockUserJoinRoomTest extends AbstractApiTest {
-    
+
     private BlockUserJoinRoom blockUserJoinRoom;
-    
+
     BlockUserJoinRoomTest() {
         super();
-        this.server.addHandler("GET /easemob/demo/chatrooms/1/blocks/users", this::handleGetBlockedUserRequest);
-        this.server.addHandler("POST /easemob/demo/chatrooms/1/blocks/users/alice", req -> handleBlockUserRequest(req, "alice"));
-        this.server.addHandler("DELETE /easemob/demo/chatrooms/1/blocks/users/alice", req -> handleUnblockUserRequest(req, "alice"));
+        this.server.addHandler("GET /easemob/demo/chatrooms/1/blocks/users",
+                this::handleGetBlockedUserRequest);
+        this.server.addHandler("POST /easemob/demo/chatrooms/1/blocks/users/alice",
+                req -> handleBlockUserRequest(req, "alice"));
+        this.server.addHandler("DELETE /easemob/demo/chatrooms/1/blocks/users/alice",
+                req -> handleUnblockUserRequest(req, "alice"));
         this.blockUserJoinRoom = new BlockUserJoinRoom(this.context);
     }
 

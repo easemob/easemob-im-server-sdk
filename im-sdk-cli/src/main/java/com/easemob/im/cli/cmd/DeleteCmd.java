@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 import static picocli.CommandLine.Option;
 import static picocli.CommandLine.Parameters;
 
-
 @Component
 @Command(name = "delete", description = "Delete a resource.", mixinStandardHelpOptions = true)
 public class DeleteCmd {
@@ -20,29 +19,9 @@ public class DeleteCmd {
     @Autowired
     private EMService service;
 
-    private static class UnBlockArgGroup {
-        @Option(names = {"--msg-to-user"}, description = "unblock user send message to this user")
-        String msgToUsername;
-
-        @Option(names = {"--msg-to-group"}, description = "unblock user send message to this group")
-        String msgToGroupId;
-
-        @Option(names = {"--msg-to-room"}, description = "unblock user send message to this room")
-        String msgToRoomId;
-
-        @Option(names = {"--join-group"}, description = "unblock user to join group")
-        String joinGroupId;
-
-        @Option(names = {"--join-room"}, description = "unblock user to join room")
-        String joinRoomId;
-
-        @Option(names = {"--login"}, description = "unblock user to login")
-        boolean login;
-    }
-
     @Command(name = "block", description = "Unblock user from resource.", mixinStandardHelpOptions = true)
     public void block(@Parameters(description = "user to unblock") String username,
-                      @ArgGroup(multiplicity = "1", exclusive = false) UnBlockArgGroup argGroup) {
+            @ArgGroup(multiplicity = "1", exclusive = false) UnBlockArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.msgToUsername)) {
             this.service.block().unblockUserSendMsgToUser(username, argGroup.msgToUsername)
                     .doOnSuccess(ignore -> System.out.println("done"))
@@ -87,14 +66,6 @@ public class DeleteCmd {
         }
     }
 
-    private static class DeleteUserArgGroup {
-        @Parameters(description = "delete one user")
-        String username;
-
-        @Option(names = {"--all"}, description = "delete all users")
-        boolean all;
-    }
-
     @Command(name = "user", description = "Delete a user.", mixinStandardHelpOptions = true)
     public void user(@ArgGroup(multiplicity = "1") DeleteUserArgGroup argGroup) {
         if (argGroup.all) {
@@ -114,7 +85,7 @@ public class DeleteCmd {
 
     @Command(name = "contact", description = "Remove a contact from the user.", mixinStandardHelpOptions = true)
     public void contact(@Parameters(description = "the user's username") String user,
-                        @Parameters(description = "the contact's username") String contact) {
+            @Parameters(description = "the contact's username") String contact) {
         this.service.contact().remove(user, contact)
                 .doOnSuccess(ignored -> System.out.println("done"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -144,7 +115,7 @@ public class DeleteCmd {
 
     @Command(name = "session", description = "Force user logout, default to logout all devices if missing --device", mixinStandardHelpOptions = true)
     public void session(@Parameters(description = "the username") String username,
-                        @Option(names = "--device", description = "logout specific device") String deviceName) {
+            @Option(names = "--device", description = "logout specific device") String deviceName) {
         if (StringUtils.hasText(deviceName)) {
             this.service.user().forceLogoutOneDevice(username, deviceName)
                     .doOnSuccess(ignored -> System.out.println("done"))
@@ -160,17 +131,9 @@ public class DeleteCmd {
         }
     }
 
-    private static class MemberArgGroup {
-        @Option(names = "--from-group", description = "remove user from this group")
-        String fromGroup;
-
-        @Option(names = "--from-room", description = "remove user from this room")
-        String fromRoom;
-    }
-
     @Command(name = "member", description = "Remove user from group or room.", mixinStandardHelpOptions = true)
     public void member(@Parameters(description = "the user") String username,
-                       @ArgGroup(multiplicity = "1") MemberArgGroup argGroup) {
+            @ArgGroup(multiplicity = "1") MemberArgGroup argGroup) {
         if (StringUtils.hasText(argGroup.fromGroup)) {
             this.service.group().removeGroupMember(argGroup.fromGroup, username)
                     .doOnSuccess(ig -> System.out.println("done"))
@@ -186,20 +149,9 @@ public class DeleteCmd {
         }
     }
 
-    private static class AdminArgGroup {
-        @Option(names = "--group", description = "demote a group admin")
-        String groupId;
-
-        @Option(names = "--room", description = "demote a room admin")
-        String roomId;
-
-        @Option(names = "--super", description = "demote a super admin")
-        String superAdminUsername;
-    }
-
     @Command(name = "admin", description = "Demote a admin", mixinStandardHelpOptions = true)
     public void admin(@Parameters(description = "admin username") String username,
-                      @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
+            @ArgGroup(multiplicity = "1") AdminArgGroup argGroup) {
         if (argGroup.groupId != null) {
             this.service.group().removeGroupAdmin(argGroup.groupId, username)
                     .doOnSuccess(ig -> System.out.println("done"))
@@ -228,5 +180,55 @@ public class DeleteCmd {
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, error -> Mono.empty())
                 .block();
+    }
+
+    private static class UnBlockArgGroup {
+        @Option(names = {"--msg-to-user"}, description = "unblock user send message to this user")
+        String msgToUsername;
+
+        @Option(names = {"--msg-to-group"}, description = "unblock user send message to this group")
+        String msgToGroupId;
+
+        @Option(names = {"--msg-to-room"}, description = "unblock user send message to this room")
+        String msgToRoomId;
+
+        @Option(names = {"--join-group"}, description = "unblock user to join group")
+        String joinGroupId;
+
+        @Option(names = {"--join-room"}, description = "unblock user to join room")
+        String joinRoomId;
+
+        @Option(names = {"--login"}, description = "unblock user to login")
+        boolean login;
+    }
+
+
+    private static class DeleteUserArgGroup {
+        @Parameters(description = "delete one user")
+        String username;
+
+        @Option(names = {"--all"}, description = "delete all users")
+        boolean all;
+    }
+
+
+    private static class MemberArgGroup {
+        @Option(names = "--from-group", description = "remove user from this group")
+        String fromGroup;
+
+        @Option(names = "--from-room", description = "remove user from this room")
+        String fromRoom;
+    }
+
+
+    private static class AdminArgGroup {
+        @Option(names = "--group", description = "demote a group admin")
+        String groupId;
+
+        @Option(names = "--room", description = "demote a room admin")
+        String roomId;
+
+        @Option(names = "--super", description = "demote a super admin")
+        String superAdminUsername;
     }
 }

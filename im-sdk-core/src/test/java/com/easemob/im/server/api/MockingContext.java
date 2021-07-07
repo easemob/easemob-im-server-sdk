@@ -25,7 +25,8 @@ public class MockingContext implements Context {
         this.properties = properties;
         this.httpClient = Mono.just(HttpClient.newConnection()
                 .baseUrl(String.format("%s/%s", serverUri, properties.getAppkeySlashDelimited()))
-                .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion()))));
+                .headers(headers -> headers.add("User-Agent",
+                        String.format("EasemobServerSDK/%s", EMVersion.getVersion()))));
         this.tokenProvider = new MockingTokenProvider();
         this.bearerAuthorization = new BearerAuthorization(tokenProvider);
         this.codec = new JsonCodec();
@@ -42,9 +43,17 @@ public class MockingContext implements Context {
         return this.httpClient;
     }
 
+    public void setHttpClient(Mono<HttpClient> httpClient) {
+        this.httpClient = httpClient;
+    }
+
     @Override
     public TokenProvider getTokenProvider() {
         return this.tokenProvider;
+    }
+
+    public void setTokenProvider(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
@@ -52,28 +61,20 @@ public class MockingContext implements Context {
         return this.codec;
     }
 
+    public void setCodec(Codec codec) {
+        this.codec = codec;
+    }
+
     @Override
     public ErrorMapper getErrorMapper() {
         return this.errorMapper;
     }
 
-    public void setHttpClient(Mono<HttpClient> httpClient) {
-        this.httpClient = httpClient;
-    }
-
-    public void setTokenProvider(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
+    public void setErrorMapper(ErrorMapper errorMapper) {
+        this.errorMapper = errorMapper;
     }
 
     public void setBearerAuthorization(BearerAuthorization bearerAuthorization) {
         this.bearerAuthorization = bearerAuthorization;
-    }
-
-    public void setCodec(Codec codec) {
-        this.codec = codec;
-    }
-
-    public void setErrorMapper(ErrorMapper errorMapper) {
-        this.errorMapper = errorMapper;
     }
 }

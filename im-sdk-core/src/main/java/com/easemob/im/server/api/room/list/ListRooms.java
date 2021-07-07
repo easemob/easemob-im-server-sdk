@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class ListRooms {
-    
+
     private Context context;
 
     public ListRooms(Context context) {
@@ -16,7 +16,9 @@ public class ListRooms {
 
     public Flux<String> all(int limit) {
         return next(limit, null)
-                .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(limit, rsp.getCursor()))
+                .expand(rsp -> rsp.getCursor() == null ?
+                        Mono.empty() :
+                        next(limit, rsp.getCursor()))
                 .concatMapIterable(EMPage::getValues);
     }
 
@@ -30,7 +32,8 @@ public class ListRooms {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(uriString)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
                 .map(ListRoomsResponse::toEMPage);
     }
@@ -39,7 +42,8 @@ public class ListRooms {
         return this.context.getHttpClient()
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/joined_chatrooms", username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
                 .flatMapIterable(ListRoomsResponse::getRoomIds);
     }

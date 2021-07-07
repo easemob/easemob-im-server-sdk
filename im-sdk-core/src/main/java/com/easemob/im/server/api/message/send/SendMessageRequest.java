@@ -31,15 +31,51 @@ public class SendMessageRequest {
 
     @JsonCreator
     public SendMessageRequest(@JsonProperty("from") String from,
-                              @JsonProperty("target_type") String targetType,
-                              @JsonProperty("target") Set<String> targets,
-                              @JsonProperty("msg") EMMessage message,
-                              @JsonProperty("ext") Map<String, Object> extensions) {
+            @JsonProperty("target_type") String targetType,
+            @JsonProperty("target") Set<String> targets,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("ext") Map<String, Object> extensions) {
         this.from = from;
         this.targetType = targetType;
         this.targets = targets;
         this.message = Message.of(message);
         this.extensions = extensions;
+    }
+
+    public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {
+        if (extensions == null || extensions.isEmpty()) {
+            return null;
+        }
+        Map<String, Object> mapped = new HashMap<>();
+        for (EMKeyValue keyValue : extensions) {
+            switch (keyValue.type()) {
+                case BOOL:
+                    mapped.put(keyValue.key(), keyValue.asBoolean());
+                    break;
+                case INT:
+                    mapped.put(keyValue.key(), keyValue.asInt());
+                    break;
+                case UINT:
+                    mapped.put(keyValue.key(), keyValue.asLong());
+                    break;
+                case LLINT:
+                    mapped.put(keyValue.key(), keyValue.asLong());
+                    break;
+                case FLOAT:
+                    mapped.put(keyValue.key(), keyValue.asFloat());
+                    break;
+                case DOUBLE:
+                    mapped.put(keyValue.key(), keyValue.asDouble());
+                    break;
+                case STRING:
+                    mapped.put(keyValue.key(), keyValue.asString());
+                    break;
+                case JSON_STRING:
+                    mapped.put(keyValue.key(), keyValue.asString());
+                    break;
+            }
+        }
+        return mapped;
     }
 
     public String getFrom() {
@@ -61,7 +97,32 @@ public class SendMessageRequest {
     public Set<EMKeyValue> getExtensions() {
         return populateExtensions(this.extensions);
     }
-    
+
+    @SuppressWarnings("unchecked")
+    public Set<EMKeyValue> populateExtensions(Map<String, Object> extensions) {
+        if (extensions == null || extensions.isEmpty()) {
+            return null;
+        }
+        Set<EMKeyValue> mapped = new HashSet<>();
+        for (String key : extensions.keySet()) {
+            Object value = extensions.get(key);
+            if (value instanceof Boolean) {
+                mapped.add(EMKeyValue.of(key, (boolean) value));
+            } else if (value instanceof Integer) {
+                mapped.add(EMKeyValue.of(key, (int) value));
+            } else if (value instanceof Long) {
+                mapped.add(EMKeyValue.of(key, (long) value));
+            } else if (value instanceof Float) {
+                mapped.add(EMKeyValue.of(key, (float) value));
+            } else if (value instanceof Double) {
+                mapped.add(EMKeyValue.of(key, (double) value));
+            } else if (value instanceof String) {
+                mapped.add(EMKeyValue.of(key, (String) value));
+            }
+        }
+        return mapped;
+    }
+
     static class Message {
         @JsonProperty("type")
         private String type;
@@ -116,20 +177,20 @@ public class SendMessageRequest {
 
         @JsonCreator
         public Message(@JsonProperty("type") String type,
-                       @JsonProperty("msg") String text,
-                       @JsonProperty("lng") Double longitude,
-                       @JsonProperty("lat") Double latitude,
-                       @JsonProperty("addr") String address,
-                       @JsonProperty("filename") String displayName,
-                       @JsonProperty("url") String uri,
-                       @JsonProperty("secret") String secretKey,
-                       @JsonProperty("file_length") Integer bytes,
-                       @JsonProperty("action") String action,
-                       @JsonProperty("param") Map<String, Object> params,
-                       @JsonProperty("length") Integer duration,
-                       @JsonProperty("size") Dimensions dimensions,
-                       @JsonProperty("customEvent") String customEvent,
-                       @JsonProperty("customExts") Map<String, Object> customExtensions) {
+                @JsonProperty("msg") String text,
+                @JsonProperty("lng") Double longitude,
+                @JsonProperty("lat") Double latitude,
+                @JsonProperty("addr") String address,
+                @JsonProperty("filename") String displayName,
+                @JsonProperty("url") String uri,
+                @JsonProperty("secret") String secretKey,
+                @JsonProperty("file_length") Integer bytes,
+                @JsonProperty("action") String action,
+                @JsonProperty("param") Map<String, Object> params,
+                @JsonProperty("length") Integer duration,
+                @JsonProperty("size") Dimensions dimensions,
+                @JsonProperty("customEvent") String customEvent,
+                @JsonProperty("customExts") Map<String, Object> customExtensions) {
             this.type = type;
             this.text = text;
             this.longitude = longitude;
@@ -171,7 +232,8 @@ public class SendMessageRequest {
                 case CUSTOM:
                     return Message.of((EMCustomMessage) msg);
                 default:
-                    throw new IllegalArgumentException(String.format("message type %s not supported", msg.messageType()));
+                    throw new IllegalArgumentException(
+                            String.format("message type %s not supported", msg.messageType()));
             }
         }
 
@@ -309,11 +371,19 @@ public class SendMessageRequest {
         }
     }
 
+
     static class Dimensions {
         @JsonProperty("width")
         private Double width;
         @JsonProperty("height")
         private Double height;
+
+        @JsonCreator
+        public Dimensions(@JsonProperty("width") Double width,
+                @JsonProperty("height") Double height) {
+            this.width = width;
+            this.height = height;
+        }
 
         public Double getWidth() {
             return this.width;
@@ -322,73 +392,5 @@ public class SendMessageRequest {
         public Double getHeight() {
             return this.height;
         }
-
-        @JsonCreator
-        public Dimensions(@JsonProperty("width") Double width,
-                          @JsonProperty("height") Double height) {
-            this.width = width;
-            this.height = height;
-        }
-    }
-
-    public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {
-        if (extensions == null || extensions.isEmpty()) {
-            return null;
-        }
-        Map<String, Object> mapped = new HashMap<>();
-        for (EMKeyValue keyValue : extensions) {
-            switch (keyValue.type()) {
-                case BOOL:
-                    mapped.put(keyValue.key(), keyValue.asBoolean());
-                    break;
-                case INT:
-                    mapped.put(keyValue.key(), keyValue.asInt());
-                    break;
-                case UINT:
-                    mapped.put(keyValue.key(), keyValue.asLong());
-                    break;
-                case LLINT:
-                    mapped.put(keyValue.key(), keyValue.asLong());
-                    break;
-                case FLOAT:
-                    mapped.put(keyValue.key(), keyValue.asFloat());
-                    break;
-                case DOUBLE:
-                    mapped.put(keyValue.key(), keyValue.asDouble());
-                    break;
-                case STRING:
-                    mapped.put(keyValue.key(), keyValue.asString());
-                    break;
-                case JSON_STRING:
-                    mapped.put(keyValue.key(), keyValue.asString());
-                    break;
-            }
-        }
-        return mapped;
-    }
-
-    @SuppressWarnings("unchecked")
-    public Set<EMKeyValue> populateExtensions(Map<String, Object> extensions) {
-        if (extensions == null || extensions.isEmpty()) {
-            return null;
-        }
-        Set<EMKeyValue> mapped = new HashSet<>();
-        for (String key : extensions.keySet()) {
-            Object value = extensions.get(key);
-            if (value instanceof Boolean) {
-                mapped.add(EMKeyValue.of(key, (boolean) value));
-            } else if (value instanceof Integer) {
-                mapped.add(EMKeyValue.of(key, (int) value));
-            } else if (value instanceof Long) {
-                mapped.add(EMKeyValue.of(key, (long) value));
-            } else if (value instanceof Float) {
-                mapped.add(EMKeyValue.of(key, (float) value));
-            } else if (value instanceof Double) {
-                mapped.add(EMKeyValue.of(key, (double) value));
-            } else if (value instanceof String) {
-                mapped.add(EMKeyValue.of(key, (String) value));
-            }
-        }
-        return mapped;
     }
 }

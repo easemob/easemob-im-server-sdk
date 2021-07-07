@@ -16,8 +16,10 @@ public class ListUsersBlockedSendMsgToRoom {
         return this.context.getHttpClient()
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatrooms/%s/mute", roomId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
-                .map(buf -> this.context.getCodec().decode(buf, ListUsersBlockedSendMsgToRoomResponse.class))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec()
+                        .decode(buf, ListUsersBlockedSendMsgToRoomResponse.class))
                 .flatMapIterable(ListUsersBlockedSendMsgToRoomResponse::getEMBlocks);
     }
 

@@ -39,10 +39,12 @@ public class UserGetTest extends AbstractApiTest {
                 .setPort(18888)
                 .build();
         HttpClient httpClient = this.context.getHttpClient().block();
-        this.context.setHttpClient(Mono.just(httpClient.proxy(proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
-                .address(new InetSocketAddress(proxyInfo.getIp(), proxyInfo.getPort())))));
+        this.context.setHttpClient(
+                Mono.just(httpClient.proxy(proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
+                        .address(new InetSocketAddress(proxyInfo.getIp(), proxyInfo.getPort())))));
 
-        assertThrows(RuntimeException.class, () -> this.userGet.single("username").block(Duration.ofSeconds(3)));
+        assertThrows(RuntimeException.class,
+                () -> this.userGet.single("username").block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleUserGetSingle(JsonNode req) {

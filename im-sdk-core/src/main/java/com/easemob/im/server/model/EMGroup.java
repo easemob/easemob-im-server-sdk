@@ -16,8 +16,9 @@ public class EMGroup extends EMEntity {
 
     private final int maxMembers;
 
-    public EMGroup(String groupId, String name, String description, boolean isPublic, boolean needApproveToJoin, boolean canMemberInviteOthers,
-                   String owner, int maxMembers) {
+    public EMGroup(String groupId, String name, String description, boolean isPublic,
+            boolean needApproveToJoin, boolean canMemberInviteOthers,
+            String owner, int maxMembers) {
         super(EntityType.GROUP);
         super.id(groupId);
         this.name = name;

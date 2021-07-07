@@ -6,7 +6,6 @@ import io.netty.handler.codec.http.QueryStringEncoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-
 public class DeleteUser {
 
     private Context context;
@@ -19,7 +18,8 @@ public class DeleteUser {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/users/%s", username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class))
                 .handle((rsp, sink) -> {
                     if (rsp.getError() != null) {
@@ -30,11 +30,12 @@ public class DeleteUser {
                 });
     }
 
-
     public Flux<String> all(int limit) {
         return next(limit, null)
-            .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(limit, rsp.getCursor()))
-            .concatMapIterable(UserUnregisterResponse::getUsernames);
+                .expand(rsp -> rsp.getCursor() == null ?
+                        Mono.empty() :
+                        next(limit, rsp.getCursor()))
+                .concatMapIterable(UserUnregisterResponse::getUsernames);
     }
 
     public Mono<UserUnregisterResponse> next(int limit, String cursor) {
@@ -48,7 +49,8 @@ public class DeleteUser {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(uirString)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class));
     }
 }

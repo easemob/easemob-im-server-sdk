@@ -18,12 +18,14 @@ class GroupAdminListTest extends AbstractApiTest {
     GroupAdminList groupAdminList = new GroupAdminList(this.context);
 
     public GroupAdminListTest() {
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/admin", this::handleGroupAdminListRequest);
+        this.server.addHandler("GET /easemob/demo/chatgroups/1/admin",
+                this::handleGroupAdminListRequest);
     }
 
     @Test
     void testListGroupAdmin() {
-        Set<String> admins = this.groupAdminList.all("1").collect(Collectors.toSet()).block(Duration.ofSeconds(3));
+        Set<String> admins = this.groupAdminList.all("1").collect(Collectors.toSet())
+                .block(Duration.ofSeconds(3));
         assertTrue(admins.contains("madhat"));
         assertTrue(admins.contains("rabbit"));
     }

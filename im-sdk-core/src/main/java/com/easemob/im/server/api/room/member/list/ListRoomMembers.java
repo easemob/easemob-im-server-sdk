@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class ListRoomMembers {
-    
+
     private Context context;
 
     public ListRoomMembers(Context context) {
@@ -16,7 +16,9 @@ public class ListRoomMembers {
 
     public Flux<String> all(String roomId, int limit) {
         return next(roomId, limit, null)
-                .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(roomId, limit, rsp.getCursor()))
+                .expand(rsp -> rsp.getCursor() == null ?
+                        Mono.empty() :
+                        next(roomId, limit, rsp.getCursor()))
                 .concatMapIterable(EMPage::getValues);
     }
 
@@ -32,10 +34,10 @@ public class ListRoomMembers {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(uriString)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomMembersResponse.class))
                 .map(ListRoomMembersResponse::toEMPage);
     }
-
 
 }

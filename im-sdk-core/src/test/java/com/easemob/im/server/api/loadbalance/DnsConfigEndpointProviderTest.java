@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DnsConfigEndpointProviderTest extends AbstractApiTest {
     DnsConfigEndpointProviderTest() {
-        this.server.addHandler("GET /easemob/server.json?app_key=easemob%23demo", this::handleGetDnsConfig);
+        this.server.addHandler("GET /easemob/server.json?app_key=easemob%23demo",
+                this::handleGetDnsConfig);
     }
 
     private JsonNode handleGetDnsConfig(JsonNode jsonNode) {
@@ -46,7 +47,9 @@ class DnsConfigEndpointProviderTest extends AbstractApiTest {
     @Test
     void testGetDnsConfig() {
         HttpClient httpClient = HttpClient.newConnection().baseUrl(this.server.uri());
-        DnsConfigEndpointProvider provider = new DnsConfigEndpointProvider(this.properties, this.context.getCodec(), httpClient, this.context.getErrorMapper());
+        DnsConfigEndpointProvider provider =
+                new DnsConfigEndpointProvider(this.properties, this.context.getCodec(), httpClient,
+                        this.context.getErrorMapper());
         List<Endpoint> endpoints = provider.endpoints().block();
         assertEquals(2, endpoints.size());
         assertEquals(new Endpoint("https", "test.easemob.com", 443), endpoints.get(0));

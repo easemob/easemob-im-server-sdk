@@ -14,7 +14,7 @@ public class UserResource {
 
     @JsonCreator
     public UserResource(@JsonProperty("username") String username,
-                        @JsonProperty("activated") boolean activated) {
+            @JsonProperty("activated") boolean activated) {
         this.username = username;
         this.activated = activated;
     }

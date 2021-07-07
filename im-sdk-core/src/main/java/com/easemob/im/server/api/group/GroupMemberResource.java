@@ -13,7 +13,7 @@ public class GroupMemberResource {
 
     @JsonCreator
     public GroupMemberResource(@JsonProperty("member") String memberUsername,
-                               @JsonProperty("owner") String ownerUsername) {
+            @JsonProperty("owner") String ownerUsername) {
         this.memberUsername = memberUsername;
         this.ownerUsername = ownerUsername;
     }

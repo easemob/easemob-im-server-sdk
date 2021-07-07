@@ -31,6 +31,6 @@ class DeleteRoomTest extends AbstractApiTest {
 
     @Test
     void testDeleteRoom() {
-        assertDoesNotThrow(() -> this.deleteRoom.byId( "r1").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.deleteRoom.byId("r1").block(Duration.ofSeconds(3)));
     }
 }

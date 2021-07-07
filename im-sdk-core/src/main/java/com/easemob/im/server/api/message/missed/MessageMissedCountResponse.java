@@ -12,16 +12,16 @@ public class MessageMissedCountResponse {
     private Map<String, Integer> missedMessageCountByQueue;
 
     @JsonCreator
-    public MessageMissedCountResponse(@JsonProperty("data") Map<String, Integer> missedMessageCountByQueue) {
+    public MessageMissedCountResponse(
+            @JsonProperty("data") Map<String, Integer> missedMessageCountByQueue) {
         this.missedMessageCountByQueue = missedMessageCountByQueue;
     }
 
     public List<MissedMessageCount> getMissedMessageCounts() {
         return this.missedMessageCountByQueue.entrySet()
-            .stream()
-            .map(e -> new MissedMessageCount(e.getKey(), e.getValue()))
-            .collect(Collectors.toList());
+                .stream()
+                .map(e -> new MissedMessageCount(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
     }
-
 
 }

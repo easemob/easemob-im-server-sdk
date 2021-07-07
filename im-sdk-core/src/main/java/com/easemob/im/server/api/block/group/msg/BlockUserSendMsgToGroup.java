@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.util.function.Function;
 
 public class BlockUserSendMsgToGroup {
-    
+
     private Context context;
 
     public BlockUserSendMsgToGroup(Context context) {
@@ -23,18 +23,24 @@ public class BlockUserSendMsgToGroup {
         return this.context.getHttpClient()
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/mute", groupId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
-                .map(rsp -> this.context.getCodec().decode(rsp, GetUsersBlockedSendMsgToGroupResponse.class))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(rsp -> this.context.getCodec()
+                        .decode(rsp, GetUsersBlockedSendMsgToGroupResponse.class))
                 .flatMapIterable(GetUsersBlockedSendMsgToGroupResponse::getEMBlocks);
 
     }
+
     public Mono<Void> blockUser(String username, String groupId, Duration duration) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatgroups/%s/mute", groupId))
-                        .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(BlockUserSendMsgToGroupRequest.of(username, duration)))))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
-                .map(buf -> this.context.getCodec().decode(buf, BlockUserSendMsgToGroupResponse.class))
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(BlockUserSendMsgToGroupRequest.of(username, duration)))))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec()
+                        .decode(buf, BlockUserSendMsgToGroupResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess(username)) {
                         sink.error(new EMUnknownException("unknown"));
@@ -47,9 +53,11 @@ public class BlockUserSendMsgToGroup {
     public Mono<Void> unblockUser(String username, String groupId) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
-                            .uri(String.format("/chatgroups/%s/mute/%s", groupId, username))
-                            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
-                .map(buf -> this.context.getCodec().decode(buf, UnblockUserSendMsgToGroupResponse.class))
+                        .uri(String.format("/chatgroups/%s/mute/%s", groupId, username))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec()
+                        .decode(buf, UnblockUserSendMsgToGroupResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess(username)) {
                         sink.error(new EMUnknownException("unknown"));

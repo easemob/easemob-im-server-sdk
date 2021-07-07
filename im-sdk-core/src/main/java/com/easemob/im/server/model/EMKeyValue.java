@@ -12,23 +12,11 @@ public class EMKeyValue {
 
     private final Object value;
 
-    public enum Type {
-        BOOL,
-        INT,
-        UINT,
-        LLINT,
-        FLOAT,
-        DOUBLE,
-        STRING,
-        JSON_STRING,
-    }
-
     private EMKeyValue(String key, Type type, Object value) {
         this.key = key;
         this.type = type;
         this.value = value;
     }
-
 
     public static EMKeyValue of(String key, boolean value) {
         return new EMKeyValue(key, Type.BOOL, value);
@@ -57,15 +45,15 @@ public class EMKeyValue {
     public static EMKeyValue of(String k, Object v) {
         if (v instanceof Boolean) {
             return EMKeyValue.of(k, (boolean) v);
-        } else if(v instanceof Integer) {
+        } else if (v instanceof Integer) {
             return EMKeyValue.of(k, (int) v);
-        } else if(v instanceof  Long) {
+        } else if (v instanceof Long) {
             return EMKeyValue.of(k, (long) v);
-        } else if(v instanceof  Float) {
+        } else if (v instanceof Float) {
             return EMKeyValue.of(k, (float) v);
-        } else if(v instanceof Double) {
+        } else if (v instanceof Double) {
             return EMKeyValue.of(k, (double) v);
-        } else if(v instanceof String) {
+        } else if (v instanceof String) {
             return EMKeyValue.of(k, (String) v);
         } else {
             throw new IllegalArgumentException("can not convert the type: " + v.getClass());
@@ -121,5 +109,16 @@ public class EMKeyValue {
 
     public Object asObject() {
         return this.value;
+    }
+
+    public enum Type {
+        BOOL,
+        INT,
+        UINT,
+        LLINT,
+        FLOAT,
+        DOUBLE,
+        STRING,
+        JSON_STRING,
     }
 }

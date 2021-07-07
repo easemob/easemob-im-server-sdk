@@ -13,7 +13,9 @@ public class EMVoiceMessage extends EMMessage {
 
     private Integer bytes;
 
-    /** the time unit depends on usage **/
+    /**
+     * the time unit depends on usage
+     **/
     private Integer duration;
 
     public EMVoiceMessage() {

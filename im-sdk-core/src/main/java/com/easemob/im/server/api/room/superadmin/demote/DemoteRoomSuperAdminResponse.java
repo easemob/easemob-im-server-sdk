@@ -7,6 +7,15 @@ public class DemoteRoomSuperAdminResponse {
     @JsonProperty("data")
     private Wrapper wrapper;
 
+    @JsonCreator
+    public DemoteRoomSuperAdminResponse(@JsonProperty("data") Wrapper wrapper) {
+        this.wrapper = wrapper;
+    }
+
+    public boolean isSucess() {
+        return this.wrapper != null;
+    }
+
     public static class Wrapper {
         @JsonProperty("newSuperAdmin")
         private String username;
@@ -15,18 +24,9 @@ public class DemoteRoomSuperAdminResponse {
 
         @JsonCreator
         public Wrapper(@JsonProperty("newSuperAdmin") String username,
-                       @JsonProperty("resource") String resource) {
+                @JsonProperty("resource") String resource) {
             this.username = username;
             this.resource = resource;
         }
-    }
-
-    @JsonCreator
-    public DemoteRoomSuperAdminResponse(@JsonProperty("data") Wrapper wrapper) {
-        this.wrapper = wrapper;
-    }
-
-    public boolean isSucess() {
-        return this.wrapper != null;
     }
 }

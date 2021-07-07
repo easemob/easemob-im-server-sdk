@@ -19,8 +19,11 @@ public class SendMsgToUser {
         return this.context.getHttpClient()
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/blocks/users", username))
-                        .responseSingle((httpRsp, buf) -> this.context.getErrorMapper().apply(httpRsp).then(buf)))
-                .map(buf -> this.context.getCodec().decode(buf, GetUsersBlockedSendMsgToUserResponse.class))
+                        .responseSingle(
+                                (httpRsp, buf) -> this.context.getErrorMapper().apply(httpRsp)
+                                        .then(buf)))
+                .map(buf -> this.context.getCodec()
+                        .decode(buf, GetUsersBlockedSendMsgToUserResponse.class))
                 .flatMapIterable(GetUsersBlockedSendMsgToUserResponse::getUsernames)
                 .map(blockedUsername -> new EMBlock(blockedUsername, null));
     }
@@ -32,7 +35,9 @@ public class SendMsgToUser {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/users/%s/blocks/users", toUser))
-                        .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new BlockUsersSendMsgToUserRequest(Arrays.asList(fromUser))))))
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new BlockUsersSendMsgToUserRequest(
+                                        Arrays.asList(fromUser))))))
                         .response())
                 .flatMap(rsp -> this.context.getErrorMapper().apply(rsp).then());
     }

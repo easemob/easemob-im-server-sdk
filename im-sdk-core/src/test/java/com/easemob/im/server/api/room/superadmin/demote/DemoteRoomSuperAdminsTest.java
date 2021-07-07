@@ -14,19 +14,23 @@ class DemoteRoomSuperAdminsTest extends AbstractApiTest {
     private DemoteRoomSuperAdmin demoteRoomSuperAdmin;
 
     DemoteRoomSuperAdminsTest() {
-        this.server.addHandler("DELETE /easemob/demo/chatrooms/super_admin/rabbit", this::handleDemoteRoomSuperAdmin);
+        this.server.addHandler("DELETE /easemob/demo/chatrooms/super_admin/rabbit",
+                this::handleDemoteRoomSuperAdmin);
         this.demoteRoomSuperAdmin = new DemoteRoomSuperAdmin(this.context);
     }
 
-        private JsonNode handleDemoteRoomSuperAdmin(JsonNode jsonNode) {
-            ObjectNode data = this.objectMapper.createObjectNode();
-            data.put("newSuperAdmin", "rabbit");
-            data.put("resource", "");
-            ObjectNode rsp = this.objectMapper.createObjectNode();
-            rsp.set("data", data);
-            return rsp;
-        }
+    private JsonNode handleDemoteRoomSuperAdmin(JsonNode jsonNode) {
+        ObjectNode data = this.objectMapper.createObjectNode();
+        data.put("newSuperAdmin", "rabbit");
+        data.put("resource", "");
+        ObjectNode rsp = this.objectMapper.createObjectNode();
+        rsp.set("data", data);
+        return rsp;
+    }
 
     @Test
-    void testDemoteRoomSuperAdmin() { assertDoesNotThrow(() -> this.demoteRoomSuperAdmin.singnle("rabbit").block(Duration.ofSeconds(3)));}
+    void testDemoteRoomSuperAdmin() {
+        assertDoesNotThrow(
+                () -> this.demoteRoomSuperAdmin.singnle("rabbit").block(Duration.ofSeconds(3)));
+    }
 }

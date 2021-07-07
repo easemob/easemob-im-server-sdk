@@ -16,7 +16,8 @@ public class DemoteRoomAdmin {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatrooms/%s/admin/%s", roomId, username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, DemoteRoomAdminResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {

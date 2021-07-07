@@ -18,7 +18,8 @@ class ListUsersBlockedSendMsgToRoomTest extends AbstractApiTest {
     private ListUsersBlockedSendMsgToRoom listUsersBlockedSendMsgToRoom;
 
     ListUsersBlockedSendMsgToRoomTest() {
-        this.server.addHandler("GET /easemob/demo/chatrooms/r1/mute", this::handleListUsersBlockedSendMsgToRoom);
+        this.server.addHandler("GET /easemob/demo/chatrooms/r1/mute",
+                this::handleListUsersBlockedSendMsgToRoom);
         this.listUsersBlockedSendMsgToRoom = new ListUsersBlockedSendMsgToRoom(this.context);
     }
 
@@ -43,7 +44,8 @@ class ListUsersBlockedSendMsgToRoomTest extends AbstractApiTest {
 
     @Test
     void testListUsersBlockedSendMsgToRoom() {
-        List<EMBlock> blocks = this.listUsersBlockedSendMsgToRoom.all("r1").collectList().block(Duration.ofSeconds(3));
+        List<EMBlock> blocks = this.listUsersBlockedSendMsgToRoom.all("r1").collectList()
+                .block(Duration.ofSeconds(3));
         assertEquals(2, blocks.size());
         assertEquals(new EMBlock("rabbit", Instant.ofEpochMilli(1000000)), blocks.get(0));
         assertEquals(new EMBlock("madhat", Instant.ofEpochMilli(1000000)), blocks.get(1));

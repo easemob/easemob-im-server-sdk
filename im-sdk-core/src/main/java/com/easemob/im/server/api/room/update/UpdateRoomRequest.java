@@ -22,8 +22,8 @@ public class UpdateRoomRequest {
 
     @JsonCreator
     public UpdateRoomRequest(@JsonProperty("name") String name,
-                             @JsonProperty("description") String description,
-                             @JsonProperty("maxusers") Integer maxMembers) {
+            @JsonProperty("description") String description,
+            @JsonProperty("maxusers") Integer maxMembers) {
         this.name = name;
         this.description = description;
         this.maxMembers = maxMembers;

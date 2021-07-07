@@ -10,7 +10,8 @@ public class EMUser extends EMEntity {
 
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z][0-9a-z-]{1,32}$");
 
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9~!@#$%^&*\\-_=+<>;:,./?]{1,32}$");
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^[a-zA-Z0-9~!@#$%^&*\\-_=+<>;:,./?]{1,32}$");
 
     private final String username;
 
@@ -28,7 +29,9 @@ public class EMUser extends EMEntity {
             throw new EMInvalidArgumentException("username must not be null or empty");
         }
         if (!USERNAME_PATTERN.matcher(username).matches()) {
-            throw new EMInvalidArgumentException(String.format("username '%s' should match regex %s", username, USERNAME_PATTERN.toString()));
+            throw new EMInvalidArgumentException(
+                    String.format("username '%s' should match regex %s", username,
+                            USERNAME_PATTERN.toString()));
         }
     }
 
@@ -38,7 +41,8 @@ public class EMUser extends EMEntity {
         }
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
             // DO NOT show password
-            throw new EMInvalidArgumentException(String.format("password should match regex %s", PASSWORD_PATTERN.toString()));
+            throw new EMInvalidArgumentException(
+                    String.format("password should match regex %s", PASSWORD_PATTERN.toString()));
         }
     }
 

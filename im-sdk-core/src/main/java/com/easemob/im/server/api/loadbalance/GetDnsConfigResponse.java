@@ -16,8 +16,8 @@ public class GetDnsConfigResponse {
 
     @JsonCreator
     public GetDnsConfigResponse(@JsonProperty("deploy_name") String name,
-                                @JsonProperty("file_version") String version,
-                                @JsonProperty("rest") Service service) {
+            @JsonProperty("file_version") String version,
+            @JsonProperty("rest") Service service) {
         this.name = name;
         this.version = version;
         this.service = service;
@@ -42,6 +42,7 @@ public class GetDnsConfigResponse {
         }
     }
 
+
     public static class ServiceRecord {
         @JsonProperty("protocol")
         private String protocol;
@@ -53,9 +54,9 @@ public class GetDnsConfigResponse {
         private int port;
 
         public ServiceRecord(@JsonProperty("protocol") String protocol,
-                        @JsonProperty("domain") String domainName,
-                        @JsonProperty("ip") String ip,
-                        @JsonProperty("port") int port) {
+                @JsonProperty("domain") String domainName,
+                @JsonProperty("ip") String ip,
+                @JsonProperty("port") int port) {
             this.protocol = protocol;
             this.domainName = domainName;
             this.ip = ip;

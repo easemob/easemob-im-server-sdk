@@ -15,18 +15,21 @@ public class ListRoomSuperAdmins {
     }
 
     public Mono<ListRoomSuperAdminsResponse> next(int pagesize, int pagenum) {
-        String uri = String.format("/chatrooms/super_admin?pagenum=%d&pagesize=%d", pagenum, pagesize);
+        String uri =
+                String.format("/chatrooms/super_admin?pagenum=%d&pagesize=%d", pagenum, pagesize);
 
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(uri)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomSuperAdminsResponse.class));
     }
 
     public Flux<String> all(int pagesize) {
-        return Flux.<List<String>, Integer> generate(() -> 1, (pagenum, sink) -> {
-            List<String> admins = next(pagesize, pagenum).doOnError(sink::error).block().getAdmins();
+        return Flux.<List<String>, Integer>generate(() -> 1, (pagenum, sink) -> {
+            List<String> admins =
+                    next(pagesize, pagenum).doOnError(sink::error).block().getAdmins();
             if (admins.isEmpty()) {
                 sink.complete();
             } else {

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySources;
 
 @Configuration
 @PropertySources({
-    @PropertySource(value = "file:${user.home}/.easemob/config.properties")
+        @PropertySource(value = "file:${user.home}/.easemob/config.properties")
 })
 @EnableConfigurationProperties({IMCliProperties.class})
 public class IMCliConfiguration {

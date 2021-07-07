@@ -51,8 +51,9 @@ public class MessageApi {
 
     /**
      * 查询某条离线消息的状态，如是否已经传达。
+     *
      * @param messageId 要查看对消息ID
-     * @param toUser 消息接收方的用户名
+     * @param toUser    消息接收方的用户名
      * @return 是否送达或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E6%9F%90%E6%9D%A1%E7%A6%BB%E7%BA%BF%E6%B6%88%E6%81%AF%E7%8A%B6%E6%80%81">获取某条离线消息状态</a>
      */
@@ -62,7 +63,7 @@ public class MessageApi {
 
     /**
      * 构造消息并发送。
-     *
+     * <p>
      * 例如，发送一条带有扩展字段的文本消息:
      * <pre>{@code
      * EMService service;
@@ -84,21 +85,23 @@ public class MessageApi {
     /**
      * 发送消息。
      *
-     * @param from 发送者用户名
-     * @param toType 目标类型，可以是 `users`, `chatgroups`, `chatrooms`
-     * @param tos 目标id列表
-     * @param message 要发送的消息
+     * @param from       发送者用户名
+     * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos        目标id列表
+     * @param message    要发送的消息
      * @param extensions 要发送的扩展，可以为空
      * @return 发消息响应或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
      */
-    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions) {
         return this.sendMessage.send(from, toType, tos, message, extensions);
     }
 
     /**
      * 获取消息历史文件的下载地址。
      * 历史文件是每小时一个文件，比如指定12:10，则返回12点的历史文件。
+     *
      * @param instant 时间点
      * @return 下载地址或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatrecord#%E8%8E%B7%E5%8F%96%E5%8E%86%E5%8F%B2%E6%B6%88%E6%81%AF%E6%96%87%E4%BB%B6">获取历史消息文件</a>
@@ -110,8 +113,9 @@ public class MessageApi {
     /**
      * 下载消息历史文件到本地。
      * 消息历史文件是gz压缩的。
-     * @param instant 时间点
-     * @param dir 下载目录
+     *
+     * @param instant  时间点
+     * @param dir      下载目录
      * @param filename 文件名，如果为空，则默认为YYYYMMDD.gz
      * @return 下载文件的路径或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatrecord#%E8%8E%B7%E5%8F%96%E5%8E%86%E5%8F%B2%E6%B6%88%E6%81%AF%E6%96%87%E4%BB%B6">获取历史消息文件</a>

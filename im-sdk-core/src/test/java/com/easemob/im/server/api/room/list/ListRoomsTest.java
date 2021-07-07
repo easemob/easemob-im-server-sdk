@@ -13,13 +13,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ListRoomsTest extends AbstractApiTest {
-    
+
     private ListRooms listRooms;
 
     public ListRoomsTest() {
-        this.server.addHandler("GET /easemob/demo/chatrooms?limit=2", req -> handleListRoomsRequest(req, 0, 2, "1"));
-        this.server.addHandler("GET /easemob/demo/chatrooms?limit=2&cursor=1", req -> handleListRoomsRequest(req, 2,1, null));
-        this.server.addHandler("GET /easemob/demo/users/alice/joined_chatrooms", this::handleListRoomsUserJoined);
+        this.server.addHandler("GET /easemob/demo/chatrooms?limit=2",
+                req -> handleListRoomsRequest(req, 0, 2, "1"));
+        this.server.addHandler("GET /easemob/demo/chatrooms?limit=2&cursor=1",
+                req -> handleListRoomsRequest(req, 2, 1, null));
+        this.server.addHandler("GET /easemob/demo/users/alice/joined_chatrooms",
+                this::handleListRoomsUserJoined);
         this.listRooms = new ListRooms(this.context);
     }
 
@@ -42,15 +45,16 @@ class ListRoomsTest extends AbstractApiTest {
         return rsp;
     }
 
-    private JsonNode handleListRoomsRequest(JsonNode jsonNode, int offset, int count, String cursor) {
+    private JsonNode handleListRoomsRequest(JsonNode jsonNode, int offset, int count,
+            String cursor) {
         ArrayNode rooms = this.objectMapper.createArrayNode();
 
         for (int i = 1; i <= count; i++) {
             ObjectNode room = this.objectMapper.createObjectNode();
-            room.put("id", String.format("r%d", i+offset));
-            room.put("name", String.format("room-%d", i+offset));
-            room.put("owner", String.format("owner-%d", i+offset));
-            room.put("affiliations_count", i+offset);
+            room.put("id", String.format("r%d", i + offset));
+            room.put("name", String.format("room-%d", i + offset));
+            room.put("owner", String.format("owner-%d", i + offset));
+            room.put("affiliations_count", i + offset);
             rooms.add(room);
         }
 
@@ -86,7 +90,8 @@ class ListRoomsTest extends AbstractApiTest {
 
     @Test
     void testListUserJoined() {
-        List<String> rooms = this.listRooms.userJoined("alice").collectList().block(Duration.ofSeconds(3));
+        List<String> rooms =
+                this.listRooms.userJoined("alice").collectList().block(Duration.ofSeconds(3));
         assertEquals(2, rooms.size());
         assertEquals("r1", rooms.get(0));
         assertEquals("r2", rooms.get(1));

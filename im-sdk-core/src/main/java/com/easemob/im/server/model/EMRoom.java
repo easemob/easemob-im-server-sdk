@@ -27,6 +27,18 @@ public class EMRoom extends EMEntity {
      */
     private int maxMembers;
 
+    public EMRoom(String roomId, String name, String description, boolean needApproveToJoin,
+            String owner, int maxMembers) {
+        super(EntityType.ROOM);
+        super.id(roomId);
+
+        this.name = name;
+        this.description = description;
+        this.needApproveToJoin = needApproveToJoin;
+        this.owner = owner;
+        this.maxMembers = maxMembers;
+    }
+
     public String name() {
         return this.name;
     }
@@ -45,16 +57,5 @@ public class EMRoom extends EMEntity {
 
     public int maxMembers() {
         return this.maxMembers;
-    }
-
-    public EMRoom(String roomId, String name, String description, boolean needApproveToJoin, String owner, int maxMembers) {
-        super(EntityType.ROOM);
-        super.id(roomId);
-
-        this.name = name;
-        this.description = description;
-        this.needApproveToJoin = needApproveToJoin;
-        this.owner = owner;
-        this.maxMembers = maxMembers;
     }
 }

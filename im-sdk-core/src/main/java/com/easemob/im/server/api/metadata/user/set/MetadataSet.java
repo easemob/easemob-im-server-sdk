@@ -19,8 +19,10 @@ public class MetadataSet {
                 .flatMap(httpClient -> httpClient.put()
                         .uri(String.format("/metadata/user/%s", username))
                         .sendForm((req, form) -> {
-                            HttpClientForm clientForm = form.multipart(false).charset(StandardCharsets.UTF_8);
+                            HttpClientForm clientForm =
+                                    form.multipart(false).charset(StandardCharsets.UTF_8);
                             metadata.forEach(clientForm::attr);
-                        }).responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
+                        }).responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }
 }

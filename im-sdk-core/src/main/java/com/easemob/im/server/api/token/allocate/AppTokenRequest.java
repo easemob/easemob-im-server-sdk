@@ -14,15 +14,15 @@ public class AppTokenRequest implements TokenRequest {
     @JsonProperty("client_secret")
     private final String clientSecret;
 
-    @JsonCreator
-    public static AppTokenRequest of(@JsonProperty("client_id") String clientId,
-                                     @JsonProperty("client_secret") String clientSecret) {
-        return new AppTokenRequest(clientId, clientSecret);
-    }
-
     private AppTokenRequest(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+    }
+
+    @JsonCreator
+    public static AppTokenRequest of(@JsonProperty("client_id") String clientId,
+            @JsonProperty("client_secret") String clientSecret) {
+        return new AppTokenRequest(clientId, clientSecret);
     }
 
 }

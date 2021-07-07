@@ -19,7 +19,8 @@ public class UpdateUserPasswordTest extends AbstractApiTest {
     UpdateUserPassword updateUserPassword = new UpdateUserPassword(this.context);
 
     UpdateUserPasswordTest() {
-        this.server.addHandler("PUT /easemob/demo/users/username/password", this::handleUserPasswordReset);
+        this.server.addHandler("PUT /easemob/demo/users/username/password",
+                this::handleUserPasswordReset);
     }
 
     @Test

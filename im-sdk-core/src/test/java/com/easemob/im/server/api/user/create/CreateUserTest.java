@@ -20,7 +20,8 @@ class CreateUserTest extends AbstractApiTest {
 
     @Test
     public void testUserRegisterSingle() {
-        assertDoesNotThrow(() -> this.createUser.single("username", "password").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.createUser.single("username", "password").block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleUserRegisterRequest(JsonNode req) {

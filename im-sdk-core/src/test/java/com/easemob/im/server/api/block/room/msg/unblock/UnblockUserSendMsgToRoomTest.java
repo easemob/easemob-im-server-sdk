@@ -15,7 +15,8 @@ class UnblockUserSendMsgToRoomTest extends AbstractApiTest {
     private UnblockUserSendMsgToRoom unblockUserSendMsgToRoom;
 
     UnblockUserSendMsgToRoomTest() {
-        this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/mute/rabbit", this::handleUnblockUserSendMsgToRoom);
+        this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/mute/rabbit",
+                this::handleUnblockUserSendMsgToRoom);
         this.unblockUserSendMsgToRoom = new UnblockUserSendMsgToRoom(this.context);
     }
 
@@ -35,6 +36,7 @@ class UnblockUserSendMsgToRoomTest extends AbstractApiTest {
 
     @Test
     void testUnblockUserSendMsgToRoom() {
-        assertDoesNotThrow(() -> this.unblockUserSendMsgToRoom.single("rabbit", "r1").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.unblockUserSendMsgToRoom.single("rabbit", "r1")
+                .block(Duration.ofSeconds(3)));
     }
 }

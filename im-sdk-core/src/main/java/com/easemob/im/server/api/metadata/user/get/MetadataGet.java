@@ -15,7 +15,8 @@ public class MetadataGet {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/metadata/user/%s", username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, MetadataGetUserResponse.class))
                 .map(MetadataGetUserResponse::toMetadata);
     }

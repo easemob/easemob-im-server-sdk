@@ -9,6 +9,16 @@ public class UnblockUserSendMsgToRoomResponse {
     @JsonProperty("data")
     private List<Result> results;
 
+    @JsonCreator
+    public UnblockUserSendMsgToRoomResponse(@JsonProperty("data") List<Result> results) {
+        this.results = results;
+    }
+
+    public boolean isSuccess(String username) {
+        return this.results.stream().filter(result -> result.getUsername().equals(username))
+                .findFirst().map(result -> result.isSuccess).orElse(false);
+    }
+
     public static class Result {
         @JsonProperty("result")
         private boolean isSuccess;
@@ -18,7 +28,7 @@ public class UnblockUserSendMsgToRoomResponse {
 
         @JsonCreator
         public Result(@JsonProperty("result") boolean isSuccess,
-                      @JsonProperty("user") String username) {
+                @JsonProperty("user") String username) {
             this.isSuccess = isSuccess;
             this.username = username;
         }
@@ -30,16 +40,6 @@ public class UnblockUserSendMsgToRoomResponse {
         public String getUsername() {
             return this.username;
         }
-    }
-
-    @JsonCreator
-    public UnblockUserSendMsgToRoomResponse(@JsonProperty("data") List<Result> results) {
-        this.results = results;
-    }
-
-    public boolean isSuccess(String username) {
-        return this.results.stream().filter(result -> result.getUsername().equals(username))
-                .findFirst().map(result -> result.isSuccess).orElse(false);
     }
 
 }

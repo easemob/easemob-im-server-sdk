@@ -30,15 +30,19 @@ public class UpdateGroupRequest {
 
     @JsonCreator
     public UpdateGroupRequest(@JsonProperty("name") String name,
-                              @JsonProperty("description") String description,
-                              @JsonProperty("allowinvites") Boolean canMemberInviteOthers,
-                              @JsonProperty("membersonly") Boolean needApproveToJoin,
-                              @JsonProperty("maxusers") Integer maxMembers) {
+            @JsonProperty("description") String description,
+            @JsonProperty("allowinvites") Boolean canMemberInviteOthers,
+            @JsonProperty("membersonly") Boolean needApproveToJoin,
+            @JsonProperty("maxusers") Integer maxMembers) {
         this.name = name;
         this.description = description;
         this.canMemberInviteOthers = canMemberInviteOthers;
         this.needApproveToJoin = needApproveToJoin;
         this.maxMembers = maxMembers;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public UpdateGroupRequest setName(String name) {
@@ -46,9 +50,17 @@ public class UpdateGroupRequest {
         return this;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public UpdateGroupRequest setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    public Boolean getCanMemberInviteOthers() {
+        return canMemberInviteOthers;
     }
 
     public UpdateGroupRequest setCanMemberInviteOthers(Boolean canMemberInviteOthers) {
@@ -56,33 +68,21 @@ public class UpdateGroupRequest {
         return this;
     }
 
+    public Boolean getNeedApproveToJoin() {
+        return needApproveToJoin;
+    }
+
     public UpdateGroupRequest setNeedApproveToJoin(Boolean needApproveToJoin) {
         this.needApproveToJoin = needApproveToJoin;
         return this;
     }
 
+    public Integer getMaxMembers() {
+        return maxMembers;
+    }
+
     public UpdateGroupRequest setMaxMembers(Integer maxMembers) {
         this.maxMembers = maxMembers;
         return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Boolean getCanMemberInviteOthers() {
-        return canMemberInviteOthers;
-    }
-
-    public Boolean getNeedApproveToJoin() {
-        return needApproveToJoin;
-    }
-
-    public Integer getMaxMembers() {
-        return maxMembers;
     }
 }

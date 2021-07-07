@@ -16,8 +16,10 @@ class ForceLogoutUserTest extends AbstractApiTest {
 
     ForceLogoutUserTest() {
         super();
-        this.server.addHandler("GET /easemob/demo/users/alice/disconnect", this::handlDisconnectByUsernameSucc);
-        this.server.addHandler("GET /easemob/demo/users/alice/disconnect/slippers", this::handlDisconnectByUsernameAndResourceFail);
+        this.server.addHandler("GET /easemob/demo/users/alice/disconnect",
+                this::handlDisconnectByUsernameSucc);
+        this.server.addHandler("GET /easemob/demo/users/alice/disconnect/slippers",
+                this::handlDisconnectByUsernameAndResourceFail);
     }
 
     @Test
@@ -30,7 +32,8 @@ class ForceLogoutUserTest extends AbstractApiTest {
     @Test
     public void testForceLogoutByUsernameAndResource() {
         assertThrows(EMInternalServerErrorException.class, () -> {
-            this.forceLogoutUser.byUsernameAndResource("alice", "slippers").block(Duration.ofSeconds(3));
+            this.forceLogoutUser.byUsernameAndResource("alice", "slippers")
+                    .block(Duration.ofSeconds(3));
         });
     }
 

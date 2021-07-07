@@ -15,12 +15,14 @@ class MetadataUsageTest extends AbstractApiTest {
     MetadataUsage metadataUsage = new MetadataUsage(this.context);
 
     public MetadataUsageTest() {
-        this.server.addHandler("GET /easemob/demo/metadata/user/capacity", this::handleMetadataUsage);
+        this.server
+                .addHandler("GET /easemob/demo/metadata/user/capacity", this::handleMetadataUsage);
     }
 
     @Test
     public void testUsage() {
-        EMMetadataUsage emMetadataUsage = assertDoesNotThrow(() -> this.metadataUsage.getUsage().block(Duration.ofSeconds(3)));
+        EMMetadataUsage emMetadataUsage = assertDoesNotThrow(
+                () -> this.metadataUsage.getUsage().block(Duration.ofSeconds(3)));
         assertEquals(1600, emMetadataUsage.getBytesUsed());
     }
 

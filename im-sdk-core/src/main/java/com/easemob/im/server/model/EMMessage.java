@@ -10,17 +10,6 @@ public abstract class EMMessage extends EMEntity {
 
     private EMEntity to;
 
-    public enum MessageType {
-        TEXT,
-        IMAGE,
-        AUDIO,
-        VIDEO,
-        LOCATION,
-        FILE,
-        COMMAND,
-        CUSTOM,
-    }
-
     protected EMMessage(MessageType messageType) {
         super(EntityType.MESSAGE);
         this.messageType = messageType;
@@ -60,9 +49,12 @@ public abstract class EMMessage extends EMEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         EMMessage emMessage = (EMMessage) o;
         return Objects.equals(from, emMessage.from) && Objects.equals(to, emMessage.to);
     }
@@ -70,6 +62,17 @@ public abstract class EMMessage extends EMEntity {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), from, to);
+    }
+
+    public enum MessageType {
+        TEXT,
+        IMAGE,
+        AUDIO,
+        VIDEO,
+        LOCATION,
+        FILE,
+        COMMAND,
+        CUSTOM,
     }
 
 }

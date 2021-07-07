@@ -15,7 +15,9 @@ public class MessageHistoryResponse {
     }
 
     public String getUrl() {
-        return this.messageHistories == null || this.messageHistories.isEmpty() ? null : this.messageHistories.get(0).getUrl();
+        return this.messageHistories == null || this.messageHistories.isEmpty() ?
+                null :
+                this.messageHistories.get(0).getUrl();
     }
 
     public static class MessageHistory {
@@ -31,6 +33,5 @@ public class MessageHistoryResponse {
             return this.url;
         }
     }
-
 
 }

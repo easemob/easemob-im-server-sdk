@@ -8,7 +8,8 @@ public class UserForceLogoutResponse {
     private UserForceLogoutResultResource resultResource;
 
     @JsonCreator
-    public UserForceLogoutResponse(@JsonProperty("data") UserForceLogoutResultResource resultResource) {
+    public UserForceLogoutResponse(
+            @JsonProperty("data") UserForceLogoutResultResource resultResource) {
         this.resultResource = resultResource;
     }
 

@@ -18,18 +18,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DefaultTokenProviderTest extends AbstractApiTest {
 
+    private DefaultTokenProvider tokenProvider;
+
     public DefaultTokenProviderTest() {
         this.server.addHandler("POST /easemob/demo/token", this::handlePostToken);
     }
-
-    private DefaultTokenProvider tokenProvider;
 
     @BeforeEach
     void init() {
         HttpClient httpClient = HttpClient.newConnection();
         LoadBalancer loadBalancer = endpoints -> endpoints.get(0);
-        EndpointRegistry endpointRegistry = () -> Mono.just(Arrays.asList(new Endpoint("http", "localhost", this.server.port())));
-        this.tokenProvider = new DefaultTokenProvider(this.context.getProperties(), httpClient, endpointRegistry, loadBalancer, this.context.getCodec(), this.context.getErrorMapper());
+        EndpointRegistry endpointRegistry = () -> Mono
+                .just(Arrays.asList(new Endpoint("http", "localhost", this.server.port())));
+        this.tokenProvider =
+                new DefaultTokenProvider(this.context.getProperties(), httpClient, endpointRegistry,
+                        loadBalancer, this.context.getCodec(), this.context.getErrorMapper());
     }
 
     @Test
@@ -41,13 +44,14 @@ public class DefaultTokenProviderTest extends AbstractApiTest {
 
     private JsonNode handlePostToken(JsonNode jsonNode) {
         return this.objectMapper.createObjectNode()
-            .put("access_token", "access_token")
-            .put("expires_in", 3600);
+                .put("access_token", "access_token")
+                .put("expires_in", 3600);
     }
 
     @Test
     public void testFetchUserToken() {
-        Token appToken = this.tokenProvider.fetchUserToken("username", "password").block(Duration.ofSeconds(3));
+        Token appToken = this.tokenProvider.fetchUserToken("username", "password")
+                .block(Duration.ofSeconds(3));
         assertEquals("access_token", appToken.getValue());
         assertTrue(appToken.isValid());
     }

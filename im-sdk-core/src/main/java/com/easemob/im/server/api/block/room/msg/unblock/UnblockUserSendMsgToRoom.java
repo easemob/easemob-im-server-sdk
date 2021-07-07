@@ -5,7 +5,7 @@ import com.easemob.im.server.exception.EMUnknownException;
 import reactor.core.publisher.Mono;
 
 public class UnblockUserSendMsgToRoom {
-    
+
     private Context context;
 
     public UnblockUserSendMsgToRoom(Context context) {
@@ -16,8 +16,10 @@ public class UnblockUserSendMsgToRoom {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatrooms/%s/mute/%s", roomId, username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
-                .map(buf -> this.context.getCodec().decode(buf, UnblockUserSendMsgToRoomResponse.class))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec()
+                        .decode(buf, UnblockUserSendMsgToRoomResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess(username)) {
                         sink.error(new EMUnknownException("unknown"));

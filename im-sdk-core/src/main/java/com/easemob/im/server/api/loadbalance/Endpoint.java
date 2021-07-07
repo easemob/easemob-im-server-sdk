@@ -7,14 +7,6 @@ public class Endpoint {
     private String host;
     private int port;
 
-    public String getUri() {
-        if (port > 0) {
-            return String.format("%s://%s:%d", protocol, host, port);
-        } else {
-            return String.format("%s://%s", protocol, host);
-        }
-    }
-
     public Endpoint(String protocol, String host, int port) {
         this.protocol = protocol;
         this.host = host;
@@ -26,12 +18,23 @@ public class Endpoint {
         this.host = host;
     }
 
+    public String getUri() {
+        if (port > 0) {
+            return String.format("%s://%s:%d", protocol, host, port);
+        } else {
+            return String.format("%s://%s", protocol, host);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Endpoint endpoint = (Endpoint) o;
-        return port == endpoint.port && Objects.equals(protocol, endpoint.protocol) && Objects.equals(host, endpoint.host);
+        return port == endpoint.port && Objects.equals(protocol, endpoint.protocol) && Objects
+                .equals(host, endpoint.host);
     }
 
     @Override

@@ -14,9 +14,11 @@ import java.net.InetSocketAddress;
 
 public class EMHttpClientFactory {
     public static HttpClient createHttpClient(EMProperties properties) {
-        ConnectionProvider connectionProvider = ConnectionProvider.create("easemob-sdk", properties.getHttpConnectionPoolSize());
+        ConnectionProvider connectionProvider =
+                ConnectionProvider.create("easemob-sdk", properties.getHttpConnectionPoolSize());
         HttpClient httpClient = HttpClient.create(connectionProvider)
-                .headers(headers -> headers.add("User-Agent", String.format("EasemobServerSDK/%s", EMVersion.getVersion())))
+                .headers(headers -> headers.add("User-Agent",
+                        String.format("EasemobServerSDK/%s", EMVersion.getVersion())))
                 .wiretap("com.easemob.im.http", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
         EMProxy proxyInfo = properties.getProxy();
         if (proxyInfo == null) {
@@ -29,10 +31,10 @@ public class EMHttpClientFactory {
 
             if (Strings.isNotBlank(username) && Strings.isNotBlank(password)) {
                 return httpClient.proxy(
-                    proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
-                            .address(new InetSocketAddress(ip, port))
-                            .username(username)
-                            .password(p -> password)
+                        proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
+                                .address(new InetSocketAddress(ip, port))
+                                .username(username)
+                                .password(p -> password)
                 );
             } else {
                 return httpClient.proxy(

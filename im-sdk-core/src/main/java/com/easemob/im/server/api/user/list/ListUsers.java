@@ -16,7 +16,9 @@ public class ListUsers {
 
     public Flux<String> all(int limit) {
         return next(limit, null)
-                .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(limit, rsp.getCursor()))
+                .expand(rsp -> rsp.getCursor() == null ?
+                        Mono.empty() :
+                        next(limit, rsp.getCursor()))
                 .limitRate(1)
                 .concatMapIterable(EMPage::getValues)
                 .limitRate(limit);
@@ -32,7 +34,8 @@ public class ListUsers {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(uriString)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UserListResponse.class))
                 .map(UserListResponse::toEMPage);
     }

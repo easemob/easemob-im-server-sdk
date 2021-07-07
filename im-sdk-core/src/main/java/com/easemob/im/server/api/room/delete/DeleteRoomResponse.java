@@ -7,6 +7,15 @@ public class DeleteRoomResponse {
     @JsonProperty("data")
     private Wrapper wrapper;
 
+    @JsonCreator
+    public DeleteRoomResponse(@JsonProperty("data") Wrapper wrapper) {
+        this.wrapper = wrapper;
+    }
+
+    public boolean getSuccess() {
+        return this.wrapper != null && this.wrapper.getSuccess();
+    }
+
     public static class Wrapper {
         @JsonProperty("success")
         private boolean success;
@@ -15,7 +24,7 @@ public class DeleteRoomResponse {
 
         @JsonCreator
         public Wrapper(@JsonProperty("success") boolean success,
-                       @JsonProperty("id") String id) {
+                @JsonProperty("id") String id) {
             this.success = success;
             this.id = id;
         }
@@ -27,14 +36,5 @@ public class DeleteRoomResponse {
         public String getId() {
             return this.id;
         }
-    }
-
-    public boolean getSuccess() {
-        return this.wrapper != null && this.wrapper.getSuccess();
-    }
-
-    @JsonCreator
-    public DeleteRoomResponse(@JsonProperty("data") Wrapper wrapper) {
-        this.wrapper = wrapper;
     }
 }

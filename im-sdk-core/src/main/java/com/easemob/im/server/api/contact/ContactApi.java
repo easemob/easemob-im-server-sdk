@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
  * 通讯录API。
  */
 public class ContactApi {
-    
+
     private ContactUser contactUser;
 
     public ContactApi(Context context) {
@@ -19,9 +19,8 @@ public class ContactApi {
     /**
      * 向用户通讯录添加联系人。
      *
-     * @param user 所属用户的用户名
+     * @param user    所属用户的用户名
      * @param contact 联系人的用户名
-     *
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%B7%BB%E5%8A%A0%E5%A5%BD%E5%8F%8B">添加联系人</a>
      */
@@ -32,9 +31,8 @@ public class ContactApi {
     /**
      * 从用户通讯录移除联系人
      *
-     * @param user 所属用户的用户名
+     * @param user    所属用户的用户名
      * @param contact 联系人的用户名
-     *
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E7%A7%BB%E9%99%A4%E5%A5%BD%E5%8F%8B">移除联系人</a>
      */

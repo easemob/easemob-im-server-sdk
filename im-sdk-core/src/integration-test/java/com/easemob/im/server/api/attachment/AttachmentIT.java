@@ -19,18 +19,27 @@ public class AttachmentIT extends AbstractIT {
 
     @Test
     void testAttachmentUpload() {
-        String path = ClassLoaderUtils.getDefaultClassLoader().getResource("upload/image.png").getPath();
+        String path =
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/image.png").getPath();
         Path uploadPath = FileSystems.getDefault().getPath(path);
-        assertDoesNotThrow(() -> this.service.attachment().uploadFile(uploadPath).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.attachment().uploadFile(uploadPath)
+                .block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testAttachmentDownload() {
-        Path uploadPath = FileSystems.getDefault().getPath(ClassLoaderUtils.getDefaultClassLoader().getResource("upload/image.png").getPath());
-        EMAttachment attachment = assertDoesNotThrow(() -> this.service.attachment().uploadFile(uploadPath).block(Duration.ofSeconds(3)));
+        Path uploadPath = FileSystems.getDefault().getPath(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/image.png").getPath());
+        EMAttachment attachment = assertDoesNotThrow(
+                () -> this.service.attachment().uploadFile(uploadPath)
+                        .block(Duration.ofSeconds(3)));
 
-        Path downloadPath = FileSystems.getDefault().getPath(ClassLoaderUtils.getDefaultClassLoader().getResource("download/attachment/").getPath());
-        assertDoesNotThrow(() -> this.service.attachment().downloadFile(attachment.getId(), downloadPath, "file.png").block(Duration.ofSeconds(3)));
+        Path downloadPath = FileSystems.getDefault().getPath(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("download/attachment/")
+                        .getPath());
+        assertDoesNotThrow(() -> this.service.attachment()
+                .downloadFile(attachment.getId(), downloadPath, "file.png")
+                .block(Duration.ofSeconds(3)));
     }
 
 }

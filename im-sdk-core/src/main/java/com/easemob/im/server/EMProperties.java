@@ -22,6 +22,17 @@ public class EMProperties {
     private final int httpConnectionPoolSize;
     private final String serverTimezone;
 
+    public EMProperties(String baseUri, String appkey, EMProxy proxy, String clientId,
+            String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+        this.baseUri = baseUri;
+        this.appkey = appkey;
+        this.proxy = proxy;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.httpConnectionPoolSize = httpConnectionPoolSize;
+        this.serverTimezone = serverTimezone;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -66,16 +77,6 @@ public class EMProperties {
         return this.serverTimezone;
     }
 
-    public EMProperties(String baseUri, String appkey, EMProxy proxy, String clientId, String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
-        this.baseUri = baseUri;
-        this.appkey = appkey;
-        this.proxy = proxy;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.httpConnectionPoolSize = httpConnectionPoolSize;
-        this.serverTimezone = serverTimezone;
-    }
-
     @Override
     public String toString() {
         return "EMProperties{" +
@@ -113,6 +114,7 @@ public class EMProperties {
 
         /**
          * 设置Appkey，可以到环信Console查询该值。
+         *
          * @param appkey appkey
          * @return {@code Builder}
          */
@@ -140,6 +142,7 @@ public class EMProperties {
 
         /**
          * 设置代理
+         *
          * @param proxy proxy
          * @return {@code Builder}
          */
@@ -152,7 +155,7 @@ public class EMProperties {
          * 设置App认证id。
          * 该信息应该安全的保存在受信任的环境中。
          *
-         * @param clientId     认证id
+         * @param clientId 认证id
          * @return {@code Builder}
          */
         public Builder setClientId(String clientId) {
@@ -194,7 +197,8 @@ public class EMProperties {
             return this;
         }
 
-        /** 构造EMProperties
+        /**
+         * 构造EMProperties
          *
          * @return {@code EMProperties}
          */
@@ -209,7 +213,8 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.baseUri, this.appkey, this.proxy, this.clientId, this.clientSecret,
+            return new EMProperties(this.baseUri, this.appkey, this.proxy, this.clientId,
+                    this.clientSecret,
                     this.httpConnectionPoolSize, this.serverTimezone);
         }
 

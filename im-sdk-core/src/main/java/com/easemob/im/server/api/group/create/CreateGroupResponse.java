@@ -8,6 +8,10 @@ public class CreateGroupResponse {
     @JsonProperty("data")
     private GroupCreateResource group;
 
+    public String getGroupId() {
+        return this.group == null ? null : this.group.getGroupId();
+    }
+
     private static class GroupCreateResource {
         @JsonProperty("groupid")
         private String groupId;
@@ -21,9 +25,5 @@ public class CreateGroupResponse {
             return groupId;
         }
 
-    }
-
-    public String getGroupId() {
-        return this.group == null ? null : this.group.getGroupId();
     }
 }

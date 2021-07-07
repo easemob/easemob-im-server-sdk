@@ -18,12 +18,16 @@ public class SendMessage {
         return new RouteSpec(username);
     }
 
-    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos, EMMessage message, Set<EMKeyValue> extensions) {
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri("/messages?useMsgId=true")
-                        .send(Mono.create(sink -> sink.success(context.getCodec().encode(new SendMessageRequest(from, toType, tos, message, SendMessageRequest.parseExtensions(extensions))))))
-                        .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(new SendMessageRequest(from, toType, tos, message,
+                                        SendMessageRequest.parseExtensions(extensions))))))
+                        .responseSingle(
+                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> context.getCodec().decode(buf, SendMessageResponse.class))
                 .map(SendMessageResponse::toEMSentMessages);
     }
@@ -66,6 +70,7 @@ public class SendMessage {
             return new MessageSpec(from, "chatrooms", roomIds);
         }
     }
+
 
     public class MessageSpec {
 
@@ -130,6 +135,7 @@ public class SendMessage {
         }
     }
 
+
     public class SendSpec {
 
         private String from;
@@ -158,7 +164,8 @@ public class SendMessage {
         }
 
         public Mono<EMSentMessageIds> send() {
-            return SendMessage.this.send(this.from, this.toType, this.tos, this.message, this.extensions);
+            return SendMessage.this
+                    .send(this.from, this.toType, this.tos, this.message, this.extensions);
         }
 
     }

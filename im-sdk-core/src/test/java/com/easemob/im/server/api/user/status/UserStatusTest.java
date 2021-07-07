@@ -14,7 +14,8 @@ public class UserStatusTest extends AbstractApiTest {
     private UserStatus userStatus;
 
     public UserStatusTest() {
-        this.server.addHandler("GET /easemob/demo/users/alice/status", this::handleUserStatusRequest);
+        this.server
+                .addHandler("GET /easemob/demo/users/alice/status", this::handleUserStatusRequest);
         this.userStatus = new UserStatus(this.context);
     }
 

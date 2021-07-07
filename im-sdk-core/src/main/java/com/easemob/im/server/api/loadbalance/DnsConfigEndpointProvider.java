@@ -18,7 +18,8 @@ public class DnsConfigEndpointProvider implements EndpointProvider {
 
     private final ErrorMapper errorMapper;
 
-    public DnsConfigEndpointProvider(EMProperties properties, Codec codec, HttpClient httpClient, ErrorMapper errorMapper) {
+    public DnsConfigEndpointProvider(EMProperties properties, Codec codec, HttpClient httpClient,
+            ErrorMapper errorMapper) {
         this.properties = properties;
         this.codec = codec;
         this.httpClient = httpClient;
@@ -27,7 +28,8 @@ public class DnsConfigEndpointProvider implements EndpointProvider {
 
     public Mono<List<Endpoint>> endpoints() {
         return this.httpClient.get()
-                .uri(String.format("/easemob/server.json?app_key=%s", this.properties.getAppkeyUrlEncoded()))
+                .uri(String.format("/easemob/server.json?app_key=%s",
+                        this.properties.getAppkeyUrlEncoded()))
                 .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
                 .map(buf -> this.codec.decode(buf, GetDnsConfigResponse.class))
                 .map(GetDnsConfigResponse::toEndpoints);

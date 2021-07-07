@@ -81,9 +81,12 @@ public class EMCommandMessage extends EMMessage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         EMCommandMessage that = (EMCommandMessage) o;
         return Objects.equals(action, that.action) && Objects.equals(params, that.params);
     }

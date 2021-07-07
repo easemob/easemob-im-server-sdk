@@ -24,11 +24,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 public class MockingHttpServer {
-    private static final ByteBuf EMPTY_OBJECT = Unpooled.wrappedBuffer(new byte[]{'{','}'});
+    private static final ByteBuf EMPTY_OBJECT = Unpooled.wrappedBuffer(new byte[] {'{', '}'});
 
     private final ObjectMapper objectMapper = new ObjectMapper()
-        .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     private final DisposableServer http;
 
@@ -38,51 +38,59 @@ public class MockingHttpServer {
         this.handlers = new ConcurrentHashMap<>(handlers);
 
         this.http = HttpServer.create()
-            .host("localhost")
-            .port(0)
-            .wiretap(true)
-            .handle((req, rsp) -> {
-                String path = String.format("%s %s", req.method().toString(), req.uri());
-                if (!this.handlers.containsKey(path)) {
-                    return rsp.status(HttpResponseStatus.NOT_FOUND).send();
-                }
+                .host("localhost")
+                .port(0)
+                .wiretap(true)
+                .handle((req, rsp) -> {
+                    String path = String.format("%s %s", req.method().toString(), req.uri());
+                    if (!this.handlers.containsKey(path)) {
+                        return rsp.status(HttpResponseStatus.NOT_FOUND).send();
+                    }
 
-                Function<JsonNode, JsonNode> handler = this.handlers.get(path);
-                return req.receive().aggregate()
-                    .switchIfEmpty(Mono.just(EMPTY_OBJECT))
-                    .flatMap(buf -> {
-                        int length = buf.readableBytes();
-                        byte[] array;
-                        int offset = 0;
+                    Function<JsonNode, JsonNode> handler = this.handlers.get(path);
+                    return req.receive().aggregate()
+                            .switchIfEmpty(Mono.just(EMPTY_OBJECT))
+                            .flatMap(buf -> {
+                                int length = buf.readableBytes();
+                                byte[] array;
+                                int offset = 0;
 
-                        if (buf.hasArray()) {
-                            array = buf.array();
-                            offset = buf.arrayOffset();
-                        } else {
-                            array = ByteBufUtil.getBytes(buf, buf.readerIndex(), buf.readableBytes(), false);
-                            offset = 0;
-                        }
+                                if (buf.hasArray()) {
+                                    array = buf.array();
+                                    offset = buf.arrayOffset();
+                                } else {
+                                    array = ByteBufUtil
+                                            .getBytes(buf, buf.readerIndex(), buf.readableBytes(),
+                                                    false);
+                                    offset = 0;
+                                }
 
-                        JsonNode jsonReq;
-                        try {
-                            jsonReq = this.objectMapper.readTree(array, offset, length);
-                        } catch (IOException e) {
-                            throw new EMJsonException(e.getMessage());
-                        }
+                                JsonNode jsonReq;
+                                try {
+                                    jsonReq = this.objectMapper.readTree(array, offset, length);
+                                } catch (IOException e) {
+                                    throw new EMJsonException(e.getMessage());
+                                }
 
-                        JsonNode jsonRsp = handler.apply(jsonReq);
+                                JsonNode jsonRsp = handler.apply(jsonReq);
 
-                        byte[] arrayRsp;
-                        try {
-                            arrayRsp = this.objectMapper.writeValueAsBytes(jsonRsp);
-                        } catch (JsonProcessingException e) {
-                            throw new EMJsonException(e.getMessage());
-                        }
+                                byte[] arrayRsp;
+                                try {
+                                    arrayRsp = this.objectMapper.writeValueAsBytes(jsonRsp);
+                                } catch (JsonProcessingException e) {
+                                    throw new EMJsonException(e.getMessage());
+                                }
 
-                        return rsp.status(HttpResponseStatus.OK).send(Mono.create(sink -> sink.success(Unpooled.wrappedBuffer(arrayRsp)))).then();
-                    });
-            })
-            .bindNow();
+                                return rsp.status(HttpResponseStatus.OK).send(Mono
+                                        .create(sink -> sink
+                                                .success(Unpooled.wrappedBuffer(arrayRsp)))).then();
+                            });
+                })
+                .bindNow();
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public void addHandler(String path, Function<JsonNode, JsonNode> handler) {
@@ -99,10 +107,6 @@ public class MockingHttpServer {
 
     public int port() {
         return this.http.port();
-    }
-
-    public static Builder builder() {
-        return new Builder();
     }
 
     public void shutdown() {

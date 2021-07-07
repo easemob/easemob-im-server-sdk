@@ -14,7 +14,8 @@ public class UpdateUserPassword {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.put()
                         .uri(String.format("/users/%s/password", username))
-                        .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new UserPasswordResetRequest(password)))))
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new UserPasswordResetRequest(password)))))
                         .response())
                 .flatMap(r -> this.context.getErrorMapper().apply(r))
                 .then();

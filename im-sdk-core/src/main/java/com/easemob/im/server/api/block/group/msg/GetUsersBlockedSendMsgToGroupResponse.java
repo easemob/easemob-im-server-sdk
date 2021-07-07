@@ -13,12 +13,14 @@ public class GetUsersBlockedSendMsgToGroupResponse {
     private List<UserBlockedSendMsgToGroupResource> resources;
 
     @JsonCreator
-    public GetUsersBlockedSendMsgToGroupResponse(@JsonProperty("data") List<UserBlockedSendMsgToGroupResource> resources) {
+    public GetUsersBlockedSendMsgToGroupResponse(
+            @JsonProperty("data") List<UserBlockedSendMsgToGroupResource> resources) {
         this.resources = resources;
     }
 
     public List<EMBlock> getEMBlocks() {
-        return this.resources.stream().map(UserBlockedSendMsgToGroupResource::toEMBlock).collect(Collectors.toList());
+        return this.resources.stream().map(UserBlockedSendMsgToGroupResource::toEMBlock)
+                .collect(Collectors.toList());
     }
 
     public static class UserBlockedSendMsgToGroupResource {
@@ -28,7 +30,7 @@ public class GetUsersBlockedSendMsgToGroupResponse {
         private long expireTimestamp;
 
         public UserBlockedSendMsgToGroupResource(@JsonProperty("user") String username,
-                                                 @JsonProperty("expire") long expireTimestamp) {
+                @JsonProperty("expire") long expireTimestamp) {
             this.username = username;
             this.expireTimestamp = expireTimestamp;
         }

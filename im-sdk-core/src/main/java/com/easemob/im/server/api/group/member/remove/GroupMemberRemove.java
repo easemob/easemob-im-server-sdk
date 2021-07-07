@@ -16,7 +16,8 @@ public class GroupMemberRemove {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatgroups/%s/users/%s", groupId, username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()))
                 .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty());
     }
 }

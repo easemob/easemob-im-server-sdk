@@ -43,11 +43,16 @@ public class EMLocationMessage extends EMMessage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         EMLocationMessage that = (EMLocationMessage) o;
-        return Double.compare(that.longitude, longitude) == 0 && Double.compare(that.latitude, latitude) == 0 && Objects.equals(address, that.address);
+        return Double.compare(that.longitude, longitude) == 0
+                && Double.compare(that.latitude, latitude) == 0 && Objects
+                .equals(address, that.address);
     }
 
     @Override

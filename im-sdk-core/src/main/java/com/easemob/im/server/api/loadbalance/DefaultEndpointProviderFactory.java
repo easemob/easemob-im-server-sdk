@@ -13,7 +13,8 @@ public class DefaultEndpointProviderFactory implements EndpointProviderFactory {
     private final HttpClient httpClient;
     private final ErrorMapper errorMapper;
 
-    public DefaultEndpointProviderFactory(EMProperties properties, Codec codec, HttpClient httpClient, ErrorMapper errorMapper) {
+    public DefaultEndpointProviderFactory(EMProperties properties, Codec codec,
+            HttpClient httpClient, ErrorMapper errorMapper) {
         this.properties = properties;
         this.codec = codec;
         this.httpClient = httpClient;

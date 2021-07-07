@@ -12,7 +12,8 @@ class GroupAdminRemoveTest extends AbstractApiTest {
     GroupAdminAdd groupAdminAdd = new GroupAdminAdd(this.context);
 
     public GroupAdminRemoveTest() {
-        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/admin/rabbit", this::handleGroupAdminRemoveRequest);
+        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/admin/rabbit",
+                this::handleGroupAdminRemoveRequest);
     }
 
     @Test

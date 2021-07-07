@@ -31,7 +31,8 @@ class ListRoomAdminsTest extends AbstractApiTest {
 
     @Test
     void testListRoomAdmins() {
-        List<String> admins = this.listRoomAdmins.all("r1").collectList().block(Duration.ofSeconds(3));
+        List<String> admins =
+                this.listRoomAdmins.all("r1").collectList().block(Duration.ofSeconds(3));
         assertEquals(2, admins.size());
         assertEquals("rabbit", admins.get(0));
         assertEquals("madhat", admins.get(1));

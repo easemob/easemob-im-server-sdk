@@ -22,19 +22,19 @@ public abstract class AbstractApiTest {
     protected AbstractApiTest() {
 
         this.objectMapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         this.server = MockingHttpServer.builder().build();
 
         this.properties = EMProperties.builder()
-            .setAppkey("easemob#demo")
-            .setClientId("clientId")
-            .setClientSecret("clientSecret")
-            .build();
+                .setAppkey("easemob#demo")
+                .setClientId("clientId")
+                .setClientSecret("clientSecret")
+                .build();
 
         this.context = new MockingContext(properties, this.server.uri());
 
-         this.codec = new JsonCodec();
+        this.codec = new JsonCodec();
     }
 }

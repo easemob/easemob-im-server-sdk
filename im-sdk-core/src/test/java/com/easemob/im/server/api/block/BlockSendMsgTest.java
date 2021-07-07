@@ -16,16 +16,21 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BlockSendMsgTest extends AbstractApiTest {
 
     private SendMsgToUser sendMsgToUser;
-    
+
     private BlockUserLogin blockUserLogin;
-    
+
     public BlockSendMsgTest() {
         super();
-        this.server.addHandler("POST /easemob/demo/users/alice/blocks/users", this::handleUserBlockFromSendMsgRequest);
-        this.server.addHandler("DELETE /easemob/demo/users/alice/blocks/users/rabbit", this::handleUserUnblockFromSendMsgRequest);
-        this.server.addHandler("GET /easemob/demo/users/alice/blocks/users", this::handleGetUserBlockedFromSendMsgRequest);
-        this.server.addHandler("POST /easemob/demo/users/alice/deactivate", this::handleUserBlockFromLoginRequest);
-        this.server.addHandler("POST /easemob/demo/users/alice/activate", this::handleUserUnblockFromLoginRequest);
+        this.server.addHandler("POST /easemob/demo/users/alice/blocks/users",
+                this::handleUserBlockFromSendMsgRequest);
+        this.server.addHandler("DELETE /easemob/demo/users/alice/blocks/users/rabbit",
+                this::handleUserUnblockFromSendMsgRequest);
+        this.server.addHandler("GET /easemob/demo/users/alice/blocks/users",
+                this::handleGetUserBlockedFromSendMsgRequest);
+        this.server.addHandler("POST /easemob/demo/users/alice/deactivate",
+                this::handleUserBlockFromLoginRequest);
+        this.server.addHandler("POST /easemob/demo/users/alice/activate",
+                this::handleUserUnblockFromLoginRequest);
         sendMsgToUser = new SendMsgToUser(this.context);
         blockUserLogin = new BlockUserLogin(this.context);
     }
@@ -46,8 +51,11 @@ public class BlockSendMsgTest extends AbstractApiTest {
 
     @Test
     public void testGetUserBlockedFromSendMsg() {
-        Set<EMBlock> blockedUsers = this.sendMsgToUser.getUsersBlocked("alice").collect(Collectors.toSet()).block(Duration.ofSeconds(3));
-        Set<String> blockedUsernames = blockedUsers.stream().map(EMBlock::getUsername).collect(Collectors.toSet());
+        Set<EMBlock> blockedUsers =
+                this.sendMsgToUser.getUsersBlocked("alice").collect(Collectors.toSet())
+                        .block(Duration.ofSeconds(3));
+        Set<String> blockedUsernames =
+                blockedUsers.stream().map(EMBlock::getUsername).collect(Collectors.toSet());
         assertTrue(blockedUsernames.contains("queen"));
         assertTrue(blockedUsernames.contains("madhat"));
         assertTrue(blockedUsernames.contains("rabbit"));
@@ -68,7 +76,8 @@ public class BlockSendMsgTest extends AbstractApiTest {
     }
 
     private JsonNode handleGetUserBlockedFromSendMsgRequest(JsonNode jsonNode) {
-        JsonNode usernames = this.objectMapper.createArrayNode().add("queen").add("madhat").add("rabbit");
+        JsonNode usernames =
+                this.objectMapper.createArrayNode().add("queen").add("madhat").add("rabbit");
         JsonNode response = this.objectMapper.createObjectNode().set("data", usernames);
         return response;
     }

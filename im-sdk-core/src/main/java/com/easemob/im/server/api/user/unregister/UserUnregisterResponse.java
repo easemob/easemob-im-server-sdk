@@ -20,8 +20,8 @@ public class UserUnregisterResponse {
 
     @JsonCreator
     public UserUnregisterResponse(@JsonProperty("entities") List<UserResource> entities,
-                                  @JsonProperty("cursor") String cursor,
-                                  @JsonProperty("error") String error) {
+            @JsonProperty("cursor") String cursor,
+            @JsonProperty("error") String error) {
         this.entities = entities;
         this.cursor = cursor;
         this.error = error;
@@ -29,16 +29,16 @@ public class UserUnregisterResponse {
 
     public List<String> getUsernames() {
         return this.entities.stream()
-            .map(UserResource::getUsername)
-            .collect(Collectors.toList());
+                .map(UserResource::getUsername)
+                .collect(Collectors.toList());
     }
 
     public EMUser getEMUser(String username) {
         return this.entities.stream()
-            .filter(user -> user.getUsername().equals(username))
-            .findFirst()
-            .map(UserResource::toEMUser)
-            .orElse(null);
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst()
+                .map(UserResource::toEMUser)
+                .orElse(null);
     }
 
     public String getCursor() {
