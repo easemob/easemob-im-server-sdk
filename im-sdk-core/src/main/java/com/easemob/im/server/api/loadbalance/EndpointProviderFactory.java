@@ -1,5 +1,5 @@
 package com.easemob.im.server.api.loadbalance;
 
 public interface EndpointProviderFactory {
-    EndpointProvider createEndpointProvider();
+    EndpointProvider create();
 }

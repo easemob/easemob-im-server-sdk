@@ -9,24 +9,24 @@ import reactor.netty.http.client.HttpClient;
 public class DefaultEndpointProviderFactory implements EndpointProviderFactory {
 
     private final EMProperties properties;
-
-    private final DnsConfigEndpointProvider dnsConfigEndpointProvider;
-
-    private final FixedEndpointProvider fixedEndpointProvider;
+    private final Codec codec;
+    private final HttpClient httpClient;
+    private final ErrorMapper errorMapper;
 
     public DefaultEndpointProviderFactory(EMProperties properties, Codec codec, HttpClient httpClient, ErrorMapper errorMapper) {
         this.properties = properties;
-        this.dnsConfigEndpointProvider = new DnsConfigEndpointProvider(this.properties, codec, httpClient, errorMapper);
-        this.fixedEndpointProvider = new FixedEndpointProvider(this.properties);
+        this.codec = codec;
+        this.httpClient = httpClient;
+        this.errorMapper = errorMapper;
     }
 
     @Override
-    public EndpointProvider createEndpointProvider() {
-        final String baseUri = this.properties.getBaseUri();
+    public EndpointProvider create() {
+        final String baseUri = properties.getBaseUri();
         if (Strings.isBlank(baseUri)) {
-            return this.dnsConfigEndpointProvider;
+            return new DnsConfigEndpointProvider(properties, codec, httpClient, errorMapper);
         } else {
-            return this.fixedEndpointProvider;
+            return new FixedEndpointProvider(properties);
         }
     }
 }
