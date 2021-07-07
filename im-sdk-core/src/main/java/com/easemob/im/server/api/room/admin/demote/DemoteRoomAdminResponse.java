@@ -7,6 +7,15 @@ public class DemoteRoomAdminResponse {
     @JsonProperty("data")
     private Wrapper wrapper;
 
+    @JsonCreator
+    public DemoteRoomAdminResponse(@JsonProperty("data") Wrapper wrapper) {
+        this.wrapper = wrapper;
+    }
+
+    public boolean isSuccess() {
+        return this.wrapper != null && "success".equals(this.wrapper.getResult());
+    }
+
     public static class Wrapper {
         @JsonProperty("result")
         private String result;
@@ -15,7 +24,7 @@ public class DemoteRoomAdminResponse {
 
         @JsonCreator
         public Wrapper(@JsonProperty("result") String result,
-                       @JsonProperty("oldadmin") String username) {
+                @JsonProperty("oldadmin") String username) {
             this.result = result;
             this.username = username;
         }
@@ -23,14 +32,5 @@ public class DemoteRoomAdminResponse {
         public String getResult() {
             return this.result;
         }
-    }
-
-    @JsonCreator
-    public DemoteRoomAdminResponse(@JsonProperty("data") Wrapper wrapper) {
-        this.wrapper = wrapper;
-    }
-
-    public boolean isSuccess() {
-        return this.wrapper != null && "success".equals(this.wrapper.getResult());
     }
 }

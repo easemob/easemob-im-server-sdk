@@ -16,7 +16,8 @@ public class TimedRefreshEndpointRegistry implements EndpointRegistry {
 
     private Mono<List<Endpoint>> endpoints;
 
-    public TimedRefreshEndpointRegistry(EndpointProvider endpointProvider, Duration refreshInterval) {
+    public TimedRefreshEndpointRegistry(EndpointProvider endpointProvider,
+            Duration refreshInterval) {
         this.endpointProvider = endpointProvider;
         this.endpoints = endpointProvider.endpoints()
                 .cache(endpoints -> Duration.ofSeconds(86400),

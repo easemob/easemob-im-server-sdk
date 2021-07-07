@@ -17,7 +17,7 @@ public class BlockUserSendMsgToRoomRequest {
 
     @JsonCreator
     public BlockUserSendMsgToRoomRequest(@JsonProperty("usernames") List<String> usernames,
-                                         @JsonProperty("mute_duration") long durationInMillis) {
+            @JsonProperty("mute_duration") long durationInMillis) {
         this.usernames = usernames;
         this.durationInMillis = durationInMillis;
     }
@@ -25,6 +25,7 @@ public class BlockUserSendMsgToRoomRequest {
     public static BlockUserSendMsgToRoomRequest of(String username, Duration duration) {
         List<String> usernames = new ArrayList<>();
         usernames.add(username);
-        return new BlockUserSendMsgToRoomRequest(usernames, duration == null ? -1 : duration.toMillis());
+        return new BlockUserSendMsgToRoomRequest(usernames,
+                duration == null ? -1 : duration.toMillis());
     }
 }

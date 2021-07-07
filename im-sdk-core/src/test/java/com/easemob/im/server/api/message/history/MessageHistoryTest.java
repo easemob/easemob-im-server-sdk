@@ -18,7 +18,8 @@ class MessageHistoryTest extends AbstractApiTest {
     MessageHistory messageHistory = new MessageHistory(this.context, "+8");
 
     MessageHistoryTest() {
-        this.server.addHandler("GET /easemob/demo/chatmessages/2020020200", this::handleGetMessageHistoryTest);
+        this.server.addHandler("GET /easemob/demo/chatmessages/2020020200",
+                this::handleGetMessageHistoryTest);
     }
 
     private JsonNode handleGetMessageHistoryTest(JsonNode jsonNode) {
@@ -36,7 +37,8 @@ class MessageHistoryTest extends AbstractApiTest {
 
     @Test
     void testGetUrl() {
-        String url = this.messageHistory.toUri(Instant.ofEpochSecond(1580574630)).block(Duration.ofSeconds(3));
+        String url = this.messageHistory.toUri(Instant.ofEpochSecond(1580574630))
+                .block(Duration.ofSeconds(3));
         assertEquals("https://example.com/history", url);
     }
 }

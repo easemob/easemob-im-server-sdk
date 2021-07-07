@@ -13,12 +13,14 @@ class MetadataDeleteTest extends AbstractApiTest {
     MetadataDelete metadataDelete = new MetadataDelete(this.context);
 
     public MetadataDeleteTest() {
-        this.server.addHandler("DELETE /easemob/demo/metadata/user/bob", this::handleMetadataDeleteSuccess);
+        this.server.addHandler("DELETE /easemob/demo/metadata/user/bob",
+                this::handleMetadataDeleteSuccess);
     }
 
     @Test
     public void testMetadataDeleteFromUserSuccess() {
-        boolean deletionSuccess = assertDoesNotThrow(() -> this.metadataDelete.fromUser("bob").block(Duration.ofSeconds(3)));
+        boolean deletionSuccess = assertDoesNotThrow(
+                () -> this.metadataDelete.fromUser("bob").block(Duration.ofSeconds(3)));
         assertTrue(deletionSuccess);
     }
 

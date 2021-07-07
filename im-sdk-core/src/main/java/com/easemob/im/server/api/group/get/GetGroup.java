@@ -16,7 +16,8 @@ public class GetGroup {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s", groupId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GetGroupResponse.class))
                 .map(rsp -> {
                     EMGroup detail = rsp.toGroupDetail(groupId);

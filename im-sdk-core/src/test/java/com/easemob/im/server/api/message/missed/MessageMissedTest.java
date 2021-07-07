@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MessageMissedTest extends AbstractApiTest {
 
     public MessageMissedTest() {
-        this.server.addHandler("GET /easemob/demo/users/alice/offline_msg_count", this::handleMessageMisssedCountRequest);
+        this.server.addHandler("GET /easemob/demo/users/alice/offline_msg_count",
+                this::handleMessageMisssedCountRequest);
     }
 
     @Test
@@ -23,12 +24,12 @@ public class MessageMissedTest extends AbstractApiTest {
         MissedMessageCount mmc2 = new MissedMessageCount("madhat", 1);
 
         missed.count("alice")
-            .log()
-            .as(StepVerifier::create)
-            .expectNextMatches(mmc -> mmc1.equals(mmc) || mmc2.equals(mmc))
-            .expectNextMatches(mmc -> mmc1.equals(mmc) || mmc2.equals(mmc))
-            .expectComplete()
-            .verify(Duration.ofSeconds(3));
+                .log()
+                .as(StepVerifier::create)
+                .expectNextMatches(mmc -> mmc1.equals(mmc) || mmc2.equals(mmc))
+                .expectNextMatches(mmc -> mmc1.equals(mmc) || mmc2.equals(mmc))
+                .expectComplete()
+                .verify(Duration.ofSeconds(3));
     }
 
     private JsonNode handleMessageMisssedCountRequest(JsonNode jsonNode) {

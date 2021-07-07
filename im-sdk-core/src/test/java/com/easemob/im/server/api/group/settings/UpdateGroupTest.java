@@ -15,19 +15,26 @@ class UpdateGroupTest extends AbstractApiTest {
     UpdateGroup updateGroup = new UpdateGroup(this.context);
 
     public UpdateGroupTest() {
-        this.server.addHandler("PUT /easemob/demo/chatgroups/1", this::handleGroupUpdateRequestSuccess);
-        this.server.addHandler("PUT /easemob/demo/chatgroups/2", this::handleGroupUpdateRequestFailure);
-        this.server.addHandler("PUT /easemob/demo/chatgroups/3", this::handleGroupUpdateOwnerRequest);
+        this.server.addHandler("PUT /easemob/demo/chatgroups/1",
+                this::handleGroupUpdateRequestSuccess);
+        this.server.addHandler("PUT /easemob/demo/chatgroups/2",
+                this::handleGroupUpdateRequestFailure);
+        this.server
+                .addHandler("PUT /easemob/demo/chatgroups/3", this::handleGroupUpdateOwnerRequest);
     }
 
     @Test
     public void testGroupUpdateSuccess() {
-        assertDoesNotThrow(() -> this.updateGroup.update("1", settings -> settings.setMaxMembers(10)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.updateGroup.update("1", settings -> settings.setMaxMembers(10))
+                        .block(Duration.ofSeconds(3)));
     }
 
     @Test
     public void testGroupUpdateFailure() {
-        assertThrows(EMUnknownException.class, () -> this.updateGroup.update( "2", settings -> settings.setMaxMembers(1000000).setCanMemberInviteOthers(false)).block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class, () -> this.updateGroup.update("2",
+                settings -> settings.setMaxMembers(1000000).setCanMemberInviteOthers(false))
+                .block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupUpdateRequestSuccess(JsonNode jsonNode) {

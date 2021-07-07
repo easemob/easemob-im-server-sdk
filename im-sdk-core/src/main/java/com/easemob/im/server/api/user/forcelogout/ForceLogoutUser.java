@@ -26,7 +26,8 @@ public class ForceLogoutUser {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(finalPath)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UserForceLogoutResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccessful()) {

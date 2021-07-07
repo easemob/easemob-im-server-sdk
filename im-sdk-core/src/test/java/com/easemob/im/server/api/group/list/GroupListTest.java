@@ -16,42 +16,44 @@ public class GroupListTest extends AbstractApiTest {
 
     public GroupListTest() {
         super();
-        this.server.addHandler("GET /easemob/demo/chatgroups?limit=10", this::handleGroupListRequest1);
-        this.server.addHandler("GET /easemob/demo/chatgroups?limit=10&cursor=1", this::handleGroupListRequest2);
-        this.server.addHandler("GET /easemob/demo/chatgroups?limit=10&cursor=2", this::handleGroupListRequest3);
-        this.server.addHandler("GET /easemob/demo/users/alice/joined_chatgroups", this::handleGroupListUserJoined);
+        this.server
+                .addHandler("GET /easemob/demo/chatgroups?limit=10", this::handleGroupListRequest1);
+        this.server.addHandler("GET /easemob/demo/chatgroups?limit=10&cursor=1",
+                this::handleGroupListRequest2);
+        this.server.addHandler("GET /easemob/demo/chatgroups?limit=10&cursor=2",
+                this::handleGroupListRequest3);
+        this.server.addHandler("GET /easemob/demo/users/alice/joined_chatgroups",
+                this::handleGroupListUserJoined);
     }
-
-
 
     @Test
     public void testGroupListHighLevelApi() {
         this.groupList.all(10)
-            .as(StepVerifier::create)
-            .expectNextCount(25)
-            .expectComplete()
-            .verify(Duration.ofSeconds(3));
+                .as(StepVerifier::create)
+                .expectNextCount(25)
+                .expectComplete()
+                .verify(Duration.ofSeconds(3));
     }
 
     @Test
     public void testGroupListLowLevelApi() {
         this.groupList.next(10, "1")
-            .as(StepVerifier::create)
-            .expectNextMatches(page -> page.getValues().size() == 10 && page.getCursor().equals("2"))
-            .expectComplete()
-            .verify(Duration.ofSeconds(3));
+                .as(StepVerifier::create)
+                .expectNextMatches(
+                        page -> page.getValues().size() == 10 && page.getCursor().equals("2"))
+                .expectComplete()
+                .verify(Duration.ofSeconds(3));
     }
 
     @Test
     public void testGroupListUserJoined() {
         this.groupList.userJoined("alice")
-            .as(StepVerifier::create)
-            .expectNext("aliceGroup")
-            .expectNext("rabbitGroup")
-            .expectComplete()
-            .verify(Duration.ofSeconds(3));
+                .as(StepVerifier::create)
+                .expectNext("aliceGroup")
+                .expectNext("rabbitGroup")
+                .expectComplete()
+                .verify(Duration.ofSeconds(3));
     }
-
 
     private JsonNode handleGroupListRequest1(JsonNode jsonNode) {
         return buildResponse(10, "1");

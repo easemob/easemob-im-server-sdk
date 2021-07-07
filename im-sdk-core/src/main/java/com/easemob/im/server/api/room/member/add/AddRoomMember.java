@@ -5,7 +5,7 @@ import com.easemob.im.server.exception.EMUnknownException;
 import reactor.core.publisher.Mono;
 
 public class AddRoomMember {
-    
+
     private Context context;
 
     public AddRoomMember(Context context) {
@@ -16,7 +16,8 @@ public class AddRoomMember {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatrooms/%s/users/%s", roomId, username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, AddRoomMemberResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {

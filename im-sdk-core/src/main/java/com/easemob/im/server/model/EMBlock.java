@@ -24,10 +24,13 @@ public class EMBlock {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         EMBlock emBlock = (EMBlock) o;
-        return Objects.equals(username, emBlock.username) && Objects.equals(expireAt, emBlock.expireAt);
+        return Objects.equals(username, emBlock.username) && Objects
+                .equals(expireAt, emBlock.expireAt);
     }
 
     @Override

@@ -16,7 +16,8 @@ public class RemoveRoomMember {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatrooms/%s/users/%s", roomId, username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, RemoveRoomMemberResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {

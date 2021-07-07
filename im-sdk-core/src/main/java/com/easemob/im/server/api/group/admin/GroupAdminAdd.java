@@ -16,8 +16,10 @@ public class GroupAdminAdd {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatgroups/%s/admin", groupId))
-                        .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new GroupAdminAddRequest(username)))))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()))
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new GroupAdminAddRequest(username)))))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()))
                 .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty());
     }
 }

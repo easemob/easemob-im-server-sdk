@@ -16,7 +16,9 @@ public class DefaultErrorMapper implements ErrorMapper {
     }
 
     private EMException toException(HttpClientResponse response) {
-        String reason = String.format("%s %s -> %d %s", response.method().toString(), response.uri(), response.status().code(), response.status().reasonPhrase());
+        String reason =
+                String.format("%s %s -> %d %s", response.method().toString(), response.uri(),
+                        response.status().code(), response.status().reasonPhrase());
         HttpResponseStatus status = response.status();
         if (HttpResponseStatus.BAD_REQUEST.equals(status)
                 || HttpResponseStatus.METHOD_NOT_ALLOWED.equals(status)

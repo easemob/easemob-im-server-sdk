@@ -11,12 +11,12 @@ public class GroupMemberAdd {
         this.context = context;
     }
 
-
     public Mono<Void> single(String groupId, String username) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatgroups/%s/users/%s", groupId, username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
     }
 
 }

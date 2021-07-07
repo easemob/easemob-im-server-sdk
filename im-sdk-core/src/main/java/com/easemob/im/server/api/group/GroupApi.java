@@ -70,33 +70,37 @@ public class GroupApi {
      *      service.group().updateSetting("group-id", settings -> settings.memberCanInvite(true)).block();
      * }</pre>
      *
-     * @param owner 群主的用户名
-     * @param groupName 群名
-     * @param description 群介绍
-     * @param members 初始群成员的用户名列表
-     * @param maxMembers 群最大成员数
+     * @param owner             群主的用户名
+     * @param groupName         群名
+     * @param description       群介绍
+     * @param members           初始群成员的用户名列表
+     * @param maxMembers        群最大成员数
      * @param needApproveToJoin 新成员加入需要管理员审批
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
-    public Mono<String> createPublicGroup(String owner, String groupName, String description, List<String> members, int maxMembers, boolean needApproveToJoin) {
-        return this.createGroup.publicGroup(owner, groupName, description, members, maxMembers, needApproveToJoin);
+    public Mono<String> createPublicGroup(String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean needApproveToJoin) {
+        return this.createGroup
+                .publicGroup(owner, groupName, description, members, maxMembers, needApproveToJoin);
     }
 
     /**
      * 创建私有群。
      *
-     * @param owner 群主的用户名
-     * @param groupName 群名
-     * @param description 群介绍
-     * @param members 初始群成员的用户名列表
-     * @param maxMembers 群最大成员数
+     * @param owner           群主的用户名
+     * @param groupName       群名
+     * @param description     群介绍
+     * @param members         初始群成员的用户名列表
+     * @param maxMembers      群最大成员数
      * @param canMemberInvite 新成员加入需要管理员审批
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
-    public Mono<String> createPrivateGroup(String owner, String groupName, String description, List<String> members, int maxMembers, boolean canMemberInvite) {
-        return this.createGroup.privateGroup(owner, groupName, description, members, maxMembers, canMemberInvite);
+    public Mono<String> createPrivateGroup(String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean canMemberInvite) {
+        return this.createGroup
+                .privateGroup(owner, groupName, description, members, maxMembers, canMemberInvite);
     }
 
     /**
@@ -121,9 +125,9 @@ public class GroupApi {
 
     /**
      * 分页获取群列表。
-     *
+     * <p>
      * 初次调用时，{@code cursor} 传 {@code null}。之后的调用，{@code cursor} 传上次返回的值。
-     *
+     * <p>
      * 可以这样遍历群列表：
      * <pre>{@code
      *  EMService service;
@@ -139,7 +143,7 @@ public class GroupApi {
      *  }
      * }</pre>
      *
-     * @param limit 每次取回多少个群id
+     * @param limit  每次取回多少个群id
      * @param cursor 上次返回的{@code cursor}
      * @return 群列表响应或错误
      * @see com.easemob.im.server.model.EMPage
@@ -179,7 +183,7 @@ public class GroupApi {
      * service.group().updateSettings("1", settings -> settings.maxMembers(100)).block();
      * }</pre>
      *
-     * @param groupId 群id
+     * @param groupId    群id
      * @param customizer 请求定制器
      * @return 成功或错误
      * @see UpdateGroupRequest
@@ -192,7 +196,7 @@ public class GroupApi {
     /**
      * 修改群主。新群主需要已经是群成员，否则会报错{@code EMForbiddenException}。
      *
-     * @param groupId 群id
+     * @param groupId  群id
      * @param username 新群主的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%BD%AC%E8%AE%A9%E7%BE%A4%E7%BB%84">修改群主</a>
@@ -215,7 +219,7 @@ public class GroupApi {
     /**
      * 更新群公告。
      *
-     * @param groupId 群id
+     * @param groupId      群id
      * @param announcement 群公告
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E4%BF%AE%E6%94%B9%E7%BE%A4%E7%BB%84%E5%85%AC%E5%91%8A">更新群公告</a>
@@ -237,9 +241,9 @@ public class GroupApi {
 
     /**
      * 分页获取群成员。
-     *
+     * <p>
      * 首次调用时，{@code cursor} 传 {@code null}。之后每次调用，{@code cursor} 传上次返回的值。
-     *
+     * <p>
      * 比如：
      *
      * <pre>{@code
@@ -254,10 +258,10 @@ public class GroupApi {
      *     cursor = response.getCursor();
      * }
      * }</pre>
-
+     *
      * @param groupId 群id
-     * @param limit 返回多少群成员id
-     * @param cursor 开始位置
+     * @param limit   返回多少群成员id
+     * @param cursor  开始位置
      * @return 获取群成员响应或错误
      * @see com.easemob.im.server.api.group.member.list.GroupMemberListResponse
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
@@ -269,7 +273,7 @@ public class GroupApi {
     /**
      * 添加群成员。
      *
-     * @param groupId 群id
+     * @param groupId  群id
      * @param username 要添加的用户的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">添加群成员</a>
@@ -281,7 +285,7 @@ public class GroupApi {
     /**
      * 移除群成员。
      *
-     * @param groupId 群id
+     * @param groupId  群id
      * @param username 要移除的用户的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E5%8D%95%E4%B8%AA%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">移除群成员</a>
@@ -304,7 +308,7 @@ public class GroupApi {
     /**
      * 升级群成员为群管理员。
      *
-     * @param groupId 群id
+     * @param groupId  群id
      * @param username 被升级的群成员的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98">升级群成员</a>
@@ -316,7 +320,7 @@ public class GroupApi {
     /**
      * 降级群管理员为群成员。
      *
-     * @param groupId 群id
+     * @param groupId  群id
      * @param username 被降级的群管理员的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98">降级群管理员</a>

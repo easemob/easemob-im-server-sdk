@@ -11,6 +11,14 @@ public class GetRoomDetailResponse {
     @JsonProperty("data")
     private List<Room> rooms;
 
+    public GetRoomDetailResponse(@JsonProperty("data") List<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public List<EMRoom> toRoomDetails() {
+        return this.rooms.stream().map(Room::toRoom).collect(Collectors.toList());
+    }
+
     private static class Room {
         @JsonProperty("id")
         private String id;
@@ -32,11 +40,11 @@ public class GetRoomDetailResponse {
 
         @JsonCreator
         public Room(@JsonProperty("id") String id,
-                    @JsonProperty("name") String name,
-                    @JsonProperty("description") String description,
-                    @JsonProperty("owner") String owner,
-                    @JsonProperty("membersonly") boolean needApprove,
-                    @JsonProperty("maxusers") int maxMembers) {
+                @JsonProperty("name") String name,
+                @JsonProperty("description") String description,
+                @JsonProperty("owner") String owner,
+                @JsonProperty("membersonly") boolean needApprove,
+                @JsonProperty("maxusers") int maxMembers) {
             this.id = id;
             this.name = name;
             this.description = description;
@@ -46,15 +54,8 @@ public class GetRoomDetailResponse {
         }
 
         public EMRoom toRoom() {
-            return new EMRoom(this.id, this.name, this.description, this.needApprove, this.owner, this.maxMembers);
+            return new EMRoom(this.id, this.name, this.description, this.needApprove, this.owner,
+                    this.maxMembers);
         }
-    }
-
-    public GetRoomDetailResponse(@JsonProperty("data") List<Room> rooms) {
-        this.rooms = rooms;
-    }
-
-    public List<EMRoom> toRoomDetails() {
-        return this.rooms.stream().map(Room::toRoom).collect(Collectors.toList());
     }
 }

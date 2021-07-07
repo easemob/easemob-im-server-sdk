@@ -8,6 +8,15 @@ public class RemoveRoomMemberResponse {
     @JsonProperty("data")
     private Wrapper wrapper;
 
+    @JsonCreator
+    public RemoveRoomMemberResponse(@JsonProperty("data") Wrapper wrapper) {
+        this.wrapper = wrapper;
+    }
+
+    public boolean isSuccess() {
+        return this.wrapper != null && this.wrapper.getResult();
+    }
+
     public static class Wrapper {
         @JsonProperty("result")
         private boolean result;
@@ -20,14 +29,5 @@ public class RemoveRoomMemberResponse {
         public boolean getResult() {
             return this.result;
         }
-    }
-
-    @JsonCreator
-    public RemoveRoomMemberResponse(@JsonProperty("data") Wrapper wrapper) {
-        this.wrapper = wrapper;
-    }
-
-    public boolean isSuccess() {
-        return this.wrapper != null && this.wrapper.getResult();
     }
 }

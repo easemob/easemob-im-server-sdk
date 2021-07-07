@@ -25,18 +25,23 @@ public class GetCmd {
     private EMService service;
 
     @Command(name = "attachment", description = "Download attachment by id.", mixinStandardHelpOptions = true)
-    public void attachment(@Parameters(description = "attachment file id, returned by upload service.") String id,
-                           @Option(names = "-o", defaultValue = "", description = "attachment download path, default is current dir") Path path) {
+    public void attachment(
+            @Parameters(description = "attachment file id, returned by upload service.") String id,
+            @Option(names = "-o", defaultValue = "", description = "attachment download path, default is current dir")
+                    Path path) {
         this.service.attachment().downloadFile(id, path, id)
-                .doOnSuccess(downloaded -> System.out.println(String.format("downloaded: %s", downloaded.toString())))
-                .doOnError(error -> System.out.println(String.format("error: %s", error.getMessage())))
+                .doOnSuccess(downloaded -> System.out
+                        .println(String.format("downloaded: %s", downloaded.toString())))
+                .doOnError(
+                        error -> System.out.println(String.format("error: %s", error.getMessage())))
                 .onErrorResume(EMException.class, error -> Mono.empty())
                 .block();
     }
 
     @Command(name = "user", description = "Get a user's info or list users.", mixinStandardHelpOptions = true)
-    public void user(@Parameters(arity = "0..1", description = "The username, if miss, list users") String username,
-                     @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
+    public void user(@Parameters(arity = "0..1", description = "The username, if miss, list users")
+            String username,
+            @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(username)) {
             this.service.user().get(username)
                     .doOnNext(user -> {
@@ -55,7 +60,8 @@ public class GetCmd {
                     .block();
         } else {
             service.user().listAllUsers()
-                    .doOnNext(System.out::println).doOnError(err -> System.out.println("error: " + err.getMessage()))
+                    .doOnNext(System.out::println)
+                    .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         }
@@ -71,9 +77,13 @@ public class GetCmd {
     }
 
     @Command(name = "group", description = "Get a group's info or list groups", mixinStandardHelpOptions = true)
-    public void group(@Parameters(arity = "0..1", description = "the group's id, list all groups if missing") String groupId,
-                      @Option(names = "--have-user", description = "search groups have this user, not support limit and cursor") String username,
-                      @ArgGroup(exclusive = false, heading = "If missing, list all groups\n") LimitArgGroup limitArgGroup) {
+    public void group(
+            @Parameters(arity = "0..1", description = "the group's id, list all groups if missing")
+                    String groupId,
+            @Option(names = "--have-user", description = "search groups have this user, not support limit and cursor")
+                    String username,
+            @ArgGroup(exclusive = false, heading = "If missing, list all groups\n")
+                    LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(groupId)) {
             this.service.group().getGroup(groupId)
                     .doOnSuccess(group -> {
@@ -82,7 +92,8 @@ public class GetCmd {
                         System.out.println("description: " + group.getDescription());
                         System.out.println("\tisPublic: " + group.getIsPublic());
                         System.out.println("\tmaxMembers: " + group.getMaxMembers());
-                        System.out.println("\tcanMemberInviteOthers: " + group.getCanMemberInviteOthers());
+                        System.out.println(
+                                "\tcanMemberInviteOthers: " + group.getCanMemberInviteOthers());
                         System.out.println("\towner: " + group.getOwner());
                     })
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
@@ -120,9 +131,12 @@ public class GetCmd {
     }
 
     @Command(name = "room", description = "Get a room's info or list rooms", mixinStandardHelpOptions = true)
-    public void room(@Parameters(arity = "0..1", description = "the room's id, if miss, list rooms") String roomId,
-                     @Option(names = "--have-user", description = "search rooms have this user, not support limit and cursor") String username,
-                     @ArgGroup(exclusive = false, heading = "If missing, list all rooms\n") LimitArgGroup limitArgGroup) {
+    public void room(@Parameters(arity = "0..1", description = "the room's id, if miss, list rooms")
+            String roomId,
+            @Option(names = "--have-user", description = "search rooms have this user, not support limit and cursor")
+                    String username,
+            @ArgGroup(exclusive = false, heading = "If missing, list all rooms\n")
+                    LimitArgGroup limitArgGroup) {
         if (StringUtils.hasText(roomId)) {
             this.service.room().getRoom(roomId)
                     .doOnSuccess(room -> {
@@ -160,26 +174,6 @@ public class GetCmd {
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .blockLast();
         }
-    }
-
-    private static class BlockArgGroup {
-        @Option(names = {"--msg-to-user"}, description = "list users who can not send message to this user")
-        String msgToUsername;
-
-        @Option(names = {"--msg-to-group"}, description = "list users who can not send message in this group")
-        String msgToGroupId;
-
-        @Option(names = {"--msg-to-room"}, description = "list users who can not join this room")
-        String msgToRoomId;
-
-        @Option(names = {"--join-group"}, description = "list users who can not join this group")
-        String joinGroupId;
-
-        @Option(names = {"--join-room"}, description = "list users who can not join this room")
-        String joinRoomId;
-
-        @Option(names = {"--login"}, description = "list users who can not login")
-        boolean login;
     }
 
     @Command(name = "block", description = "List blocked user.", mixinStandardHelpOptions = true)
@@ -224,20 +218,13 @@ public class GetCmd {
         }
     }
 
-    private static class MemberArgGroup {
-        @Option(names = "--group", description = "list this group members")
-        String groupId;
-
-        @Option(names = "--room", description = "list this room members")
-        String roomId;
-    }
-
     @Command(name = "member", description = "List group or room members, not include the owner and admins.", mixinStandardHelpOptions = true)
     public void member(@ArgGroup(multiplicity = "1") MemberArgGroup memberArgGroup,
-                       @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
+            @ArgGroup(exclusive = false) LimitArgGroup limitArgGroup) {
         if (memberArgGroup.roomId != null) {
             if (limitArgGroup != null) {
-                this.service.room().listRoomMembers(memberArgGroup.roomId, limitArgGroup.limit, limitArgGroup.cursor)
+                this.service.room().listRoomMembers(memberArgGroup.roomId, limitArgGroup.limit,
+                        limitArgGroup.cursor)
                         .doOnSuccess(emPage -> {
                             emPage.getValues().forEach(System.out::println);
                             System.out.println("cursor: " + emPage.getCursor());
@@ -254,7 +241,8 @@ public class GetCmd {
             }
         } else {
             if (limitArgGroup != null) {
-                this.service.group().listGroupMembers(memberArgGroup.groupId, limitArgGroup.limit, limitArgGroup.cursor)
+                this.service.group().listGroupMembers(memberArgGroup.groupId, limitArgGroup.limit,
+                        limitArgGroup.cursor)
                         .doOnSuccess(emPage -> {
                             emPage.getValues().forEach(System.out::println);
                             System.out.println("cursor: " + emPage.getCursor());
@@ -272,53 +260,26 @@ public class GetCmd {
         }
     }
 
-    private static class MessageHistoryArgGroup {
-
-        @Option(names = "--history", description = "get the history file uri by time", required = true)
-        boolean history;
-
-        @Option(names = "-o", description = "download the history file, the file is compressed, use `zless` to read it")
-        Path downloadPath;
-
-        @Parameters(description = "the ISO8601 date time. e.g. 2020-12-12T13:00")
-        String datetime;
-    }
-
-    private static class MessageCountArgGroup {
-
-        @Option(names = "--count", description = "count messages", required = true)
-        boolean count;
-
-        @Option(names = "--missed", description = "count missed messages.")
-        boolean missed;
-    }
-
-    private static class MessageArgGroup {
-
-        @ArgGroup(exclusive = false, heading = "Message history args.\n") MessageHistoryArgGroup history;
-
-        @ArgGroup(exclusive = false, heading = "Message count args.\n") MessageCountArgGroup count;
-
-        @Option(names = "--status", description = "get specific message status")
-        String statusMessageId;
-    }
-
     @Command(name = "message", description = "List or count messages.", mixinStandardHelpOptions = true)
     public void message(@ArgGroup MessageArgGroup argGroup,
-                        @Option(names = "--user", description = "the message receiver") String username) {
+            @Option(names = "--user", description = "the message receiver") String username) {
         if (argGroup.history != null) {
-            ZonedDateTime localDatetime = ZonedDateTime.parse(argGroup.history.datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()));
+            ZonedDateTime localDatetime = ZonedDateTime.parse(argGroup.history.datetime,
+                    DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()));
             Instant instant = localDatetime.toInstant();
 
             if (argGroup.history.downloadPath == null) {
                 this.service.message().getHistoryAsUri(instant)
                         .doOnNext(uri -> System.out.println(String.format("uri: %s", uri)))
-                        .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
+                        .doOnError(err -> System.out
+                                .println(String.format("error: %s", err.getMessage())))
                         .block();
             } else {
-                this.service.message().getHistoryAsLocalFile(instant, argGroup.history.downloadPath, argGroup.history.datetime.replaceAll("[-T:]", "_") + ".gz")
+                this.service.message().getHistoryAsLocalFile(instant, argGroup.history.downloadPath,
+                        argGroup.history.datetime.replaceAll("[-T:]", "_") + ".gz")
                         .doOnNext(uri -> System.out.println(String.format("uri: %s", uri)))
-                        .doOnError(err -> System.out.println(String.format("error: %s", err.getMessage())))
+                        .doOnError(err -> System.out
+                                .println(String.format("error: %s", err.getMessage())))
                         .block();
             }
         } else if (argGroup.count != null) {
@@ -339,22 +300,12 @@ public class GetCmd {
                 return;
             }
             this.service.message().isMessageDeliveredToUser(argGroup.statusMessageId, username)
-                    .doOnSuccess(isDelivered -> System.out.println(isDelivered ? "Delivered." : "UnDelivered."))
+                    .doOnSuccess(isDelivered -> System.out
+                            .println(isDelivered ? "Delivered." : "UnDelivered."))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, ignore -> Mono.empty())
                     .block();
         }
-    }
-
-    private static class AdminArgGroup {
-        @Option(names = "--group", description = "list group's admin")
-        String groupId;
-
-        @Option(names = "--room", description = "list room's admin")
-        String roomId;
-
-        @Option(names = "--super", description = "list super admin")
-        boolean superAdmin;
     }
 
     @Command(name = "admin", description = "List admin", mixinStandardHelpOptions = true)
@@ -383,7 +334,8 @@ public class GetCmd {
     @Command(name = "session", description = "Get specific user's online status.", mixinStandardHelpOptions = true)
     public void session(@Parameters(description = "the username") String username) {
         this.service.user().isUserOnline(username)
-                .doOnSuccess(isOnlie -> System.out.printf("%s : %s\n", username, isOnlie ? "online" : "offline"))
+                .doOnSuccess(isOnlie -> System.out
+                        .printf("%s : %s\n", username, isOnlie ? "online" : "offline"))
                 .doOnError(err -> System.out.println("error: " + err.getMessage()))
                 .onErrorResume(EMException.class, error -> Mono.empty())
                 .block();
@@ -391,7 +343,8 @@ public class GetCmd {
 
     @Command(name = "metadata", description = "Get user metadata or get metadata usage.", mixinStandardHelpOptions = true)
     public void metadata(@Option(names = "--user", description = "the username") String username,
-                         @Option(names = "--usage", description = "the usage", defaultValue = "usage") String usage) {
+            @Option(names = "--usage", description = "the usage", defaultValue = "usage")
+                    String usage) {
         System.out.println("usage = " + usage);
         if (username != null) {
             this.service.metadata().getMetadataFromUser(username)
@@ -401,12 +354,92 @@ public class GetCmd {
                     .block();
         } else if (usage != null) {
             this.service.metadata().getUsage()
-                    .doOnSuccess(emMetadataUsage -> System.out.println("bytesUsed: " + emMetadataUsage.getBytesUsed()))
+                    .doOnSuccess(emMetadataUsage -> System.out
+                            .println("bytesUsed: " + emMetadataUsage.getBytesUsed()))
                     .doOnError(err -> System.out.println("error: " + err.getMessage()))
                     .onErrorResume(EMException.class, error -> Mono.empty())
                     .block();
         }
     }
+
+    private static class BlockArgGroup {
+        @Option(names = {
+                "--msg-to-user"}, description = "list users who can not send message to this user")
+        String msgToUsername;
+
+        @Option(names = {
+                "--msg-to-group"}, description = "list users who can not send message in this group")
+        String msgToGroupId;
+
+        @Option(names = {"--msg-to-room"}, description = "list users who can not join this room")
+        String msgToRoomId;
+
+        @Option(names = {"--join-group"}, description = "list users who can not join this group")
+        String joinGroupId;
+
+        @Option(names = {"--join-room"}, description = "list users who can not join this room")
+        String joinRoomId;
+
+        @Option(names = {"--login"}, description = "list users who can not login")
+        boolean login;
+    }
+
+
+    private static class MemberArgGroup {
+        @Option(names = "--group", description = "list this group members")
+        String groupId;
+
+        @Option(names = "--room", description = "list this room members")
+        String roomId;
+    }
+
+
+    private static class MessageHistoryArgGroup {
+
+        @Option(names = "--history", description = "get the history file uri by time", required = true)
+        boolean history;
+
+        @Option(names = "-o", description = "download the history file, the file is compressed, use `zless` to read it")
+        Path downloadPath;
+
+        @Parameters(description = "the ISO8601 date time. e.g. 2020-12-12T13:00")
+        String datetime;
+    }
+
+
+    private static class MessageCountArgGroup {
+
+        @Option(names = "--count", description = "count messages", required = true)
+        boolean count;
+
+        @Option(names = "--missed", description = "count missed messages.")
+        boolean missed;
+    }
+
+
+    private static class MessageArgGroup {
+
+        @ArgGroup(exclusive = false, heading = "Message history args.\n") MessageHistoryArgGroup
+                history;
+
+        @ArgGroup(exclusive = false, heading = "Message count args.\n") MessageCountArgGroup count;
+
+        @Option(names = "--status", description = "get specific message status")
+        String statusMessageId;
+    }
+
+
+    private static class AdminArgGroup {
+        @Option(names = "--group", description = "list group's admin")
+        String groupId;
+
+        @Option(names = "--room", description = "list room's admin")
+        String roomId;
+
+        @Option(names = "--super", description = "list super admin")
+        boolean superAdmin;
+    }
+
 
     private static class LimitArgGroup {
         @Option(names = "--limit", description = "the limit", required = true)

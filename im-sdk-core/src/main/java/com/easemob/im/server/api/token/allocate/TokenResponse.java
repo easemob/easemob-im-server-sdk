@@ -13,15 +13,15 @@ public class TokenResponse {
 
     private final int expiresIn;
 
-    @JsonCreator
-    public static TokenResponse of(@JsonProperty("access_token") String accessToken,
-                                   @JsonProperty("expires_in") int expiresIn) {
-        return new TokenResponse(accessToken, expiresIn);
-    }
-
     private TokenResponse(String accessToken, int expiresIn) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
+    }
+
+    @JsonCreator
+    public static TokenResponse of(@JsonProperty("access_token") String accessToken,
+            @JsonProperty("expires_in") int expiresIn) {
+        return new TokenResponse(accessToken, expiresIn);
     }
 
     public Token asToken() {

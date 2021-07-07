@@ -15,6 +15,24 @@ public class ListRoomsResponse {
     @JsonProperty("cursor")
     private String cursor;
 
+    @JsonCreator
+    public ListRoomsResponse(@JsonProperty("data") List<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public List<String> getRoomIds() {
+        return this.rooms.stream().map(Room::getId).collect(Collectors.toList());
+    }
+
+    public String getCursor() {
+        return this.cursor;
+    }
+
+    public EMPage<String> toEMPage() {
+        List<String> roomIds = this.rooms.stream().map(Room::getId).collect(Collectors.toList());
+        return new EMPage<>(roomIds, this.cursor);
+    }
+
     public static class Room {
         @JsonProperty("id")
         private String id;
@@ -27,9 +45,9 @@ public class ListRoomsResponse {
 
         @JsonCreator
         public Room(@JsonProperty("id") String id,
-                    @JsonProperty("name") String name,
-                    @JsonProperty("owner") String owner,
-                    @JsonProperty("affiliations_count") int members) {
+                @JsonProperty("name") String name,
+                @JsonProperty("owner") String owner,
+                @JsonProperty("affiliations_count") int members) {
             this.id = id;
             this.name = name;
             this.owner = owner;
@@ -52,23 +70,5 @@ public class ListRoomsResponse {
             return this.members;
         }
 
-    }
-
-    public List<String> getRoomIds() {
-        return this.rooms.stream().map(Room::getId).collect(Collectors.toList());
-    }
-
-    public String getCursor() {
-        return this.cursor;
-    }
-
-    public EMPage<String> toEMPage() {
-        List<String> roomIds = this.rooms.stream().map(Room::getId).collect(Collectors.toList());
-        return new EMPage<>(roomIds, this.cursor);
-    }
-
-    @JsonCreator
-    public ListRoomsResponse(@JsonProperty("data") List<Room> rooms) {
-        this.rooms = rooms;
     }
 }

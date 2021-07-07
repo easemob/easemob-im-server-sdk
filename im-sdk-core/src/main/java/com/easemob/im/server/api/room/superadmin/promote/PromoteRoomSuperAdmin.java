@@ -16,11 +16,14 @@ public class PromoteRoomSuperAdmin {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri("/chatrooms/super_admin")
-                        .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(new PromoteRoomSuperAdminRequest(username)))))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
-                .map(buf -> this.context.getCodec().decode(buf, PromoteRoomSuperAdminResponse.class))
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new PromoteRoomSuperAdminRequest(username)))))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec()
+                        .decode(buf, PromoteRoomSuperAdminResponse.class))
                 .handle((rsp, sink) -> {
-                    if(!rsp.isSuccess()) {
+                    if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));
                         return;
                     }

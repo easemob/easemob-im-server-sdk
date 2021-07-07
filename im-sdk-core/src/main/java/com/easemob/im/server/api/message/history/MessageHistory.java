@@ -25,7 +25,8 @@ public class MessageHistory {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/chatmessages/%s", toPath(instant)))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, MessageHistoryResponse.class))
                 .map(MessageHistoryResponse::getUrl);
     }
@@ -36,7 +37,7 @@ public class MessageHistory {
         }
 
         if (filename == null) {
-            filename = toPath(instant)+".gz";
+            filename = toPath(instant) + ".gz";
         }
 
         String finalFilename = filename;
@@ -48,7 +49,8 @@ public class MessageHistory {
                             .flatMap(out -> this.context.getHttpClient()
                                     .flatMap(httpClient -> httpClient.get()
                                             .uri(uri)
-                                            .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp).thenMany(buf))
+                                            .response((rsp, buf) -> this.context.getErrorMapper()
+                                                    .apply(rsp).thenMany(buf))
                                             .doOnNext(buf -> FileSystem.append(out, buf))
                                             .doFinally(sig -> FileSystem.close(out))
                                             .then()))

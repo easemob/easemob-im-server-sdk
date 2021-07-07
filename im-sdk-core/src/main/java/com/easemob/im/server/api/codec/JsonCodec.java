@@ -28,7 +28,8 @@ public class JsonCodec implements Codec {
             byte[] bytes = this.objectMapper.writeValueAsBytes(object);
             buffer.writeBytes(bytes);
         } catch (JsonProcessingException e) {
-            throw new EMJsonException(String.format("could not encode object: %s", e.getMessage()), e);
+            throw new EMJsonException(String.format("could not encode object: %s", e.getMessage()),
+                    e);
         }
 
         return buffer;
@@ -50,9 +51,10 @@ public class JsonCodec implements Codec {
         try {
             return this.objectMapper.readValue(array, offset, len, tClass);
         } catch (IOException e) {
-            throw new EMJsonException(String.format("could not decode class %s: %s", tClass.getName(), e.getMessage()), e);
+            throw new EMJsonException(
+                    String.format("could not decode class %s: %s", tClass.getName(),
+                            e.getMessage()), e);
         }
     }
-
 
 }

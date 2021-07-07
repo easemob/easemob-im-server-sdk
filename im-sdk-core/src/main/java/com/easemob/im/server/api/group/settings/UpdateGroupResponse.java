@@ -13,6 +13,18 @@ public class UpdateGroupResponse {
         this.resource = resource;
     }
 
+    public Boolean getMaxMembersUpdated() {
+        return this.resource.getMaxMembersUpdated();
+    }
+
+    public Boolean getNeedApproveToJoinUpdated() {
+        return this.resource.getNeedApproveToJoinUpdated();
+    }
+
+    public Boolean getMemberCanInviteOthersUpdated() {
+        return this.resource.getMemberCanInviteOthersUpdated();
+    }
+
     private static class GroupUpdateResource {
         @JsonProperty("maxusers")
         private Boolean maxMembersUpdated;
@@ -23,8 +35,8 @@ public class UpdateGroupResponse {
 
         @JsonCreator
         public GroupUpdateResource(@JsonProperty("maxusers") Boolean maxMembersUpdated,
-                                   @JsonProperty("membersonly") Boolean needApproveToJoinUpdated,
-                                   @JsonProperty("allowinvites") Boolean memberCanInviteOthersUpdated) {
+                @JsonProperty("membersonly") Boolean needApproveToJoinUpdated,
+                @JsonProperty("allowinvites") Boolean memberCanInviteOthersUpdated) {
             this.maxMembersUpdated = maxMembersUpdated;
             this.needApproveToJoinUpdated = needApproveToJoinUpdated;
             this.memberCanInviteOthersUpdated = memberCanInviteOthersUpdated;
@@ -41,17 +53,5 @@ public class UpdateGroupResponse {
         public Boolean getMemberCanInviteOthersUpdated() {
             return memberCanInviteOthersUpdated;
         }
-    }
-
-    public Boolean getMaxMembersUpdated() {
-        return this.resource.getMaxMembersUpdated();
-    }
-
-    public Boolean getNeedApproveToJoinUpdated() {
-        return this.resource.getNeedApproveToJoinUpdated();
-    }
-
-    public Boolean getMemberCanInviteOthersUpdated() {
-        return this.resource.getMemberCanInviteOthersUpdated();
     }
 }

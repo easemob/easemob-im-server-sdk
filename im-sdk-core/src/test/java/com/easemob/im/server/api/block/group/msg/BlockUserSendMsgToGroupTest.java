@@ -15,16 +15,21 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockUserSendMsgToGroupTest extends AbstractApiTest {
-    
+
     private BlockUserSendMsgToGroup blockUserSendMsgToGroup;
 
     BlockUserSendMsgToGroupTest() {
         super();
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/mute", this::handleGetBlockedUserRequest);
-        this.server.addHandler("POST /easemob/demo/chatgroups/1/mute", this::handleBlockUserRequestSuccess);
-        this.server.addHandler("POST /easemob/demo/chatgroups/2/mute", this::handleBlockUserRequestFail);
-        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/mute/alice", req -> handleUnblockUserRequestSuccess(req, "alice"));
-        this.server.addHandler("DELETE /easemob/demo/chatgroups/2/mute/alice", req -> handleUnblockUserRequestFail(req, "alice"));
+        this.server.addHandler("GET /easemob/demo/chatgroups/1/mute",
+                this::handleGetBlockedUserRequest);
+        this.server.addHandler("POST /easemob/demo/chatgroups/1/mute",
+                this::handleBlockUserRequestSuccess);
+        this.server.addHandler("POST /easemob/demo/chatgroups/2/mute",
+                this::handleBlockUserRequestFail);
+        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/mute/alice",
+                req -> handleUnblockUserRequestSuccess(req, "alice"));
+        this.server.addHandler("DELETE /easemob/demo/chatgroups/2/mute/alice",
+                req -> handleUnblockUserRequestFail(req, "alice"));
         this.blockUserSendMsgToGroup = new BlockUserSendMsgToGroup(this.context);
     }
 
@@ -103,7 +108,8 @@ class BlockUserSendMsgToGroupTest extends AbstractApiTest {
 
     @Test
     void testGetBlockedUsers() {
-        List<EMBlock> blocks = this.blockUserSendMsgToGroup.getBlockedUsers("1").collectList().block(Duration.ofSeconds(3));
+        List<EMBlock> blocks = this.blockUserSendMsgToGroup.getBlockedUsers("1").collectList()
+                .block(Duration.ofSeconds(3));
         assertEquals(2, blocks.size());
         assertTrue(blocks.contains(new EMBlock("alice", Instant.ofEpochMilli(1000000))));
         assertTrue(blocks.contains(new EMBlock("rabbit", Instant.ofEpochMilli(1000000))));
@@ -111,28 +117,35 @@ class BlockUserSendMsgToGroupTest extends AbstractApiTest {
 
     @Test
     void testBlockUserSuccess() {
-        assertDoesNotThrow(() -> this.blockUserSendMsgToGroup.blockUser("alice",  "1", null).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.blockUserSendMsgToGroup.blockUser("alice", "1", null)
+                .block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testBlockUserFail() {
-        assertThrows(EMUnknownException.class, () -> this.blockUserSendMsgToGroup.blockUser("alice",  "2", null).block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class,
+                () -> this.blockUserSendMsgToGroup.blockUser("alice", "2", null)
+                        .block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testBlockUserMaxDuration() {
-        assertDoesNotThrow(() -> this.blockUserSendMsgToGroup.blockUser("alice",  "1", Duration.ofMillis(Integer.MAX_VALUE)).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.blockUserSendMsgToGroup
+                .blockUser("alice", "1", Duration.ofMillis(Integer.MAX_VALUE))
+                .block(Duration.ofSeconds(3)));
     }
-
 
     @Test
     void testUnblockUserSuccess() {
-        assertDoesNotThrow(() -> this.blockUserSendMsgToGroup.unblockUser("alice",  "1").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.blockUserSendMsgToGroup.unblockUser("alice", "1")
+                .block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testUnblockUserFail() {
-        assertThrows(EMUnknownException.class, () -> this.blockUserSendMsgToGroup.unblockUser("alice",  "2").block(Duration.ofSeconds(3)));
+        assertThrows(EMUnknownException.class,
+                () -> this.blockUserSendMsgToGroup.unblockUser("alice", "2")
+                        .block(Duration.ofSeconds(3)));
     }
 
 }

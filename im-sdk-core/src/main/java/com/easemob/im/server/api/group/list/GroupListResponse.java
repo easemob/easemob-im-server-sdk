@@ -18,7 +18,7 @@ public class GroupListResponse {
 
     @JsonCreator
     public GroupListResponse(@JsonProperty("data") List<GroupResource> groups,
-                             @JsonProperty("cursor") String cursor) {
+            @JsonProperty("cursor") String cursor) {
         this.groups = groups;
         this.cursor = cursor;
     }
@@ -28,7 +28,8 @@ public class GroupListResponse {
     }
 
     public EMPage<String> toEMPage() {
-        List<String> groupIds = groups.stream().map(GroupResource::getGroupId).collect(Collectors.toList());
+        List<String> groupIds =
+                groups.stream().map(GroupResource::getGroupId).collect(Collectors.toList());
         return new EMPage<>(groupIds, cursor);
     }
 
@@ -39,9 +40,9 @@ public class GroupListResponse {
     @Override
     public String toString() {
         return "GroupListResponse{" +
-            "groups=" + groups +
-            ", cursor='" + cursor + '\'' +
-            '}';
+                "groups=" + groups +
+                ", cursor='" + cursor + '\'' +
+                '}';
     }
 
     private static class GroupResource {
@@ -60,8 +61,8 @@ public class GroupListResponse {
         @Override
         public String toString() {
             return "GroupResource{" +
-                "groupId='" + groupId + '\'' +
-                '}';
+                    "groupId='" + groupId + '\'' +
+                    '}';
         }
 
         @Override

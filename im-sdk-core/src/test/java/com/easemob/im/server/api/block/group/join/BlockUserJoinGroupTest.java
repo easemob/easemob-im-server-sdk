@@ -17,12 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class BlockUserJoinGroupTest extends AbstractApiTest {
 
     private BlockUserJoinGroup blockUserJoinGroup;
-    
+
     BlockUserJoinGroupTest() {
         super();
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/blocks/users", this::handleGetBlockedUserRequest);
-        this.server.addHandler("POST /easemob/demo/chatgroups/1/blocks/users/alice", req -> handleBlockUserRequest(req, "alice"));
-        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/blocks/users/alice", req -> handleUnblockUserRequest(req, "alice"));
+        this.server.addHandler("GET /easemob/demo/chatgroups/1/blocks/users",
+                this::handleGetBlockedUserRequest);
+        this.server.addHandler("POST /easemob/demo/chatgroups/1/blocks/users/alice",
+                req -> handleBlockUserRequest(req, "alice"));
+        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/blocks/users/alice",
+                req -> handleUnblockUserRequest(req, "alice"));
         this.blockUserJoinGroup = new BlockUserJoinGroup(this.context);
     }
 

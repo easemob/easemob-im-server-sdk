@@ -24,9 +24,9 @@ public class MissedMessageCount {
     @Override
     public String toString() {
         return "MissedMessageCount{" +
-            "queueName='" + queueName + '\'' +
-            ", messageCount=" + messageCount +
-            '}';
+                "queueName='" + queueName + '\'' +
+                ", messageCount=" + messageCount +
+                '}';
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MissedMessageCount {
         }
         MissedMessageCount count = (MissedMessageCount) o;
         return messageCount == count.messageCount &&
-            queueName.equals(count.queueName);
+                queueName.equals(count.queueName);
     }
 
     @Override

@@ -13,14 +13,15 @@ public class EMVideoMessage extends EMMessage {
     private String secret;
 
     private Integer bytes;
-    /** the time unit depends on usage **/
+    /**
+     * the time unit depends on usage
+     **/
     private Integer duration;
 
     private String thumb;
 
     @JsonProperty("thumb_secret")
     private String thumbSecret;
-
 
     public EMVideoMessage() {
         super(MessageType.VIDEO);

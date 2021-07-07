@@ -14,8 +14,10 @@ class GroupAnnouncementTest extends AbstractApiTest {
     GroupAnnouncement groupAnnouncement = new GroupAnnouncement(this.context);
 
     public GroupAnnouncementTest() {
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/announcement", this::handleGroupAnnouncementGetRequest);
-        this.server.addHandler("POST /easemob/demo/chatgroups/1/announcement", this::handleGroupAnnouncementUpdateRequest);
+        this.server.addHandler("GET /easemob/demo/chatgroups/1/announcement",
+                this::handleGroupAnnouncementGetRequest);
+        this.server.addHandler("POST /easemob/demo/chatgroups/1/announcement",
+                this::handleGroupAnnouncementUpdateRequest);
     }
 
     @Test
@@ -26,7 +28,8 @@ class GroupAnnouncementTest extends AbstractApiTest {
 
     @Test
     public void testGroupAnnouncementSet() {
-        assertDoesNotThrow(() -> this.groupAnnouncement.set("1", "你好,世界").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.groupAnnouncement.set("1", "你好,世界").block(Duration.ofSeconds(3)));
     }
 
     private JsonNode handleGroupAnnouncementGetRequest(JsonNode jsonNode) {

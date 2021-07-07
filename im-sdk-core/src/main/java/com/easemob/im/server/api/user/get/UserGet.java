@@ -17,7 +17,8 @@ public class UserGet {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s", username))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UserGetResponse.class))
                 .handle((rsp, sink) -> {
                     EMUser user = rsp.getEMUser(username);

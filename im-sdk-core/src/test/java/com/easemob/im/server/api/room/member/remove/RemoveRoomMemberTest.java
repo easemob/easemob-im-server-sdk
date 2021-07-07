@@ -14,7 +14,8 @@ class RemoveRoomMemberTest extends AbstractApiTest {
     private RemoveRoomMember removeRoomMember;
 
     RemoveRoomMemberTest() {
-        this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/users/alice", this::handleRemoveMemberRequest);
+        this.server.addHandler("DELETE /easemob/demo/chatrooms/r1/users/alice",
+                this::handleRemoveMemberRequest);
         removeRoomMember = new RemoveRoomMember(this.context);
     }
 
@@ -28,6 +29,7 @@ class RemoveRoomMemberTest extends AbstractApiTest {
 
     @Test
     void testRemoveRoomMember() {
-        assertDoesNotThrow(() -> this.removeRoomMember.single("r1", "alice").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.removeRoomMember.single("r1", "alice").block(Duration.ofSeconds(3)));
     }
 }

@@ -16,9 +16,12 @@ class DeleteUserTest extends AbstractApiTest {
     DeleteUser deleteUser = new DeleteUser(this.context);
 
     DeleteUserTest() {
-        this.server.addHandler("DELETE /easemob/demo/users/username", this::handleUserUnregisterSingle);
-        this.server.addHandler("DELETE /easemob/demo/users?limit=100", req -> handleUserUnregisterAll(req, 100, "cursor"));
-        this.server.addHandler("DELETE /easemob/demo/users?limit=100&cursor=cursor", req -> handleUserUnregisterAll(req, 100, null));
+        this.server.addHandler("DELETE /easemob/demo/users/username",
+                this::handleUserUnregisterSingle);
+        this.server.addHandler("DELETE /easemob/demo/users?limit=100",
+                req -> handleUserUnregisterAll(req, 100, "cursor"));
+        this.server.addHandler("DELETE /easemob/demo/users?limit=100&cursor=cursor",
+                req -> handleUserUnregisterAll(req, 100, null));
     }
 
     @Test

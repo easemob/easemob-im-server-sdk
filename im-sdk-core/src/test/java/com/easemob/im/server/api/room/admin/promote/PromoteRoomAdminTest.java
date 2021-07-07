@@ -31,6 +31,7 @@ class PromoteRoomAdminTest extends AbstractApiTest {
 
     @Test
     void testPromoteRoomAdmin() {
-        assertDoesNotThrow(() -> this.promoteRoomAdmin.single("r1", "rabbit").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.promoteRoomAdmin.single("r1", "rabbit").block(Duration.ofSeconds(3)));
     }
 }

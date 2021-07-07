@@ -1,12 +1,20 @@
 package com.easemob.im.server.api.room.admin.promote;
 
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PromoteRoomAdminResponse {
     @JsonProperty("data")
     private Wrapper wrapper;
+
+    @JsonCreator
+    public PromoteRoomAdminResponse(@JsonProperty("data") Wrapper wrapper) {
+        this.wrapper = wrapper;
+    }
+
+    public boolean isSuccess() {
+        return this.wrapper != null && this.wrapper.getResult().equals("success");
+    }
 
     public static class Wrapper {
         @JsonProperty("result")
@@ -17,7 +25,7 @@ public class PromoteRoomAdminResponse {
 
         @JsonCreator
         public Wrapper(@JsonProperty("result") String result,
-                       @JsonProperty("newadmin") String username) {
+                @JsonProperty("newadmin") String username) {
             this.result = result;
             this.username = username;
         }
@@ -25,14 +33,5 @@ public class PromoteRoomAdminResponse {
         private String getResult() {
             return this.result;
         }
-    }
-
-    @JsonCreator
-    public PromoteRoomAdminResponse(@JsonProperty("data") Wrapper wrapper) {
-        this.wrapper = wrapper;
-    }
-
-    public boolean isSuccess() {
-        return this.wrapper != null && this.wrapper.getResult().equals("success");
     }
 }

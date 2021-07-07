@@ -12,6 +12,16 @@ public class ListUsersBlockedSendMsgToRoomResponse {
     @JsonProperty("data")
     private List<BlockedUser> blockedUsers;
 
+    @JsonCreator
+    public ListUsersBlockedSendMsgToRoomResponse(
+            @JsonProperty("data") List<BlockedUser> blockedUsers) {
+        this.blockedUsers = blockedUsers;
+    }
+
+    public List<EMBlock> getEMBlocks() {
+        return this.blockedUsers.stream().map(BlockedUser::toEMBlock).collect(Collectors.toList());
+    }
+
     public static class BlockedUser {
         @JsonProperty("expire")
         private long expireAt;
@@ -19,7 +29,7 @@ public class ListUsersBlockedSendMsgToRoomResponse {
         private String username;
 
         public BlockedUser(@JsonProperty("expire") long expireAt,
-                           @JsonProperty("user") String username) {
+                @JsonProperty("user") String username) {
             this.expireAt = expireAt;
             this.username = username;
         }
@@ -27,14 +37,5 @@ public class ListUsersBlockedSendMsgToRoomResponse {
         public EMBlock toEMBlock() {
             return new EMBlock(this.username, Instant.ofEpochMilli(this.expireAt));
         }
-    }
-
-    @JsonCreator
-    public ListUsersBlockedSendMsgToRoomResponse(@JsonProperty("data") List<BlockedUser> blockedUsers) {
-        this.blockedUsers = blockedUsers;
-    }
-
-    public List<EMBlock> getEMBlocks() {
-        return this.blockedUsers.stream().map(BlockedUser::toEMBlock).collect(Collectors.toList());
     }
 }

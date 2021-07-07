@@ -3,32 +3,11 @@ package com.easemob.im.server.model;
 import java.util.Objects;
 
 public class EMEntity {
-    public enum EntityType {
-        USER,
-        GROUP,
-        ROOM,
-        MESSAGE,
-    }
-
     private EntityType entityType;
-
     private String id;
 
     protected EMEntity(EntityType entityType) {
         this.entityType = entityType;
-    }
-
-    public EMEntity id(String id) {
-        this.id = id;
-        return this;
-    }
-
-    public String id() {
-        return this.id;
-    }
-
-    public EntityType entityType() {
-        return this.entityType;
     }
 
     public static EMEntity user(String username) {
@@ -47,10 +26,25 @@ public class EMEntity {
         return new EMEntity(EntityType.MESSAGE).id(id);
     }
 
+    public EMEntity id(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public String id() {
+        return this.id;
+    }
+
+    public EntityType entityType() {
+        return this.entityType;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         EMEntity emEntity = (EMEntity) o;
         return entityType == emEntity.entityType && Objects.equals(id, emEntity.id);
     }
@@ -58,5 +52,12 @@ public class EMEntity {
     @Override
     public int hashCode() {
         return Objects.hash(entityType, id);
+    }
+
+    public enum EntityType {
+        USER,
+        GROUP,
+        ROOM,
+        MESSAGE,
     }
 }

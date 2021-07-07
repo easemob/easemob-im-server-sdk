@@ -36,7 +36,7 @@ class CreateRoomTest extends AbstractApiTest {
         members.add("rabbit");
         members.add("madhat");
         String id = this.createRoom.createRoom("room one", "have a nice day", "alice", members, 200)
-            .block(Duration.ofSeconds(3));
+                .block(Duration.ofSeconds(3));
         assertEquals("r1", id);
     }
 

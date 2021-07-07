@@ -36,9 +36,7 @@ public class EMService {
 
     private final UserApi userApi;
 
-
     private final MetadataApi metadataApi;
-
 
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
@@ -57,12 +55,12 @@ public class EMService {
     /**
      * 封禁API.<br>
      * 支持：<br>
-     *  - 用户禁言<br>
-     *  - 群禁言（可以定时解除）<br>
-     *  - 聊天室禁言（可以定时解除）<br>
-     *  - 禁止加入群<br>
-     *  - 禁止加入聊天室<br>
-     *  - 禁止登录<br>
+     * - 用户禁言<br>
+     * - 群禁言（可以定时解除）<br>
+     * - 聊天室禁言（可以定时解除）<br>
+     * - 禁止加入群<br>
+     * - 禁止加入聊天室<br>
+     * - 禁止登录<br>
      *
      * @return {@code BlockApi}
      */
@@ -73,11 +71,12 @@ public class EMService {
     /**
      * 通讯录API.<br>
      * 支持：<br>
-     *  - 添加联系人<br>
-     *  - 移除联系人<br>
-     *  - 获取联系人列表<br>
-     *
+     * - 添加联系人<br>
+     * - 移除联系人<br>
+     * - 获取联系人列表<br>
+     * <p>
      * 目前联系人只作为通讯录之用.
+     *
      * @return {@code ContactApi}
      */
     public ContactApi contact() {
@@ -87,10 +86,11 @@ public class EMService {
     /**
      * 附件API.<br>
      * 支持：<br>
-     *  - 附件上传<br>
-     *  - 附件下载<br>
-     *
+     * - 附件上传<br>
+     * - 附件下载<br>
+     * <p>
      * 目前，只支持本地文件的上传和下载.
+     *
      * @return {@code AttachmentApi}
      */
     public AttachmentApi attachment() {
@@ -100,30 +100,30 @@ public class EMService {
     /**
      * 群API.<br>
      * <p>支持群管理：<br>
-     *  - 创建群<br>
-     *  - 删除群<br>
-     *  - 获取群列表<br>
-     *  - 获取群详情<br>
-     *  - 获取用户加入的群<br>
-     *  - 修改群详情<br>
-     *  - 修改群主<br>
-     *  <br>
+     * - 创建群<br>
+     * - 删除群<br>
+     * - 获取群列表<br>
+     * - 获取群详情<br>
+     * - 获取用户加入的群<br>
+     * - 修改群详情<br>
+     * - 修改群主<br>
+     * <br>
      * <p>支持群成员管理：<br>
-     *  - 获取群成员列表<br>
-     *  - 添加群成员<br>
-     *  - 删除群成员<br>
-     *  <br>
+     * - 获取群成员列表<br>
+     * - 添加群成员<br>
+     * - 删除群成员<br>
+     * <br>
      * <p>支持群管理员管理：<br>
-     *  - 获取群管理员列表<br>
-     *  - 添加群管理员<br>
-     *  - 删除群管理员<br>
-     *
+     * - 获取群管理员列表<br>
+     * - 添加群管理员<br>
+     * - 删除群管理员<br>
+     * <p>
      * 群与聊天室都是多人聊天，与聊天室主要差别在于群支持离线消息，即群成员上线时可以收到离线时错过的消息。
      * 如果配置了推送，则离线消息也会产生推送。
      * 群分为公开群和私有群，区别在于：在设备SDK中（指iOS、Android、Web、小程序等），私有群不会出现在群列表API的返回结果。
      *
-     * @see com.easemob.im.server.api.block.BlockApi
      * @return {@code GroupApi}
+     * @see com.easemob.im.server.api.block.BlockApi
      */
     public GroupApi group() {
         return this.groupApi;
@@ -132,9 +132,9 @@ public class EMService {
     /**
      * 消息API.<br>
      * 支持：<br>
-     *  - 发送消息<br>
-     *  - 查询离线消息数<br>
-     *  - 获取/下载聊天历史<br>
+     * - 发送消息<br>
+     * - 查询离线消息数<br>
+     * - 获取/下载聊天历史<br>
      *
      * @return {@code MessageApi}
      */
@@ -145,13 +145,13 @@ public class EMService {
     /**
      * 用户API.<br>
      * 支持：<br>
-     *  - 创建用户<br>
-     *  - 删除用户<br>
-     *  - 获取用户<br>
-     *  - 修改用户密码<br>
-     *  - 强制用户下线<br>
-     *  - 获取用户在线状态<br>
-     *  - 获取用户token<br>
+     * - 创建用户<br>
+     * - 删除用户<br>
+     * - 获取用户<br>
+     * - 修改用户密码<br>
+     * - 强制用户下线<br>
+     * - 获取用户在线状态<br>
+     * - 获取用户token<br>
      *
      * @return {@code UserApi}
      */
@@ -162,23 +162,23 @@ public class EMService {
     /**
      * 聊天室API.<br>
      * 支持聊天室管理：<br>
-     *  - 创建聊天室<br>
-     *  - 获取聊天室详情<br>
-     *  - 修改聊天室<br>
-     *  - 获取聊天室列表<br>
-     *  - 获取用户加入的聊天室列表<br>
+     * - 创建聊天室<br>
+     * - 获取聊天室详情<br>
+     * - 修改聊天室<br>
+     * - 获取聊天室列表<br>
+     * - 获取用户加入的聊天室列表<br>
      * <br>
      * <p>支持聊天室成员管理：<br>
-     *  - 获取聊天室成员列表<br>
-     *  - 添加聊天室成员<br>
-     *  - 移除聊天室成员<br>
+     * - 获取聊天室成员列表<br>
+     * - 添加聊天室成员<br>
+     * - 移除聊天室成员<br>
      * <br>
      * <p>支持聊天室管理员管理：<br>
-     *  - 获取聊天室管理员<br>
-     *  - 添加聊天室管理员<br>
+     * - 获取聊天室管理员<br>
+     * - 添加聊天室管理员<br>
      *
-     * @see com.easemob.im.server.api.block.BlockApi
      * @return {@code RoomApi}
+     * @see com.easemob.im.server.api.block.BlockApi
      */
     public RoomApi room() {
         return this.roomApi;
@@ -187,10 +187,10 @@ public class EMService {
     /**
      * 用户属性API.<br>
      * 支持：<br>
-     *  - 设置用户属性<br>
-     *  - 获取用户属性<br>
-     *  - 获取app用户属性容量<br>
-     *  - 删除用户属性<br>
+     * - 设置用户属性<br>
+     * - 获取用户属性<br>
+     * - 获取app用户属性容量<br>
+     * - 删除用户属性<br>
      *
      * @return {@code MetadataApi}
      */

@@ -35,8 +35,8 @@ public class BlockUserSendMsgToRoomResponse {
 
         @JsonCreator
         public BlockResult(@JsonProperty("result") boolean isSuccess,
-                           @JsonProperty("expire") long expireTimestamp,
-                           @JsonProperty("user") String username) {
+                @JsonProperty("expire") long expireTimestamp,
+                @JsonProperty("user") String username) {
             this.isSuccess = isSuccess;
             this.expireTimestamp = expireTimestamp;
             this.username = username;

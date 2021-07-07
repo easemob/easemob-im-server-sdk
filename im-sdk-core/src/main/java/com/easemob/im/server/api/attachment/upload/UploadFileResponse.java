@@ -13,6 +13,21 @@ public class UploadFileResponse {
     @JsonProperty("entities")
     private List<FileUploaded> files;
 
+    @JsonCreator
+    public UploadFileResponse(@JsonProperty("entities") List<FileUploaded> files,
+            @JsonProperty("uri") String baseUrl) {
+        this.files = files;
+        this.baseUrl = baseUrl;
+    }
+
+    public String getBaseUrl() {
+        return this.baseUrl;
+    }
+
+    public List<FileUploaded> getFiles() {
+        return this.files;
+    }
+
     public static class FileUploaded {
         @JsonProperty("uuid")
         private String id;
@@ -23,8 +38,8 @@ public class UploadFileResponse {
 
         @JsonCreator
         public FileUploaded(@JsonProperty("uuid") String id,
-                            @JsonProperty("type") String type,
-                            @JsonProperty("share-secret") String secret) {
+                @JsonProperty("type") String type,
+                @JsonProperty("share-secret") String secret) {
             this.id = id;
             this.type = type;
             this.secret = secret;
@@ -41,21 +56,6 @@ public class UploadFileResponse {
         public String getSecret() {
             return this.secret;
         }
-    }
-
-    @JsonCreator
-    public UploadFileResponse(@JsonProperty("entities") List<FileUploaded> files,
-                              @JsonProperty("uri") String baseUrl) {
-        this.files = files;
-        this.baseUrl = baseUrl;
-    }
-
-    public String getBaseUrl() {
-        return this.baseUrl;
-    }
-
-    public List<FileUploaded> getFiles() {
-        return this.files;
     }
 
 }

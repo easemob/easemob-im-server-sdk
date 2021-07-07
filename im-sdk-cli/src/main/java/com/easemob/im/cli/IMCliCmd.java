@@ -30,7 +30,6 @@ public class IMCliCmd implements InitializingBean {
     @Option(names = {"-v", "--verbose"})
     private boolean verbose;
 
-
     @Override
     public void afterPropertiesSet() throws Exception {
         if (this.verbose) {
@@ -39,6 +38,7 @@ public class IMCliCmd implements InitializingBean {
         }
     }
 }
+
 
 class Version implements CommandLine.IVersionProvider {
 

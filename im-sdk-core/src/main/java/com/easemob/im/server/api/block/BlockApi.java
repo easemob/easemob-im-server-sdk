@@ -19,17 +19,17 @@ import java.time.Duration;
  * 封禁API，提供封禁相关的功能。
  */
 public class BlockApi {
-    
+
     private SendMsgToUser sendMsgToUser;
-    
+
     private BlockUserLogin blockUserLogin;
-    
+
     private BlockUserJoinGroup blockUserJoinGroup;
-    
+
     private BlockUserJoinRoom blockUserJoinRoom;
-    
+
     private BlockUserSendMsgToGroup blockUserSendMsgToGroup;
-    
+
     private UnblockUserSendMsgToRoom unblockUserSendMsgToRoom;
 
     private BlockUserSendMsgToRoom blockUserSendMsgToRoom;
@@ -60,17 +60,17 @@ public class BlockApi {
 
     /**
      * 用户禁言，阻止向这个用户发消息。
-     *
+     * <p>
      * 要阻止 userA 给 userB发送消息:
      * <code>
-     *      EMService service;
-     *      service.block().blockUserFromSendingMessagesToUser(Flux.just("userA", "userB"), "userC");
+     * EMService service;
+     * service.block().blockUserFromSendingMessagesToUser(Flux.just("userA", "userB"), "userC");
      * </code>
-     *
+     * <p>
      * 注意，用户不能自己禁言自己。
      *
      * @param fromUser 被阻止的用户的用户名
-     * @param toUser 接收消息的用户的用户名
+     * @param toUser   接收消息的用户的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%B7%BB%E5%8A%A0%E9%BB%91%E5%90%8D%E5%8D%95">添加用户禁言</a>
      */
@@ -82,7 +82,7 @@ public class BlockApi {
      * 解除用户禁言，恢复向这个用户发消息。
      *
      * @param fromUser 被阻止的用户的用户名
-     * @param toUser 接受消息的用户的用户名
+     * @param toUser   接受消息的用户的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E7%A7%BB%E9%99%A4%E9%BB%91%E5%90%8D%E5%8D%95">解除用户禁言</a>
      */
@@ -127,7 +127,7 @@ public class BlockApi {
      * 阻止进群。
      *
      * @param username 被阻止的用户的用户名
-     * @param groupId 群id
+     * @param groupId  群id
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7%E8%87%B3%E7%BE%A4%E7%BB%84%E9%BB%91%E5%90%8D%E5%8D%95">阻止进群</a>
      */
@@ -139,7 +139,7 @@ public class BlockApi {
      * 解除阻止进群。
      *
      * @param username 被阻止的用户的用户名
-     * @param groupId 群id
+     * @param groupId  群id
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E4%BB%8E%E7%BE%A4%E7%BB%84%E9%BB%91%E5%90%8D%E5%8D%95%E7%A7%BB%E9%99%A4%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7"></a>
      */
@@ -161,7 +161,7 @@ public class BlockApi {
      * 阻止进聊天室。
      *
      * @param username 被阻止的用户的用户名
-     * @param roomId 聊天室id
+     * @param roomId   聊天室id
      * @return 成功或错误
      */
     public Mono<Void> blockUserJoinRoom(String username, String roomId) {
@@ -172,7 +172,7 @@ public class BlockApi {
      * 解除阻止进聊天室。
      *
      * @param username 被阻止的用户的用户名
-     * @param roomId 聊天室id
+     * @param roomId   聊天室id
      * @return 成功或错误
      */
     public Mono<Void> unblockUserJoinRoom(String username, String roomId) {
@@ -194,7 +194,7 @@ public class BlockApi {
      * 添加群禁言。
      *
      * @param username 被禁言的用户的用户名
-     * @param groupId 群id
+     * @param groupId  群id
      * @param duration 禁言多长时间，为null则永久禁言
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80">添加禁言</a>
@@ -207,7 +207,7 @@ public class BlockApi {
      * 解除群禁言。
      *
      * @param username 被禁言的用户的用户名
-     * @param groupId 群id
+     * @param groupId  群id
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E7%A7%BB%E9%99%A4%E7%A6%81%E8%A8%80">移除禁言</a>
      */
@@ -230,7 +230,7 @@ public class BlockApi {
      * 添加聊天室禁言。
      *
      * @param username 被禁言的用户的用户名
-     * @param roomId 聊天室id
+     * @param roomId   聊天室id
      * @param duration 禁言时长，为null则永久禁言
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80">添加禁言</a>
@@ -243,7 +243,7 @@ public class BlockApi {
      * 解除聊天室禁言。
      *
      * @param username 被禁言的用户的用户名
-     * @param roomId 聊天室id
+     * @param roomId   聊天室id
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E7%A6%81%E8%A8%80">移除禁言</a>
      */

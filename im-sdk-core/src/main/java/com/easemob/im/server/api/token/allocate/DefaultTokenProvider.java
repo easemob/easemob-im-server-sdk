@@ -32,16 +32,20 @@ public class DefaultTokenProvider implements TokenProvider {
 
     private final Mono<Token> appToken;
 
-    public DefaultTokenProvider(EMProperties properties, HttpClient httpClient, EndpointRegistry endpointRegistry, LoadBalancer loadBalancer, Codec codec, ErrorMapper errorMapper) {
+    public DefaultTokenProvider(EMProperties properties, HttpClient httpClient,
+            EndpointRegistry endpointRegistry, LoadBalancer loadBalancer, Codec codec,
+            ErrorMapper errorMapper) {
         this.properties = properties;
         this.httpClient = httpClient;
         this.endpointRegistry = endpointRegistry;
         this.loadBalancer = loadBalancer;
         this.codec = codec;
         this.errorMapper = errorMapper;
-        AppTokenRequest appTokenRequest = AppTokenRequest.of(this.properties.getClientId(), this.properties.getClientSecret());
+        AppTokenRequest appTokenRequest = AppTokenRequest
+                .of(this.properties.getClientId(), this.properties.getClientSecret());
         this.appToken = fetchToken(appTokenRequest)
-                .cache(token -> Duration.between(Instant.now(), token.getExpireTimestamp()).dividedBy(2),
+                .cache(token -> Duration.between(Instant.now(), token.getExpireTimestamp())
+                                .dividedBy(2),
                         error -> Duration.ofSeconds(10),
                         () -> Duration.ofSeconds(10));
     }
@@ -60,7 +64,8 @@ public class DefaultTokenProvider implements TokenProvider {
         return endpointRegistry.endpoints()
                 .map(this.loadBalancer::loadBalance)
                 .flatMap(endpoint -> this.httpClient
-                        .baseUrl(String.format("%s/%s", endpoint.getUri(), this.properties.getAppkeySlashDelimited()))
+                        .baseUrl(String.format("%s/%s", endpoint.getUri(),
+                                this.properties.getAppkeySlashDelimited()))
                         .post()
                         .uri("/token")
                         .send(Mono.create(sink -> sink.success(this.codec.encode(tokenRequest))))

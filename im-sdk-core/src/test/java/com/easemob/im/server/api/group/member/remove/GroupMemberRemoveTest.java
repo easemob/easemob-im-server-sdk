@@ -13,7 +13,8 @@ class GroupMemberRemoveTest extends AbstractApiTest {
     private GroupMemberRemove groupMemberRemove = new GroupMemberRemove(this.context);
 
     public GroupMemberRemoveTest() {
-        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/users/alice", this::handleGroupMemberRemoveRequest);
+        this.server.addHandler("DELETE /easemob/demo/chatgroups/1/users/alice",
+                this::handleGroupMemberRemoveRequest);
     }
 
     @Test
@@ -22,7 +23,6 @@ class GroupMemberRemoveTest extends AbstractApiTest {
             this.groupMemberRemove.single("1", "alice").block(Duration.ofSeconds(3));
         });
     }
-
 
     @Test
     void testRemoveGroupMemberNotFound() {

@@ -17,15 +17,15 @@ public class UserGetResponse {
 
     @JsonCreator
     public UserGetResponse(@JsonProperty("entities") List<UserResource> entities,
-                           @JsonProperty("cursor") String cursor) {
+            @JsonProperty("cursor") String cursor) {
         this.entities = entities;
         this.cursor = cursor;
     }
 
     public EMUser getEMUser(String username) {
         return this.entities.stream()
-            .filter(user -> user.getUsername().equals(username)).findFirst()
-            .map(UserResource::toEMUser).orElse(null);
+                .filter(user -> user.getUsername().equals(username)).findFirst()
+                .map(UserResource::toEMUser).orElse(null);
     }
 
     public String getCursor() {

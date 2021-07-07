@@ -16,8 +16,10 @@ public class GroupMemberList {
 
     public Flux<String> all(String groupId, int limit) {
         return next(groupId, limit, null)
-            .expand(rsp -> rsp.getCursor() == null ? Mono.empty() : next(groupId, limit, rsp.getCursor()))
-            .concatMapIterable(EMPage::getValues);
+                .expand(rsp -> rsp.getCursor() == null ?
+                        Mono.empty() :
+                        next(groupId, limit, rsp.getCursor()))
+                .concatMapIterable(EMPage::getValues);
     }
 
     public Mono<EMPage<String>> next(String groupId, int limit, String cursor) {
@@ -32,7 +34,8 @@ public class GroupMemberList {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(uriString)
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GroupMemberListResponse.class))
                 .map(GroupMemberListResponse::toEMPage);
     }

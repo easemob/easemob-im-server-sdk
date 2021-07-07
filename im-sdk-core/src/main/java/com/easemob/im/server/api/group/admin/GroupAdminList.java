@@ -15,7 +15,8 @@ public class GroupAdminList {
         return this.context.getHttpClient()
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/admin", groupId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GroupAdminListResponse.class))
                 .flatMapIterable(GroupAdminListResponse::getAdmins);
     }

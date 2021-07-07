@@ -32,6 +32,7 @@ public class SendMessageResponse {
     public EMSentMessageIds toEMSentMessages() {
         return new EMSentMessageIds(this.messageIdsByReceiverId);
     }
+
     /**
      * Get all message ids mapped by receiver id.
      *

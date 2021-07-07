@@ -18,12 +18,16 @@ public class MessageIT extends AbstractIT {
 
     @Test
     void testMessageSendText() {
-        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomFromUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomFromUsername;
 
-        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String randomToUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -31,18 +35,24 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testMessageSendImage() {
-        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomFromUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomFromUsername;
 
-        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String randomToUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -55,18 +65,24 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(6)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testMessageSendVoice() {
-        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomFromUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomFromUsername;
 
-        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String randomToUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -79,18 +95,24 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testMessageSendVideo() {
-        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomFromUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomFromUsername;
 
-        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String randomToUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -104,18 +126,24 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testMessageSendFile() {
-        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomFromUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomFromUsername;
 
-        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String randomToUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -126,18 +154,24 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testMessageSendLocation() {
-        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomFromUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomFromUsername;
 
-        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String randomToUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -145,18 +179,24 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testMessageSendCommand() {
-        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomFromUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomFromUsername;
 
-        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String randomToUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -164,18 +204,24 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
 
     @Test
     void testMessageSendCustom() {
-        String randomFromUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
+        String randomFromUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomFromUsername;
 
-        String randomToUsername = String.format("im-sdk-it-user-%08d", ThreadLocalRandom.current().nextInt(100000000));
-        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword).block(Duration.ofSeconds(3)));
+        String randomToUsername = String.format("im-sdk-it-user-%08d",
+                ThreadLocalRandom.current().nextInt(100000000));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Duration.ofSeconds(3)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -183,8 +229,10 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(3)));
     }
 
 }

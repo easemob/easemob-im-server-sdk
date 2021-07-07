@@ -4,7 +4,7 @@ import com.easemob.im.server.api.Context;
 import reactor.core.publisher.Flux;
 
 public class ListRoomAdmins {
-    
+
     private Context context;
 
     public ListRoomAdmins(Context context) {
@@ -15,7 +15,8 @@ public class ListRoomAdmins {
         return this.context.getHttpClient()
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatrooms/%s/admin", roomId))
-                        .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomAdminsResponse.class))
                 .flatMapIterable(ListRoomAdminsResponse::getAdmins);
     }

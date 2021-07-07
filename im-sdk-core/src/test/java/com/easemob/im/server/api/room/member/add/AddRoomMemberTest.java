@@ -14,7 +14,8 @@ class AddRoomMemberTest extends AbstractApiTest {
     private AddRoomMember addRoomMember;
 
     AddRoomMemberTest() {
-        this.server.addHandler("POST /easemob/demo/chatrooms/r1/users/alice", this::handleAddRoomMember);
+        this.server.addHandler("POST /easemob/demo/chatrooms/r1/users/alice",
+                this::handleAddRoomMember);
         this.addRoomMember = new AddRoomMember(this.context);
     }
 
@@ -28,6 +29,7 @@ class AddRoomMemberTest extends AbstractApiTest {
 
     @Test
     void testAddRoomMember() {
-        assertDoesNotThrow(() -> this.addRoomMember.single("r1", "alice").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.addRoomMember.single("r1", "alice").block(Duration.ofSeconds(3)));
     }
 }

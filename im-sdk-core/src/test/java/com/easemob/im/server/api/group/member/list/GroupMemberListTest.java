@@ -17,13 +17,16 @@ class GroupMemberListTest extends AbstractApiTest {
     GroupMemberList groupMemberList = new GroupMemberList(this.context);
 
     public GroupMemberListTest() {
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/users?version=v3&limit=10", this::handleGroupMemberListRequest1);
-        this.server.addHandler("GET /easemob/demo/chatgroups/1/users?version=v3&limit=10&cursor=1", this::handleGroupMemberListRequest2);
+        this.server.addHandler("GET /easemob/demo/chatgroups/1/users?version=v3&limit=10",
+                this::handleGroupMemberListRequest1);
+        this.server.addHandler("GET /easemob/demo/chatgroups/1/users?version=v3&limit=10&cursor=1",
+                this::handleGroupMemberListRequest2);
     }
 
     @Test
     public void testListGroupMemberAll() {
-        List<String> usernames = this.groupMemberList.all("1", 10).collect(Collectors.toList()).block(Duration.ofSeconds(3));
+        List<String> usernames = this.groupMemberList.all("1", 10).collect(Collectors.toList())
+                .block(Duration.ofSeconds(3));
         assertEquals(15, usernames.size());
     }
 
@@ -39,7 +42,6 @@ class GroupMemberListTest extends AbstractApiTest {
 
         return rsp;
     }
-
 
     private JsonNode handleGroupMemberListRequest2(JsonNode jsonNode) {
         ArrayNode data = this.objectMapper.createArrayNode();

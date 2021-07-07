@@ -12,6 +12,10 @@ import java.nio.file.StandardOpenOption;
 
 public class FileSystem {
 
+    // avoid instantiate
+    private FileSystem() {
+    }
+
     public static Path choosePath(Path dir, String filename) {
         if (!dir.toFile().exists()) {
             dir.toFile().mkdirs();
@@ -19,14 +23,15 @@ public class FileSystem {
         Path localFile = dir.resolve(filename);
         int suffix = 0;
         while (localFile.toFile().exists()) {
-            localFile = dir.resolve(filename+"."+suffix++);
+            localFile = dir.resolve(filename + "." + suffix++);
         }
         return localFile;
     }
 
     public static OutputStream open(Path path) {
         try {
-            return Files.newOutputStream(path, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+            return Files
+                    .newOutputStream(path, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
         } catch (IOException e) {
             throw new EMFileSystemException(e.getMessage());
         }
@@ -59,7 +64,4 @@ public class FileSystem {
             throw new EMFileSystemException(e.getMessage());
         }
     }
-
-    // avoid instantiate
-    private FileSystem() {}
 }

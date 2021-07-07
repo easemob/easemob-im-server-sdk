@@ -8,7 +8,8 @@ public class UnblockUserJoinGroupResponse {
     private UnblockUserJoinGroupResource resource;
 
     @JsonCreator
-    public UnblockUserJoinGroupResponse(@JsonProperty("data") UnblockUserJoinGroupResource resource) {
+    public UnblockUserJoinGroupResponse(
+            @JsonProperty("data") UnblockUserJoinGroupResource resource) {
         this.resource = resource;
     }
 

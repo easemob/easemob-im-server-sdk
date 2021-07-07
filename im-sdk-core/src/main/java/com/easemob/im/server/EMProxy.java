@@ -8,15 +8,15 @@ public class EMProxy {
     private String username;
     private String password;
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public EMProxy(String ip, int port, String username, String password) {
         this.ip = ip;
         this.port = port;
         this.username = username;
         this.password = password;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getIp() {

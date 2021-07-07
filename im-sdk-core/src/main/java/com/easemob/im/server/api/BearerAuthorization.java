@@ -17,7 +17,7 @@ public class BearerAuthorization implements Function<HttpHeaders, Mono<? extends
     @Override
     public Mono<? extends HttpHeaders> apply(HttpHeaders headers) {
         return this.tokenProvider.fetchAppToken()
-            .map(t -> headers.add("Authorization", String.format("Bearer %s", t.getValue())));
+                .map(t -> headers.add("Authorization", String.format("Bearer %s", t.getValue())));
     }
 
 }

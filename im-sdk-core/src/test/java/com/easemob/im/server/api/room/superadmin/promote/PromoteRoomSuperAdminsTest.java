@@ -14,7 +14,8 @@ class PromoteRoomSuperAdminsTest extends AbstractApiTest {
     private PromoteRoomSuperAdmin promoteRoomSuperAdmin;
 
     PromoteRoomSuperAdminsTest() {
-        this.server.addHandler("POST /easemob/demo/chatrooms/super_admin", this::handleAddRoomSuperAdmin);
+        this.server.addHandler("POST /easemob/demo/chatrooms/super_admin",
+                this::handleAddRoomSuperAdmin);
         this.promoteRoomSuperAdmin = new PromoteRoomSuperAdmin(this.context);
     }
 
@@ -31,6 +32,7 @@ class PromoteRoomSuperAdminsTest extends AbstractApiTest {
 
     @Test
     void testPromoteRoomSuperAdmin() {
-        assertDoesNotThrow(() -> this.promoteRoomSuperAdmin.single("rabbit").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(
+                () -> this.promoteRoomSuperAdmin.single("rabbit").block(Duration.ofSeconds(3)));
     }
 }

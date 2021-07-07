@@ -15,7 +15,8 @@ public class UserStatus {
         return context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/status", username))
-                        .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
+                        .responseSingle(
+                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> context.getCodec().decode(buf, UserStatusResponse.class))
                 .map(rsp -> rsp.isUserOnline(username));
     }

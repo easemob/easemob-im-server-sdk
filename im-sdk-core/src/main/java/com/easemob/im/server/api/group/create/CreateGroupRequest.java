@@ -31,7 +31,9 @@ public class CreateGroupRequest {
     private boolean needApproveToJoin;
 
     @SuppressWarnings("java:S107")
-    public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner, List<String> members, int maxMembers, boolean memberCanInviteOthers, boolean needApproveToJoin) {
+    public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner,
+            List<String> members, int maxMembers, boolean memberCanInviteOthers,
+            boolean needApproveToJoin) {
         this.groupName = groupName;
         this.description = description;
         this.isPublic = isPublic;

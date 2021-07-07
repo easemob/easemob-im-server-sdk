@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class UpdateRoom {
-    
+
     private Context context;
 
     public UpdateRoom(Context context) {
@@ -22,9 +22,11 @@ public class UpdateRoom {
 
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.put()
-                            .uri(String.format("/chatrooms/%s", id))
-                            .send(Mono.create(sink -> sink.success(this.context.getCodec().encode(request))))
-                            .responseSingle((rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                        .uri(String.format("/chatrooms/%s", id))
+                        .send(Mono.create(sink -> sink
+                                .success(this.context.getCodec().encode(request))))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UpdateRoomResponse.class))
                 .handle((rsp, sink) -> {
                     List<String> notUpdated = new ArrayList<>();
@@ -38,7 +40,8 @@ public class UpdateRoom {
                         notUpdated.add("maxMembers");
                     }
                     if (!notUpdated.isEmpty()) {
-                        sink.error(new EMUnknownException(String.format("%s not updated", String.join(",", notUpdated))));
+                        sink.error(new EMUnknownException(
+                                String.format("%s not updated", String.join(",", notUpdated))));
                         return;
                     }
                     sink.complete();

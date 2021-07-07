@@ -14,7 +14,8 @@ class GroupMemberAddTest extends AbstractApiTest {
     GroupMemberAdd groupMemberAdd = new GroupMemberAdd(this.context);
 
     GroupMemberAddTest() {
-        this.server.addHandler("POST /easemob/demo/chatgroups/1/users/alice", this::handleGroupMemberAddRequest);
+        this.server.addHandler("POST /easemob/demo/chatgroups/1/users/alice",
+                this::handleGroupMemberAddRequest);
     }
 
     @Test

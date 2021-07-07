@@ -56,7 +56,8 @@ public class GetGroupResponse {
         private boolean isPublic;
 
         public EMGroup toEMGroup() {
-            return new EMGroup(this.groupId, this.name, this.description, this.isPublic, this.needApproveToJoin, this.memberCanInviteOthers,
+            return new EMGroup(this.groupId, this.name, this.description, this.isPublic,
+                    this.needApproveToJoin, this.memberCanInviteOthers,
                     this.owner, this.maxMembers);
         }
     }

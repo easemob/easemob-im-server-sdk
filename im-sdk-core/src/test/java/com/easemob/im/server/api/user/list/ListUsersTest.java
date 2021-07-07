@@ -18,10 +18,13 @@ class ListUsersTest extends AbstractApiTest {
 
     ListUsersTest() {
         this.server.addHandler("GET /easemob/demo/users?limit=100", this::handleUserGet100);
-        this.server.addHandler("GET /easemob/demo/users?limit=100&cursor=cursor-0-99", this::handleUserGet100Continued);
-        this.server.addHandler("GET /easemob/demo/users?limit=100&cursor=cursor-100-199", this::handleUserGet100Last);
+        this.server.addHandler("GET /easemob/demo/users?limit=100&cursor=cursor-0-99",
+                this::handleUserGet100Continued);
+        this.server.addHandler("GET /easemob/demo/users?limit=100&cursor=cursor-100-199",
+                this::handleUserGet100Last);
         this.server.addHandler("GET /easemob/demo/users?limit=200", this::handleUserGet200);
-        this.server.addHandler("GET /easemob/demo/users?limit=200&cursor=cursor-0-199", this::handleUserGet200Continued);
+        this.server.addHandler("GET /easemob/demo/users?limit=200&cursor=cursor-0-199",
+                this::handleUserGet200Continued);
     }
 
     @Test
@@ -43,8 +46,6 @@ class ListUsersTest extends AbstractApiTest {
             assertEquals("username", users.get(i));
         }
     }
-
-
 
     private JsonNode handleUserGet100(JsonNode req) {
         ObjectNode user = this.objectMapper.createObjectNode();

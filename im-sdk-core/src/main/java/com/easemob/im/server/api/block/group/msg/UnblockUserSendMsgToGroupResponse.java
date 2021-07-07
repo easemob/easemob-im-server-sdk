@@ -10,7 +10,8 @@ public class UnblockUserSendMsgToGroupResponse {
     private List<UnblockUsersResource> resources;
 
     @JsonCreator
-    public UnblockUserSendMsgToGroupResponse(@JsonProperty("data") List<UnblockUsersResource> resources) {
+    public UnblockUserSendMsgToGroupResponse(
+            @JsonProperty("data") List<UnblockUsersResource> resources) {
         this.resources = resources;
     }
 
@@ -30,7 +31,7 @@ public class UnblockUserSendMsgToGroupResponse {
 
         @JsonCreator
         public UnblockUsersResource(@JsonProperty("result") boolean success,
-                                          @JsonProperty("user") String username) {
+                @JsonProperty("user") String username) {
             this.success = success;
             this.username = username;
         }

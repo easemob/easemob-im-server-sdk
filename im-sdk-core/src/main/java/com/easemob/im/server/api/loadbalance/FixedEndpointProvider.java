@@ -21,7 +21,8 @@ public class FixedEndpointProvider implements EndpointProvider {
     public Mono<List<Endpoint>> endpoints() {
         String baseUri = this.properties.getBaseUri();
         URI uri = baseUriStringToURI(baseUri);
-        return Mono.just(Collections.singletonList(new Endpoint(uri.getScheme(), uri.getHost(), uri.getPort())));
+        return Mono.just(Collections
+                .singletonList(new Endpoint(uri.getScheme(), uri.getHost(), uri.getPort())));
     }
 
     public URI baseUriStringToURI(String baseUri) {

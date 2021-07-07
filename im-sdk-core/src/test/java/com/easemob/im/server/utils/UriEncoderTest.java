@@ -1,6 +1,8 @@
 package com.easemob.im.server.utils;
+
 import io.netty.handler.codec.http.QueryStringEncoder;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UriEncoderTest {

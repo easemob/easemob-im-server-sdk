@@ -16,8 +16,10 @@ class ListRoomSuperAdminsTest extends AbstractApiTest {
     private ListRoomSuperAdmins listRoomSuperAdmins;
 
     ListRoomSuperAdminsTest() {
-        this.server.addHandler("GET /easemob/demo/chatrooms/super_admin?pagenum=1&pagesize=10", this::handleListRoomSuperAdminsFirst);
-        this.server.addHandler("GET /easemob/demo/chatrooms/super_admin?pagenum=2&pagesize=10", this::handleListRoomSuperAdminsLast);
+        this.server.addHandler("GET /easemob/demo/chatrooms/super_admin?pagenum=1&pagesize=10",
+                this::handleListRoomSuperAdminsFirst);
+        this.server.addHandler("GET /easemob/demo/chatrooms/super_admin?pagenum=2&pagesize=10",
+                this::handleListRoomSuperAdminsLast);
         this.listRoomSuperAdmins = new ListRoomSuperAdmins(this.context);
     }
 
@@ -39,7 +41,8 @@ class ListRoomSuperAdminsTest extends AbstractApiTest {
 
     @Test
     void testListRoomSuperAdmins() {
-        List<String> admins = this.listRoomSuperAdmins.all(10).collectList().block(Duration.ofSeconds(3));
+        List<String> admins =
+                this.listRoomSuperAdmins.all(10).collectList().block(Duration.ofSeconds(3));
         assertEquals(2, admins.size());
         assertEquals("rabbit", admins.get(0));
         assertEquals("madhat", admins.get(1));

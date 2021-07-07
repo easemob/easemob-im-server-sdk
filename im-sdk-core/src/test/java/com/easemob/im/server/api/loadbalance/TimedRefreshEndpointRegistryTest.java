@@ -14,7 +14,8 @@ class TimedRefreshEndpointRegistryTest extends AbstractApiTest {
     @Test
     public void testTimedRefreshEndpoint() {
         MockingEndpointProvider provider = new MockingEndpointProvider();
-        TimedRefreshEndpointRegistry endpointRegistry = new TimedRefreshEndpointRegistry(provider, Duration.ofSeconds(10));
+        TimedRefreshEndpointRegistry endpointRegistry =
+                new TimedRefreshEndpointRegistry(provider, Duration.ofSeconds(10));
         List<Endpoint> endpointList = endpointRegistry.endpoints().block(Duration.ofSeconds(3));
         assertEquals(2, endpointList.size());
     }
