@@ -145,7 +145,6 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <configuration>
-                    <skip>true</skip>
                     <gpgArguments>
                         <arg>--pinentry-mode</arg>
                         <arg>loopback</arg>
@@ -372,6 +371,11 @@
             <id>yubing</id>
             <name>Yubing</name>
             <email>yubing.qi@easemob.com</email>
+        </developer>
+        <developer>
+            <id>kenuiuc</id>
+            <name>Ken Wang</name>
+            <email>kenuiuc@gmail.com</email>
         </developer>
     </developers>
 
