@@ -2,6 +2,7 @@ package com.easemob.im.server.api.loadbalance;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
+import org.apache.logging.log4j.util.Strings;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -25,9 +26,9 @@ public class FixedEndpointProvider implements EndpointProvider {
                 .singletonList(new Endpoint(uri.getScheme(), uri.getHost(), uri.getPort())));
     }
 
-    public URI baseUriStringToURI(String baseUri) {
-        if (baseUri == null || baseUri.isEmpty()) {
-            throw new EMInvalidArgumentException("baseUri must not be null or empty");
+    private URI baseUriStringToURI(String baseUri) {
+        if (Strings.isBlank(baseUri)) {
+            throw new EMInvalidArgumentException("baseUri must not be null or blank");
         }
         try {
             return new URI(baseUri);

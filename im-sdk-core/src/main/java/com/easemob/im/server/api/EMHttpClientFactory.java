@@ -13,7 +13,7 @@ import reactor.netty.transport.logging.AdvancedByteBufFormat;
 import java.net.InetSocketAddress;
 
 public class EMHttpClientFactory {
-    public static HttpClient createHttpClient(EMProperties properties) {
+    public static HttpClient create(EMProperties properties) {
         ConnectionProvider connectionProvider =
                 ConnectionProvider.create("easemob-sdk", properties.getHttpConnectionPoolSize());
         HttpClient httpClient = HttpClient.create(connectionProvider)

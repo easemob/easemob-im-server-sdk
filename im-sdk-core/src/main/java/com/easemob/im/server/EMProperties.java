@@ -4,6 +4,7 @@ import com.easemob.im.server.api.util.Sensitive;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMUnsupportedEncodingException;
+import org.apache.logging.log4j.util.Strings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -119,8 +120,8 @@ public class EMProperties {
          * @return {@code Builder}
          */
         public Builder setAppkey(String appkey) {
-            if (appkey == null || appkey.isEmpty()) {
-                throw new EMInvalidArgumentException("appkey must not be null or empty");
+            if (Strings.isBlank(appkey)) {
+                throw new EMInvalidArgumentException("appkey must not be null or blank");
             }
 
             String[] tokens = appkey.split("#");
@@ -159,8 +160,8 @@ public class EMProperties {
          * @return {@code Builder}
          */
         public Builder setClientId(String clientId) {
-            if (clientId == null || clientId.isEmpty()) {
-                throw new EMInvalidArgumentException("clientId must not be null or empty");
+            if (Strings.isBlank(clientId)) {
+                throw new EMInvalidArgumentException("clientId must not be null or blank");
             }
 
             this.clientId = clientId;
@@ -175,8 +176,8 @@ public class EMProperties {
          * @return {@code Builder}
          */
         public Builder setClientSecret(String clientSecret) {
-            if (clientSecret == null || clientSecret.isEmpty()) {
-                throw new EMInvalidArgumentException("clientSecret must not be null or empty");
+            if (Strings.isBlank(clientSecret)) {
+                throw new EMInvalidArgumentException("clientSecret must not be null or blank");
             }
 
             this.clientSecret = clientSecret;

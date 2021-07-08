@@ -25,8 +25,8 @@ public class EMUser extends EMEntity {
     }
 
     public static void validateUsername(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new EMInvalidArgumentException("username must not be null or empty");
+        if (Strings.isBlank(username)) {
+            throw new EMInvalidArgumentException("username must not be null or blank");
         }
         if (!USERNAME_PATTERN.matcher(username).matches()) {
             throw new EMInvalidArgumentException(
