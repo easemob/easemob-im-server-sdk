@@ -11,20 +11,43 @@
 
 ## 安装
 
-如果你的项目使用Maven构建，可以在pom.xml中添加下面代码：
+如果你的项目使用Maven构建并且spring boot是2.4.3以上版本，在pom.xml中添加下面代码即可：
 
 ``` xml
 <dependency>
     <groupId>com.easemob.im</groupId>
     <artifactId>im-sdk-core</artifactId>
-    <version>0.2.5</version>
+    <version>0.3.0</version>
 </dependency>
+```
+
+如果你使用的spring-boot是2.4.3以下版本的，则还需要在pom.xml中添加:
+
+``` xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-bom</artifactId>
+            <version>4.1.59.Final</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-bom</artifactId>
+            <version>2020.0.4</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
 ```
 
 如果你的项目使用Gradle构建，可以在build.grade中添加下面代码：
 
 ``` gradle
-implementation 'com.easemob.im:im-sdk-core:0.2.5'
+implementation 'com.easemob.im:im-sdk-core:0.3.0'
 ```
 
 ## 准备
