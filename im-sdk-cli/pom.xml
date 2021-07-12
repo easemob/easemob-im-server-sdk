@@ -7,13 +7,13 @@
 
     <groupId>com.easemob.im</groupId>
     <artifactId>im-sdk-cli</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1-SNAPSHOT</version>
     <description>Easemob IM cli utility</description>
 
     <parent>
         <groupId>com.easemob.im</groupId>
         <artifactId>im-sdk-parent</artifactId>
-        <version>0.3.0</version>
+        <version>0.3.1-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.easemob.im</groupId>
             <artifactId>im-sdk-core</artifactId>
-            <version>0.3.0</version>
+            <version>0.3.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>info.picocli</groupId>
