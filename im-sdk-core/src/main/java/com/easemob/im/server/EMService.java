@@ -52,6 +52,10 @@ public class EMService {
         this.metadataApi = new MetadataApi(this.context);
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     /**
      * 封禁API.<br>
      * 支持：<br>

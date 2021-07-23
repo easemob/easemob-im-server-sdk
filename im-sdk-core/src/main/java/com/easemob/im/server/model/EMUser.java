@@ -15,12 +15,15 @@ public class EMUser extends EMEntity {
 
     private final String username;
 
+    private final String uuid;
+
     private final Boolean canLogin;
 
-    public EMUser(String username, Boolean canLogin) {
+    public EMUser(String username, String uuid, Boolean canLogin) {
         super(EntityType.USER);
         super.id(username);
         this.username = username;
+        this.uuid = uuid;
         this.canLogin = canLogin;
     }
 
@@ -50,6 +53,10 @@ public class EMUser extends EMEntity {
         return this.username;
     }
 
+    public String getUuid() {
+        return this.uuid;
+    }
+
     public boolean getCanLogin() {
         return this.canLogin;
     }
@@ -75,6 +82,7 @@ public class EMUser extends EMEntity {
     public String toString() {
         return "EMUser{" +
                 "username='" + username + '\'' +
+                ", uuid='" + uuid + '\'' +
                 ", canLogin=" + canLogin +
                 '}';
     }

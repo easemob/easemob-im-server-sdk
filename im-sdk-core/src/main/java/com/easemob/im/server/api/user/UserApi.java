@@ -2,6 +2,7 @@ package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.token.Token;
+import com.easemob.im.server.api.token.agora.AccessToken2;
 import com.easemob.im.server.api.user.create.CreateUser;
 import com.easemob.im.server.api.user.forcelogout.ForceLogoutUser;
 import com.easemob.im.server.api.user.get.UserGet;
@@ -12,13 +13,19 @@ import com.easemob.im.server.api.user.unregister.DeleteUser;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMPage;
 import com.easemob.im.server.model.EMUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.function.Consumer;
 
 /**
  * 用户API。
  */
 public class UserApi {
+
+    private static final Logger log = LoggerFactory.getLogger(UserApi.class);
 
     private CreateUser createUser;
     private DeleteUser deleteUser;
@@ -116,6 +123,10 @@ public class UserApi {
         return this.userGet.single(username);
     }
 
+    public Mono<String> getUUID(String username) {
+        return this.get(username).map(EMUser::getUuid);
+    }
+
     /**
      * 修改用户密码。
      *
@@ -179,5 +190,12 @@ public class UserApi {
      */
     public Mono<Token> getToken(String username, String password) {
         return this.context.getTokenProvider().fetchUserToken(username, password);
+    }
+
+    // TODO: here we have 2 ways of getting an user token and we need a better design
+    public Mono<Token> getToken (String userId, int expireSeconds,
+            Consumer<AccessToken2> tokenConfigurer) throws Exception {
+        return this.context.getTokenProvider()
+                .buildUserToken(userId, expireSeconds, tokenConfigurer);
     }
 }
