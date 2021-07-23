@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.easemob.im.server.utils.RandomMaker.makeRandomUserName;
 
 public class GroupIT extends AbstractIT {
 
@@ -23,104 +23,96 @@ public class GroupIT extends AbstractIT {
 
     @Test
     void testGroupCreatePublic() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPublicGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
                 () -> this.service.group().listGroupMembers(groupId, 10, null)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         List<String> groupMembers = groupMemberPage.getValues();
         if (groupMembers.size() != members.size()) {
             throw new RuntimeException(
                     String.format("incorrect number of group %s members", groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupCreatePrivate() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
-                () -> this.service.group().listGroups(2, null).block(Duration.ofSeconds(3)));
+                () -> this.service.group().listGroupMembers(groupId, 100, null).block(Duration.ofSeconds(30)));
         List<String> groupMembers = groupMemberPage.getValues();
         if (groupMembers.size() != members.size()) {
             throw new RuntimeException(
-                    String.format("incorrect number of group %d members", groupId));
+                    String.format("incorrect number of group %s members", groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupDestroy() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertThrows(EMNotFoundException.class,
-                () -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupListAllGroups() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
@@ -129,248 +121,232 @@ public class GroupIT extends AbstractIT {
                 .block(Duration.ofSeconds(5)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.group().listAllGroups().blockFirst(Duration.ofSeconds(3)));
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupListGroups() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.group().listGroups(1, null).block(Duration.ofSeconds(3)));
+                () -> this.service.group().listGroups(1, null).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupGet() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupUpdate() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         int maxMembers = 100;
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.group()
                 .updateGroup(groupId, settings -> settings.setMaxMembers(maxMembers))
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         EMGroup group = assertDoesNotThrow(
-                () -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(30)));
         if (group.getMaxMembers() != maxMembers) {
             throw new RuntimeException(String.format("%s group max member update fail", groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupUpdateOwner() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.group().updateGroupOwner(groupId, randomMemberUsername)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         EMGroup group = assertDoesNotThrow(
-                () -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().getGroup(groupId).block(Duration.ofSeconds(30)));
         if (!group.getOwner().equals(randomMemberUsername)) {
             throw new RuntimeException(
                     String.format("%s group update owner %s fail", groupId, randomMemberUsername));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupGetAnnouncement() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.group().getGroupAnnouncement(groupId)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupUpdateAnnouncement() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String updateAnnouncement = "update announcement";
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.group().updateGroupAnnouncement(groupId, updateAnnouncement)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         String newAnnouncement = assertDoesNotThrow(
                 () -> this.service.group().getGroupAnnouncement(groupId)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         if (!updateAnnouncement.equals(newAnnouncement)) {
             throw new RuntimeException(String.format("update %s group announcement fail", groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupListAllGroupMembers() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.group().listAllGroupMembers(groupId)
                 .blockFirst(Duration.ofSeconds(3)));
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupListMembers() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
                 () -> this.service.group().listGroupMembers(groupId, 2, null)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         List<String> groupMembers = groupMemberPage.getValues();
         if (!groupMembers.isEmpty()) {
             groupMembers.forEach(member -> {
@@ -382,34 +358,32 @@ public class GroupIT extends AbstractIT {
             });
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupAddMember() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.group().addGroupMember(groupId, randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
                 () -> this.service.group().listGroupMembers(groupId, 2, null)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         List<String> groupMembers = groupMemberPage.getValues();
         if (!groupMembers.isEmpty()) {
             groupMembers.forEach(member -> {
@@ -421,36 +395,34 @@ public class GroupIT extends AbstractIT {
             });
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupRemoveMember() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.group().removeGroupMember(groupId, randomMemberUsername)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
                 () -> this.service.group().listGroupMembers(groupId, 2, null)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         List<String> groupMembers = groupMemberPage.getValues();
         if (!groupMembers.isEmpty()) {
             throw new RuntimeException(
@@ -458,37 +430,34 @@ public class GroupIT extends AbstractIT {
                             groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupAddAdmin() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomAdminUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomAdminUsername = makeRandomUserName();
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         members.add(randomAdminUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomAdminUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.group().addGroupAdmin(groupId, randomAdminUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String adminName = assertDoesNotThrow(() -> this.service.group().listGroupAdmins(groupId)
                 .blockFirst(Duration.ofSeconds(3)));
         if (!adminName.equals(randomAdminUsername)) {
@@ -497,41 +466,38 @@ public class GroupIT extends AbstractIT {
                             groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomAdminUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomAdminUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupRemoveAdmin() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomAdminUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomAdminUsername = makeRandomUserName();
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         members.add(randomAdminUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomAdminUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.group().addGroupAdmin(groupId, randomAdminUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.group().removeGroupAdmin(groupId, randomAdminUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String adminName = assertDoesNotThrow(() -> this.service.group().listGroupAdmins(groupId)
                 .blockFirst(Duration.ofSeconds(3)));
         if (adminName != null) {
@@ -539,35 +505,33 @@ public class GroupIT extends AbstractIT {
                     String.format("%s exist in %s group admin list", randomAdminUsername, groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomAdminUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomAdminUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupGetUsersBlockedJoin() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.block().blockUserJoinGroup(randomMemberUsername, groupId)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         EMBlock block = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedJoinGroup(groupId)
                         .blockFirst(Duration.ofSeconds(3)));
@@ -577,36 +541,34 @@ public class GroupIT extends AbstractIT {
                             groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupBlockUserJoin() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.block().blockUserJoinGroup(randomMemberUsername, groupId)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
                 () -> this.service.group().listGroupMembers(groupId, 2, null)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         if (!groupMemberPage.getValues().isEmpty()) {
             groupMemberPage.getValues().forEach(member -> {
                 if (member.equals(randomMemberUsername)) {
@@ -625,7 +587,7 @@ public class GroupIT extends AbstractIT {
         }
 
         assertDoesNotThrow(() -> this.service.group().addGroupMember(groupId, randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         EMBlock block1 = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedJoinGroup(groupId)
                         .blockFirst(Duration.ofSeconds(3)));
@@ -635,42 +597,40 @@ public class GroupIT extends AbstractIT {
                             groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupUnblockUserJoin() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.block().blockUserJoinGroup(randomMemberUsername, groupId)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.block().unblockUserJoinGroup(randomMemberUsername, groupId)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         EMBlock block = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedJoinGroup(groupId)
                         .blockFirst(Duration.ofSeconds(3)));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
                 () -> this.service.group().listGroupMembers(groupId, 2, null)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         if (block != null) {
             throw new RuntimeException(
                     String.format("%s exist in %s group block list", randomMemberUsername,
@@ -687,33 +647,31 @@ public class GroupIT extends AbstractIT {
             });
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupGetUsersBlockedSendMsg() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.block()
                 .blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofMillis(6000))
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         EMBlock block = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedSendMsgToGroup(groupId)
                         .blockFirst(Duration.ofSeconds(3)));
@@ -729,33 +687,31 @@ public class GroupIT extends AbstractIT {
                             groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupBlockUserSendMsg() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.block()
                 .blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofMillis(3000))
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         EMBlock block = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedSendMsgToGroup(groupId)
                         .blockFirst(Duration.ofSeconds(3)));
@@ -771,36 +727,34 @@ public class GroupIT extends AbstractIT {
                             groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
     void testGroupUnblockUserSendMsg() {
-        String randomOwnerUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomOwnerUsername = makeRandomUserName();
         String randomPassword = randomOwnerUsername;
 
-        String randomMemberUsername = String.format("im-sdk-it-user-%08d",
-                ThreadLocalRandom.current().nextInt(100000000));
+        String randomMemberUsername = makeRandomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true).block(Duration.ofSeconds(3)));
+                        true).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.block()
                 .blockUserSendMsgToGroup(randomMemberUsername, groupId, Duration.ofMillis(6000))
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
                 () -> this.service.block().unblockUserSendMsgToGroup(randomMemberUsername, groupId)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
         EMBlock block = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedSendMsgToGroup(groupId)
                         .blockFirst(Duration.ofSeconds(3)));
@@ -809,11 +763,11 @@ public class GroupIT extends AbstractIT {
                     String.format("%s exist in %s group mute list", randomMemberUsername, groupId));
         }
         assertDoesNotThrow(
-                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(3)));
+                () -> this.service.group().destroyGroup(groupId).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomOwnerUsername).block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
 }

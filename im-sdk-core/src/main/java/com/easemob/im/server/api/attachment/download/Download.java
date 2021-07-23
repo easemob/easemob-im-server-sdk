@@ -15,11 +15,13 @@ public class Download {
         this.context = context;
     }
 
-    public Mono<Path> toLocalFile(String id, Path dir, String filename) {
+    public Mono<Path> toLocalFile(String id, Path dir, String filename, String shareSecret) {
         Path local = FileSystem.choosePath(dir, filename);
         return Mono.<OutputStream>create(sink -> sink.success(FileSystem.open(local)))
                 .flatMap(out -> this.context.getHttpClient()
-                        .flatMap(httpClient -> httpClient.get()
+                        .flatMap(httpClient -> httpClient
+                                .headers(headers -> headers.set("share-secret", shareSecret))
+                                .get()
                                 .uri(String.format("/chatfiles/%s", id))
                                 .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp)
                                         .thenMany(buf))
