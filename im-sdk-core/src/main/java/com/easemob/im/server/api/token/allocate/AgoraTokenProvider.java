@@ -1,8 +1,6 @@
 package com.easemob.im.server.api.token.allocate;
 
-import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.token.Token;
-import com.easemob.im.server.exception.EMInvalidStateException;
 import io.agora.chat.ChatTokenBuilder2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,46 +10,43 @@ import java.time.Instant;
 
 public class AgoraTokenProvider implements TokenProvider {
     private static final Logger log = LoggerFactory.getLogger(DefaultTokenProvider.class);
-    private static final int DEFAULT_EXPIRE = 600;
+    private  final ChatTokenBuilder2 tokenBuilder = new ChatTokenBuilder2();
 
-    private final ChatTokenBuilder2 tokenBuilder = new ChatTokenBuilder2();
-
-    private final EMProperties properties;
     private final String appId;
     private final String appCertificate;
-    private final Token appToken;
+    private final int expire;
+    private final Mono<Token> appToken;
 
-    public AgoraTokenProvider(EMProperties properties) {
-
-        this.properties = properties;
-
-        final EMProperties.Realm realm = properties.getRealm();
-        if (realm != EMProperties.Realm.AGORA_REALM) {
-            throw new EMInvalidStateException("realm is not AGORA_REALM");
-        }
-
-        this.appId = properties.getAppId();
-        this.appCertificate = properties.getAppCertificate();
-
-        final String appTokenValue = tokenBuilder.buildAppToken(appId, appCertificate, DEFAULT_EXPIRE);
-        final Instant expireAt = Instant.now().plusSeconds(DEFAULT_EXPIRE);
-        this.appToken = new Token(appTokenValue, expireAt);
+    public AgoraTokenProvider(String appId, String appCertificate, int expire) {
+        this.appId = appId;
+        this.appCertificate = appCertificate;
+        this.expire = expire;
+        this.appToken = generateAppToken(appId, appCertificate, expire);
     }
 
     @Override
     public Mono<Token> fetchAppToken() {
-        return Mono.just(this.appToken);
+        // TODO: Ken this wont automatically re-generate a new token for the caller because its not reactive
+        return this.appToken;
     }
 
     @Override
-    public Mono<Token> fetchUserToken(String username, String password) {
-        final Token userToken = generateUserToken(username);
+    public Mono<Token> fetchUserToken(String userId, String password) {
+        final Token userToken = generateUserToken(userId, expire);
         return Mono.just(userToken);
     }
 
-    private Token generateUserToken(String userUUIDString) {
-        final String userTokenValue = tokenBuilder.buildUserToken(appId, appCertificate, userUUIDString, DEFAULT_EXPIRE);
-        final Instant expireAt = Instant.now().plusSeconds(DEFAULT_EXPIRE);
+    // TODO: Ken this is not reactive
+    private Mono<Token> generateAppToken(String appId, String appCertificate, final int expire) {
+        final String appTokenValue = tokenBuilder.buildAppToken(appId, appCertificate, expire);
+        final Instant expireAt = Instant.now().plusSeconds(expire);
+        Token appToken = new Token(appTokenValue, expireAt);
+        return Mono.just(appToken);
+    }
+
+    private Token generateUserToken(String userId, final int expire) {
+        final String userTokenValue = tokenBuilder.buildUserToken(appId, appCertificate, userId, expire);
+        final Instant expireAt = Instant.now().plusSeconds(expire);
         return new Token(userTokenValue, expireAt);
     }
 }

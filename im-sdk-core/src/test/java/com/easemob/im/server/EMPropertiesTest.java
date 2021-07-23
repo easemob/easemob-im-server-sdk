@@ -7,8 +7,27 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EMPropertiesTest {
+
+    private static final String APP_KEY = "dummyOrg#dummyApp";
+    private static final String APP_ID = "dummyAppId";
+    private static final String APP_CERTIFICATE = "dummyAppCertificate";
+    private static final int DEFAULT_EXPIRE = 100;
+
+
     @Test
-    public void testBuildEMPropertiesSuccessfully() {
+    public void buildEMPropertiesAgoraRealm() {
+        EMProperties properties = EMProperties.builder(EMProperties.Realm.AGORA_REALM)
+                .setAppkey(APP_KEY)
+                .setAppId(APP_ID)
+                .setAppCertificate(APP_CERTIFICATE)
+                .build();
+        assertEquals(APP_KEY, properties.getAppkey());
+        assertEquals(APP_ID, properties.getAppId());
+        assertEquals(APP_CERTIFICATE, properties.getAppCertificate());
+    }
+
+    @Test
+    public void buildEMPropertiesEasemobRealm() {
         EMProperties properties = EMProperties.builder()
                 .setAppkey("easemob#demo")
                 .setClientId("id")

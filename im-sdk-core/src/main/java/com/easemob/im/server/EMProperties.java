@@ -15,9 +15,15 @@ import java.nio.file.Path;
  */
 public class EMProperties {
 
+    // Easemob OR Agora
     private final Realm realm;
+    // clientId OR appId
     private final String clientId;
+    // clientSecret OR appCertificate
     private final String clientSecret;
+    // token expire elapse
+    // TODO: Ken hard code expire elapse time for now
+    private final int expire = 100;
 
     private final String baseUri;
     private final String appkey;
@@ -25,8 +31,20 @@ public class EMProperties {
     private final int httpConnectionPoolSize;
     private final String serverTimezone;
 
+    public enum Realm {
+        AGORA_REALM(1),
+        EASEMOB_REALM(2),
+        ;
+        public short intValue;
+        Realm(int value) {
+            intValue = (short) value;
+        }
+    }
+
+    // preserve this for backwards compatibility
     public EMProperties(String baseUri, String appkey, EMProxy proxy, String clientId,
             String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+        // easemob realm by default
         this.realm = Realm.EASEMOB_REALM;
         this.baseUri = baseUri;
         this.appkey = appkey;
@@ -50,7 +68,11 @@ public class EMProperties {
     }
 
     public static Builder builder() {
-        return new Builder();
+        return new Builder(Realm.EASEMOB_REALM);
+    }
+
+    public static Builder builder(Realm realm) {
+        return new Builder(realm);
     }
 
     public Realm getRealm() {
@@ -58,11 +80,15 @@ public class EMProperties {
     }
 
     public String getAppId() {
-        return appId;
+        return this.clientId;
     }
 
     public String getAppCertificate() {
-        return appCertificate;
+        return this.clientSecret;
+    }
+
+    public int getExpire() {
+        return this.expire;
     }
 
     public String getBaseUri() {
@@ -118,15 +144,6 @@ public class EMProperties {
                 '}';
     }
 
-    public enum Realm {
-        AGORA_REALM(1),
-        EASEMOB_REALM(2),
-        ;
-        public short intValue;
-        Realm(int value) {
-            intValue = (short) value;
-        }
-    }
 
     public static class Builder {
         private final Realm realm;
@@ -140,9 +157,6 @@ public class EMProperties {
         private int httpConnectionPoolSize = 10;
         private String serverTimezone = "+8";
 
-        public Builder() {
-            this.realm = Realm.EASEMOB_REALM;
-        }
 
         public Builder(Realm realm) {
             this.realm = realm;
@@ -195,6 +209,22 @@ public class EMProperties {
          */
         public Builder setProxy(EMProxy proxy) {
             this.proxy = proxy;
+            return this;
+        }
+
+        public Builder setAppId(String appId) {
+            if (Strings.isBlank(appId)) {
+                throw new EMInvalidArgumentException("appId must not be null or blank");
+            }
+            this.clientId = appId;
+            return this;
+        }
+
+        public Builder setAppCertificate(String appCertificate) {
+            if (Strings.isBlank(appCertificate)) {
+                throw new EMInvalidArgumentException("appCertificate must not be null or blank");
+            }
+            this.clientSecret = appCertificate;
             return this;
         }
 
@@ -257,10 +287,12 @@ public class EMProperties {
                 throw new EMInvalidStateException("appkey not set");
             }
             if (this.clientId == null) {
-                throw new EMInvalidStateException("clientId not set");
+                String msg = realm == Realm.AGORA_REALM ? "appId not set" : "clientId not set";
+                throw new EMInvalidStateException(msg);
             }
             if (this.clientSecret == null) {
-                throw new EMInvalidStateException("clientSecret not set");
+                String msg = realm == Realm.AGORA_REALM ? "appCertificate not set" : "clientSecret not set";
+                throw new EMInvalidStateException(msg);
             }
 
             return new EMProperties(this.realm, this.baseUri, this.appkey, this.proxy, this.clientId,

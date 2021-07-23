@@ -3,6 +3,7 @@ package com.easemob.im.server.api;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.codec.JsonCodec;
 import com.easemob.im.server.api.loadbalance.*;
+import com.easemob.im.server.api.token.allocate.AgoraTokenProvider;
 import com.easemob.im.server.api.token.allocate.DefaultTokenProvider;
 import com.easemob.im.server.api.token.allocate.TokenProvider;
 import org.slf4j.Logger;
@@ -45,12 +46,16 @@ public class DefaultContext implements Context {
         this.endpointProvider = endpointProviderFactory.create();
         this.endpointRegistry =
                 new TimedRefreshEndpointRegistry(this.endpointProvider, Duration.ofMinutes(5));
-        this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.endpointRegistry,
-                this.loadBalancer, this.codec, this.errorMapper);
+        if (properties.getRealm() == EMProperties.Realm.AGORA_REALM) {
+            this.tokenProvider = new AgoraTokenProvider(properties.getAppId(), properties.getAppCertificate(), properties.getExpire());
+        } else {
+            // use easemob realm by default
+            this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.endpointRegistry,
+                    this.loadBalancer, this.codec, this.errorMapper);
+        }
         this.httpClient = httpClient.headersWhen(headers -> this.tokenProvider.fetchAppToken()
                 .map(token -> headers
                         .set("Authorization", String.format("Bearer %s", token.getValue()))));
-
     }
 
     @Override
