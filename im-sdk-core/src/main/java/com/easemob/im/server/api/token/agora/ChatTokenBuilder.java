@@ -1,6 +1,6 @@
 package com.easemob.im.server.api.token.agora;
 
-public class ChatTokenBuilder2 {
+public class ChatTokenBuilder {
 
     /**
      * Build the CHAT user token.

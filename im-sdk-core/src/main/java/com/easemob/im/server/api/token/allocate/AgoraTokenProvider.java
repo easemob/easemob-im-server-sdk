@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.token.allocate;
 
 import com.easemob.im.server.api.token.Token;
-import com.easemob.im.server.api.token.agora.ChatTokenBuilder2;
+import com.easemob.im.server.api.token.agora.ChatTokenBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -10,7 +10,7 @@ import java.time.Instant;
 
 public class AgoraTokenProvider implements TokenProvider {
     private static final Logger log = LoggerFactory.getLogger(DefaultTokenProvider.class);
-    private  final ChatTokenBuilder2 tokenBuilder = new ChatTokenBuilder2();
+    private  final ChatTokenBuilder tokenBuilder = new ChatTokenBuilder();
 
     private final String appId;
     private final String appCertificate;

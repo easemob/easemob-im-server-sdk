@@ -1,11 +1,11 @@
 package com.easemob.im.server.utils;
 
 import com.easemob.im.server.api.token.agora.AccessToken2;
-import com.easemob.im.server.api.token.agora.ChatTokenBuilder2;
+import com.easemob.im.server.api.token.agora.ChatTokenBuilder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ChatTokenBuilder2Test {
+public class ChatTokenBuilderTest {
     private String appId = "970CA35de60c44645bbae8a215061b33";
     private String appCertificate = "5CFd2fd1755d40ecb72977518be15d3b";
     private String userId = "test_user";
@@ -13,7 +13,7 @@ public class ChatTokenBuilder2Test {
 
     @Test
     public void testBuildUserToken() {
-        ChatTokenBuilder2 chatTokenBuilder = new ChatTokenBuilder2();
+        ChatTokenBuilder chatTokenBuilder = new ChatTokenBuilder();
         String token = chatTokenBuilder.buildUserToken(appId, appCertificate, userId, expire);
         AccessToken2 accessToken = new AccessToken2();
         accessToken.parse(token);
@@ -26,7 +26,7 @@ public class ChatTokenBuilder2Test {
 
     @Test
     public void testBuildAppToken() {
-        ChatTokenBuilder2 chatTokenBuilder = new ChatTokenBuilder2();
+        ChatTokenBuilder chatTokenBuilder = new ChatTokenBuilder();
         String token = chatTokenBuilder.buildAppToken(appId, appCertificate, expire);
         AccessToken2 accessToken = new AccessToken2();
         accessToken.parse(token);
