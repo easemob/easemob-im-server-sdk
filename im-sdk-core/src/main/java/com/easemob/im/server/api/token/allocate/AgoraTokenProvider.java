@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.token.allocate;
 
 import com.easemob.im.server.api.token.Token;
-import io.agora.chat.ChatTokenBuilder2;
+import com.easemob.im.server.api.token.agora.ChatTokenBuilder2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

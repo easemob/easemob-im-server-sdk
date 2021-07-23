@@ -1,7 +1,7 @@
 package com.easemob.im.server.utils;
 
-import io.agora.chat.ChatTokenBuilder2;
-import io.agora.media.AccessToken2;
+import com.easemob.im.server.api.token.agora.AccessToken2;
+import com.easemob.im.server.api.token.agora.ChatTokenBuilder2;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
