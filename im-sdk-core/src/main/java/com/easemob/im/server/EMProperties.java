@@ -14,17 +14,32 @@ import java.nio.file.Path;
  * Server SDK配置类
  */
 public class EMProperties {
-    private final String baseUri;
-    private final String appkey;
-    private final EMProxy proxy;
+
+    private final Realm realm;
     private final String clientId;
     private final String clientSecret;
 
+    private final String baseUri;
+    private final String appkey;
+    private final EMProxy proxy;
     private final int httpConnectionPoolSize;
     private final String serverTimezone;
 
     public EMProperties(String baseUri, String appkey, EMProxy proxy, String clientId,
             String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+        this.realm = Realm.EASEMOB_REALM;
+        this.baseUri = baseUri;
+        this.appkey = appkey;
+        this.proxy = proxy;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.httpConnectionPoolSize = httpConnectionPoolSize;
+        this.serverTimezone = serverTimezone;
+    }
+
+    private EMProperties(Realm realm, String baseUri, String appkey, EMProxy proxy, String clientId,
+            String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+        this.realm = realm;
         this.baseUri = baseUri;
         this.appkey = appkey;
         this.proxy = proxy;
@@ -36,6 +51,18 @@ public class EMProperties {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public Realm getRealm() {
+        return realm;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public String getAppCertificate() {
+        return appCertificate;
     }
 
     public String getBaseUri() {
@@ -91,7 +118,19 @@ public class EMProperties {
                 '}';
     }
 
+    public enum Realm {
+        AGORA_REALM(1),
+        EASEMOB_REALM(2),
+        ;
+        public short intValue;
+        Realm(int value) {
+            intValue = (short) value;
+        }
+    }
+
     public static class Builder {
+        private final Realm realm;
+
         private String baseUri;
         private String appkey;
         private EMProxy proxy;
@@ -101,6 +140,13 @@ public class EMProperties {
         private int httpConnectionPoolSize = 10;
         private String serverTimezone = "+8";
 
+        public Builder() {
+            this.realm = Realm.EASEMOB_REALM;
+        }
+
+        public Builder(Realm realm) {
+            this.realm = realm;
+        }
         /**
          * 设置rest服务域名。
          * 该信息为可选，可以不进行设置，Server SDK会自动根据appkey请求到对应的rest服务的baseUri。
@@ -204,6 +250,9 @@ public class EMProperties {
          * @return {@code EMProperties}
          */
         public EMProperties build() {
+            if (this.realm == null) {
+                throw new EMInvalidStateException("realm not set");
+            }
             if (this.appkey == null) {
                 throw new EMInvalidStateException("appkey not set");
             }
@@ -214,14 +263,14 @@ public class EMProperties {
                 throw new EMInvalidStateException("clientSecret not set");
             }
 
-            return new EMProperties(this.baseUri, this.appkey, this.proxy, this.clientId,
-                    this.clientSecret,
-                    this.httpConnectionPoolSize, this.serverTimezone);
+            return new EMProperties(this.realm, this.baseUri, this.appkey, this.proxy, this.clientId,
+                    this.clientSecret, this.httpConnectionPoolSize, this.serverTimezone);
         }
 
         @Override
         public String toString() {
             return "Builder{" +
+                    "realm='" + realm.toString() + '\'' +
                     "baseUri='" + baseUri + '\'' +
                     ", appkey='" + appkey + '\'' +
                     ", proxy=" + proxy +
