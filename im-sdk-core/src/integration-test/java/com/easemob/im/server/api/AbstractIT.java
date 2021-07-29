@@ -8,9 +8,10 @@ public class AbstractIT {
     protected EMService service;
 
     public AbstractIT() {
-        String appkey = System.getenv("IM_APPKEY");
-        String clientId = System.getenv("IM_CLIENT_ID");
-        String clientSecret = System.getenv("IM_CLIENT_SECRET");
+        System.out.println("AbstractIT Initializing");
+        String appkey = "";
+        String clientId = "";
+        String clientSecret = "";
 
         EMProperties properties = EMProperties.builder()
                 .setAppkey(appkey)
