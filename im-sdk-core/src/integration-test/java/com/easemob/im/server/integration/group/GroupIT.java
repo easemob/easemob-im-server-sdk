@@ -1,6 +1,6 @@
-package com.easemob.im.server.api.group;
+package com.easemob.im.server.integration.group;
 
-import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.integration.AbstractIT;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
 import com.easemob.im.server.model.EMGroup;

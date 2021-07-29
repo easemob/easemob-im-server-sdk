@@ -1,4 +1,4 @@
-package com.easemob.im.server.api;
+package com.easemob.im.server.integration;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.EMService;

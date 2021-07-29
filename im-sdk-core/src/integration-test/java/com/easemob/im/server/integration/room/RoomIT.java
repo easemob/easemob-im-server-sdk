@@ -1,6 +1,6 @@
-package com.easemob.im.server.api.room;
+package com.easemob.im.server.integration.room;
 
-import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.integration.AbstractIT;
 import com.easemob.im.server.model.EMBlock;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
-package com.easemob.im.server.api.historymsg;
+package com.easemob.im.server.integration.historymsg;
 
-import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.integration.AbstractIT;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.FileSystems;

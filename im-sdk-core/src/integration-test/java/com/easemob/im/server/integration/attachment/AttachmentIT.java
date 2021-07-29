@@ -1,6 +1,6 @@
-package com.easemob.im.server.api.attachment;
+package com.easemob.im.server.integration.attachment;
 
-import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.integration.AbstractIT;
 import com.easemob.im.server.model.EMAttachment;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ClassLoaderUtils;

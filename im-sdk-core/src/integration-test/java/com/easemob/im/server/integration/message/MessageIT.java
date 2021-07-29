@@ -1,6 +1,6 @@
-package com.easemob.im.server.api.message;
+package com.easemob.im.server.integration.message;
 
-import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.integration.AbstractIT;
 import com.easemob.im.server.model.EMKeyValue;
 import org.junit.jupiter.api.Test;
 

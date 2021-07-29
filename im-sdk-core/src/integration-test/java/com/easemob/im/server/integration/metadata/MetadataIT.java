@@ -1,6 +1,6 @@
-package com.easemob.im.server.api.metadata;
+package com.easemob.im.server.integration.metadata;
 
-import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.integration.AbstractIT;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

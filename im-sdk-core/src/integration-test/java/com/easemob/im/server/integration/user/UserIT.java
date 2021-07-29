@@ -1,6 +1,6 @@
-package com.easemob.im.server.api.user;
+package com.easemob.im.server.integration.user;
 
-import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.integration.AbstractIT;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
