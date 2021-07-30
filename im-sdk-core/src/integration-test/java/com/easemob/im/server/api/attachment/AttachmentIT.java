@@ -23,7 +23,7 @@ public class AttachmentIT extends AbstractIT {
                 ClassLoaderUtils.getDefaultClassLoader().getResource("upload/image.png").getPath();
         Path uploadPath = FileSystems.getDefault().getPath(path);
         assertDoesNotThrow(() -> this.service.attachment().uploadFile(uploadPath)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
     @Test
@@ -32,14 +32,14 @@ public class AttachmentIT extends AbstractIT {
                 ClassLoaderUtils.getDefaultClassLoader().getResource("upload/image.png").getPath());
         EMAttachment attachment = assertDoesNotThrow(
                 () -> this.service.attachment().uploadFile(uploadPath)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Duration.ofSeconds(30)));
 
         Path downloadPath = FileSystems.getDefault().getPath(
                 ClassLoaderUtils.getDefaultClassLoader().getResource("download/attachment/")
                         .getPath());
         assertDoesNotThrow(() -> this.service.attachment()
                 .downloadFile(attachment.getId(), downloadPath, "file.png")
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
     }
 
 }

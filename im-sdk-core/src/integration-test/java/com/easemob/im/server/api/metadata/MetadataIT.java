@@ -27,11 +27,11 @@ public class MetadataIT extends AbstractIT {
                 ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(30)));
     }
 
     @Test
@@ -45,18 +45,18 @@ public class MetadataIT extends AbstractIT {
                 ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.metadata().getMetadataFromUser(randomUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(30)));
     }
 
     @Test
     public void testMetadataGetUsage() {
-        assertDoesNotThrow(() -> this.service.metadata().getUsage().block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.metadata().getUsage().block(Duration.ofSeconds(30)));
     }
 
     @Test
@@ -70,15 +70,15 @@ public class MetadataIT extends AbstractIT {
                 ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.metadata().getMetadataFromUser(randomUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(() -> this.service.metadata().deleteMetadataFromUser(randomUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(30)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(30)));
     }
 
 }

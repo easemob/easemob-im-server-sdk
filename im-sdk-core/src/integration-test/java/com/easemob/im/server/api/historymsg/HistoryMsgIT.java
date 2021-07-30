@@ -28,7 +28,7 @@ public class HistoryMsgIT extends AbstractIT {
     @Disabled
     void testHistoryMsgGetAsLocalFile() {
         Path path = FileSystems.getDefault().getPath("path");
-        assertDoesNotThrow(() -> this.service.message().getHistoryAsLocalFile(Instant.ofEpochSecond(1616407200), path, "history.gz").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.message().getHistoryAsLocalFile(Instant.ofEpochSecond(1616407200), path, "history.gz").block(Duration.ofSeconds(30)));
     }
 
 }
