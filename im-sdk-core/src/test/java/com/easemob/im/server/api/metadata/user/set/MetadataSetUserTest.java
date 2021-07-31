@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MetadataSetUserTest extends AbstractApiTest {
+public class MetadataSetUserTest extends AbstractApiTest {
     MetadataSet metadataSetUser = new MetadataSet(this.context);
 
     public MetadataSetUserTest() {
@@ -25,7 +25,7 @@ class MetadataSetUserTest extends AbstractApiTest {
                 () -> this.metadataSetUser.toUser("bob", map).block(Duration.ofSeconds(3)));
     }
 
-    public JsonNode handleMetadataSet(JsonNode req) {
+    private JsonNode handleMetadataSet(JsonNode req) {
         ObjectNode data = this.objectMapper.createObjectNode();
         data.put("nickname", "昵称");
         data.put("avatar", "http://www.easemob.com/avatar.png");

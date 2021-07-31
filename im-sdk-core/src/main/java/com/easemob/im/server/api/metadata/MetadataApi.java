@@ -5,11 +5,13 @@ import com.easemob.im.server.api.metadata.user.usage.MetadataUsage;
 import com.easemob.im.server.api.metadata.user.delete.MetadataDelete;
 import com.easemob.im.server.api.metadata.user.get.MetadataGet;
 import com.easemob.im.server.api.metadata.user.set.MetadataSet;
+import com.easemob.im.server.model.EMBatchMetadata;
 import com.easemob.im.server.model.EMMetadata;
 import com.easemob.im.server.model.EMMetadataUsage;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.List;
 
 /**
  * 用户属性API。
@@ -52,6 +54,10 @@ public class MetadataApi {
      */
     public Mono<EMMetadata> getMetadataFromUser(String username) {
         return this.metadataGet.fromUser(username);
+    }
+
+    public Mono<EMBatchMetadata> getMetadataFromUsers(List<String> userNames, List<String> propertyNames) {
+        return this.metadataGet.fromUsers(userNames, propertyNames);
     }
 
     /**

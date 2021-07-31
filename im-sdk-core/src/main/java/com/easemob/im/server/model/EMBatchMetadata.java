@@ -2,14 +2,14 @@ package com.easemob.im.server.model;
 
 import java.util.Map;
 
-public class EMMetadata {
-    private Map<String, String> data;
+public class EMBatchMetadata {
+    private Map<String, Map<String, String>> data;
 
-    public EMMetadata(Map<String, String> data) {
+    public EMBatchMetadata(Map<String, Map<String, String>> data) {
         this.data = data;
     }
 
-    public Map<String, String> getData() {
+    public Map<String, Map<String, String>> getData() {
         return data;
     }
 
