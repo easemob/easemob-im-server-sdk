@@ -27,10 +27,9 @@ public class GetCmd {
     @Command(name = "attachment", description = "Download attachment by id.", mixinStandardHelpOptions = true)
     public void attachment(
             @Parameters(description = "attachment file id, returned by upload service.") String id,
-            @Parameters(description = "attachment file shareSecret, returned by upload service.") String shareSecret,
             @Option(names = "-o", defaultValue = "", description = "attachment download path, default is current dir")
                     Path path) {
-        this.service.attachment().downloadFile(id, path, id, shareSecret)
+        this.service.attachment().downloadFile(id, path, id)
                 .doOnSuccess(downloaded -> System.out
                         .println(String.format("downloaded: %s", downloaded.toString())))
                 .doOnError(

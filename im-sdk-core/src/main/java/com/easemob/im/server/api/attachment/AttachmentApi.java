@@ -48,8 +48,8 @@ public class AttachmentApi {
      * @return 下载完成后返回文件路径
      * @see <a href="http://docs-im.easemob.com/im/server/basics/fileoperation#%E4%B8%8B%E8%BD%BD%E8%AF%AD%E9%9F%B3%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6">下载附件</a>
      */
-    public Mono<Path> downloadFile(String fileId, Path dir, String filename, String shareSecret) {
-        return this.download.toLocalFile(fileId, dir, filename, shareSecret);
+    public Mono<Path> downloadFile(String fileId, Path dir, String filename) {
+        return this.download.toLocalFile(fileId, dir, filename);
     }
 
 }
