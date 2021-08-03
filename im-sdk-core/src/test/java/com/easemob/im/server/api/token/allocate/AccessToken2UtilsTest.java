@@ -15,6 +15,9 @@ public class AccessToken2UtilsTest {
     private static final String DUMMY_USER_NAME = "test_user";
     private static final String DUMMY_USER_ID = "da9287a0-ecf9-11eb-9af3-296ff79acb67";
     private static final int DUMMY_EXPIRE_SECONDS = 600;
+
+    private static final AccessToken2.PrivilegeRtc DUMMY_RTC_PRIVILEGE =
+            AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL;
     private static final String DUMMY_CHANNEL_NAME = "dummyChannelName";
     private static final String DUMMY_UID = "dummyUID";
 
@@ -53,15 +56,13 @@ public class AccessToken2UtilsTest {
     }
 
     @Test
-    public void buildUserCustomizedToken() {
+    public void buildUserChatRtcToken() {
         String customizedTokenValue = AccessToken2Utils.buildUserCustomizedToken(
-                DUMMY_APP_ID, DUMMY_APP_CERT, DUMMY_USER_ID, DUMMY_EXPIRE_SECONDS, token -> {
-                    AccessToken2.ServiceRtc serviceRtc =
-                            new AccessToken2.ServiceRtc(DUMMY_CHANNEL_NAME, DUMMY_UID);
-                    serviceRtc.addPrivilegeRtc(AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL,
-                            DUMMY_EXPIRE_SECONDS);
-                    token.addService(serviceRtc);
-                });
+                DUMMY_APP_ID, DUMMY_APP_CERT, DUMMY_USER_ID, DUMMY_EXPIRE_SECONDS,
+                        AccessToken2Utils.rtcPrivilegeAdder(DUMMY_CHANNEL_NAME, DUMMY_UID,
+                                DUMMY_RTC_PRIVILEGE, DUMMY_EXPIRE_SECONDS)
+                );
+
         AccessToken2 chatRtcToken = new AccessToken2();
         chatRtcToken.parse(customizedTokenValue);
 

@@ -15,6 +15,16 @@ public class AccessToken2Utils {
     private static final Logger log = LoggerFactory.getLogger(AccessToken2Utils.class);
     private static final String ERROR_MSG = "failed to build AccessToken2";
 
+    public static Consumer<AccessToken2> rtcPrivilegeAdder(
+            String channelName, String uid,
+            AccessToken2.PrivilegeRtc privilegeRtc, int expireSeconds) {
+        return token -> {
+            AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc(channelName, uid);
+            serviceRtc.addPrivilegeRtc(privilegeRtc, expireSeconds);
+            token.addService(serviceRtc);
+        };
+    }
+
     public static String buildAppToken(String appId, String appCert, int expire) {
         AccessToken2 accessToken = new AccessToken2(appId, appCert, expire);
         AccessToken2.Service serviceChat = new AccessToken2.ServiceChat();
