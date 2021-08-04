@@ -1,11 +1,11 @@
 package com.easemob.im.server.api.metadata.user.get;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.model.EMBatchMetadata;
 import com.easemob.im.server.model.EMMetadata;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 public class MetadataGet {
     private Context context;
@@ -24,7 +24,7 @@ public class MetadataGet {
                 .map(MetadataGetUserResponse::toMetadata);
     }
 
-    public Mono<EMBatchMetadata> fromUsers(List<String> userNames, List<String> propertyNames) {
+    public Mono<Map<String, EMMetadata>> fromUsers(List<String> userNames, List<String> propertyNames) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient
                         .headers(headers -> headers.set("Content-Type", "application/json"))
@@ -36,6 +36,6 @@ public class MetadataGet {
                                 (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
                 )
                 .map(buf -> this.context.getCodec().decode(buf, MetadataGetUsersResponse.class))
-                .map(MetadataGetUsersResponse::toBatchMetadata);
+                .map(MetadataGetUsersResponse::toMetadataMap);
     }
 }

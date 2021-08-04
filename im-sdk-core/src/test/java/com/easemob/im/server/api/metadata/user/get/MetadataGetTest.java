@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.metadata.user.get;
 
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.model.EMBatchMetadata;
+import com.easemob.im.server.model.EMMetadata;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -27,15 +27,14 @@ public class MetadataGetTest extends AbstractApiTest {
 
     @Test
     public void testMetadataBatchGet() {
-        EMBatchMetadata batchMetadata =
+        Map<String, EMMetadata> metadataMap =
                 assertDoesNotThrow(() -> this.metadataGet.fromUsers(
                         Arrays.asList("alice", "bob"),
                         Arrays.asList("title", "employer", "gender", "name"))
                 .block(Duration.ofSeconds(3)));
 
-        Map<String, Map<String, String>> data = batchMetadata.getData();
-        Map<String, String> aliceMetadata = data.get("alice");
-        Map<String, String> bobMetadata = data.get("bob");
+        Map<String, String> aliceMetadata = metadataMap.get("alice").getData();
+        Map<String, String> bobMetadata = metadataMap.get("bob").getData();
         assertEquals("java_developer", aliceMetadata.get("title"));
         assertEquals("alice wang", aliceMetadata.get("name"));
         assertEquals("easemob", bobMetadata.get("employer"));

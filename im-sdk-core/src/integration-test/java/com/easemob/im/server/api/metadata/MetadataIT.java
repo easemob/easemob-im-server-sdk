@@ -1,7 +1,7 @@
 package com.easemob.im.server.api.metadata;
 
 import com.easemob.im.server.api.AbstractIT;
-import com.easemob.im.server.model.EMBatchMetadata;
+import com.easemob.im.server.model.EMMetadata;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -31,11 +31,11 @@ public class MetadataIT extends AbstractIT {
                 ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -49,13 +49,13 @@ public class MetadataIT extends AbstractIT {
                 ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.metadata().getMetadataFromUser(randomUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -92,20 +92,19 @@ public class MetadataIT extends AbstractIT {
                 .block(Duration.ofSeconds(30)));
 
         // batch get metadata from users
-        EMBatchMetadata batchMetadata =
+        Map<String, EMMetadata> metadataMap =
                 assertDoesNotThrow(() -> this.service.metadata().getMetadataFromUsers(
                         Arrays.asList(aliceName, bobName),
                         Arrays.asList("name", "title", "zip")).block(Duration.ofSeconds(30)));
-        Map<String, Map<String, String>> data = batchMetadata.getData();
-        assertEquals(2, data.size());
+        assertEquals(2, metadataMap.size());
 
         // check results
-        Map<String, String> aliceMetadata = data.get(aliceName);
+        Map<String, String> aliceMetadata = metadataMap.get(aliceName).getData();
         assertEquals(2, aliceMetadata.size());
         assertEquals("alice", aliceMetadata.get("name"));
         assertEquals("java", aliceMetadata.get("title"));
 
-        Map<String, String> bobMetadata = data.get(bobName);
+        Map<String, String> bobMetadata = metadataMap.get(bobName).getData();
         assertEquals(2, bobMetadata.size());
         assertEquals("bob", bobMetadata.get("name"));
         assertEquals("61801", bobMetadata.get("zip"));
@@ -119,7 +118,7 @@ public class MetadataIT extends AbstractIT {
 
     @Test
     public void testMetadataGetUsage() {
-        assertDoesNotThrow(() -> this.service.metadata().getUsage().block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.service.metadata().getUsage().block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -133,15 +132,15 @@ public class MetadataIT extends AbstractIT {
                 ThreadLocalRandom.current().nextInt(100000000));
         String randomPassword = randomUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.metadata().getMetadataFromUser(randomUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.metadata().deleteMetadataFromUser(randomUsername)
-                .block(Duration.ofSeconds(3)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(3)));
+                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
     }
 
 }
