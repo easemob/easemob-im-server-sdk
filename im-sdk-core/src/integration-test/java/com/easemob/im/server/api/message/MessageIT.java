@@ -23,20 +23,20 @@ public class MessageIT extends AbstractIT {
 
         String randomToUsername = makeRandomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
                 .text(msg -> msg.text("hello"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -46,9 +46,9 @@ public class MessageIT extends AbstractIT {
 
         String randomToUsername = makeRandomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -62,9 +62,9 @@ public class MessageIT extends AbstractIT {
                 .send()
                 .block(Duration.ofSeconds(6)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -74,9 +74,9 @@ public class MessageIT extends AbstractIT {
 
         String randomToUsername = makeRandomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -88,11 +88,11 @@ public class MessageIT extends AbstractIT {
                 )
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -102,9 +102,9 @@ public class MessageIT extends AbstractIT {
 
         String randomToUsername = makeRandomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -117,11 +117,11 @@ public class MessageIT extends AbstractIT {
                 )
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -131,9 +131,9 @@ public class MessageIT extends AbstractIT {
 
         String randomToUsername = makeRandomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
@@ -143,11 +143,11 @@ public class MessageIT extends AbstractIT {
                 )
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -157,20 +157,20 @@ public class MessageIT extends AbstractIT {
 
         String randomToUsername = makeRandomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
                 .location(msg -> msg.latitude(1.234567).longitude(1.234567).address("some where"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -180,20 +180,20 @@ public class MessageIT extends AbstractIT {
 
         String randomToUsername = makeRandomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
                 .command(msg -> msg.action("run").param("name", "rabbit"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(10)));
     }
 
     @Test
@@ -203,20 +203,20 @@ public class MessageIT extends AbstractIT {
 
         String randomToUsername = makeRandomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
                 .custom(msg -> msg.customEvent("liked").customExtension("name", "forest"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(30)));
+                .block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomFromUsername).block(Duration.ofSeconds(10)));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(30)));
+                () -> this.service.user().delete(randomToUsername).block(Duration.ofSeconds(10)));
     }
 
 }
