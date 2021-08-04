@@ -192,6 +192,7 @@ public class UserApi {
         return this.context.getTokenProvider().fetchUserToken(username, password);
     }
 
+    // TODO: doc this confusion
     // TODO: here we have 2 ways of getting an user token and we need a better design
     public Mono<Token> getToken (String userId, int expireSeconds,
             Consumer<AccessToken2> tokenConfigurer) throws Exception {

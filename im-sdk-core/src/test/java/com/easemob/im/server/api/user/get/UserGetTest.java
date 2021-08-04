@@ -19,17 +19,23 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserGetTest extends AbstractApiTest {
 
+    private static final String DUMMY_USER_NAME = "dummy-user-name";
+    private static final String DUMMY_USER_UUID = "b2832810-e91f-11eb-901b-1d2efade27a3";
+    private static final boolean DUMMY_USER_ACTIVATED = true;
+
     private UserGet userGet;
 
     public UserGetTest() {
-        this.server.addHandler("GET /easemob/demo/users/username", this::handleUserGetSingle);
+        this.server.addHandler(String.format("GET /easemob/demo/users/%s", DUMMY_USER_NAME), this::handleUserGetSingle);
         this.userGet = new UserGet(this.context);
     }
 
     @Test
     public void testUserGetSingle() {
-        EMUser user = this.userGet.single("username").block(Duration.ofSeconds(3));
-        assertEquals("username", user.getUsername());
+        EMUser user = this.userGet.single(DUMMY_USER_NAME).block(Duration.ofSeconds(3));
+        assertEquals(DUMMY_USER_NAME, user.getUsername());
+        assertEquals(DUMMY_USER_UUID, user.getUuid());
+        assertEquals(DUMMY_USER_ACTIVATED, user.getCanLogin());
     }
 
     @Test
@@ -49,7 +55,9 @@ public class UserGetTest extends AbstractApiTest {
 
     private JsonNode handleUserGetSingle(JsonNode req) {
         ObjectNode user = this.objectMapper.createObjectNode();
-        user.put("username", "username");
+        user.put("username", DUMMY_USER_NAME);
+        user.put("uuid", DUMMY_USER_UUID);
+        user.put("activated", DUMMY_USER_ACTIVATED);
 
         ArrayNode users = this.objectMapper.createArrayNode();
         users.add(user);

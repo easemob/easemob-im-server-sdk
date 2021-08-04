@@ -4,6 +4,8 @@ import com.easemob.im.server.api.token.Token;
 import com.easemob.im.server.api.token.agora.AccessToken2;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AgoraTokenProviderTest {
@@ -17,7 +19,7 @@ public class AgoraTokenProviderTest {
     @Test
     public void fetchAppToken() {
         TokenProvider tokenProvider = new AgoraTokenProvider(DUMMY_APP_ID, DUMMY_APP_CERT);
-        Token appToken = tokenProvider.fetchAppToken().block();
+        Token appToken = tokenProvider.fetchAppToken().block(Duration.ofSeconds(10));
         String appTokenValue = appToken.getValue();
         AccessToken2 accessToken = new AccessToken2();
         accessToken.parse(appTokenValue);
@@ -36,7 +38,7 @@ public class AgoraTokenProviderTest {
     public void builderUserToken() throws Exception {
         TokenProvider tokenProvider = new AgoraTokenProvider(DUMMY_APP_ID, DUMMY_APP_CERT);
         Token userToken = tokenProvider.buildUserToken(DUMMY_USER_ID,
-                EXPIRE_SECONDS, token -> {}).block();
+                EXPIRE_SECONDS, token -> {}).block(Duration.ofSeconds(10));
         String userTokenValue = userToken.getValue();
         AccessToken2 accessToken = new AccessToken2();
         accessToken.parse(userTokenValue);

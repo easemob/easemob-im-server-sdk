@@ -5,7 +5,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Map;
 import java.util.TreeMap;
 
-// TODO: import from maven repo once this token class is officially published this September
 /**
  * This class is copied from
  * <a href="https://github.com/kenuiuc/Tools/blob/dev/accesstoken2/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/media/AccessToken2.java">Agora Authentication Tool</a>
