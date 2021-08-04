@@ -3,7 +3,9 @@ package com.easemob.im.server.api;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.codec.JsonCodec;
 import com.easemob.im.server.api.loadbalance.*;
-import com.easemob.im.server.api.token.allocate.*;
+import com.easemob.im.server.api.token.allocate.AgoraTokenProvider;
+import com.easemob.im.server.api.token.allocate.DefaultTokenProvider;
+import com.easemob.im.server.api.token.allocate.TokenProvider;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +47,15 @@ public class DefaultContext implements Context {
         this.endpointRegistry =
                 new TimedRefreshEndpointRegistry(this.endpointProvider, Duration.ofMinutes(5));
 
-        TokenProviderFactory tokenProviderFactory =
-                new DefaultTokenProviderFactory(properties, httpClient, endpointRegistry, loadBalancer, codec, errorMapper);
-        this.tokenProvider = tokenProviderFactory.create();
+        EMProperties.Realm realm = properties.getRealm();
+        if (realm == EMProperties.Realm.AGORA_REALM) {
+            this.tokenProvider = new AgoraTokenProvider(properties.getAppId(), properties.getAppCert());
+        } else if (realm == EMProperties.Realm.EASEMOB_REALM) {
+            this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.endpointRegistry,
+                    this.loadBalancer, this.codec, this.errorMapper);
+        } else {
+            throw new EMInvalidStateException(String.format("Realm value = %d is illegal", realm.intValue));
+        }
 
         this.httpClient = httpClient.headersWhen(headers -> this.tokenProvider.fetchAppToken()
                 .map(token -> headers

@@ -33,9 +33,6 @@ public class EMProperties {
     private String clientId;
     private String clientSecret;
 
-    // Agora only fields
-    // default app token expire elapse = 10 minutes but this is configurable
-    private int expireSeconds = 600;
     private String appId;
     private String appCert;
 
@@ -96,10 +93,6 @@ public class EMProperties {
         this.clientSecret = clientSecret;
     }
 
-    private void setExpireSeconds(int expireSeconds) {
-        this.expireSeconds = expireSeconds;
-    }
-
     private void setAppId(String appId) {
         this.appId = appId;
     }
@@ -118,10 +111,6 @@ public class EMProperties {
 
     public String getAppCert() {
         return this.appCert;
-    }
-
-    public int getExpireSeconds() {
-        return this.expireSeconds;
     }
 
     public String getBaseUri() {
@@ -165,8 +154,6 @@ public class EMProperties {
     }
 
     public static class AgoraRealmBuilder {
-        // chat app token007 expires in 10 minites by default
-        private int expireSeconds = 600;
         private String appId;
         private String appCert;
 
@@ -175,11 +162,6 @@ public class EMProperties {
         private EMProxy proxy;
         private int httpConnectionPoolSize = 10;
         private String serverTimezone = "+8";
-
-        public AgoraRealmBuilder setExpireSeconds(int expireSeconds) {
-            this.expireSeconds = expireSeconds;
-            return this;
-        }
 
         public AgoraRealmBuilder setAppId(String appId) {
             this.appId = appId;
@@ -233,7 +215,6 @@ public class EMProperties {
             }
             EMProperties properties = new EMProperties(Realm.AGORA_REALM, baseUri, appkey, proxy,
                     httpConnectionPoolSize, serverTimezone);
-            properties.setExpireSeconds(expireSeconds);
             properties.setAppId(appId);
             properties.setAppCert(appCert);
             return properties;

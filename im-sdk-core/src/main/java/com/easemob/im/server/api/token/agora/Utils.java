@@ -1,13 +1,12 @@
 package com.easemob.im.server.api.token.agora;
 
-import org.apache.commons.codec.binary.Base64;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Date;
 import java.util.zip.CRC32;
 import java.util.zip.Deflater;
@@ -17,6 +16,14 @@ public class Utils {
     public static final long HMAC_SHA256_LENGTH = 32;
     public static final int VERSION_LENGTH = 3;
     public static final int APP_ID_LENGTH = 32;
+
+    public static byte[] encode(byte[] src) {
+        return src.length == 0 ? src : Base64.getEncoder().encode(src);
+    }
+
+    public static byte[] decode(byte[] src) {
+        return src.length == 0 ? src : Base64.getDecoder().decode(src);
+    }
 
     public static byte[] hmacSign(String keyString, byte[] msg) throws InvalidKeyException, NoSuchAlgorithmException {
         SecretKeySpec keySpec = new SecretKeySpec(keyString.getBytes(), "HmacSHA256");
@@ -37,12 +44,12 @@ public class Utils {
     }
 
     public static String base64Encode(byte[] data) {
-        byte[] encodedBytes = Base64.encodeBase64(data);
+        byte[] encodedBytes = encode(data);
         return new String(encodedBytes);
     }
 
     public static byte[] base64Decode(String data) {
-        return Base64.decodeBase64(data.getBytes());
+        return decode(data.getBytes());
     }
 
     public static int crc32(String data) {
