@@ -351,6 +351,7 @@ class UserIT extends AbstractIT {
                 () -> this.service.user().create(randomUsername, randomPassword).block());
         String userId = this.service.user().getUUID(randomUsername).block();
         EMProperties.Realm realm = this.service.getContext().getProperties().getRealm();
+        // TODO: doc this confusion
         if (realm == EMProperties.Realm.AGORA_REALM) {
             assertDoesNotThrow(
                     () -> this.service.user()

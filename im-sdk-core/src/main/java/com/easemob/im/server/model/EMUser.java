@@ -15,15 +15,20 @@ public class EMUser extends EMEntity {
 
     private final String username;
 
-    private final String uuid;
-
     private final Boolean canLogin;
 
-    public EMUser(String username, String uuid, Boolean canLogin) {
+    // keep this for backwards compatibility
+    public EMUser(String username, Boolean canLogin) {
         super(EntityType.USER);
         super.id(username);
         this.username = username;
-        this.uuid = uuid;
+        this.canLogin = canLogin;
+    }
+
+    public EMUser(String username, String uuid, Boolean canLogin) {
+        super(EntityType.USER);
+        super.id(uuid);
+        this.username = username;
         this.canLogin = canLogin;
     }
 
@@ -54,7 +59,7 @@ public class EMUser extends EMEntity {
     }
 
     public String getUuid() {
-        return this.uuid;
+        return this.id();
     }
 
     public boolean getCanLogin() {
@@ -70,19 +75,19 @@ public class EMUser extends EMEntity {
             return false;
         }
         EMUser emUser = (EMUser) o;
-        return username.equals(emUser.username);
+        return getUsername().equals(emUser.getUsername()) && getUuid().equals(emUser.getUuid());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username);
+        return Objects.hash(getUsername(), getUuid());
     }
 
     @Override
     public String toString() {
         return "EMUser{" +
                 "username='" + username + '\'' +
-                ", uuid='" + uuid + '\'' +
+                ", uuid='" + id() + '\'' +
                 ", canLogin=" + canLogin +
                 '}';
     }
