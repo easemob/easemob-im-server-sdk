@@ -7,6 +7,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -15,20 +16,28 @@ public class AccessToken2Utils {
     private static final Logger log = LoggerFactory.getLogger(AccessToken2Utils.class);
     private static final String ERROR_MSG = "failed to build AccessToken2";
 
+    public static int toExpireOnSeconds(int expireInSeconds) {
+        return (int) (Instant.now().plusSeconds(expireInSeconds).toEpochMilli() / 1000);
+    }
+
     public static Consumer<AccessToken2> rtcPrivilegeAdder(
             String channelName, String uid,
-            AccessToken2.PrivilegeRtc privilegeRtc, int expireSeconds) {
+            AccessToken2.PrivilegeRtc privilegeRtc, int expireInSeconds) {
+        int expireOnSeconds = toExpireOnSeconds(expireInSeconds);
         return token -> {
             AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc(channelName, uid);
-            serviceRtc.addPrivilegeRtc(privilegeRtc, expireSeconds);
+            serviceRtc.addPrivilegeRtc(privilegeRtc, expireOnSeconds);
             token.addService(serviceRtc);
         };
     }
 
-    public static String buildAppToken(String appId, String appCert, int expire) {
-        AccessToken2 accessToken = new AccessToken2(appId, appCert, expire);
+    public static String buildAppToken(String appId, String appCert, int expireInSeconds) {
+        int expireOnSeconds = toExpireOnSeconds(expireInSeconds);
+        log.info("buildingAppToken with expireInSeconds = {}, expireOnSeconds = {}", expireInSeconds, expireOnSeconds);
+
+        AccessToken2 accessToken = new AccessToken2(appId, appCert, expireOnSeconds);
         AccessToken2.Service serviceChat = new AccessToken2.ServiceChat();
-        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP, expire);
+        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP, expireOnSeconds);
         accessToken.addService(serviceChat);
         try {
             return accessToken.build();
@@ -39,11 +48,12 @@ public class AccessToken2Utils {
     }
 
     public static String buildUserChatToken(String appId, String appCert,
-            String userId, int expire) {
+            String userId, int expireInSeconds) {
+        int expireOnSeconds = toExpireOnSeconds(expireInSeconds);
 
-        AccessToken2 accessToken = new AccessToken2(appId, appCert, expire);
+        AccessToken2 accessToken = new AccessToken2(appId, appCert, expireOnSeconds);
         AccessToken2.Service serviceChat = new AccessToken2.ServiceChat(userId);
-        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER, expire);
+        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER, expireOnSeconds);
         accessToken.addService(serviceChat);
 
         try {
@@ -55,11 +65,12 @@ public class AccessToken2Utils {
     }
 
     public static String buildUserCustomizedToken(String appId, String appCert, String userId,
-            int expire, Consumer<AccessToken2> tokenConfigurer) {
+            int expireInSeconds, Consumer<AccessToken2> tokenConfigurer) {
+        int expireOnSeconds = toExpireOnSeconds(expireInSeconds);
 
-        AccessToken2 accessToken = new AccessToken2(appId, appCert, expire);
+        AccessToken2 accessToken = new AccessToken2(appId, appCert, expireOnSeconds);
         AccessToken2.Service serviceChat = new AccessToken2.ServiceChat(userId);
-        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER, expire);
+        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER, expireOnSeconds);
         accessToken.addService(serviceChat);
 
         tokenConfigurer.accept(accessToken);

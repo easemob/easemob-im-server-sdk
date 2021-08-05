@@ -15,7 +15,7 @@ public interface TokenProvider {
         throw new EMNotImplementedException("not implemented");
     }
 
-    default Mono<Token> buildUserToken(String userId, int expireSeconds,
+    default Mono<Token> buildUserToken(String userId, int expireInSeconds,
             Consumer<AccessToken2> tokenConfigurer) throws Exception {
         throw new EMNotImplementedException("not implemented");
     }
