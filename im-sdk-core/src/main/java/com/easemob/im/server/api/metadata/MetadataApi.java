@@ -10,6 +10,7 @@ import com.easemob.im.server.model.EMMetadataUsage;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.List;
 
 /**
  * 用户属性API。
@@ -52,6 +53,18 @@ public class MetadataApi {
      */
     public Mono<EMMetadata> getMetadataFromUser(String username) {
         return this.metadataGet.fromUser(username);
+    }
+
+    /**
+     * 批量获取用户属性
+     *
+     * @param userNames 用户名列表
+     * @param propertyNames 属性名列表
+     * @return (用户名, 属性) Map
+     * @see <a href="https://docs-im.easemob.com/im/server/ready/usermetadata#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7">批量获取用户属性</a>
+     */
+    public Mono<Map<String, EMMetadata>> getMetadataFromUsers(List<String> userNames, List<String> propertyNames) {
+        return this.metadataGet.fromUsers(userNames, propertyNames);
     }
 
     /**

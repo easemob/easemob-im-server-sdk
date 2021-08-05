@@ -9,6 +9,10 @@ public class EMMetadata {
         this.data = data;
     }
 
+    public Map<String, String> getData() {
+        return data;
+    }
+
     @Override
     public String toString() {
         return "EMMetadata{" +
