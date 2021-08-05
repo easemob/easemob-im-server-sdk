@@ -14,7 +14,7 @@ public class AccessToken2UtilsTest {
     private static final String DUMMY_APP_CERT = "5CFd2fd1755d40ecb72977518be15d3b";
     private static final String DUMMY_USER_NAME = "test_user";
     private static final String DUMMY_USER_ID = "da9287a0-ecf9-11eb-9af3-296ff79acb67";
-    private static final int DUMMY_EXPIRE_SECONDS = 600;
+    private static final int DUMMY_EXPIRE_IN_SECONDS = 600;
 
     private static final AccessToken2.PrivilegeRtc DUMMY_RTC_PRIVILEGE =
             AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL;
@@ -23,44 +23,47 @@ public class AccessToken2UtilsTest {
 
     @Test
     public void buildAppToken() {
+        int expireOnSeconds = AccessToken2Utils.toExpireOnSeconds(DUMMY_EXPIRE_IN_SECONDS);
         String token = AccessToken2Utils.buildAppToken(DUMMY_APP_ID, DUMMY_APP_CERT,
-                DUMMY_EXPIRE_SECONDS);
+                DUMMY_EXPIRE_IN_SECONDS);
         AccessToken2 accessToken = new AccessToken2();
         accessToken.parse(token);
 
         assertEquals(DUMMY_APP_ID, accessToken.appId);
-        assertEquals(DUMMY_EXPIRE_SECONDS, accessToken.expire);
+        assertEquals(expireOnSeconds, accessToken.expire);
         assertEquals("", ((AccessToken2.ServiceChat) accessToken.services
                 .get(AccessToken2.SERVICE_TYPE_CHAT)).getUserId());
         assertEquals(
-                DUMMY_EXPIRE_SECONDS, (int) accessToken.services.get(AccessToken2.SERVICE_TYPE_CHAT)
+                expireOnSeconds, (int) accessToken.services.get(AccessToken2.SERVICE_TYPE_CHAT)
                         .getPrivileges().get(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP.intValue)
         );
     }
 
     @Test
     public void buildUserChatToken() {
+        int expireOnSeconds = AccessToken2Utils.toExpireOnSeconds(DUMMY_EXPIRE_IN_SECONDS);
         String token = AccessToken2Utils.buildUserChatToken(DUMMY_APP_ID, DUMMY_APP_CERT,
-                DUMMY_USER_NAME, DUMMY_EXPIRE_SECONDS);
+                DUMMY_USER_NAME, DUMMY_EXPIRE_IN_SECONDS);
         AccessToken2 accessToken = new AccessToken2();
         accessToken.parse(token);
 
         assertEquals(DUMMY_APP_ID, accessToken.appId);
-        assertEquals(DUMMY_EXPIRE_SECONDS, accessToken.expire);
+        assertEquals(expireOnSeconds, accessToken.expire);
         assertEquals(DUMMY_USER_NAME, ((AccessToken2.ServiceChat) accessToken.services
                 .get(AccessToken2.SERVICE_TYPE_CHAT)).getUserId());
         assertEquals(
-                DUMMY_EXPIRE_SECONDS, (int) accessToken.services.get(AccessToken2.SERVICE_TYPE_CHAT)
+                expireOnSeconds, (int) accessToken.services.get(AccessToken2.SERVICE_TYPE_CHAT)
                         .getPrivileges()
                         .get(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER.intValue));
     }
 
     @Test
     public void buildUserChatRtcToken() {
+        int expireOnSeconds = AccessToken2Utils.toExpireOnSeconds(DUMMY_EXPIRE_IN_SECONDS);
         String customizedTokenValue = AccessToken2Utils.buildUserCustomizedToken(
-                DUMMY_APP_ID, DUMMY_APP_CERT, DUMMY_USER_ID, DUMMY_EXPIRE_SECONDS,
+                DUMMY_APP_ID, DUMMY_APP_CERT, DUMMY_USER_ID, DUMMY_EXPIRE_IN_SECONDS,
                         AccessToken2Utils.rtcPrivilegeAdder(DUMMY_CHANNEL_NAME, DUMMY_UID,
-                                DUMMY_RTC_PRIVILEGE, DUMMY_EXPIRE_SECONDS)
+                                DUMMY_RTC_PRIVILEGE, DUMMY_EXPIRE_IN_SECONDS)
                 );
 
         AccessToken2 chatRtcToken = new AccessToken2();
@@ -77,7 +80,7 @@ public class AccessToken2UtilsTest {
         assertEquals(1, privilegesChat.size());
         int expireInTokenChat = privilegesChat
                 .get(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER.intValue);
-        assertEquals(DUMMY_EXPIRE_SECONDS, expireInTokenChat);
+        assertEquals(expireOnSeconds, expireInTokenChat);
 
         AccessToken2.Service service2 = services.get(AccessToken2.SERVICE_TYPE_RTC);
         AccessToken2.ServiceRtc serviceRtc = (AccessToken2.ServiceRtc) service2;
@@ -89,21 +92,22 @@ public class AccessToken2UtilsTest {
         assertEquals(1, privilegesRtc.size());
         int expireInTokenRtc = privilegesRtc
                 .get(AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL.intValue);
-        assertEquals(DUMMY_EXPIRE_SECONDS, expireInTokenRtc);
+        assertEquals(expireOnSeconds, expireInTokenRtc);
     }
 
     @Test
     public void buildInvalidUserToken() {
         // adding chat app privilege is not allowed
+        int expireOnSeconds = AccessToken2Utils.toExpireOnSeconds(DUMMY_EXPIRE_IN_SECONDS);
         assertThrows(EMForbiddenException.class, () -> {
             AccessToken2Utils.buildUserCustomizedToken(
-                    DUMMY_APP_ID, DUMMY_APP_CERT, DUMMY_USER_ID, DUMMY_EXPIRE_SECONDS,
+                    DUMMY_APP_ID, DUMMY_APP_CERT, DUMMY_USER_ID, DUMMY_EXPIRE_IN_SECONDS,
                     token -> {
                         AccessToken2.ServiceChat serviceChat =
                                 (AccessToken2.ServiceChat) token.services
                                         .get(AccessToken2.SERVICE_TYPE_CHAT);
                         serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP,
-                                DUMMY_EXPIRE_SECONDS);
+                                expireOnSeconds);
                     });
         });
     }

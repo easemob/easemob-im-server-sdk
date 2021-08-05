@@ -194,9 +194,9 @@ public class UserApi {
 
     // TODO: doc this confusion
     // TODO: here we have 2 ways of getting an user token and we need a better design
-    public Mono<Token> getToken (String userId, int expireSeconds,
+    public Mono<Token> getToken (String userId, int expireInSeconds,
             Consumer<AccessToken2> tokenConfigurer) throws Exception {
         return this.context.getTokenProvider()
-                .buildUserToken(userId, expireSeconds, tokenConfigurer);
+                .buildUserToken(userId, expireInSeconds, tokenConfigurer);
     }
 }
