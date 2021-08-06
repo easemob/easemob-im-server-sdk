@@ -34,7 +34,6 @@ public class TokenResponse {
             @JsonProperty("expires_in") Long expireInSeconds,
             @JsonProperty("expires_timestamp") Long expireEpochMilli) {
         TokenResponse tokenResponse = new TokenResponse(accessToken, expireInSeconds, expireEpochMilli);
-        log.debug("tokenResponse = {}", tokenResponse);
         return tokenResponse;
     }
 
