@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public class AgoraTokenProvider implements TokenProvider {
 
     private static final Logger log = LoggerFactory.getLogger(AgoraTokenProvider.class);
-    private static final int EXPIRE_IN_SECONDS = 20;
+    private static final int EXPIRE_IN_SECONDS = 3600;
 
     private final ExchangeTokenRequest exchangeTokenRequest = new ExchangeTokenRequest();
 
@@ -82,7 +82,7 @@ public class AgoraTokenProvider implements TokenProvider {
                                 .success(this.codec.encode(exchangeTokenRequest))))
                         .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf)))
                 .map(buf -> this.codec.decode(buf, TokenResponse.class))
-                .map(TokenResponse::asTokenWithEpochMilli);
+                .map(TokenResponse::asToken);
     }
 
     private Mono<String> buildAppTokenMono(String appId, String appCert) {

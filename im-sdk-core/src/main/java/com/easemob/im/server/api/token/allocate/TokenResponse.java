@@ -3,38 +3,53 @@ package com.easemob.im.server.api.token.allocate;
 import com.easemob.im.server.api.token.Token;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
 
 public class TokenResponse {
 
+    private static final Logger log = LoggerFactory.getLogger(TokenResponse.class);
+
     @JsonProperty("access_token")
     private final String accessToken;
 
-    // this can be TTL in seconds OR epochMilli
-    @JsonProperty("expires_in")
-    private final long expiresIn;
+    // epochInMilli
+    private final long expireEpochMilli;
 
-    private TokenResponse(String accessToken, long expiresIn) {
+    // TTL in seconds
+    private final long expireInSeconds;
+
+    private TokenResponse(String accessToken, Long expiresInSeconds, Long expireEpochMilli) {
         this.accessToken = accessToken;
-        this.expiresIn = expiresIn;
+        this.expireInSeconds = expiresInSeconds == null ? -1 : expiresInSeconds;
+        this.expireEpochMilli = expireEpochMilli == null ? -1 : expireEpochMilli;
     }
 
     @JsonCreator
-    public static TokenResponse of(@JsonProperty("access_token") String accessToken,
-            @JsonProperty("expires_in") long expiresIn) {
-        return new TokenResponse(accessToken, expiresIn);
-    }
-
-    public Token asTokenWithEpochMilli() {
-        long expireEpochMilli = this.expiresIn;
-        Instant expireAt = Instant.ofEpochMilli(expireEpochMilli);
-        return new Token(this.accessToken, expireAt);
+    public static TokenResponse of(
+            @JsonProperty("access_token") String accessToken,
+            @JsonProperty("expires_in") Long expireInSeconds,
+            @JsonProperty("expires_timestamp") Long expireEpochMilli) {
+        TokenResponse tokenResponse = new TokenResponse(accessToken, expireInSeconds, expireEpochMilli);
+        log.debug("tokenResponse = {}", tokenResponse);
+        return tokenResponse;
     }
 
     public Token asToken() {
-        Instant expireAt = Instant.now().plus(Duration.ofSeconds(this.expiresIn));
+        Instant expireAt = Instant.now().plus(Duration.ofSeconds(this.expireInSeconds));
         return new Token(this.accessToken, expireAt);
     }
+
+    @Override
+    public String toString() {
+        return "TokenResponse{" +
+                "accessToken='" + accessToken + '\'' +
+                ", expireEpochMilli=" + expireEpochMilli +
+                ", expireInSeconds=" + expireInSeconds +
+                '}';
+    }
+
 }
