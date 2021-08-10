@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,14 +26,14 @@ public class UpdateUserPasswordTest extends AbstractApiTest {
     @Test
     public void testUserPasswordReset() {
         assertDoesNotThrow(() -> {
-            this.updateUserPassword.update("username", "password").block(Duration.ofSeconds(3));
+            this.updateUserPassword.update("username", "password").block(Utilities.UT_TIMEOUT);
         });
     }
 
     @Test
     public void testNonRegisteredUserPasswordReset() {
         assertThrows(EMNotFoundException.class, () -> {
-            this.updateUserPassword.update("power", "password").block(Duration.ofSeconds(3));
+            this.updateUserPassword.update("power", "password").block(Utilities.UT_TIMEOUT);
         });
     }
 

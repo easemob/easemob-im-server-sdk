@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,7 +25,7 @@ class GroupAdminListTest extends AbstractApiTest {
     @Test
     void testListGroupAdmin() {
         Set<String> admins = this.groupAdminList.all("1").collect(Collectors.toSet())
-                .block(Duration.ofSeconds(3));
+                .block(Utilities.UT_TIMEOUT);
         assertTrue(admins.contains("madhat"));
         assertTrue(admins.contains("rabbit"));
     }

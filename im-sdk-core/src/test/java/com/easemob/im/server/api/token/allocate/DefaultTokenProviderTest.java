@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +37,7 @@ public class DefaultTokenProviderTest extends AbstractApiTest {
 
     @Test
     public void testFetchAppToken() {
-        Token appToken = this.tokenProvider.fetchAppToken().block(Duration.ofSeconds(3));
+        Token appToken = this.tokenProvider.fetchAppToken().block(Utilities.UT_TIMEOUT);
         assertEquals("access_token", appToken.getValue());
         assertTrue(appToken.isValid());
     }
@@ -46,14 +46,6 @@ public class DefaultTokenProviderTest extends AbstractApiTest {
         return this.objectMapper.createObjectNode()
                 .put("access_token", "access_token")
                 .put("expires_in", 3600);
-    }
-
-    @Test
-    public void testFetchUserToken() {
-        Token appToken = this.tokenProvider.fetchUserToken("username", "password")
-                .block(Duration.ofSeconds(3));
-        assertEquals("access_token", appToken.getValue());
-        assertTrue(appToken.isValid());
     }
 
 }

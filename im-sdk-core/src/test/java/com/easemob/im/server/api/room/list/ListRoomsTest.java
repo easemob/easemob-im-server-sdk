@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,7 +69,7 @@ class ListRoomsTest extends AbstractApiTest {
 
     @Test
     void testListAll() {
-        List<String> rooms = this.listRooms.all(2).collectList().block(Duration.ofSeconds(3));
+        List<String> rooms = this.listRooms.all(2).collectList().block(Utilities.UT_TIMEOUT);
         assertEquals(3, rooms.size());
         assertEquals("r1", rooms.get(0));
         assertEquals("r2", rooms.get(1));
@@ -78,20 +78,20 @@ class ListRoomsTest extends AbstractApiTest {
 
     @Test
     void testListFirstPage() {
-        EMPage<String> page = this.listRooms.next(2, null).block(Duration.ofSeconds(3));
+        EMPage<String> page = this.listRooms.next(2, null).block(Utilities.UT_TIMEOUT);
         assertEquals(2, page.getValues().size());
     }
 
     @Test
     void testListSecondPage() {
-        EMPage<String> page = this.listRooms.next(2, "1").block(Duration.ofSeconds(3));
+        EMPage<String> page = this.listRooms.next(2, "1").block(Utilities.UT_TIMEOUT);
         assertEquals(1, page.getValues().size());
     }
 
     @Test
     void testListUserJoined() {
         List<String> rooms =
-                this.listRooms.userJoined("alice").collectList().block(Duration.ofSeconds(3));
+                this.listRooms.userJoined("alice").collectList().block(Utilities.UT_TIMEOUT);
         assertEquals(2, rooms.size());
         assertEquals("r1", rooms.get(0));
         assertEquals("r2", rooms.get(1));

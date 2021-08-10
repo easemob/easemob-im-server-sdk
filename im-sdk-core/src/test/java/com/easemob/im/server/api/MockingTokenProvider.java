@@ -13,9 +13,4 @@ public class MockingTokenProvider implements TokenProvider {
         return Mono.just(new Token("token", Instant.MAX));
     }
 
-    @Override
-    public Mono<Token> fetchUserToken(String username, String password) {
-        return Mono.just(new Token("token", Instant.MAX));
-    }
-
 }

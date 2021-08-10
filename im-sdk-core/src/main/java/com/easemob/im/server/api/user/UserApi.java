@@ -3,6 +3,9 @@ package com.easemob.im.server.api.user;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.token.Token;
 import com.easemob.im.server.api.token.agora.AccessToken2;
+import com.easemob.im.server.api.token.allocate.TokenRequest;
+import com.easemob.im.server.api.token.allocate.TokenResponse;
+import com.easemob.im.server.api.token.allocate.UserTokenRequest;
 import com.easemob.im.server.api.user.create.CreateUser;
 import com.easemob.im.server.api.user.forcelogout.ForceLogoutUser;
 import com.easemob.im.server.api.user.get.UserGet;
@@ -123,10 +126,6 @@ public class UserApi {
         return this.userGet.single(username);
     }
 
-    public Mono<String> getUUID(String username) {
-        return this.get(username).map(EMUser::getUuid);
-    }
-
     /**
      * 修改用户密码。
      *
@@ -189,14 +188,19 @@ public class UserApi {
      * @return 返回token或失败
      */
     public Mono<Token> getToken(String username, String password) {
-        return this.context.getTokenProvider().fetchUserToken(username, password);
+        return fetchUserTokenWithEasemobRealm(UserTokenRequest.of(username, password));
     }
 
-    // TODO: doc this confusion
-    // TODO: here we have 2 ways of getting an user token and we need a better design
-    public Mono<Token> getToken (String userId, int expireInSeconds,
-            Consumer<AccessToken2> tokenConfigurer) throws Exception {
-        return this.context.getTokenProvider()
-                .buildUserToken(userId, expireInSeconds, tokenConfigurer);
+    // TODO: put this into an entity
+    private Mono<Token> fetchUserTokenWithEasemobRealm(TokenRequest tokenRequest) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/token")
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(tokenRequest))))
+                        .responseSingle(
+                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, TokenResponse.class))
+                .map(TokenResponse::asToken);
     }
 }

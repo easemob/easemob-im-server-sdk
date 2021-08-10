@@ -1,7 +1,6 @@
 package com.easemob.im.server.api.block.room.msg.block;
 
 import com.easemob.im.server.api.AbstractApiTest;
-import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroup;
 import com.easemob.im.server.api.block.room.msg.list.ListUsersBlockedSendMsgToRoom;
 import com.easemob.im.server.api.block.room.msg.unblock.UnblockUserSendMsgToRoom;
 import com.easemob.im.server.exception.EMUnknownException;
@@ -10,6 +9,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
+
+import com.easemob.im.server.api.util.Utilities;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -118,7 +119,7 @@ class BlockUserSendMsgToRoomTest extends AbstractApiTest {
     @Test
     void testGetBlockedUsers() {
         List<EMBlock> blocks = this.listUsersBlockedSendMsgToRoom.all("1").collectList()
-                .block(Duration.ofSeconds(3));
+                .block(Utilities.UT_TIMEOUT);
         assertEquals(2, blocks.size());
         assertTrue(blocks.contains(new EMBlock("alice", Instant.ofEpochMilli(1000000))));
         assertTrue(blocks.contains(new EMBlock("rabbit", Instant.ofEpochMilli(1000000))));
@@ -127,34 +128,34 @@ class BlockUserSendMsgToRoomTest extends AbstractApiTest {
     @Test
     void testBlockUserSuccess() {
         assertDoesNotThrow(() -> this.blockUserSendMsgToRoom.single("alice", "1", null)
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testBlockUserFail() {
         assertThrows(EMUnknownException.class,
                 () -> this.blockUserSendMsgToRoom.single("alice", "2", null)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testBlockUserMaxDuration() {
         assertDoesNotThrow(() -> this.blockUserSendMsgToRoom
                 .single("alice", "1", Duration.ofMillis(Integer.MAX_VALUE))
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testUnblockUserSuccess() {
         assertDoesNotThrow(() -> this.unblockUserSendMsgToRoom.single("alice", "1")
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testUnblockUserFail() {
         assertThrows(EMUnknownException.class,
                 () -> this.unblockUserSendMsgToRoom.single("alice", "2")
-                        .block(Duration.ofSeconds(3)));
+                        .block(Utilities.UT_TIMEOUT));
     }
 
 }

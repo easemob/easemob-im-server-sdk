@@ -4,7 +4,7 @@ import com.easemob.im.server.api.AbstractApiTest;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,14 +20,14 @@ class GroupMemberRemoveTest extends AbstractApiTest {
     @Test
     void testRemoveGroupMember() {
         assertDoesNotThrow(() -> {
-            this.groupMemberRemove.single("1", "alice").block(Duration.ofSeconds(3));
+            this.groupMemberRemove.single("1", "alice").block(Utilities.UT_TIMEOUT);
         });
     }
 
     @Test
     void testRemoveGroupMemberNotFound() {
         assertDoesNotThrow(() -> {
-            this.groupMemberRemove.single("1", "bob").block(Duration.ofSeconds(3));
+            this.groupMemberRemove.single("1", "bob").block(Utilities.UT_TIMEOUT);
         });
     }
 

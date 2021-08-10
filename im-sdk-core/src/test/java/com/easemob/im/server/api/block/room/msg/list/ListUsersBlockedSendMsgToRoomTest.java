@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.time.Instant;
 import java.util.List;
 
@@ -45,7 +45,7 @@ class ListUsersBlockedSendMsgToRoomTest extends AbstractApiTest {
     @Test
     void testListUsersBlockedSendMsgToRoom() {
         List<EMBlock> blocks = this.listUsersBlockedSendMsgToRoom.all("r1").collectList()
-                .block(Duration.ofSeconds(3));
+                .block(Utilities.UT_TIMEOUT);
         assertEquals(2, blocks.size());
         assertEquals(new EMBlock("rabbit", Instant.ofEpochMilli(1000000)), blocks.get(0));
         assertEquals(new EMBlock("madhat", Instant.ofEpochMilli(1000000)), blocks.get(1));

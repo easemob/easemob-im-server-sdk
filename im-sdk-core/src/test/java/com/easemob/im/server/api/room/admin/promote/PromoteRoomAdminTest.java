@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,6 +32,6 @@ class PromoteRoomAdminTest extends AbstractApiTest {
     @Test
     void testPromoteRoomAdmin() {
         assertDoesNotThrow(
-                () -> this.promoteRoomAdmin.single("r1", "rabbit").block(Duration.ofSeconds(3)));
+                () -> this.promoteRoomAdmin.single("r1", "rabbit").block(Utilities.UT_TIMEOUT));
     }
 }

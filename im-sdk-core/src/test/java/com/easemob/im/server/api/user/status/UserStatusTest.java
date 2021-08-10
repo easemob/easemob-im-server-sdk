@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,7 +21,7 @@ public class UserStatusTest extends AbstractApiTest {
 
     @Test
     public void testUserStatusSingle() {
-        boolean aliceIsOnline = this.userStatus.isUserOnline("alice").block(Duration.ofSeconds(3));
+        boolean aliceIsOnline = this.userStatus.isUserOnline("alice").block(Utilities.UT_TIMEOUT);
         assertEquals(true, aliceIsOnline);
     }
 

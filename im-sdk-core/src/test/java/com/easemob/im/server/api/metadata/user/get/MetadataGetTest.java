@@ -1,11 +1,11 @@
 package com.easemob.im.server.api.metadata.user.get;
 
 import com.easemob.im.server.api.AbstractApiTest;
+import com.easemob.im.server.api.util.Utilities;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +18,7 @@ class MetadataGetTest extends AbstractApiTest {
 
     @Test
     public void testMetadataGet() {
-        assertDoesNotThrow(() -> this.metadataGet.fromUser("bob").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.metadataGet.fromUser("bob").block(Utilities.UT_TIMEOUT));
     }
 
     public JsonNode handleMetadataGet(JsonNode req) {

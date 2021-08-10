@@ -4,7 +4,7 @@ import com.easemob.im.server.api.AbstractApiTest;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,14 +19,14 @@ class DeleteGroupTest extends AbstractApiTest {
     @Test
     public void testGroupDeleteSuccess() {
         assertDoesNotThrow(() -> {
-            this.deleteGroup.execute("1").block(Duration.ofSeconds(3));
+            this.deleteGroup.execute("1").block(Utilities.UT_TIMEOUT);
         });
     }
 
     @Test
     public void testGroupDeleteNotFoundAlsoSuccess() {
         assertDoesNotThrow(() -> {
-            this.deleteGroup.execute("2").block(Duration.ofSeconds(3));
+            this.deleteGroup.execute("2").block(Utilities.UT_TIMEOUT);
         });
     }
 

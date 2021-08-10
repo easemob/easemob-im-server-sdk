@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
+import com.easemob.im.server.api.util.Utilities;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -109,7 +111,7 @@ class BlockUserSendMsgToGroupTest extends AbstractApiTest {
     @Test
     void testGetBlockedUsers() {
         List<EMBlock> blocks = this.blockUserSendMsgToGroup.getBlockedUsers("1").collectList()
-                .block(Duration.ofSeconds(3));
+                .block(Utilities.UT_TIMEOUT);
         assertEquals(2, blocks.size());
         assertTrue(blocks.contains(new EMBlock("alice", Instant.ofEpochMilli(1000000))));
         assertTrue(blocks.contains(new EMBlock("rabbit", Instant.ofEpochMilli(1000000))));
@@ -118,34 +120,34 @@ class BlockUserSendMsgToGroupTest extends AbstractApiTest {
     @Test
     void testBlockUserSuccess() {
         assertDoesNotThrow(() -> this.blockUserSendMsgToGroup.blockUser("alice", "1", null)
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testBlockUserFail() {
         assertThrows(EMUnknownException.class,
                 () -> this.blockUserSendMsgToGroup.blockUser("alice", "2", null)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testBlockUserMaxDuration() {
         assertDoesNotThrow(() -> this.blockUserSendMsgToGroup
                 .blockUser("alice", "1", Duration.ofMillis(Integer.MAX_VALUE))
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testUnblockUserSuccess() {
         assertDoesNotThrow(() -> this.blockUserSendMsgToGroup.unblockUser("alice", "1")
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testUnblockUserFail() {
         assertThrows(EMUnknownException.class,
                 () -> this.blockUserSendMsgToGroup.unblockUser("alice", "2")
-                        .block(Duration.ofSeconds(3)));
+                        .block(Utilities.UT_TIMEOUT));
     }
 
 }

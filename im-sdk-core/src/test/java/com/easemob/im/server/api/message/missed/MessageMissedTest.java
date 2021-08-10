@@ -8,8 +8,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class MessageMissedTest extends AbstractApiTest {
 
     public MessageMissedTest() {

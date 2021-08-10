@@ -55,11 +55,6 @@ public class DefaultTokenProvider implements TokenProvider {
         return this.appToken;
     }
 
-    @Override
-    public Mono<Token> fetchUserToken(String username, String password) {
-        return fetchToken(UserTokenRequest.of(username, password));
-    }
-
     private Mono<Token> fetchToken(TokenRequest tokenRequest) {
         return endpointRegistry.endpoints()
                 .map(this.loadBalancer::loadBalance)

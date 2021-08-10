@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,6 +37,6 @@ class UnblockUserSendMsgToRoomTest extends AbstractApiTest {
     @Test
     void testUnblockUserSendMsgToRoom() {
         assertDoesNotThrow(() -> this.unblockUserSendMsgToRoom.single("rabbit", "r1")
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 }

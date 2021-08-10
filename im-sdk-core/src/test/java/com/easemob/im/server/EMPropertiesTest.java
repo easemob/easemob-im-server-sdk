@@ -11,11 +11,11 @@ public class EMPropertiesTest {
     private static final String DUMMY_APP_KEY = "dummyOrg#dummyApp";
     private static final String DUMMY_CLIENT_ID = "dummyClientId";
     private static final String DUMMY_CLIENT_SECRET = "dummyClientSecret";
-    private static final String DUMMY_APP_ID = "970CA35de60c44645bbae8a215061b33";
-    private static final String DUMMY_APP_CERT = "5CFd2fd1755d40ecb72977518be15d3b";
+    private static final String DUMMY_APP_ID = "dummyAppId";
+    private static final String DUMMY_APP_CERT = "dummyAppCert";
 
     @Test
-    public void buildProperties() {
+    public void buildDefaultProperties() {
         EMProperties properties = EMProperties.builder()
                 .setAppkey(DUMMY_APP_KEY)
                 .setClientId(DUMMY_CLIENT_ID)
@@ -28,7 +28,8 @@ public class EMPropertiesTest {
 
     @Test
     public void buildEasemobRealmProperties() {
-        EMProperties properties = EMProperties.easemobRealmBuilder()
+        EMProperties properties = EMProperties.builder()
+                .setRealm(EMProperties.Realm.EASEMOB_REALM)
                 .setAppkey(DUMMY_APP_KEY)
                 .setClientId(DUMMY_CLIENT_ID)
                 .setClientSecret(DUMMY_CLIENT_SECRET)
@@ -40,7 +41,8 @@ public class EMPropertiesTest {
 
     @Test
     public void buildAgoraRealmProperties() {
-        EMProperties properties = EMProperties.agoraRealmBuilder()
+        EMProperties properties = EMProperties.builder()
+                .setRealm(EMProperties.Realm.AGORA_REALM)
                 .setAppkey(DUMMY_APP_KEY)
                 .setAppId(DUMMY_APP_ID)
                 .setAppCert(DUMMY_APP_CERT)

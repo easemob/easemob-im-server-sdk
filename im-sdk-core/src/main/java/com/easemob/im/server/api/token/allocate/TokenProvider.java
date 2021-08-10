@@ -11,12 +11,4 @@ public interface TokenProvider {
 
     Mono<Token> fetchAppToken();
 
-    default Mono<Token> fetchUserToken(String username, String password) {
-        throw new EMNotImplementedException("not implemented");
-    }
-
-    default Mono<Token> buildUserToken(String userId, int expireInSeconds,
-            Consumer<AccessToken2> tokenConfigurer) throws Exception {
-        throw new EMNotImplementedException("not implemented");
-    }
 }

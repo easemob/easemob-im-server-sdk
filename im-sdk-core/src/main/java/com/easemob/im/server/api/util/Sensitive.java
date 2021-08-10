@@ -5,7 +5,4 @@ public class Sensitive {
     private Sensitive() {
     }
 
-    public static String mask(String text) {
-        return text.replaceAll(".", "*");
-    }
 }

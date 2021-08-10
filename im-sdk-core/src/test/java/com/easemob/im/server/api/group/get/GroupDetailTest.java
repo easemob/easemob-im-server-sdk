@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,7 +21,7 @@ class GroupDetailTest extends AbstractApiTest {
 
     @Test
     public void testGroupDetails() {
-        EMGroup detail = this.getGroup.execute("1").block(Duration.ofSeconds(3));
+        EMGroup detail = this.getGroup.execute("1").block(Utilities.UT_TIMEOUT);
         assertEquals("1", detail.getGroupId());
         assertEquals("test-group", detail.getName());
         assertEquals("test-description", detail.getDescription());
