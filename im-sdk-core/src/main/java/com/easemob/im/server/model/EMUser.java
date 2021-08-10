@@ -18,6 +18,7 @@ public class EMUser extends EMEntity {
     private final Boolean canLogin;
 
     // keep this for backwards compatibility
+    @Deprecated
     public EMUser(String username, Boolean canLogin) {
         super(EntityType.USER);
         super.id(username);

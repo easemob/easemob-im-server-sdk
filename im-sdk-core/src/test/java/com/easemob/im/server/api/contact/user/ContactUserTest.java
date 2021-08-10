@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class ContactUserTest extends AbstractApiTest {
     @Test
     public void testListContacts() {
         Set<String> contacts = this.contactUser.list("alice").collect(Collectors.toSet())
-                .block(Duration.ofSeconds(3));
+                .block(Utilities.UT_TIMEOUT);
         assertEquals(3, contacts.size());
         assertTrue(contacts.contains("queen"));
         assertTrue(contacts.contains("madhat"));

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -31,6 +31,6 @@ class DeleteRoomTest extends AbstractApiTest {
 
     @Test
     void testDeleteRoom() {
-        assertDoesNotThrow(() -> this.deleteRoom.byId("r1").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.deleteRoom.byId("r1").block(Utilities.UT_TIMEOUT));
     }
 }

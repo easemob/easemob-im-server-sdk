@@ -9,4 +9,7 @@ public class ExchangeTokenRequest implements TokenRequest {
     private final String grantType = "agora";
     @JsonCreator
     public ExchangeTokenRequest(){}
+    public static ExchangeTokenRequest getInstance() {
+        return new ExchangeTokenRequest();
+    }
 }

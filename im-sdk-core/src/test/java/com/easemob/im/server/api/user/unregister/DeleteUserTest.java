@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,12 +26,12 @@ class DeleteUserTest extends AbstractApiTest {
 
     @Test
     void testUserUnregisterSingle() {
-        assertDoesNotThrow(() -> this.deleteUser.single("username").block(Duration.ofSeconds(3)));
+        assertDoesNotThrow(() -> this.deleteUser.single("username").block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     public void testUserUnregisterAll() {
-        List<String> users = this.deleteUser.all(100).collectList().block(Duration.ofSeconds(3));
+        List<String> users = this.deleteUser.all(100).collectList().block(Utilities.UT_TIMEOUT);
         assertEquals(200, users.size());
         for (int i = 0; i < 200; i++) {
             assertEquals("username", users.get(i));

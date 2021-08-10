@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,7 +23,7 @@ public class MessageStatusTest extends AbstractApiTest {
     public void testMessageStatus() {
         boolean messageIsDelivered =
                 this.messageStatus.isMessageDeliveredToUser("123456789", "alice")
-                        .block(Duration.ofSeconds(3));
+                        .block(Utilities.UT_TIMEOUT);
         assertEquals(true, messageIsDelivered);
     }
 

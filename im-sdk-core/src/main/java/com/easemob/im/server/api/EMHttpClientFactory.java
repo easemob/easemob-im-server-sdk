@@ -15,8 +15,17 @@ import java.net.InetSocketAddress;
 public class EMHttpClientFactory {
 
     private static final String HTTP_LOG_FORMAT = System.getenv("IM_HTTP_LOG_FORMAT");
-    private static final AdvancedByteBufFormat FORMAT = "CONTENT".equals(HTTP_LOG_FORMAT) ?
-            AdvancedByteBufFormat.TEXTUAL : AdvancedByteBufFormat.SIMPLE;
+
+    private static AdvancedByteBufFormat toFormat(String formatValue) {
+        if ("HEX_DUMP".equals(formatValue)) {
+            return AdvancedByteBufFormat.HEX_DUMP;
+        } else if ("TEXTUAL".equals(formatValue)) {
+            return AdvancedByteBufFormat.TEXTUAL;
+        } else {
+            // by default use simple to hide http contents since they might include sensitive data
+            return AdvancedByteBufFormat.SIMPLE;
+        }
+    }
 
     public static HttpClient create(EMProperties properties) {
         ConnectionProvider connectionProvider =
@@ -24,7 +33,7 @@ public class EMHttpClientFactory {
         HttpClient httpClient = HttpClient.create(connectionProvider)
                 .headers(headers -> headers.add("User-Agent",
                         String.format("EasemobServerSDK/%s", EMVersion.getVersion())))
-                .wiretap("com.easemob.im.http", LogLevel.DEBUG, FORMAT);
+                .wiretap("com.easemob.im.http", LogLevel.DEBUG, toFormat(HTTP_LOG_FORMAT));
         EMProxy proxyInfo = properties.getProxy();
         if (proxyInfo == null) {
             return httpClient;

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +25,7 @@ class ForceLogoutUserTest extends AbstractApiTest {
     @Test
     public void testForceLogoutByUsername() {
         assertDoesNotThrow(() -> {
-            this.forceLogoutUser.byUsername("alice").block(Duration.ofSeconds(3));
+            this.forceLogoutUser.byUsername("alice").block(Utilities.UT_TIMEOUT);
         });
     }
 
@@ -33,7 +33,7 @@ class ForceLogoutUserTest extends AbstractApiTest {
     public void testForceLogoutByUsernameAndResource() {
         assertThrows(EMInternalServerErrorException.class, () -> {
             this.forceLogoutUser.byUsernameAndResource("alice", "slippers")
-                    .block(Duration.ofSeconds(3));
+                    .block(Utilities.UT_TIMEOUT);
         });
     }
 

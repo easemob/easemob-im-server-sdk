@@ -12,7 +12,7 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.ProxyProvider;
 
 import java.net.InetSocketAddress;
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,7 +32,7 @@ public class UserGetTest extends AbstractApiTest {
 
     @Test
     public void testUserGetSingle() {
-        EMUser user = this.userGet.single(DUMMY_USER_NAME).block(Duration.ofSeconds(3));
+        EMUser user = this.userGet.single(DUMMY_USER_NAME).block(Utilities.UT_TIMEOUT);
         assertEquals(DUMMY_USER_NAME, user.getUsername());
         assertEquals(DUMMY_USER_UUID, user.getUuid());
         assertEquals(DUMMY_USER_ACTIVATED, user.getCanLogin());
@@ -50,7 +50,7 @@ public class UserGetTest extends AbstractApiTest {
                         .address(new InetSocketAddress(proxyInfo.getIp(), proxyInfo.getPort())))));
 
         assertThrows(RuntimeException.class,
-                () -> this.userGet.single("username").block(Duration.ofSeconds(3)));
+                () -> this.userGet.single("username").block(Utilities.UT_TIMEOUT));
     }
 
     private JsonNode handleUserGetSingle(JsonNode req) {

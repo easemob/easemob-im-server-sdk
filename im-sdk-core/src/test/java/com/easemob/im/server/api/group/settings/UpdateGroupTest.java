@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,14 +27,14 @@ class UpdateGroupTest extends AbstractApiTest {
     public void testGroupUpdateSuccess() {
         assertDoesNotThrow(
                 () -> this.updateGroup.update("1", settings -> settings.setMaxMembers(10))
-                        .block(Duration.ofSeconds(3)));
+                        .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     public void testGroupUpdateFailure() {
         assertThrows(EMUnknownException.class, () -> this.updateGroup.update("2",
                 settings -> settings.setMaxMembers(1000000).setCanMemberInviteOthers(false))
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     private JsonNode handleGroupUpdateRequestSuccess(JsonNode jsonNode) {
@@ -58,7 +58,7 @@ class UpdateGroupTest extends AbstractApiTest {
     @Test
     void testUpdateGroupOwner() {
         assertDoesNotThrow(() -> {
-            this.updateGroup.updateOwner("3", "rabbit").block(Duration.ofSeconds(3));
+            this.updateGroup.updateOwner("3", "rabbit").block(Utilities.UT_TIMEOUT);
         });
     }
 

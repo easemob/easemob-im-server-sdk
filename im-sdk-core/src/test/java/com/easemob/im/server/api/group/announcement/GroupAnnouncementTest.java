@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,14 +22,14 @@ class GroupAnnouncementTest extends AbstractApiTest {
 
     @Test
     public void testGroupAnnouncementGet() {
-        String announcement = this.groupAnnouncement.get("1").block(Duration.ofSeconds(3));
+        String announcement = this.groupAnnouncement.get("1").block(Utilities.UT_TIMEOUT);
         assertEquals("Hello World", announcement);
     }
 
     @Test
     public void testGroupAnnouncementSet() {
         assertDoesNotThrow(
-                () -> this.groupAnnouncement.set("1", "你好,世界").block(Duration.ofSeconds(3)));
+                () -> this.groupAnnouncement.set("1", "你好,世界").block(Utilities.UT_TIMEOUT));
     }
 
     private JsonNode handleGroupAnnouncementGetRequest(JsonNode jsonNode) {

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ class MetadataSetUserTest extends AbstractApiTest {
     public void testMetadataSet() {
         Map<String, String> map = new HashMap<>();
         assertDoesNotThrow(
-                () -> this.metadataSetUser.toUser("bob", map).block(Duration.ofSeconds(3)));
+                () -> this.metadataSetUser.toUser("bob", map).block(Utilities.UT_TIMEOUT));
     }
 
     public JsonNode handleMetadataSet(JsonNode req) {

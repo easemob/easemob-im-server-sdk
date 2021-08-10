@@ -1,5 +1,6 @@
 package com.easemob.im.server;
 
+import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMUnsupportedEncodingException;
@@ -8,57 +9,14 @@ import org.apache.logging.log4j.util.Strings;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-/**
- * Server SDK配置类
- */
 public class EMProperties {
-    
-    private static void validateAppkey(String appkey) {
-        if (Strings.isBlank(appkey)) {
-            throw new EMInvalidArgumentException("appkey must not be null or blank");
-        }
-        String[] tokens = appkey.split("#");
-        if (tokens.length != 2) {
-            throw new EMInvalidArgumentException("appkey must contains #");
-        }
-        if (tokens[0].isEmpty()) {
-            throw new EMInvalidArgumentException("appkey must contains {org}");
-        }
-        if (tokens[1].isEmpty()) {
-            throw new EMInvalidArgumentException("appkey must contains {app}");
-        }
-    }
-
-    // Easemob Realm only fields
-    private String clientId;
-    private String clientSecret;
-
-    // Agora Realm only fields
-    private String appId;
-    private String appCert;
 
     private final Realm realm;
+    private final Credentials credentials;
     private final String baseUri;
-    private final String appkey;
     private final EMProxy proxy;
     private final int httpConnectionPoolSize;
     private final String serverTimezone;
-
-    @Override
-    public String toString() {
-        return "EMProperties{" +
-                "clientId='" + clientId + '\'' +
-                ", clientSecret='" + clientSecret + '\'' +
-                ", appId='" + appId + '\'' +
-                ", appCert='" + appCert + '\'' +
-                ", realm=" + realm +
-                ", baseUri='" + baseUri + '\'' +
-                ", appkey='" + appkey + '\'' +
-                ", proxy=" + proxy +
-                ", httpConnectionPoolSize=" + httpConnectionPoolSize +
-                ", serverTimezone='" + serverTimezone + '\'' +
-                '}';
-    }
 
     public enum Realm {
         AGORA_REALM(1),
@@ -70,78 +28,58 @@ public class EMProperties {
         }
     }
 
-    // keep this for backwards compatibility
-    public static EasemobRealmBuilder builder() {
-        return new EasemobRealmBuilder();
-    }
-
-    public static EasemobRealmBuilder easemobRealmBuilder() {
-        return new EasemobRealmBuilder();
-    }
-
-    public static AgoraRealmBuilder agoraRealmBuilder() {
-        return new AgoraRealmBuilder();
-    }
-
-    // preserve this for backwards compatibility
-    public EMProperties(String baseUri, String appkey, EMProxy proxy, String clientId,
-            String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
-        // easemob realm by default
-        this(Realm.EASEMOB_REALM, baseUri, appkey, proxy, httpConnectionPoolSize, serverTimezone);
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-    }
-
-    private EMProperties(Realm realm, String baseUri, String appkey, EMProxy proxy,
-            int httpConnectionPoolSize, String serverTimezone) {
+    private EMProperties(Realm realm, Credentials credentials, String baseUri, EMProxy proxy, int httpConnectionPoolSize, String serverTimezone) {
         this.realm = realm;
+        this.credentials = credentials;
         this.baseUri = baseUri;
-        this.appkey = appkey;
         this.proxy = proxy;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
         this.serverTimezone = serverTimezone;
     }
 
-    private void setClientId(String clientId) {
-        this.clientId = clientId;
+    @Deprecated
+    // TODO: And, we need to inform developers what to use instead, and why.
+    public EMProperties(String baseUri, String appKey, EMProxy proxy, String clientId,
+            String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+        this.realm = Realm.EASEMOB_REALM;
+        this.credentials = new EasemobAppCredentials(appKey, clientId, clientSecret);
+        this.baseUri = baseUri;
+        this.proxy = proxy;
+        this.httpConnectionPoolSize = httpConnectionPoolSize;
+        this.serverTimezone = serverTimezone;
     }
 
-    private void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+    public String getAppkey() {
+        return this.credentials.getAppKey();
     }
-
-    private void setAppId(String appId) {
-        if (Strings.isBlank(appId)) {
-            throw new EMInvalidArgumentException("appId must not be null or blank");
-        }
-        this.appId = appId;
+    public String getClientId() {
+        return this.credentials.getClientId();
     }
-
-    private void setAppCert(String appCert) {
-        if (Strings.isBlank(appCert)) {
-            throw new EMInvalidArgumentException("appCert must not be null or blank");
-        }
-        this.appCert = appCert;
+    public String getClientSecret() {
+        return this.credentials.getClientSecret();
+    }
+    public String getAppId() {
+        return this.credentials.getAppId();
+    }
+    public String getAppCert() {
+        return this.credentials.getAppCert();
     }
 
     public Realm getRealm() {
         return realm;
     }
 
-    public String getAppId() {
-        return this.appId;
+    public Credentials getCredentials() {
+        return credentials;
     }
 
-    public String getAppCert() {
-        return this.appCert;
+    // easemob realm by default
+    public static Builder builder() {
+        return new Builder().setRealm(Realm.EASEMOB_REALM);
     }
 
     public String getBaseUri() {
         return baseUri;
-    }
-
-    public String getAppkey() {
-        return this.appkey;
     }
 
     public EMProxy getProxy() {
@@ -150,22 +88,14 @@ public class EMProperties {
 
     public String getAppkeyUrlEncoded() {
         try {
-            return URLEncoder.encode(this.appkey, "UTF-8");
+            return URLEncoder.encode(this.credentials.getAppKey(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new EMUnsupportedEncodingException(e.getMessage());
         }
     }
 
     public String getAppkeySlashDelimited() {
-        return this.appkey.replace('#', '/');
-    }
-
-    public String getClientId() {
-        return this.clientId;
-    }
-
-    public String getClientSecret() {
-        return this.clientSecret;
+        return this.credentials.getAppKey().replace('#', '/');
     }
 
     public int getHttpConnectionPoolSize() {
@@ -176,129 +106,43 @@ public class EMProperties {
         return this.serverTimezone;
     }
 
-    public static class AgoraRealmBuilder {
+    public static class Builder {
+        private Realm realm;
+        private String appKey;
+        private String clientId;
+        private String clientSecret;
         private String appId;
         private String appCert;
 
         private String baseUri;
-        private String appkey;
         private EMProxy proxy;
         private int httpConnectionPoolSize = 10;
         private String serverTimezone = "+8";
 
-        public AgoraRealmBuilder setAppId(String appId) {
-            this.appId = appId;
+        public Builder setRealm(Realm realm) {
+            this.realm = realm;
             return this;
         }
 
-        public AgoraRealmBuilder setAppCert(String appCert) {
-            this.appCert = appCert;
-            return this;
-        }
-
-        public AgoraRealmBuilder setBaseUri(String baseUri) {
-            this.baseUri = baseUri;
-            return this;
-        }
-
-        public AgoraRealmBuilder setAppkey(String appkey) {
-            validateAppkey(appkey);
-            this.appkey = appkey;
-            return this;
-        }
-
-        public AgoraRealmBuilder setProxy(EMProxy proxy) {
-            this.proxy = proxy;
-            return this;
-        }
-
-        public AgoraRealmBuilder setHttpConnectionPoolSize(int httpConnectionPoolSize) {
-            if (httpConnectionPoolSize < 0) {
-                throw new EMInvalidArgumentException("httpConnectionPoolSize must not be negative");
+        public Builder setAppkey(String appKey) {
+            if (Strings.isBlank(appKey)) {
+                throw new EMInvalidArgumentException("appKey must not be null or blank");
             }
-
-            this.httpConnectionPoolSize = httpConnectionPoolSize;
-            return this;
-        }
-
-        public AgoraRealmBuilder setServerTimezone(String timezone) {
-            this.serverTimezone = timezone;
-            return this;
-        }
-
-        public EMProperties build() {
-            if (this.appkey == null) {
-                throw new EMInvalidStateException("appkey not set");
+            String[] tokens = appKey.split("#");
+            if (tokens.length != 2) {
+                throw new EMInvalidArgumentException("appKey must contains #");
             }
-            if (this.appId == null) {
-                throw new EMInvalidStateException("appId not set");
+            if (tokens[0].isEmpty()) {
+                throw new EMInvalidArgumentException("appKey must contains {org}");
             }
-            if (this.appCert == null) {
-                throw new EMInvalidStateException("appCert not set");
+            if (tokens[1].isEmpty()) {
+                throw new EMInvalidArgumentException("appKey must contains {app}");
             }
-            EMProperties properties = new EMProperties(Realm.AGORA_REALM, baseUri, appkey, proxy,
-                    httpConnectionPoolSize, serverTimezone);
-            properties.setAppId(appId);
-            properties.setAppCert(appCert);
-            return properties;
-        }
-
-        @Override
-        public String toString() {
-            return "AgoraRealmBuilder{" +
-                    "appId='" + appId + '\'' +
-                    ", appCert='" + appCert + '\'' +
-                    ", baseUri='" + baseUri + '\'' +
-                    ", appkey='" + appkey + '\'' +
-                    ", proxy=" + proxy +
-                    ", httpConnectionPoolSize=" + httpConnectionPoolSize +
-                    ", serverTimezone='" + serverTimezone + '\'' +
-                    '}';
-        }
-    }
-
-    public static class EasemobRealmBuilder {
-
-        private String clientId;
-        private String clientSecret;
-
-        private String baseUri;
-        private String appkey;
-        private EMProxy proxy;
-        private int httpConnectionPoolSize = 10;
-        private String serverTimezone = "+8";
-
-        public EasemobRealmBuilder setBaseUri(String baseUri) {
-            this.baseUri = baseUri;
+            this.appKey = appKey;
             return this;
         }
 
-        public EasemobRealmBuilder setAppkey(String appkey) {
-            validateAppkey(appkey);
-            this.appkey = appkey;
-            return this;
-        }
-
-        public EasemobRealmBuilder setProxy(EMProxy proxy) {
-            this.proxy = proxy;
-            return this;
-        }
-
-        public EasemobRealmBuilder setHttpConnectionPoolSize(int httpConnectionPoolSize) {
-            if (httpConnectionPoolSize < 0) {
-                throw new EMInvalidArgumentException("httpConnectionPoolSize must not be negative");
-            }
-
-            this.httpConnectionPoolSize = httpConnectionPoolSize;
-            return this;
-        }
-
-        public EasemobRealmBuilder setServerTimezone(String timezone) {
-            this.serverTimezone = timezone;
-            return this;
-        }
-
-        public EasemobRealmBuilder setClientId(String clientId) {
+        public Builder setClientId(String clientId) {
             if (Strings.isBlank(clientId)) {
                 throw new EMInvalidArgumentException("clientId must not be null or blank");
             }
@@ -306,7 +150,7 @@ public class EMProperties {
             return this;
         }
 
-        public EasemobRealmBuilder setClientSecret(String clientSecret) {
+        public Builder setClientSecret(String clientSecret) {
             if (Strings.isBlank(clientSecret)) {
                 throw new EMInvalidArgumentException("clientSecret must not be null or blank");
             }
@@ -314,30 +158,92 @@ public class EMProperties {
             return this;
         }
 
-        public EMProperties build() {
-            if (this.appkey == null) {
-                throw new EMInvalidStateException("appkey not set");
+        public Builder setAppId(String appId) {
+            if (Strings.isBlank(appId)) {
+                throw new EMInvalidArgumentException("appId must not be null or blank");
             }
-            if (this.clientId == null) {
-                throw new EMInvalidStateException("clientId not set");
-            }
-            if (this.clientSecret == null) {
-                throw new EMInvalidStateException("clientSecret not set");
-            }
-            EMProperties properties = new EMProperties(Realm.EASEMOB_REALM, baseUri, appkey, proxy,
-                            httpConnectionPoolSize, serverTimezone);
-            properties.setClientId(clientId);
-            properties.setClientSecret(clientSecret);
-            return properties;
+            this.appId = appId;
+            return this;
         }
 
-        @Override
-        public String toString() {
-            return "EasemobRealmBuilder{" +
-                    "clientId='" + clientId + '\'' +
-                    ", clientSecret='" + clientSecret + '\'' +
+        public Builder setAppCert(String appCert) {
+            if (Strings.isBlank(appCert)) {
+                throw new EMInvalidArgumentException("appCert must not be null or blank");
+            }
+            this.appCert = appCert;
+            return this;
+        }
+
+        public Builder setBaseUri(String baseUri) {
+            this.baseUri = baseUri;
+            return this;
+        }
+
+        public Builder setProxy(EMProxy proxy) {
+            this.proxy = proxy;
+            return this;
+        }
+
+        public Builder setHttpConnectionPoolSize(int httpConnectionPoolSize) {
+            if (httpConnectionPoolSize < 0) {
+                throw new EMInvalidArgumentException("httpConnectionPoolSize must not be negative");
+            }
+            this.httpConnectionPoolSize = httpConnectionPoolSize;
+            return this;
+        }
+
+        public Builder setServerTimezone(String timezone) {
+            this.serverTimezone = timezone;
+            return this;
+        }
+
+        public EMProperties build() {
+            if (this.realm == null) {
+                throw new EMInvalidStateException("realm not set");
+            }
+            if (this.appKey == null) {
+                throw new EMInvalidStateException("appKey not set");
+            }
+            if (this.realm.equals(Realm.EASEMOB_REALM)) {
+                if (this.clientId == null) {
+                    throw new EMInvalidStateException("clientId not set");
+                }
+                if (this.clientSecret == null) {
+                    throw new EMInvalidStateException("clientSecret not set");
+                }
+                if (this.appId != null || this.appCert != null) {
+                    throw new EMInvalidStateException("appId and appCert must be blank");
+                }
+                EasemobAppCredentials credentials = new EasemobAppCredentials(this.appKey, this.clientId, this.clientSecret);
+                return new EMProperties(this.realm, credentials, this.baseUri, this.proxy,
+                        this.httpConnectionPoolSize, this.serverTimezone);
+            } else if (this.realm.equals(Realm.AGORA_REALM)) {
+                if (this.appId == null) {
+                    throw new EMInvalidStateException("appId not set");
+                }
+                if (this.appCert == null) {
+                    throw new EMInvalidStateException("appCert not set");
+                }
+                if (this.clientId != null || this.clientSecret != null) {
+                    throw new EMInvalidStateException("clientId and clientSecret must be blank");
+                }
+                AgoraAppCredentials credentials = new AgoraAppCredentials(this.appKey, this.appId, this.appCert);
+                return new EMProperties(this.realm, credentials, this.baseUri, this.proxy,
+                        this.httpConnectionPoolSize, this.serverTimezone);
+            } else {
+                throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.name()));
+            }
+        }
+
+        @Override public String toString() {
+            return "Builder{" +
+                    "realm=" + realm +
+                    ", appKey='" + appKey + '\'' +
+                    ", clientId='" + Utilities.mask(clientId) + '\'' +
+                    ", clientSecret='" + Utilities.mask(clientSecret) + '\'' +
+                    ", appId='" + Utilities.mask(appId) + '\'' +
+                    ", appCert='" + Utilities.mask(appCert) + '\'' +
                     ", baseUri='" + baseUri + '\'' +
-                    ", appkey='" + appkey + '\'' +
                     ", proxy=" + proxy +
                     ", httpConnectionPoolSize=" + httpConnectionPoolSize +
                     ", serverTimezone='" + serverTimezone + '\'' +
@@ -345,4 +251,14 @@ public class EMProperties {
         }
     }
 
+    @Override public String toString() {
+        return "EMProperties{" +
+                "realm=" + realm +
+                ", credentials=" + credentials +
+                ", baseUri='" + baseUri + '\'' +
+                ", proxy=" + proxy +
+                ", httpConnectionPoolSize=" + httpConnectionPoolSize +
+                ", serverTimezone='" + serverTimezone + '\'' +
+                '}';
+    }
 }

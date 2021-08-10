@@ -7,7 +7,7 @@ import com.easemob.im.server.model.EMBlock;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,14 +38,14 @@ public class BlockSendMsgTest extends AbstractApiTest {
     @Test
     public void testBlockUserFromSendMsg() {
         assertDoesNotThrow(() -> {
-            this.sendMsgToUser.blockUser("rabbit", "alice").block(Duration.ofSeconds(3));
+            this.sendMsgToUser.blockUser("rabbit", "alice").block(Utilities.UT_TIMEOUT);
         });
     }
 
     @Test
     public void testUnBlockUserFromSendMsg() {
         assertDoesNotThrow(() -> {
-            this.sendMsgToUser.unblockUser("rabbit", "alice").block(Duration.ofSeconds(3));
+            this.sendMsgToUser.unblockUser("rabbit", "alice").block(Utilities.UT_TIMEOUT);
         });
     }
 
@@ -53,7 +53,7 @@ public class BlockSendMsgTest extends AbstractApiTest {
     public void testGetUserBlockedFromSendMsg() {
         Set<EMBlock> blockedUsers =
                 this.sendMsgToUser.getUsersBlocked("alice").collect(Collectors.toSet())
-                        .block(Duration.ofSeconds(3));
+                        .block(Utilities.UT_TIMEOUT);
         Set<String> blockedUsernames =
                 blockedUsers.stream().map(EMBlock::getUsername).collect(Collectors.toSet());
         assertTrue(blockedUsernames.contains("queen"));
@@ -64,14 +64,14 @@ public class BlockSendMsgTest extends AbstractApiTest {
     @Test
     public void testBlockUserFromLogin() {
         assertDoesNotThrow(() -> {
-            this.blockUserLogin.blockUser("alice").block(Duration.ofSeconds(3));
+            this.blockUserLogin.blockUser("alice").block(Utilities.UT_TIMEOUT);
         });
     }
 
     @Test
     public void testUnblockUserFromLogin() {
         assertDoesNotThrow(() -> {
-            this.blockUserLogin.unblockUser("alice").block(Duration.ofSeconds(3));
+            this.blockUserLogin.unblockUser("alice").block(Utilities.UT_TIMEOUT);
         });
     }
 

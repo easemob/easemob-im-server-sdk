@@ -5,7 +5,7 @@ import com.easemob.im.server.exception.EMNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,14 +21,14 @@ class GroupMemberAddTest extends AbstractApiTest {
     @Test
     void testAddGroupMember() {
         assertDoesNotThrow(() -> {
-            this.groupMemberAdd.single("1", "alice").block(Duration.ofSeconds(3));
+            this.groupMemberAdd.single("1", "alice").block(Utilities.UT_TIMEOUT);
         });
     }
 
     @Test
     void testAddGroupMemberNotFound() {
         assertThrows(EMNotFoundException.class, () -> {
-            this.groupMemberAdd.single("1", "bob").block(Duration.ofSeconds(3));
+            this.groupMemberAdd.single("1", "bob").block(Utilities.UT_TIMEOUT);
         });
     }
 

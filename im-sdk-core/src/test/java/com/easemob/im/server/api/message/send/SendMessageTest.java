@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,7 +44,7 @@ class SendMessageTest extends AbstractApiTest {
                 .text(msg -> msg.text("hello"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
@@ -54,7 +54,7 @@ class SendMessageTest extends AbstractApiTest {
                         .width(200.000))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
@@ -63,7 +63,7 @@ class SendMessageTest extends AbstractApiTest {
                 .voice(msg -> msg.uri(URI.create("http://example/voice.amr")).duration(18))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
@@ -72,7 +72,7 @@ class SendMessageTest extends AbstractApiTest {
                 .video(msg -> msg.uri(URI.create("http://example/video.mp4")).duration(18))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
@@ -81,7 +81,7 @@ class SendMessageTest extends AbstractApiTest {
                 .location(msg -> msg.latitude(1.234567).longitude(1.234567).address("some where"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
@@ -90,7 +90,7 @@ class SendMessageTest extends AbstractApiTest {
                 .command(msg -> msg.action("run").param("name", "rabbit"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
@@ -99,6 +99,6 @@ class SendMessageTest extends AbstractApiTest {
                 .custom(msg -> msg.customEvent("liked").customExtension("name", "forest"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 }

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ class CreateGroupTest extends AbstractApiTest {
         members.add("rabbit");
         assertEquals("group-create-test",
                 this.createGroup.publicGroup("alice", "test-group", "test-desc", members, 10, true)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
@@ -37,7 +37,7 @@ class CreateGroupTest extends AbstractApiTest {
         members.add("rabbit");
         assertEquals("group-create-test",
                 this.createGroup.privateGroup("alice", "test-group", "test-desc", members, 10, true)
-                        .block(Duration.ofSeconds(3)));
+                        .block(Utilities.UT_TIMEOUT));
     }
 
     private JsonNode handleGroupCreateRequest(JsonNode jsonNode) {

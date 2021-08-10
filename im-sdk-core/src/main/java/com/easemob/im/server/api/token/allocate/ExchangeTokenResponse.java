@@ -6,35 +6,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.time.Instant;
 
-public class TokenResponse {
+public class ExchangeTokenResponse {
 
-    private static final Logger log = LoggerFactory.getLogger(TokenResponse.class);
+    private static final Logger log = LoggerFactory.getLogger(ExchangeTokenResponse.class);
 
     // easemob token
     @JsonProperty("access_token")
     private final String accessToken;
 
-    // TTL in seconds
-    @JsonProperty("expires_in")
-    private final long expireInSeconds;
+    @JsonProperty("expires_timestamp")
+    private final long expireEpochMilli;
 
-    private TokenResponse(String accessToken, long expiresInSeconds) {
+    private ExchangeTokenResponse(String accessToken, long expireEpochMilli) {
         this.accessToken = accessToken;
-        this.expireInSeconds = expiresInSeconds;
+        this.expireEpochMilli = expireEpochMilli;
     }
 
     @JsonCreator
-    public static TokenResponse of(
+    public static ExchangeTokenResponse of(
             @JsonProperty("access_token") String accessToken,
-            @JsonProperty("expires_in") long expireInSeconds) {
-        return new TokenResponse(accessToken, expireInSeconds);
+            @JsonProperty("expires_timestamp") long expireEpochMilli) {
+        return new ExchangeTokenResponse(accessToken, expireEpochMilli);
     }
 
     public Token asToken() {
-        Instant expireAt = Instant.now().plus(Duration.ofSeconds(this.expireInSeconds));
+        Instant expireAt = Instant.ofEpochMilli(expireEpochMilli);
         return new Token(this.accessToken, expireAt);
     }
 }

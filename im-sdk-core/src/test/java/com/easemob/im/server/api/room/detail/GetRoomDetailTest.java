@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,7 +38,7 @@ class GetRoomDetailTest extends AbstractApiTest {
 
     @Test
     void testGetRoomDetail() {
-        EMRoom r1 = this.getRoomDetail.byId("r1").block(Duration.ofSeconds(3));
+        EMRoom r1 = this.getRoomDetail.byId("r1").block(Utilities.UT_TIMEOUT);
         assertEquals("r1", r1.id());
         assertEquals("room1", r1.name());
         assertEquals("The first room.", r1.description());

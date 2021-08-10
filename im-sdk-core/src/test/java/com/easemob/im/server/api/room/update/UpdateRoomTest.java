@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,13 +60,13 @@ class UpdateRoomTest extends AbstractApiTest {
     @Test
     void testUpdateRoomSuccess() {
         assertDoesNotThrow(() -> this.updateRoom.byId("r1", req -> req.withName("room-one"))
-                .block(Duration.ofSeconds(3)));
+                .block(Utilities.UT_TIMEOUT));
     }
 
     @Test
     void testUpdateRoomFail() {
         assertThrows(EMUnknownException.class,
                 () -> this.updateRoom.byId("r2", req -> req.withMaxMembers(1000))
-                        .block(Duration.ofSeconds(3)));
+                        .block(Utilities.UT_TIMEOUT));
     }
 }

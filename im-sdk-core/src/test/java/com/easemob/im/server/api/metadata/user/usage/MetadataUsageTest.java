@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +22,7 @@ class MetadataUsageTest extends AbstractApiTest {
     @Test
     public void testUsage() {
         EMMetadataUsage emMetadataUsage = assertDoesNotThrow(
-                () -> this.metadataUsage.getUsage().block(Duration.ofSeconds(3)));
+                () -> this.metadataUsage.getUsage().block(Utilities.UT_TIMEOUT));
         assertEquals(1600, emMetadataUsage.getBytesUsed());
     }
 

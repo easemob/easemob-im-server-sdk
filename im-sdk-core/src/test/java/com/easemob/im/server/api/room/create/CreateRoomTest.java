@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ class CreateRoomTest extends AbstractApiTest {
         members.add("rabbit");
         members.add("madhat");
         String id = this.createRoom.createRoom("room one", "have a nice day", "alice", members, 200)
-                .block(Duration.ofSeconds(3));
+                .block(Utilities.UT_TIMEOUT);
         assertEquals("r1", id);
     }
 

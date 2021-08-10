@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,14 +63,14 @@ class BlockUserJoinRoomTest extends AbstractApiTest {
     @Test
     public void testBlockUserJoinRoom() {
         assertDoesNotThrow(() -> {
-            this.blockUserJoinRoom.blockUser("alice", "1").block(Duration.ofSeconds(3));
+            this.blockUserJoinRoom.blockUser("alice", "1").block(Utilities.UT_TIMEOUT);
         });
     }
 
     @Test
     public void testUnBlockUserJoinRoom() {
         assertDoesNotThrow(() -> {
-            this.blockUserJoinRoom.unblockUser("alice", "1").block(Duration.ofSeconds(3));
+            this.blockUserJoinRoom.unblockUser("alice", "1").block(Utilities.UT_TIMEOUT);
         });
     }
 
@@ -79,7 +79,7 @@ class BlockUserJoinRoomTest extends AbstractApiTest {
         assertDoesNotThrow(() -> {
             List<EMBlock> blocks = this.blockUserJoinRoom.getBlockedUsers("1")
                     .collect(Collectors.toList())
-                    .block(Duration.ofSeconds(3));
+                    .block(Utilities.UT_TIMEOUT);
 
             assertEquals(2, blocks.size());
             assertTrue(blocks.contains(new EMBlock("alice", null)));

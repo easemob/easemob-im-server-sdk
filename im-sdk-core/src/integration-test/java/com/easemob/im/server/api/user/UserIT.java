@@ -1,16 +1,13 @@
 package com.easemob.im.server.api.user;
 
-import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static com.easemob.im.server.utils.RandomMaker.makeRandomUserName;
 
 class UserIT extends AbstractIT {
 
@@ -20,207 +17,207 @@ class UserIT extends AbstractIT {
 
     @Test
     void testUserLifeCycles() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.user().get(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertThrows(EMNotFoundException.class,
-                () -> this.service.user().get(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserForceLogout() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().forceLogoutAllDevices(randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserUpdatePassword() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().updateUserPassword(randomUsername, "password")
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserListUsers() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.user().listUsers(1, null).block(Duration.ofSeconds(10)));
+                () -> this.service.user().listUsers(1, null).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
     }
 
     // TODO: enable this once we can use a clean appkey for tests
     // currently we use easemob-demo#easechatui for the gateway token007 tests and this appkey has too many users
     @Disabled
     void testUserListAll() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         String username = assertDoesNotThrow(
-                () -> this.service.user().listAllUsers().blockLast(Duration.ofSeconds(30)));
+                () -> this.service.user().listAllUsers().blockLast(Utilities.IT_TIMEOUT));
         if (!username.equals(randomUsername)) {
             throw new RuntimeException(
                     String.format("%s is not found in the user list", randomUsername));
         }
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserContactAdd() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
 
-        String randomContactUsername = makeRandomUserName();
+        String randomContactUsername = Utilities.randomUserName();
         String randomContactPassword = randomContactUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().create(randomContactUsername, randomContactPassword)
-                        .block(Duration.ofSeconds(10)));
+                        .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomContactUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         String username = assertDoesNotThrow(
-                () -> this.service.contact().list(randomUsername).blockLast(Duration.ofSeconds(30)));
+                () -> this.service.contact().list(randomUsername).blockLast(Utilities.IT_TIMEOUT));
         if (!username.equals(randomContactUsername)) {
             throw new RuntimeException(
                     String.format("%s did not found %s in his contact list", randomUsername,
                             randomContactUsername));
         }
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomContactUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserContactRemove() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
 
-        String randomContactUsername = makeRandomUserName();
+        String randomContactUsername = Utilities.randomUserName();
         String randomContactPassword = randomContactUsername;
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().create(randomContactUsername, randomContactPassword)
-                        .block(Duration.ofSeconds(10)));
+                        .block(Utilities.IT_TIMEOUT));
 
         assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomContactUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.contact().remove(randomUsername, randomContactUsername)
-                        .block(Duration.ofSeconds(10)));
+                        .block(Utilities.IT_TIMEOUT));
         String username = assertDoesNotThrow(
-                () -> this.service.contact().list(randomUsername).blockLast(Duration.ofSeconds(30)));
+                () -> this.service.contact().list(randomUsername).blockLast(Utilities.IT_TIMEOUT));
         if (username != null) {
             throw new RuntimeException(String.format("%s contact remove fail", username));
         }
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomContactUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserContactList() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        // add bob to alice's contact list
+        String aliceUserName = Utilities.randomUserName();
+        String bobUserName = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
 
-        String randomUsernameCodeJack = makeRandomUserName();
-        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
-        assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword)
-                .block(Duration.ofSeconds(10)));
+        assertDoesNotThrow(() -> this.service.user().create(aliceUserName, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(bobUserName, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
 
-        assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomUsernameCodeJack)
-                .block(Duration.ofSeconds(10)));
-        String username = assertDoesNotThrow(() -> this.service.contact().list(randomUsername))
-                .blockFirst(Duration.ofSeconds(30));
-        if (username == null) {
-            throw new RuntimeException(String.format("%s contact list is null", randomUsername));
+        assertDoesNotThrow(() -> this.service.contact().add(aliceUserName, bobUserName)
+                .block(Utilities.IT_TIMEOUT));
+        String aliceFirstFriend = assertDoesNotThrow(() -> this.service.contact().list(aliceUserName))
+                .blockFirst(Utilities.IT_TIMEOUT);
+        if (aliceFirstFriend == null) {
+            throw new RuntimeException(String.format("%s contact list is null", aliceUserName));
         }
 
-        if (!username.equals(randomUsernameCodeJack)) {
-            throw new RuntimeException(
-                    String.format("%s did not found %s in his contact list", randomUsername,
-                            randomUsernameCodeJack));
+        if (!aliceFirstFriend.equals(bobUserName)) {
+            throw new RuntimeException(String.format("%s did not found %s in his contact list",
+                    aliceUserName, bobUserName));
         }
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
-        assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack)
-                .block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(aliceUserName).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(bobUserName)
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserGetUsersBlockedFromSendMsg() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
 
-        String randomUsernameCodeJack = makeRandomUserName();
+        String randomUsernameCodeJack = Utilities.randomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
 
         assertDoesNotThrow(() -> this.service.block()
                 .blockUserSendMsgToUser(randomUsernameCodeJack, randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         EMBlock block = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedFromSendMsgToUser(randomUsername))
-                .blockFirst(Duration.ofSeconds(30));
+                .blockFirst(Utilities.IT_TIMEOUT);
         if (!block.getUsername().equals(randomUsernameCodeJack)) {
             throw new RuntimeException(
                     String.format("%s did not found %s in his block list", randomUsername,
                             randomUsernameCodeJack));
         }
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserBlockUserSendMsg() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
 
-        String randomUsernameCodeJack = makeRandomUserName();
+        String randomUsernameCodeJack = Utilities.randomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
 
         assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomUsernameCodeJack)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.block()
                 .blockUserSendMsgToUser(randomUsernameCodeJack, randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         EMBlock block = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedFromSendMsgToUser(randomUsername)
-                        .blockLast(Duration.ofSeconds(30)));
+                        .blockLast(Utilities.IT_TIMEOUT));
         String username = assertDoesNotThrow(
-                () -> this.service.contact().list(randomUsername).blockLast(Duration.ofSeconds(30)));
+                () -> this.service.contact().list(randomUsername).blockLast(Utilities.IT_TIMEOUT));
         if (!block.getUsername().equals(randomUsernameCodeJack)) {
             throw new RuntimeException(
                     String.format("%s did not found %s in his block list", randomUsername,
@@ -233,34 +230,34 @@ class UserIT extends AbstractIT {
                             randomUsername));
         }
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserUnblockUserSendMsg() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
 
-        String randomUsernameCodeJack = makeRandomUserName();
+        String randomUsernameCodeJack = Utilities.randomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomUsernameCodeJack)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.block()
                 .blockUserSendMsgToUser(randomUsernameCodeJack, randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.block()
                 .unblockUserSendMsgToUser(randomUsernameCodeJack, randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         EMBlock block = assertDoesNotThrow(
                 () -> this.service.block().getUsersBlockedFromSendMsgToUser(randomUsername)
-                        .blockLast(Duration.ofSeconds(30)));
+                        .blockLast(Utilities.IT_TIMEOUT));
         String username = assertDoesNotThrow(
-                () -> this.service.contact().list(randomUsername).blockLast(Duration.ofSeconds(30)));
+                () -> this.service.contact().list(randomUsername).blockLast(Utilities.IT_TIMEOUT));
         if (block != null) {
             throw new RuntimeException(
                     String.format("%s unblock %s fail", randomUsername, randomUsernameCodeJack));
@@ -271,95 +268,86 @@ class UserIT extends AbstractIT {
                             randomUsername));
         }
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserCountMissedMessages() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
 
-        String randomUsernameCodeJack = makeRandomUserName();
+        String randomUsernameCodeJack = Utilities.randomUserName();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().create(randomUsernameCodeJack, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
 
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomUsernameCodeJack)
                 .toUser(randomUsername)
                 .text(msg -> msg.text("offlineMessage"))
                 .send()
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.message().countMissedMessages(randomUsername)
-                .blockFirst(Duration.ofSeconds(30)));
+                .blockFirst(Utilities.IT_TIMEOUT));
 
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomUsernameCodeJack)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserBlockLogin() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.block().blockUserLogin(randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserUnblockLogin() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.block().blockUserLogin(randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.block().unblockUserLogin(randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testUserOnlineStatus() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         boolean isOnline = assertDoesNotThrow(() -> this.service.user().isUserOnline(randomUsername)
-                .block(Duration.ofSeconds(10)));
+                .block(Utilities.IT_TIMEOUT));
         if (isOnline) {
             throw new RuntimeException(String.format("%s is online status", randomUsername));
         }
         assertDoesNotThrow(
-                () -> this.service.user().delete(randomUsername).block(Duration.ofSeconds(10)));
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
     void testGetUserToken() {
-        String randomUsername = makeRandomUserName();
-        String randomPassword = randomUsername;
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(
-                () -> this.service.user().create(randomUsername, randomPassword).block());
-        String userId = this.service.user().getUUID(randomUsername).block();
-        EMProperties.Realm realm = this.service.getContext().getProperties().getRealm();
-        // TODO: doc this confusion
-        if (realm == EMProperties.Realm.AGORA_REALM) {
-            assertDoesNotThrow(
-                    () -> this.service.user()
-                            .getToken(userId, 10, accessToken2 -> {}));
-        } else {
-            assertDoesNotThrow(
-                    () -> this.service.user().getToken(randomUsername, randomPassword).block());
-        }
+                () -> this.service.user().create(randomUsername, randomPassword).block(Utilities.IT_TIMEOUT));
+        // TODO: doc this confusion -> but this one should be working for both Realms
+        assertDoesNotThrow(() -> this.service.user().getToken(randomUsername, randomPassword).block(Utilities.IT_TIMEOUT));
     }
 
 }

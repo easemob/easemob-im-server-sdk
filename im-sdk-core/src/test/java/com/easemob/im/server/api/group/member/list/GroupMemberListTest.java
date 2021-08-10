@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +26,7 @@ class GroupMemberListTest extends AbstractApiTest {
     @Test
     public void testListGroupMemberAll() {
         List<String> usernames = this.groupMemberList.all("1", 10).collect(Collectors.toList())
-                .block(Duration.ofSeconds(3));
+                .block(Utilities.UT_TIMEOUT);
         assertEquals(15, usernames.size());
     }
 

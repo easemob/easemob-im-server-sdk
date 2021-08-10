@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +48,7 @@ class ListRoomMembersTest extends AbstractApiTest {
     @Test
     void testListRoomMembers() {
         List<String> members =
-                this.listRoomMembers.all("r1", 2).collectList().block(Duration.ofSeconds(3));
+                this.listRoomMembers.all("r1", 2).collectList().block(Utilities.UT_TIMEOUT);
         assertEquals(3, members.size());
         assertEquals("alice", members.get(0));
         assertEquals("rabbit", members.get(1));

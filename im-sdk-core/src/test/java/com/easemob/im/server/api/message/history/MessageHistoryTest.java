@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -38,7 +38,7 @@ class MessageHistoryTest extends AbstractApiTest {
     @Test
     void testGetUrl() {
         String url = this.messageHistory.toUri(Instant.ofEpochSecond(1580574630))
-                .block(Duration.ofSeconds(3));
+                .block(Utilities.UT_TIMEOUT);
         assertEquals("https://example.com/history", url);
     }
 }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
+import com.easemob.im.server.api.util.Utilities;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +30,7 @@ class ListUsersTest extends AbstractApiTest {
     @Test
     void testUserGetAll100EachTime() {
         List<String> users = this.listUsers.all(100)
-                .collectList().block(Duration.ofSeconds(3));
+                .collectList().block(Utilities.UT_TIMEOUT);
         assertEquals(300, users.size());
         for (int i = 0; i < 300; i++) {
             assertEquals("username", users.get(i));
@@ -40,7 +40,7 @@ class ListUsersTest extends AbstractApiTest {
     @Test
     void testUserGetAll200EachTime() {
         List<String> users = this.listUsers.all(200)
-                .collectList().block(Duration.ofSeconds(3));
+                .collectList().block(Utilities.UT_TIMEOUT);
         assertEquals(300, users.size());
         for (int i = 0; i < 300; i++) {
             assertEquals("username", users.get(i));

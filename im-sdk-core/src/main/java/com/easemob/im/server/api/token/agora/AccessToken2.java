@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 /**
  * This class is copied from
- * <a href="https://github.com/kenuiuc/Tools/blob/dev/accesstoken2/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/media/AccessToken2.java">Agora Authentication Tool</a>
+ * <a href="https://github.com/AgoraIO/Tools/blob/dev/accesstoken2/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/media/AccessToken2.java">Agora Authentication Tool</a>
  * <p>
  * It serves as an authentication protocol among multiple Agora and Easemob Services
  * <p>
