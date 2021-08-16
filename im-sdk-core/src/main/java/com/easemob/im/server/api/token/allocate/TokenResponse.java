@@ -19,17 +19,17 @@ public class TokenResponse {
 
     // TTL in seconds
     @JsonProperty("expires_in")
-    private final long expireInSeconds;
+    private final int expireInSeconds;
 
-    private TokenResponse(String accessToken, long expiresInSeconds) {
+    private TokenResponse(String accessToken, int expireInSeconds) {
         this.accessToken = accessToken;
-        this.expireInSeconds = expiresInSeconds;
+        this.expireInSeconds = expireInSeconds;
     }
 
     @JsonCreator
     public static TokenResponse of(
             @JsonProperty("access_token") String accessToken,
-            @JsonProperty("expires_in") long expireInSeconds) {
+            @JsonProperty("expires_in") int expireInSeconds) {
         return new TokenResponse(accessToken, expireInSeconds);
     }
 

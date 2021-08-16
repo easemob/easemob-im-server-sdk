@@ -206,6 +206,13 @@ public class EMService {
         return this.metadataApi;
     }
 
+    /**
+     * token API.<br>
+     * 支持：<br>
+     * - TODO: generate user token <br>
+     *
+     * @return {@code TokenApi}
+     */
     public TokenApi token() {
         return this.tokenApi;
     }

@@ -25,8 +25,9 @@ public class Utilities {
         );
     }
 
+    // TODO: deduplication
     public static int toExpireOnSeconds(int expireInSeconds) {
-        return (int) (Instant.now().plusSeconds(expireInSeconds).toEpochMilli() / 1000);
+        return (int) Instant.now().plusSeconds(expireInSeconds).getEpochSecond();
     }
 
     public static String mask(String text) {
