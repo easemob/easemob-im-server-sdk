@@ -72,8 +72,9 @@ public class AgoraTokenIT {
     @Test
     public void userTokenTest() throws Exception {
         EMUser aliceUser = service.user().get(ALICE_USER_NAME).block(Utilities.IT_TIMEOUT);
-        String aliceAgoraToken = service.token().generateUserToken(aliceUser, EXPIRE_IN_SECONDS,
-            rtcPrivilegeAdder(DUMMY_CHANNEL_NAME, DUMMY_UID, DUMMY_RTC_PRIVILEGE, EXPIRE_IN_SECONDS)
+        String aliceAgoraToken = service.token().getUserToken(aliceUser, EXPIRE_IN_SECONDS,
+            rtcPrivilegeAdder(DUMMY_CHANNEL_NAME, DUMMY_UID, DUMMY_RTC_PRIVILEGE, EXPIRE_IN_SECONDS),
+                null
         );
 
         HttpClient clientWithAliceEasemobToken = getClientWithEasemobHeader(aliceAgoraToken);
