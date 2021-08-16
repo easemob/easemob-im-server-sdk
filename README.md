@@ -51,35 +51,64 @@ implementation 'com.easemob.im:im-sdk-core:0.3.0'
 ```
 
 ## 准备
-使用Server SDK的前提需要您准备appkey相关信息:
+使用 Server SDK 的前提需要您准备:
+* 1. 环信 appKey
+* 2. 两种 appCredentials 中的其中之一:
+    - 2.1 环信 clientId, clientSecret
+    - 2.2 声网 appId, appCert
+
+### 获取环信 appKey, clientId, clientSecret
 
 如果您有环信管理后台账号并创建过应用，请进入 [这里](https://console.easemob.com/user/login) 进行登录。
 ![图片](https://user-images.githubusercontent.com/15087647/114996679-a34cb980-9ed1-11eb-89ae-a22c1af7d69d.png)
 
 如图点击查看后，可以看到自己的appkey、Client ID、ClientSecret，用于SDK的初始化。
 
-
-
 如果您没有环信管理后台账号，请进入 [这里](https://console.easemob.com/user/register) 进行注册账号，注册成功后请进行登录。
 ![图片](https://user-images.githubusercontent.com/15087647/114997381-59180800-9ed2-11eb-968a-a29406c78021.png)
 
 如图先添加应用(也就是创建appkey，自动生成Client ID、ClientSecret)，添加成功后在应用列表中可以看到应用信息，点击查看可以看到自己的appkey、Client ID、ClientSecret，用于SDK的初始化。
+
+### 获取声网 appId, appCert
+
+如果您有声网 Console 后台账号并创建过项目，请先登录声网 Console  后台，点击[这里](https://sso.agora.io/cn/login/)，然后到"项目列表" -> 找到自己的项目点击"编辑"图标后，即可看到 App ID、APP 证书。
+
+如果您没有声网Console后台账号，请先注册账号，点击[这里](https://sso.agora.io/cn/v4/signup)，注册成功后按照步骤1操作。
 
 
 ## 使用
 
 [EMService](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/EMService.html) 是所有API的入口，可以这样初始化：
 
+### 1. 使用 Easemob App Credentials 的情况
 ``` java
 EMProperties properties = EMProperties.builder()
-        .setAppkey(cliProperties.getAppkey())
-        .setClientId(cliProperties.getClientId())
-        .setClientSecret(cliProperties.getClientSecret())
-        .build();
+    .setAppkey(appkey)
+    .setClientId(clientId)
+    .setClientSecret(clientSecret)
+    .setRealm(EMProperties.Realm.EASEMOB_REALM) // optional
+    .setBaseUri(baseUri) // optional
+    .setHttpConnectionPoolSize(10) // optional
+    .setServerTimezone("+8") // optional
+    .build();
 
 EMService service = new EMService(properties);
 ```
 
+### 2. 使用 Agora App Credentials 的情况
+``` java
+EMProperties properties = EMProperties.builder()
+    .setAppkey(appkey)
+    .setAppId(appId)
+    .setAppCert(appCert)
+    .setRealm(EMProperties.Realm.AGORA_REALM)
+    .setBaseUri(baseUri) // optional
+    .setHttpConnectionPoolSize(10) // optional
+    .setServerTimezone("+8") // optional
+    .build();
+
+EMService service = new EMService(properties);
+```
 根据业务资源，API分为：
 
 - [Attachment](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/attachment/AttachmentApi.html)
@@ -94,6 +123,8 @@ EMService service = new EMService(properties);
   用于发送消息
 - [User](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/user/UserApi.html)
   用于管理用户
+- [Token](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/user/TokenApi.html)
+  用于生成 Agora User Token **(注意！ 该接口只有在使用 Agora App Credentials 时才能使用)**
 - [Room](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/room/RoomApi.html)
   用于管理聊天室
 
