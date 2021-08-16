@@ -2,14 +2,20 @@ package com.easemob.im.server.api.metadata;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.token.Token;
 import com.easemob.im.server.api.token.agora.AccessToken2;
+import com.easemob.im.server.api.token.allocate.TokenRequest;
+import com.easemob.im.server.api.token.allocate.TokenResponse;
+import com.easemob.im.server.api.token.allocate.UserTokenRequest;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMForbiddenException;
+import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.model.EMUser;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -27,7 +33,8 @@ public class TokenApi {
     }
 
     /**
-     * 本地生成 Agora Token
+     * TODO: this doc is outdated
+     * 获取 User Token
      * <p>
      * Token 的结构请参考 {@code AccessToken2}
      * <p>
@@ -58,27 +65,52 @@ public class TokenApi {
      * @param tokenConfigurer 用来自定义添加其他 Agora 服务的 lambda function
      * @return Agora Token
      */
-    public String generateUserToken(EMUser user, int expireInSeconds, Consumer<AccessToken2> tokenConfigurer) {
-        String userId = user.getUuid();
+    public String getUserToken(EMUser user, Integer expireInSeconds,
+            Consumer<AccessToken2> tokenConfigurer, String password) {
         EMProperties properties = context.getProperties();
-        String appId = properties.getAppId();
-        String appCert = properties.getAppCert();
-        int expireOnSeconds = Utilities.toExpireOnSeconds(expireInSeconds);
+        EMProperties.Realm realm = properties.getRealm();
+        if (realm.equals(EMProperties.Realm.AGORA_REALM)) {
+            String userId = user.getUuid();
+            String appId = properties.getAppId();
+            String appCert = properties.getAppCert();
+            int expireOnSeconds = Utilities.toExpireOnSeconds(expireInSeconds);
 
-        AccessToken2 accessToken = new AccessToken2(appId, appCert, expireOnSeconds);
-        AccessToken2.Service serviceChat = new AccessToken2.ServiceChat(userId);
-        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER, expireOnSeconds);
-        accessToken.addService(serviceChat);
+            AccessToken2 accessToken = new AccessToken2(appId, appCert, expireOnSeconds);
+            AccessToken2.Service serviceChat = new AccessToken2.ServiceChat(userId);
+            serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER, expireOnSeconds);
+            accessToken.addService(serviceChat);
 
-        tokenConfigurer.accept(accessToken);
-        validateUserChatToken(accessToken);
+            tokenConfigurer.accept(accessToken);
+            validateUserChatToken(accessToken);
 
-        try {
-            return accessToken.build();
-        } catch (Exception e) {
-            log.error(ERROR_MSG, e);
-            throw new EMInvalidStateException(ERROR_MSG);
+            try {
+                return accessToken.build();
+            } catch (Exception e) {
+                log.error(ERROR_MSG, e);
+                throw new EMInvalidStateException(ERROR_MSG);
+            }
+        } else if (realm.equals(EMProperties.Realm.EASEMOB_REALM)) {
+            if (Strings.isBlank(password)) {
+                throw new EMInvalidArgumentException("password is missing");
+            }
+            String userName = user.getUsername();
+            return fetchUserTokenWithEasemobRealm(this.context, UserTokenRequest.of(userName, password))
+                    .map(Token::getValue).block(Utilities.IT_TIMEOUT);
+        } else {
+            throw new EMInvalidStateException(String.format("invalid realm value %s", realm));
         }
+    }
+
+    public static Mono<Token> fetchUserTokenWithEasemobRealm(Context context, TokenRequest tokenRequest) {
+        return context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/token")
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(tokenRequest))))
+                        .responseSingle(
+                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> context.getCodec().decode(buf, TokenResponse.class))
+                .map(TokenResponse::asToken);
     }
 
     // must include userId if it has the chat.user privilege

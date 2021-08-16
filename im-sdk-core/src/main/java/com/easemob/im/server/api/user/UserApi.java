@@ -23,6 +23,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Consumer;
 
+import static com.easemob.im.server.api.metadata.TokenApi.fetchUserTokenWithEasemobRealm;
+
 /**
  * 用户API。
  */
@@ -187,20 +189,8 @@ public class UserApi {
      * @param password 要获取token的用户名密码
      * @return 返回token或失败
      */
+    // TODO: mark Deprecated and provide the alternatives
     public Mono<Token> getToken(String username, String password) {
-        return fetchUserTokenWithEasemobRealm(UserTokenRequest.of(username, password));
-    }
-
-    // TODO: put this into an entity
-    private Mono<Token> fetchUserTokenWithEasemobRealm(TokenRequest tokenRequest) {
-        return this.context.getHttpClient()
-                .flatMap(httpClient -> httpClient.post()
-                        .uri("/token")
-                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
-                                .encode(tokenRequest))))
-                        .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
-                .map(buf -> this.context.getCodec().decode(buf, TokenResponse.class))
-                .map(TokenResponse::asToken);
+        return fetchUserTokenWithEasemobRealm(this.context, UserTokenRequest.of(username, password));
     }
 }
