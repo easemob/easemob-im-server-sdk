@@ -4,10 +4,12 @@ import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMUnsupportedEncodingException;
+import com.easemob.im.server.model.EMUser;
 import org.apache.logging.log4j.util.Strings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.function.Consumer;
 
 public class EMProperties {
 
@@ -37,8 +39,17 @@ public class EMProperties {
         this.serverTimezone = serverTimezone;
     }
 
+    /**
+     * @param baseUri
+     * @param appKey
+     * @param proxy
+     * @param clientId
+     * @param clientSecret
+     * @param httpConnectionPoolSize
+     * @param serverTimezone
+     * @deprecated use {@link #builder()} instead.
+     */
     @Deprecated
-    // TODO: And, we need to inform developers what to use instead, and why.
     public EMProperties(String baseUri, String appKey, EMProxy proxy, String clientId,
             String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
         this.realm = Realm.EASEMOB_REALM;
