@@ -33,43 +33,59 @@ public class TokenApi {
     }
 
     /**
-     * TODO: this doc is outdated
      * 获取 User Token
      * <p>
-     * Token 的结构请参考 {@code AccessToken2}
+     * 可获取 Easemob userToken 或 Agora userToken. 如您初始化 service 时使用的是 Agora App Credentials,
+     * 则两种 userToken 都可以获取. 如您初始化 service 时使用的是 Easemob App Credentials, 则只能获取 Easemob userToken.
+     * 其中 Agora userToken 的结构请参考 {@link AccessToken2}
      * <p>
-     * Token 中除了 AgoraChat 权限以外, 还可以自定义添加其他 Agora 服务(比如RTC)的权限,
-     * 对每个服务的权限可以独立配置不同的过期时间.
+     * Agora userToken 中除了 AgoraChat 权限以外, 还可以自定义添加其他 Agora 服务(比如RTC)的权限,
+     * 对每个服务的权限可以单独设置不同的过期时间.
      * <p>
-     * 为用户 Alice 生成仅含 AgoraChat 权限的 UserToken, 有效期为3600秒:
+     * 为用户 Cat 获取 Easemob userToken
      * <pre><code>
-     * EMUser alice = new EMUser("alice", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
-     * String aliceAgoraChatToken = service.token().generateUserToken(alice, 3600, token -&gt; {});
+     * EMUser cat = new EMUser("cat", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
+     * String catEasemobToken = service.token().getUserToken(cat, null, null, "passwordOfUserCat");
      * </code></pre>
      * <p>
-     * 为用户 Bob 生成包含 AgoraChat 权限和 AgoraRTC (JOIN_CHANNEL) 权限的 UserToken, 有效期为600秒:
+     * 为用户 Alice 生成仅含 AgoraChat 权限的 Agora userToken, 有效期为3600秒:
+     * <pre><code>
+     * EMUser alice = new EMUser("alice", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
+     * String aliceAgoraChatToken = service.token().getUserToken(alice, 3600, null, null);
+     * </code></pre>
+     * <p>
+     * 为用户 Bob 生成包含 AgoraChat 权限和 AgoraRTC (JOIN_CHANNEL) 权限的 Agora userToken, 有效期为600秒:
      * <pre><code>
      * // please pay attention to expireInSeconds (Duration) vs. expireOnSeconds (Instant)
+     *
      * int expireInSeconds = 600;
      * int expireOnSeconds = Utilities.toExpireOnSeconds(expireInSeconds);
      * EMUser bob = new EMUser("bob", "da921111-ecf9-11eb-9af3-296ff79acb67", true);
-     * String bobAgoraChatRtcToken = service.token().generateUserToken(bob, expireInSeconds, token -&gt; {
-     *     AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc("dummyRtcChannelName", uid);
+     * String bobAgoraChatRtcToken = service.token().getUserToken(bob, expireInSeconds, token -&gt; {
+     *     AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc("dummyRtcChannelName", "dummyUid");
      *     serviceRtc.addPrivilegeRtc(AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL, expireOnSeconds);
      *     token.addService(serviceRtc);
-     * });
+     * }, null);
      * </code></pre>
      *
      * @param user 用户
      * @param expireInSeconds token 过期时间 TTL in seconds
      * @param tokenConfigurer 用来自定义添加其他 Agora 服务的 lambda function
-     * @return Agora Token
+     * @param password 用户密码
+     * @return Easemob userToken 或 Agora userToken
      */
     public String getUserToken(EMUser user, Integer expireInSeconds,
             Consumer<AccessToken2> tokenConfigurer, String password) {
+
+        if (user == null) {
+            throw new EMInvalidArgumentException("user cannot be null");
+        }
         EMProperties properties = context.getProperties();
         EMProperties.Realm realm = properties.getRealm();
         if (realm.equals(EMProperties.Realm.AGORA_REALM)) {
+            if (expireInSeconds == null) {
+                throw new EMInvalidArgumentException("expireInSeconds cannot be null");
+            }
             String userId = user.getUuid();
             String appId = properties.getAppId();
             String appCert = properties.getAppCert();
@@ -80,7 +96,9 @@ public class TokenApi {
             serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER, expireOnSeconds);
             accessToken.addService(serviceChat);
 
-            tokenConfigurer.accept(accessToken);
+            if (tokenConfigurer != null) {
+                tokenConfigurer.accept(accessToken);
+            }
             validateUserChatToken(accessToken);
 
             try {
@@ -91,7 +109,7 @@ public class TokenApi {
             }
         } else if (realm.equals(EMProperties.Realm.EASEMOB_REALM)) {
             if (Strings.isBlank(password)) {
-                throw new EMInvalidArgumentException("password is missing");
+                throw new EMInvalidArgumentException("password cannot be blank");
             }
             String userName = user.getUsername();
             return fetchUserTokenWithEasemobRealm(this.context, UserTokenRequest.of(userName, password))

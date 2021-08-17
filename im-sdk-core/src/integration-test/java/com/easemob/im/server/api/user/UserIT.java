@@ -346,7 +346,7 @@ class UserIT extends AbstractIT {
         String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(
                 () -> this.service.user().create(randomUsername, randomPassword).block(Utilities.IT_TIMEOUT));
-        // TODO: doc this confusion -> but this one should be working for both Realms
+        // notice the deprecated stuff
         assertDoesNotThrow(() -> this.service.user().getToken(randomUsername, randomPassword).block(Utilities.IT_TIMEOUT));
     }
 
