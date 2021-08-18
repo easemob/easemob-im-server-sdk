@@ -4,7 +4,6 @@ import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.EMService;
 import com.easemob.im.server.api.token.agora.AccessToken2;
 import com.easemob.im.server.api.token.allocate.AgoraTokenProvider;
-import com.easemob.im.server.api.token.allocate.ExchangeTokenRequest;
 import com.easemob.im.server.api.user.get.UserGetResponse;
 import com.easemob.im.server.exception.EMUnauthorizedException;
 import com.easemob.im.server.model.EMUser;
@@ -16,8 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.netty.http.client.HttpClient;
 import com.easemob.im.server.api.util.Utilities;
-
-import java.util.function.Consumer;
 
 import static com.easemob.im.server.api.util.Utilities.IT_TIMEOUT;
 import static com.easemob.im.server.api.util.Utilities.toExpireOnSeconds;
@@ -38,8 +35,6 @@ public class AgoraTokenIT {
     // TODO: dont hardcode names once easemobUserName -> agoraUserId mapping is ready
     private static final String ALICE_USER_NAME = "yifan3";
     private static final String BOB_USER_NAME = "ken-0";
-
-    private final ExchangeTokenRequest exchangeTokenRequest = new ExchangeTokenRequest();
 
     protected EMService service;
 
@@ -73,7 +68,11 @@ public class AgoraTokenIT {
     public void userTokenTest() throws Exception {
         EMUser aliceUser = service.user().get(ALICE_USER_NAME).block(Utilities.IT_TIMEOUT);
         String aliceAgoraToken = service.token().getUserToken(aliceUser, EXPIRE_IN_SECONDS,
-            rtcPrivilegeAdder(DUMMY_CHANNEL_NAME, DUMMY_UID, DUMMY_RTC_PRIVILEGE, EXPIRE_IN_SECONDS),
+                token -> {
+                    AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc(DUMMY_CHANNEL_NAME, DUMMY_UID);
+                    serviceRtc.addPrivilegeRtc(DUMMY_RTC_PRIVILEGE, toExpireOnSeconds(EXPIRE_IN_SECONDS));
+                    token.addService(serviceRtc);
+                },
                 null
         );
 
@@ -114,17 +113,5 @@ public class AgoraTokenIT {
                 .block(IT_TIMEOUT).getValue();
         return EMHttpClientFactory.create(context.getProperties()).baseUrl(baseUrl)
                 .headers(headers -> headers.set("Authorization", String.format("Bearer %s", easemobToken)));
-    }
-
-    // TODO: should be an sample
-    private  Consumer<AccessToken2> rtcPrivilegeAdder(
-            String channelName, String uid,
-            AccessToken2.PrivilegeRtc privilegeRtc, int expireInSeconds) {
-        int expireOnSeconds = toExpireOnSeconds(expireInSeconds);
-        return token -> {
-            AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc(channelName, uid);
-            serviceRtc.addPrivilegeRtc(privilegeRtc, expireOnSeconds);
-            token.addService(serviceRtc);
-        };
     }
 }

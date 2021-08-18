@@ -43,30 +43,30 @@ public class TokenApi {
      * 对每个服务的权限可以单独设置不同的过期时间.
      * <p>
      * 为用户 Cat 获取 Easemob userToken
-     * <pre><code>
-     * EMUser cat = new EMUser("cat", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
-     * String catEasemobToken = service.token().getUserToken(cat, null, null, "passwordOfUserCat");
-     * </code></pre>
+     * <pre>{@code
+     * EMUser cathy = new EMUser("cathy", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
+     * String cathyEasemobToken = service.token().getUserToken(cathy, null, null, "passwordOfUserCat");
+     * }</pre>
      * <p>
      * 为用户 Alice 生成仅含 AgoraChat 权限的 Agora userToken, 有效期为3600秒:
-     * <pre><code>
+     * <pre>{@code
      * EMUser alice = new EMUser("alice", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
      * String aliceAgoraChatToken = service.token().getUserToken(alice, 3600, null, null);
-     * </code></pre>
+     * }</pre>
      * <p>
      * 为用户 Bob 生成包含 AgoraChat 权限和 AgoraRTC (JOIN_CHANNEL) 权限的 Agora userToken, 有效期为600秒:
-     * <pre><code>
+     * <pre>{@code
      * // please pay attention to expireInSeconds (Duration) vs. expireOnSeconds (Instant)
      *
      * int expireInSeconds = 600;
      * int expireOnSeconds = Utilities.toExpireOnSeconds(expireInSeconds);
      * EMUser bob = new EMUser("bob", "da921111-ecf9-11eb-9af3-296ff79acb67", true);
-     * String bobAgoraChatRtcToken = service.token().getUserToken(bob, expireInSeconds, token -&gt; {
+     * String bobAgoraChatRtcToken = service.token().getUserToken(bob, expireInSeconds, token -> {
      *     AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc("dummyRtcChannelName", "dummyUid");
      *     serviceRtc.addPrivilegeRtc(AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL, expireOnSeconds);
      *     token.addService(serviceRtc);
      * }, null);
-     * </code></pre>
+     * }</pre>
      *
      * @param user 用户
      * @param expireInSeconds token 过期时间 TTL in seconds

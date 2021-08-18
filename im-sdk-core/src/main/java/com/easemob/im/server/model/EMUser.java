@@ -14,22 +14,32 @@ public class EMUser extends EMEntity {
             Pattern.compile("^[a-zA-Z0-9~!@#$%^&*\\-_=+<>;:,./?]{1,32}$");
 
     private final String username;
-
+    private final String uuid;
     private final Boolean canLogin;
 
-    // keep this for backwards compatibility
+    /**
+     * @param username 用户名
+     * @param canLogin 是否可登录
+     * @deprecated use {@link #EMUser(String, String, Boolean)} instead
+     */
     @Deprecated
     public EMUser(String username, Boolean canLogin) {
-        super(EntityType.USER);
-        super.id(username);
-        this.username = username;
-        this.canLogin = canLogin;
+        this(username, null, canLogin);
     }
 
+    /**
+     * @param username 用户名
+     * @param uuid 用户 UUID
+     * @param canLogin 是否可登录
+     */
     public EMUser(String username, String uuid, Boolean canLogin) {
         super(EntityType.USER);
-        super.id(uuid);
+        if (Strings.isBlank(username)) {
+            throw new EMInvalidArgumentException("username cannot be blank");
+        }
+        super.id(username);
         this.username = username;
+        this.uuid = uuid;
         this.canLogin = canLogin;
     }
 
@@ -60,7 +70,7 @@ public class EMUser extends EMEntity {
     }
 
     public String getUuid() {
-        return this.id();
+        return this.uuid;
     }
 
     public boolean getCanLogin() {
@@ -76,19 +86,19 @@ public class EMUser extends EMEntity {
             return false;
         }
         EMUser emUser = (EMUser) o;
-        return getUsername().equals(emUser.getUsername()) && getUuid().equals(emUser.getUuid());
+        return username.equals(emUser.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getUuid());
+        return Objects.hash(username);
     }
 
     @Override
     public String toString() {
         return "EMUser{" +
                 "username='" + username + '\'' +
-                ", uuid='" + id() + '\'' +
+                ", uuid='" + uuid + '\'' +
                 ", canLogin=" + canLogin +
                 '}';
     }
