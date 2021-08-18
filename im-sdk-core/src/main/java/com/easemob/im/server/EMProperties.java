@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 public class EMProperties {
 
     private final Realm realm;
+    private final String appKey;
     private final Credentials credentials;
     private final String baseUri;
     private final EMProxy proxy;
@@ -30,8 +31,10 @@ public class EMProperties {
         }
     }
 
-    private EMProperties(Realm realm, Credentials credentials, String baseUri, EMProxy proxy, int httpConnectionPoolSize, String serverTimezone) {
+    private EMProperties(Realm realm, String appKey, Credentials credentials, String baseUri,
+            EMProxy proxy, int httpConnectionPoolSize, String serverTimezone) {
         this.realm = realm;
+        this.appKey = appKey;
         this.credentials = credentials;
         this.baseUri = baseUri;
         this.proxy = proxy;
@@ -53,7 +56,8 @@ public class EMProperties {
     public EMProperties(String baseUri, String appKey, EMProxy proxy, String clientId,
             String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
         this.realm = Realm.EASEMOB_REALM;
-        this.credentials = new EasemobAppCredentials(appKey, clientId, clientSecret);
+        this.appKey = appKey;
+        this.credentials = new EasemobAppCredentials(clientId, clientSecret);
         this.baseUri = baseUri;
         this.proxy = proxy;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
@@ -61,19 +65,50 @@ public class EMProperties {
     }
 
     public String getAppkey() {
-        return this.credentials.getAppKey();
+        return this.appKey;
     }
+
     public String getClientId() {
-        return this.credentials.getClientId();
+        if (this.realm.equals(Realm.EASEMOB_REALM)) {
+            return this.credentials.getId();
+
+        } else if (this.realm.equals(Realm.AGORA_REALM)) {
+            return null;
+        } else {
+            throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+        }
     }
+
     public String getClientSecret() {
-        return this.credentials.getClientSecret();
+        if (this.realm.equals(Realm.EASEMOB_REALM)) {
+            return this.credentials.getSecret();
+
+        } else if (this.realm.equals(Realm.AGORA_REALM)) {
+            return null;
+        } else {
+            throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+        }
     }
+
     public String getAppId() {
-        return this.credentials.getAppId();
+        if (this.realm.equals(Realm.AGORA_REALM)) {
+            return this.credentials.getId();
+
+        } else if (this.realm.equals(Realm.EASEMOB_REALM)) {
+            return null;
+        } else {
+            throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+        }
     }
     public String getAppCert() {
-        return this.credentials.getAppCert();
+        if (this.realm.equals(Realm.AGORA_REALM)) {
+            return this.credentials.getSecret();
+
+        } else if (this.realm.equals(Realm.EASEMOB_REALM)) {
+            return null;
+        } else {
+            throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+        }
     }
 
     public Realm getRealm() {
@@ -99,14 +134,14 @@ public class EMProperties {
 
     public String getAppkeyUrlEncoded() {
         try {
-            return URLEncoder.encode(this.credentials.getAppKey(), "UTF-8");
+            return URLEncoder.encode(this.appKey, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new EMUnsupportedEncodingException(e.getMessage());
         }
     }
 
     public String getAppkeySlashDelimited() {
-        return this.credentials.getAppKey().replace('#', '/');
+        return this.appKey.replace('#', '/');
     }
 
     public int getHttpConnectionPoolSize() {
@@ -225,8 +260,8 @@ public class EMProperties {
                 if (this.appId != null || this.appCert != null) {
                     throw new EMInvalidStateException("appId and appCert must be blank");
                 }
-                EasemobAppCredentials credentials = new EasemobAppCredentials(this.appKey, this.clientId, this.clientSecret);
-                return new EMProperties(this.realm, credentials, this.baseUri, this.proxy,
+                Credentials credentials = new EasemobAppCredentials(this.clientId, this.clientSecret);
+                return new EMProperties(this.realm, this.appKey, credentials, this.baseUri, this.proxy,
                         this.httpConnectionPoolSize, this.serverTimezone);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
                 if (this.appId == null) {
@@ -238,15 +273,16 @@ public class EMProperties {
                 if (this.clientId != null || this.clientSecret != null) {
                     throw new EMInvalidStateException("clientId and clientSecret must be blank");
                 }
-                AgoraAppCredentials credentials = new AgoraAppCredentials(this.appKey, this.appId, this.appCert);
-                return new EMProperties(this.realm, credentials, this.baseUri, this.proxy,
+                Credentials credentials = new AgoraAppCredentials(this.appId, this.appCert);
+                return new EMProperties(this.realm, this.appKey, credentials, this.baseUri, this.proxy,
                         this.httpConnectionPoolSize, this.serverTimezone);
             } else {
-                throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.name()));
+                throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
             }
         }
 
-        @Override public String toString() {
+        @Override
+        public String toString() {
             return "Builder{" +
                     "realm=" + realm +
                     ", appKey='" + appKey + '\'' +
@@ -262,9 +298,11 @@ public class EMProperties {
         }
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "EMProperties{" +
                 "realm=" + realm +
+                ", appKey=" + appKey +
                 ", credentials=" + credentials +
                 ", baseUri='" + baseUri + '\'' +
                 ", proxy=" + proxy +

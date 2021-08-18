@@ -5,39 +5,33 @@ import com.easemob.im.server.exception.EMInvalidArgumentException;
 import org.apache.logging.log4j.util.Strings;
 
 public class EasemobAppCredentials implements Credentials {
-    private final String appKey;
     private final String clientId;
     private final String clientSecret;
 
-    public EasemobAppCredentials(String appKey, String clientId, String clientSecret) {
-        if (Strings.isBlank(appKey) || Strings.isBlank(clientId) || Strings.isBlank(clientSecret)) {
-            throw new EMInvalidArgumentException("appKey/clientId/clientSecret cannot be blank");
+    public EasemobAppCredentials(String clientId, String clientSecret) {
+        if (Strings.isBlank(clientId) || Strings.isBlank(clientSecret)) {
+            throw new EMInvalidArgumentException("clientId/clientSecret cannot be blank");
         }
-        this.appKey = appKey;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
     }
 
     @Override
-    public String getAppKey() {
-        return appKey;
+    public String getId() {
+        return this.clientId;
     }
 
     @Override
-    public String getClientId() {
-        return clientId;
+    public String getSecret() {
+        return this.clientSecret;
     }
 
     @Override
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    @Override public String toString() {
+    public String toString() {
         return "EasemobAppCredentials{" +
-                "appKey='" + appKey + '\'' +
                 ", clientId='" + Utilities.mask(clientId) + '\'' +
                 ", clientSecret='" +Utilities.mask(clientSecret) + '\'' +
                 '}';
     }
+
 }
