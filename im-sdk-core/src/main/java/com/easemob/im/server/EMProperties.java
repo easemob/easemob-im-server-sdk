@@ -21,15 +21,6 @@ public class EMProperties {
     private final int httpConnectionPoolSize;
     private final String serverTimezone;
 
-    public enum Realm {
-        AGORA_REALM(1),
-        EASEMOB_REALM(2),
-        ;
-        public short intValue;
-        Realm(int value) {
-            intValue = (short) value;
-        }
-    }
 
     private EMProperties(Realm realm, String appKey, Credentials credentials, String baseUri,
             EMProxy proxy, int httpConnectionPoolSize, String serverTimezone) {
@@ -64,6 +55,11 @@ public class EMProperties {
         this.serverTimezone = serverTimezone;
     }
 
+    // easemob realm by default
+    public static Builder builder() {
+        return new Builder().setRealm(Realm.EASEMOB_REALM);
+    }
+
     public String getAppkey() {
         return this.appKey;
     }
@@ -75,7 +71,8 @@ public class EMProperties {
         } else if (this.realm.equals(Realm.AGORA_REALM)) {
             return null;
         } else {
-            throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+            throw new EMInvalidStateException(
+                    String.format("invalid realm type %s", this.realm.toString()));
         }
     }
 
@@ -86,7 +83,8 @@ public class EMProperties {
         } else if (this.realm.equals(Realm.AGORA_REALM)) {
             return null;
         } else {
-            throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+            throw new EMInvalidStateException(
+                    String.format("invalid realm type %s", this.realm.toString()));
         }
     }
 
@@ -97,9 +95,11 @@ public class EMProperties {
         } else if (this.realm.equals(Realm.EASEMOB_REALM)) {
             return null;
         } else {
-            throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+            throw new EMInvalidStateException(
+                    String.format("invalid realm type %s", this.realm.toString()));
         }
     }
+
     public String getAppCert() {
         if (this.realm.equals(Realm.AGORA_REALM)) {
             return this.credentials.getSecret();
@@ -107,7 +107,8 @@ public class EMProperties {
         } else if (this.realm.equals(Realm.EASEMOB_REALM)) {
             return null;
         } else {
-            throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+            throw new EMInvalidStateException(
+                    String.format("invalid realm type %s", this.realm.toString()));
         }
     }
 
@@ -117,11 +118,6 @@ public class EMProperties {
 
     public Credentials getCredentials() {
         return credentials;
-    }
-
-    // easemob realm by default
-    public static Builder builder() {
-        return new Builder().setRealm(Realm.EASEMOB_REALM);
     }
 
     public String getBaseUri() {
@@ -151,6 +147,31 @@ public class EMProperties {
     public String getServerTimezone() {
         return this.serverTimezone;
     }
+
+    @Override
+    public String toString() {
+        return "EMProperties{" +
+                "realm=" + realm +
+                ", appKey=" + appKey +
+                ", credentials=" + credentials +
+                ", baseUri='" + baseUri + '\'' +
+                ", proxy=" + proxy +
+                ", httpConnectionPoolSize=" + httpConnectionPoolSize +
+                ", serverTimezone='" + serverTimezone + '\'' +
+                '}';
+    }
+
+    public enum Realm {
+        AGORA_REALM(1),
+        EASEMOB_REALM(2),
+        ;
+        public short intValue;
+
+        Realm(int value) {
+            intValue = (short) value;
+        }
+    }
+
 
     public static class Builder {
         private Realm realm;
@@ -260,8 +281,10 @@ public class EMProperties {
                 if (this.appId != null || this.appCert != null) {
                     throw new EMInvalidStateException("appId and appCert must be blank");
                 }
-                Credentials credentials = new EasemobAppCredentials(this.clientId, this.clientSecret);
-                return new EMProperties(this.realm, this.appKey, credentials, this.baseUri, this.proxy,
+                Credentials credentials =
+                        new EasemobAppCredentials(this.clientId, this.clientSecret);
+                return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
+                        this.proxy,
                         this.httpConnectionPoolSize, this.serverTimezone);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
                 if (this.appId == null) {
@@ -274,10 +297,12 @@ public class EMProperties {
                     throw new EMInvalidStateException("clientId and clientSecret must be blank");
                 }
                 Credentials credentials = new AgoraAppCredentials(this.appId, this.appCert);
-                return new EMProperties(this.realm, this.appKey, credentials, this.baseUri, this.proxy,
+                return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
+                        this.proxy,
                         this.httpConnectionPoolSize, this.serverTimezone);
             } else {
-                throw new EMInvalidStateException(String.format("invalid realm type %s", this.realm.toString()));
+                throw new EMInvalidStateException(
+                        String.format("invalid realm type %s", this.realm.toString()));
             }
         }
 
@@ -296,18 +321,5 @@ public class EMProperties {
                     ", serverTimezone='" + serverTimezone + '\'' +
                     '}';
         }
-    }
-
-    @Override
-    public String toString() {
-        return "EMProperties{" +
-                "realm=" + realm +
-                ", appKey=" + appKey +
-                ", credentials=" + credentials +
-                ", baseUri='" + baseUri + '\'' +
-                ", proxy=" + proxy +
-                ", httpConnectionPoolSize=" + httpConnectionPoolSize +
-                ", serverTimezone='" + serverTimezone + '\'' +
-                '}';
     }
 }

@@ -190,6 +190,7 @@ public class UserApi {
      */
     @Deprecated
     public Mono<Token> getToken(String username, String password) {
-        return fetchUserTokenWithEasemobRealm(this.context, UserTokenRequest.of(username, password));
+        return fetchUserTokenWithEasemobRealm(this.context,
+                UserTokenRequest.of(username, password));
     }
 }

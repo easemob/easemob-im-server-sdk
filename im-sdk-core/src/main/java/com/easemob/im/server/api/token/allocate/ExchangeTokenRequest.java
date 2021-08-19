@@ -7,8 +7,11 @@ public class ExchangeTokenRequest implements TokenRequest {
     @SuppressWarnings("java:S1170")
     @JsonProperty("grant_type")
     private final String grantType = "agora";
+
     @JsonCreator
-    public ExchangeTokenRequest(){}
+    public ExchangeTokenRequest() {
+    }
+
     public static ExchangeTokenRequest getInstance() {
         return new ExchangeTokenRequest();
     }

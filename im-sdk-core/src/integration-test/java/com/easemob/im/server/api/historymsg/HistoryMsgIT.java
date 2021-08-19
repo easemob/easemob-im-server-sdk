@@ -21,14 +21,16 @@ public class HistoryMsgIT extends AbstractIT {
     @Disabled
     void testHistoryMsgGetAsUri() {
         // minus 2 hours since msg history has an at least one hour delay
-        this.service.message().getHistoryAsUri(Instant.now().minus(Duration.ofHours(2))).block(Utilities.IT_TIMEOUT);
+        this.service.message().getHistoryAsUri(Instant.now().minus(Duration.ofHours(2)))
+                .block(Utilities.IT_TIMEOUT);
     }
 
     @Disabled
     void testHistoryMsgGetAsLocalFile() {
         Path path = FileSystems.getDefault().getPath("path");
-        assertDoesNotThrow(() -> this.service.message().getHistoryAsLocalFile(Instant.now().minus(Duration.ofHours(2)),
-                path, "history.gz").block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.message()
+                .getHistoryAsLocalFile(Instant.now().minus(Duration.ofHours(2)),
+                        path, "history.gz").block(Utilities.IT_TIMEOUT));
     }
 
 }

@@ -68,7 +68,8 @@ public class GroupIT extends AbstractIT {
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
                         true).block(Utilities.IT_TIMEOUT));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
-                () -> this.service.group().listGroupMembers(groupId, 100, null).block(Utilities.IT_TIMEOUT));
+                () -> this.service.group().listGroupMembers(groupId, 100, null)
+                        .block(Utilities.IT_TIMEOUT));
         List<String> groupMembers = groupMemberPage.getValues();
         if (groupMembers.size() != members.size()) {
             throw new RuntimeException(

@@ -12,6 +12,7 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.ProxyProvider;
 
 import java.net.InetSocketAddress;
+
 import com.easemob.im.server.api.util.Utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,7 +27,8 @@ public class UserGetTest extends AbstractApiTest {
     private UserGet userGet;
 
     public UserGetTest() {
-        this.server.addHandler(String.format("GET /easemob/demo/users/%s", DUMMY_USER_NAME), this::handleUserGetSingle);
+        this.server.addHandler(String.format("GET /easemob/demo/users/%s", DUMMY_USER_NAME),
+                this::handleUserGetSingle);
         this.userGet = new UserGet(this.context);
     }
 

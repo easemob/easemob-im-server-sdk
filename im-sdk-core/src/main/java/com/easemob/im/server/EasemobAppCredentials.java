@@ -30,7 +30,7 @@ public class EasemobAppCredentials implements Credentials {
     public String toString() {
         return "EasemobAppCredentials{" +
                 ", clientId='" + Utilities.mask(clientId) + '\'' +
-                ", clientSecret='" +Utilities.mask(clientSecret) + '\'' +
+                ", clientSecret='" + Utilities.mask(clientSecret) + '\'' +
                 '}';
     }
 
