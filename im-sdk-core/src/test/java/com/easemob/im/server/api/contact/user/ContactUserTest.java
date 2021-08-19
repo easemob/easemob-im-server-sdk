@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import com.easemob.im.server.api.util.Utilities;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

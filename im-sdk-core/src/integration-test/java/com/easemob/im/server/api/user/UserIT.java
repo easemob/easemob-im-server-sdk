@@ -153,8 +153,9 @@ class UserIT extends AbstractIT {
 
         assertDoesNotThrow(() -> this.service.contact().add(aliceUserName, bobUserName)
                 .block(Utilities.IT_TIMEOUT));
-        String aliceFirstFriend = assertDoesNotThrow(() -> this.service.contact().list(aliceUserName))
-                .blockFirst(Utilities.IT_TIMEOUT);
+        String aliceFirstFriend =
+                assertDoesNotThrow(() -> this.service.contact().list(aliceUserName))
+                        .blockFirst(Utilities.IT_TIMEOUT);
         if (aliceFirstFriend == null) {
             throw new RuntimeException(String.format("%s contact list is null", aliceUserName));
         }
@@ -345,9 +346,11 @@ class UserIT extends AbstractIT {
         String randomUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(
-                () -> this.service.user().create(randomUsername, randomPassword).block(Utilities.IT_TIMEOUT));
+                () -> this.service.user().create(randomUsername, randomPassword)
+                        .block(Utilities.IT_TIMEOUT));
         // notice the deprecated stuff
-        assertDoesNotThrow(() -> this.service.user().getToken(randomUsername, randomPassword).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().getToken(randomUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
     }
 
 }

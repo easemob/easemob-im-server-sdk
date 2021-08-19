@@ -9,12 +9,14 @@ public class UtilitiesTest {
 
     @Test
     public void randomUserNameTest() {
-        for (int i = 0; i < 10; i ++) System.out.println(randomUserName());
+        for (int i = 0; i < 10; i++)
+            System.out.println(randomUserName());
     }
 
     @Test
     public void randomPasswordTest() {
-        for (int i = 0; i < 10; i ++) System.out.println(randomPassword());
+        for (int i = 0; i < 10; i++)
+            System.out.println(randomPassword());
     }
 
     @Test

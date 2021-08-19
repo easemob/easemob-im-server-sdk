@@ -80,7 +80,8 @@ public class EMProxy {
 
         public EMProxy build() {
             if (Strings.isBlank(this.ip)) {
-                throw new EMInvalidArgumentException("the IP of setting proxy cannot be null or blank");
+                throw new EMInvalidArgumentException(
+                        "the IP of setting proxy cannot be null or blank");
             }
             return new EMProxy(this.ip, this.port, this.username, this.password);
         }

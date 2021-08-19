@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-
 import java.time.Duration;
 
 public class GroupListTest extends AbstractApiTest {

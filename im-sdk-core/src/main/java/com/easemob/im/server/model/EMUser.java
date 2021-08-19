@@ -29,7 +29,7 @@ public class EMUser extends EMEntity {
 
     /**
      * @param username 用户名
-     * @param uuid 用户 UUID
+     * @param uuid     用户 UUID
      * @param canLogin 是否可登录
      */
     public EMUser(String username, String uuid, Boolean canLogin) {

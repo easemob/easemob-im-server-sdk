@@ -32,6 +32,19 @@ public class TokenApi {
         this.context = context;
     }
 
+    public static Mono<Token> fetchUserTokenWithEasemobRealm(Context context,
+            TokenRequest tokenRequest) {
+        return context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/token")
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(tokenRequest))))
+                        .responseSingle(
+                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
+                .map(buf -> context.getCodec().decode(buf, TokenResponse.class))
+                .map(TokenResponse::asToken);
+    }
+
     /**
      * 获取 User Token
      * <p>
@@ -68,10 +81,10 @@ public class TokenApi {
      * }, null);
      * }</pre>
      *
-     * @param user 用户
+     * @param user            用户
      * @param expireInSeconds token 过期时间 TTL in seconds
      * @param tokenConfigurer 用来自定义添加其他 Agora 服务的 lambda function
-     * @param password 用户密码
+     * @param password        用户密码
      * @return Easemob userToken 或 Agora userToken
      */
     public String getUserToken(EMUser user, Integer expireInSeconds,
@@ -93,7 +106,8 @@ public class TokenApi {
 
             AccessToken2 accessToken = new AccessToken2(appId, appCert, expireOnSeconds);
             AccessToken2.Service serviceChat = new AccessToken2.ServiceChat(userId);
-            serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER, expireOnSeconds);
+            serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER,
+                    expireOnSeconds);
             accessToken.addService(serviceChat);
 
             if (tokenConfigurer != null) {
@@ -112,23 +126,12 @@ public class TokenApi {
                 throw new EMInvalidArgumentException("password cannot be blank");
             }
             String userName = user.getUsername();
-            return fetchUserTokenWithEasemobRealm(this.context, UserTokenRequest.of(userName, password))
+            return fetchUserTokenWithEasemobRealm(this.context,
+                    UserTokenRequest.of(userName, password))
                     .map(Token::getValue).block(Utilities.IT_TIMEOUT);
         } else {
             throw new EMInvalidStateException(String.format("invalid realm value %s", realm));
         }
-    }
-
-    public static Mono<Token> fetchUserTokenWithEasemobRealm(Context context, TokenRequest tokenRequest) {
-        return context.getHttpClient()
-                .flatMap(httpClient -> httpClient.post()
-                        .uri("/token")
-                        .send(Mono.create(sink -> sink.success(context.getCodec()
-                                .encode(tokenRequest))))
-                        .responseSingle(
-                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
-                .map(buf -> context.getCodec().decode(buf, TokenResponse.class))
-                .map(TokenResponse::asToken);
     }
 
     // must include userId if it has the chat.user privilege
@@ -142,13 +145,16 @@ public class TokenApi {
         String userId = serviceChat.getUserId();
         Map<Short, Integer> chatPrivileges = serviceChat.getPrivileges();
         boolean hasUserId = Strings.isNotBlank(userId);
-        boolean hasAppPrivilege = chatPrivileges.get(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP.intValue) != null;
-        boolean hasUserPrivilege = chatPrivileges.get(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER.intValue) != null;
+        boolean hasAppPrivilege =
+                chatPrivileges.get(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP.intValue) != null;
+        boolean hasUserPrivilege =
+                chatPrivileges.get(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER.intValue) != null;
         if (hasAppPrivilege) {
             throw new EMForbiddenException("userToken must not have chat app privilege");
         }
         if (hasUserPrivilege && !hasUserId) {
-            throw new EMForbiddenException("accessToken with the chatUser privilege must include an userId");
+            throw new EMForbiddenException(
+                    "accessToken with the chatUser privilege must include an userId");
         }
     }
 

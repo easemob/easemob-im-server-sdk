@@ -49,13 +49,16 @@ public class DefaultContext implements Context {
 
         EMProperties.Realm realm = properties.getRealm();
         if (realm == EMProperties.Realm.AGORA_REALM) {
-            this.tokenProvider = new AgoraTokenProvider(properties, httpClient, this.endpointRegistry,
-                    this.loadBalancer, this.codec, this.errorMapper);
+            this.tokenProvider =
+                    new AgoraTokenProvider(properties, httpClient, this.endpointRegistry,
+                            this.loadBalancer, this.codec, this.errorMapper);
         } else if (realm == EMProperties.Realm.EASEMOB_REALM) {
-            this.tokenProvider = new DefaultTokenProvider(properties, httpClient, this.endpointRegistry,
-                    this.loadBalancer, this.codec, this.errorMapper);
+            this.tokenProvider =
+                    new DefaultTokenProvider(properties, httpClient, this.endpointRegistry,
+                            this.loadBalancer, this.codec, this.errorMapper);
         } else {
-            throw new EMInvalidStateException(String.format("Realm value = %d is illegal", realm.intValue));
+            throw new EMInvalidStateException(
+                    String.format("Realm value = %d is illegal", realm.intValue));
         }
 
         this.httpClient = httpClient.headersWhen(headers -> this.tokenProvider.fetchAppToken()

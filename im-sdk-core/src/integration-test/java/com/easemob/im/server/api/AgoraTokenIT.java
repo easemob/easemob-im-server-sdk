@@ -69,8 +69,10 @@ public class AgoraTokenIT {
         EMUser aliceUser = service.user().get(ALICE_USER_NAME).block(Utilities.IT_TIMEOUT);
         String aliceAgoraToken = service.token().getUserToken(aliceUser, EXPIRE_IN_SECONDS,
                 token -> {
-                    AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc(DUMMY_CHANNEL_NAME, DUMMY_UID);
-                    serviceRtc.addPrivilegeRtc(DUMMY_RTC_PRIVILEGE, toExpireOnSeconds(EXPIRE_IN_SECONDS));
+                    AccessToken2.ServiceRtc serviceRtc =
+                            new AccessToken2.ServiceRtc(DUMMY_CHANNEL_NAME, DUMMY_UID);
+                    serviceRtc.addPrivilegeRtc(DUMMY_RTC_PRIVILEGE,
+                            toExpireOnSeconds(EXPIRE_IN_SECONDS));
                     token.addService(serviceRtc);
                 },
                 null
@@ -108,10 +110,13 @@ public class AgoraTokenIT {
         Codec codec = context.getCodec();
         ErrorMapper errorMapper = context.getErrorMapper();
         HttpClient httpClient = EMHttpClientFactory.create(context.getProperties());
-        String baseUrl = String.format("%s/%s", baseUri, context.getProperties().getAppkeySlashDelimited());
-        String easemobToken = AgoraTokenProvider.exchangeForEasemobToken(httpClient, baseUrl, agoraToken, codec, errorMapper)
+        String baseUrl =
+                String.format("%s/%s", baseUri, context.getProperties().getAppkeySlashDelimited());
+        String easemobToken = AgoraTokenProvider
+                .exchangeForEasemobToken(httpClient, baseUrl, agoraToken, codec, errorMapper)
                 .block(IT_TIMEOUT).getValue();
         return EMHttpClientFactory.create(context.getProperties()).baseUrl(baseUrl)
-                .headers(headers -> headers.set("Authorization", String.format("Bearer %s", easemobToken)));
+                .headers(headers -> headers
+                        .set("Authorization", String.format("Bearer %s", easemobToken)));
     }
 }
