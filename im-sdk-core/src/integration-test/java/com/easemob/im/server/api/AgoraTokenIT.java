@@ -17,7 +17,6 @@ import reactor.netty.http.client.HttpClient;
 import com.easemob.im.server.api.util.Utilities;
 
 import static com.easemob.im.server.api.util.Utilities.IT_TIMEOUT;
-import static com.easemob.im.server.api.util.Utilities.toExpireOnSeconds;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -71,8 +70,7 @@ public class AgoraTokenIT {
                 token -> {
                     AccessToken2.ServiceRtc serviceRtc =
                             new AccessToken2.ServiceRtc(DUMMY_CHANNEL_NAME, DUMMY_UID);
-                    serviceRtc.addPrivilegeRtc(DUMMY_RTC_PRIVILEGE,
-                            toExpireOnSeconds(EXPIRE_IN_SECONDS));
+                    serviceRtc.addPrivilegeRtc(DUMMY_RTC_PRIVILEGE, EXPIRE_IN_SECONDS);
                     token.addService(serviceRtc);
                 },
                 null

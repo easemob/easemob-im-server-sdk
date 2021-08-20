@@ -15,9 +15,6 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
-import java.time.Instant;
-
-import static com.easemob.im.server.api.util.Utilities.toExpireOnSeconds;
 
 public class AgoraTokenProvider implements TokenProvider {
 
@@ -91,16 +88,11 @@ public class AgoraTokenProvider implements TokenProvider {
     }
 
     private String buildAppToken(String appId, String appCert) {
-        int expireOnSeconds = toExpireOnSeconds(EXPIRE_IN_SECONDS);
-        Instant expireDate = Instant.ofEpochSecond(expireOnSeconds);
-        log.debug(
-                "buildingAppToken with expireInSeconds = {}, expireOnSeconds = {}, expireDate = {}",
-                EXPIRE_IN_SECONDS, expireOnSeconds, expireDate.toString());
 
-        AccessToken2 accessToken = new AccessToken2(appId, appCert, expireOnSeconds);
+        AccessToken2 accessToken = new AccessToken2(appId, appCert, EXPIRE_IN_SECONDS);
         AccessToken2.Service serviceChat = new AccessToken2.ServiceChat();
         serviceChat
-                .addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP, expireOnSeconds);
+                .addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP, EXPIRE_IN_SECONDS);
         accessToken.addService(serviceChat);
         try {
             return accessToken.build();

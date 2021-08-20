@@ -69,14 +69,11 @@ public class TokenApi {
      * <p>
      * 为用户 Bob 生成包含 AgoraChat 权限和 AgoraRTC (JOIN_CHANNEL) 权限的 Agora userToken, 有效期为600秒:
      * <pre>{@code
-     * // please pay attention to expireInSeconds (Duration) vs. expireOnSeconds (Instant)
      *
-     * int expireInSeconds = 600;
-     * int expireOnSeconds = Utilities.toExpireOnSeconds(expireInSeconds);
      * EMUser bob = new EMUser("bob", "da921111-ecf9-11eb-9af3-296ff79acb67", true);
-     * String bobAgoraChatRtcToken = service.token().getUserToken(bob, expireInSeconds, token -> {
+     * String bobAgoraChatRtcToken = service.token().getUserToken(bob, 600, token -> {
      *     AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc("dummyRtcChannelName", "dummyUid");
-     *     serviceRtc.addPrivilegeRtc(AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL, expireOnSeconds);
+     *     serviceRtc.addPrivilegeRtc(AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL, 600);
      *     token.addService(serviceRtc);
      * }, null);
      * }</pre>
@@ -102,12 +99,11 @@ public class TokenApi {
             String userId = user.getUuid();
             String appId = properties.getAppId();
             String appCert = properties.getAppCert();
-            int expireOnSeconds = Utilities.toExpireOnSeconds(expireInSeconds);
 
-            AccessToken2 accessToken = new AccessToken2(appId, appCert, expireOnSeconds);
+            AccessToken2 accessToken = new AccessToken2(appId, appCert, expireInSeconds);
             AccessToken2.Service serviceChat = new AccessToken2.ServiceChat(userId);
             serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_USER,
-                    expireOnSeconds);
+                    expireInSeconds);
             accessToken.addService(serviceChat);
 
             if (tokenConfigurer != null) {

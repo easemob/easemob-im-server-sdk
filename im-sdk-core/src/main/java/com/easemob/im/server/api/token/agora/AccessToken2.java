@@ -27,6 +27,13 @@ public class AccessToken2 {
     public Map<Short, Service> services = new TreeMap<>();
     public AccessToken2() {
     }
+
+    /**
+     *
+     * @param appId
+     * @param appCert
+     * @param expire expire Duration in seconds
+     */
     public AccessToken2(String appId, String appCert, int expire) {
         this.appCert = appCert;
         this.appId = appId;
