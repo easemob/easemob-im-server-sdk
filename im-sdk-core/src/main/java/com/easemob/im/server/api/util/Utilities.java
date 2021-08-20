@@ -25,10 +25,6 @@ public class Utilities {
         );
     }
 
-    public static int toExpireOnSeconds(int expireInSeconds) {
-        return (int) Instant.now().plusSeconds(expireInSeconds).getEpochSecond();
-    }
-
     public static String mask(String text) {
         if (Strings.isBlank(text)) {
             return text;
