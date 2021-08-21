@@ -17,7 +17,7 @@
 <dependency>
     <groupId>com.easemob.im</groupId>
     <artifactId>im-sdk-core</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@
 如果你的项目使用Gradle构建，可以在build.grade中添加下面代码：
 
 ``` gradle
-implementation 'com.easemob.im:im-sdk-core:0.3.1'
+implementation 'com.easemob.im:im-sdk-core:0.3.2'
 ```
 
 ## 准备
@@ -123,8 +123,6 @@ EMService service = new EMService(properties);
   用于发送消息
 - [User](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/user/UserApi.html)
   用于管理用户
-- [Token](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/user/TokenApi.html)
-  用于生成 Agora User Token **(注意！ 该接口只有在使用 Agora App Credentials 时才能使用)**
 - [Room](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/room/RoomApi.html)
   用于管理聊天室
 
