@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import com.easemob.im.server.api.util.Utilities;
 
@@ -27,14 +28,11 @@ public class AgoraTokenIT {
             AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL;
     private static final String DUMMY_CHANNEL_NAME = "dummyChannelName";
     private static final String DUMMY_UID = "dummyUID";
-    private static final int EXPIRE_IN_SECONDS = 600;
+
+    private static final int USER_TOKEN_EXPIRE_IN_SECONDS = 600;
+    private static final int APP_TOKEN_EXPIRE_IN_SECONDS = 10;
 
     private static final Logger log = LoggerFactory.getLogger(AgoraTokenProvider.class);
-    // this name must be yifan3 for now
-    // TODO: dont hardcode names once easemobUserName -> agoraUserId mapping is ready
-    private static final String ALICE_USER_NAME = "yifan3";
-    private static final String BOB_USER_NAME = "ken-0";
-
     protected EMService service;
 
     String realm = System.getenv("IM_REALM");
@@ -47,6 +45,7 @@ public class AgoraTokenIT {
     public void init() {
         Assumptions.assumeTrue(EMProperties.Realm.AGORA_REALM.name().equals(realm));
         EMProperties properties = EMProperties.builder()
+                .setAgoraTokenExpireInSeconds(APP_TOKEN_EXPIRE_IN_SECONDS)
                 .setRealm(EMProperties.Realm.AGORA_REALM)
                 .setBaseUri(baseUri)
                 .setAppkey(appkey)
@@ -57,20 +56,33 @@ public class AgoraTokenIT {
     }
 
     // With an Easemob App Token you can GET all users
+    // The app token will renew upon expiration
     @Test
-    public void appTokenTest() {
-        assertDoesNotThrow(() -> this.service.user()
-                .listUsers(1, null).block(Utilities.IT_TIMEOUT));
+    public void appTokenTest() throws InterruptedException {
+        for (int i = 0; i < 20; i ++) {
+            assertDoesNotThrow(() -> this.service.user()
+                    .listUsers(1, null).block(Utilities.IT_TIMEOUT));
+            Thread.sleep(1000);
+        }
     }
 
     @Test
     public void userTokenTest() throws Exception {
-        EMUser aliceUser = service.user().get(ALICE_USER_NAME).block(Utilities.IT_TIMEOUT);
-        String aliceAgoraToken = service.token().getUserToken(aliceUser, EXPIRE_IN_SECONDS,
+
+        String aliceUserName = Utilities.randomUserName();
+        String alicePassword = Utilities.randomPassword();
+        String bobUserName = Utilities.randomUserName();
+        String bobPassword = Utilities.randomPassword();
+        service.user().create(aliceUserName, alicePassword).block(IT_TIMEOUT);
+        service.user().create(bobUserName, bobPassword).block(IT_TIMEOUT);
+
+        EMUser aliceUser = service.user().get(aliceUserName).block(Utilities.IT_TIMEOUT);
+        String aliceAgoraToken = service.token().getUserToken(aliceUser,
+                USER_TOKEN_EXPIRE_IN_SECONDS,
                 token -> {
                     AccessToken2.ServiceRtc serviceRtc =
                             new AccessToken2.ServiceRtc(DUMMY_CHANNEL_NAME, DUMMY_UID);
-                    serviceRtc.addPrivilegeRtc(DUMMY_RTC_PRIVILEGE, EXPIRE_IN_SECONDS);
+                    serviceRtc.addPrivilegeRtc(DUMMY_RTC_PRIVILEGE, USER_TOKEN_EXPIRE_IN_SECONDS);
                     token.addService(serviceRtc);
                 },
                 null
@@ -81,26 +93,29 @@ public class AgoraTokenIT {
         // With an Easemob User Token you are not authorized to GET another user
         assertThrows(EMUnauthorizedException.class, () -> {
             EMUser bobUser = clientWithAliceEasemobToken
-                    .get().uri(String.format("/users/%s", BOB_USER_NAME))
+                    .get().uri(String.format("/users/%s", bobUserName))
                     .responseSingle((rsp, buf) -> service.getContext().getErrorMapper().apply(rsp)
                             .then(buf))
                     .map(buf -> service.getContext().getCodec().decode(buf, UserGetResponse.class))
                     .block(Utilities.IT_TIMEOUT)
-                    .getEMUser(BOB_USER_NAME);
+                    .getEMUser(bobUserName);
             log.debug("bobUser = {}", bobUser.toString());
         });
 
         // With an Easemob User Token you are able to GET the token owner
         assertDoesNotThrow(() -> {
             EMUser aliceUserFetchedWithHerToken = clientWithAliceEasemobToken
-                    .get().uri(String.format("/users/%s", ALICE_USER_NAME))
+                    .get().uri(String.format("/users/%s", aliceUserName))
                     .responseSingle((rsp, buf) -> service.getContext().getErrorMapper().apply(rsp)
                             .then(buf))
                     .map(buf -> service.getContext().getCodec().decode(buf, UserGetResponse.class))
                     .block(Utilities.IT_TIMEOUT)
-                    .getEMUser(ALICE_USER_NAME);
+                    .getEMUser(aliceUserName);
             log.debug("aliceUser = {}", aliceUserFetchedWithHerToken.toString());
         });
+
+        service.user().delete(aliceUserName).block(IT_TIMEOUT);
+        service.user().delete(bobUserName).block(IT_TIMEOUT);
     }
 
     private HttpClient getClientWithEasemobHeader(String agoraToken) {
@@ -111,7 +126,7 @@ public class AgoraTokenIT {
         String baseUrl =
                 String.format("%s/%s", baseUri, context.getProperties().getAppkeySlashDelimited());
         String easemobToken = AgoraTokenProvider
-                .exchangeForEasemobToken(httpClient, baseUrl, agoraToken, codec, errorMapper)
+                .exchangeForEasemobToken(httpClient, baseUrl, Mono.just(agoraToken), codec, errorMapper)
                 .block(IT_TIMEOUT).getValue();
         return EMHttpClientFactory.create(context.getProperties()).baseUrl(baseUrl)
                 .headers(headers -> headers

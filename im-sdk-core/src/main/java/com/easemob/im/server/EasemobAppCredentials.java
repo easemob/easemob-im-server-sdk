@@ -29,7 +29,7 @@ public class EasemobAppCredentials implements Credentials {
     @Override
     public String toString() {
         return "EasemobAppCredentials{" +
-                ", clientId='" + Utilities.mask(clientId) + '\'' +
+                "clientId='" + Utilities.mask(clientId) + '\'' +
                 ", clientSecret='" + Utilities.mask(clientSecret) + '\'' +
                 '}';
     }

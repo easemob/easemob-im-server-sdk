@@ -44,7 +44,7 @@ public class DefaultTokenProvider implements TokenProvider {
         AppTokenRequest appTokenRequest = AppTokenRequest
                 .of(this.properties.getClientId(), this.properties.getClientSecret());
         this.appToken = fetchToken(appTokenRequest)
-                .cache(token -> Duration.between(Instant.now(), token.getExpireTimestamp())
+                .cache(token -> Duration.between(Instant.now(), token.getExpireAt())
                                 .dividedBy(2),
                         error -> Duration.ofSeconds(10),
                         () -> Duration.ofSeconds(10));

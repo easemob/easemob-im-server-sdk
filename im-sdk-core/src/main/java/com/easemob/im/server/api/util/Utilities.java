@@ -10,6 +10,7 @@ public class Utilities {
 
     public static final Duration IT_TIMEOUT = Duration.ofSeconds(60);
     public static final Duration UT_TIMEOUT = Duration.ofSeconds(3);
+    public static final int DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS = 3600;
 
     public static String randomUserName() {
         return String.format("it-%d-%d",
