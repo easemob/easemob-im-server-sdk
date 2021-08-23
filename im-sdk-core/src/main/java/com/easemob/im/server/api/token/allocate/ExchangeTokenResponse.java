@@ -16,10 +16,10 @@ public class ExchangeTokenResponse {
     @JsonProperty("access_token")
     private final String accessToken;
 
-    @JsonProperty("expires_timestamp")
-    private final long expireEpochMilli;
+    @JsonProperty("expire_timestamp")
+    private final Long expireEpochMilli;
 
-    private ExchangeTokenResponse(String accessToken, long expireEpochMilli) {
+    private ExchangeTokenResponse(String accessToken, Long expireEpochMilli) {
         this.accessToken = accessToken;
         this.expireEpochMilli = expireEpochMilli;
     }
@@ -27,7 +27,7 @@ public class ExchangeTokenResponse {
     @JsonCreator
     public static ExchangeTokenResponse of(
             @JsonProperty("access_token") String accessToken,
-            @JsonProperty("expires_timestamp") long expireEpochMilli) {
+            @JsonProperty("expire_timestamp") Long expireEpochMilli) {
         return new ExchangeTokenResponse(accessToken, expireEpochMilli);
     }
 

@@ -1,5 +1,7 @@
 package com.easemob.im.server.api.token;
 
+import com.easemob.im.server.api.util.Utilities;
+
 import java.time.Instant;
 
 public class Token {
@@ -21,14 +23,14 @@ public class Token {
         return this.value;
     }
 
-    public Instant getExpireTimestamp() {
+    public Instant getExpireAt() {
         return this.expireAt;
     }
 
     @Override
     public String toString() {
         return "Token{" +
-                "value='" + value + '\'' +
+                "value='" + Utilities.mask(value) + '\'' +
                 ", expireAt=" + expireAt +
                 '}';
     }

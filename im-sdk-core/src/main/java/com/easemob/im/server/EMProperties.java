@@ -6,6 +6,7 @@ import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMUnsupportedEncodingException;
 import com.easemob.im.server.model.EMUser;
 import org.apache.logging.log4j.util.Strings;
+import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -20,10 +21,13 @@ public class EMProperties {
     private final EMProxy proxy;
     private final int httpConnectionPoolSize;
     private final String serverTimezone;
+    private final int agoraTokenExpireInSeconds;
+    private final AdvancedByteBufFormat httpLogFormat;
 
 
     private EMProperties(Realm realm, String appKey, Credentials credentials, String baseUri,
-            EMProxy proxy, int httpConnectionPoolSize, String serverTimezone) {
+            EMProxy proxy, int httpConnectionPoolSize, String serverTimezone,
+            int agoraTokenExpireInSeconds, AdvancedByteBufFormat httpLogFormat) {
         this.realm = realm;
         this.appKey = appKey;
         this.credentials = credentials;
@@ -31,6 +35,8 @@ public class EMProperties {
         this.proxy = proxy;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
         this.serverTimezone = serverTimezone;
+        this.agoraTokenExpireInSeconds = agoraTokenExpireInSeconds;
+        this.httpLogFormat = httpLogFormat;
     }
 
     /**
@@ -53,6 +59,8 @@ public class EMProperties {
         this.proxy = proxy;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
         this.serverTimezone = serverTimezone;
+        this.agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
+        this.httpLogFormat = AdvancedByteBufFormat.SIMPLE;
     }
 
     // easemob realm by default
@@ -148,16 +156,30 @@ public class EMProperties {
         return this.serverTimezone;
     }
 
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public int getAgoraTokenExpireInSeconds() {
+        return agoraTokenExpireInSeconds;
+    }
+
+    public AdvancedByteBufFormat getHttpLogFormat() {
+        return httpLogFormat;
+    }
+
     @Override
     public String toString() {
         return "EMProperties{" +
                 "realm=" + realm +
-                ", appKey=" + appKey +
+                ", appKey='" + appKey + '\'' +
                 ", credentials=" + credentials +
                 ", baseUri='" + baseUri + '\'' +
                 ", proxy=" + proxy +
                 ", httpConnectionPoolSize=" + httpConnectionPoolSize +
                 ", serverTimezone='" + serverTimezone + '\'' +
+                ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
+                ", httpLogFormat=" + httpLogFormat +
                 '}';
     }
 
@@ -185,6 +207,8 @@ public class EMProperties {
         private EMProxy proxy;
         private int httpConnectionPoolSize = 10;
         private String serverTimezone = "+8";
+        private int agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
+        private AdvancedByteBufFormat httpLogFormat = AdvancedByteBufFormat.SIMPLE;
 
         public Builder setRealm(Realm realm) {
             this.realm = realm;
@@ -264,6 +288,16 @@ public class EMProperties {
             return this;
         }
 
+        public Builder setAgoraTokenExpireInSeconds(int agoraTokenExpireInSeconds) {
+            this.agoraTokenExpireInSeconds = agoraTokenExpireInSeconds;
+            return this;
+        }
+
+        public Builder setHttpLogFormat(AdvancedByteBufFormat httpLogFormat) {
+            this.httpLogFormat = httpLogFormat;
+            return this;
+        }
+
         public EMProperties build() {
             if (this.realm == null) {
                 throw new EMInvalidStateException("realm not set");
@@ -284,8 +318,8 @@ public class EMProperties {
                 Credentials credentials =
                         new EasemobAppCredentials(this.clientId, this.clientSecret);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
-                        this.proxy,
-                        this.httpConnectionPoolSize, this.serverTimezone);
+                        this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
                 if (this.appId == null) {
                     throw new EMInvalidStateException("appId not set");
@@ -298,8 +332,8 @@ public class EMProperties {
                 }
                 Credentials credentials = new AgoraAppCredentials(this.appId, this.appCert);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
-                        this.proxy,
-                        this.httpConnectionPoolSize, this.serverTimezone);
+                        this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat);
             } else {
                 throw new EMInvalidStateException(
                         String.format("invalid realm type %s", this.realm.toString()));
@@ -319,6 +353,8 @@ public class EMProperties {
                     ", proxy=" + proxy +
                     ", httpConnectionPoolSize=" + httpConnectionPoolSize +
                     ", serverTimezone='" + serverTimezone + '\'' +
+                    ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
+                    ", httpLogFormat=" + httpLogFormat +
                     '}';
         }
     }

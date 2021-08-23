@@ -28,7 +28,7 @@ public class AgoraAppCredentials implements Credentials {
 
     @Override public String toString() {
         return "AgoraAppCredentials{" +
-                ", appId='" + Utilities.mask(appId) + '\'' +
+                "appId='" + Utilities.mask(appId) + '\'' +
                 ", appCert='" + Utilities.mask(appCert) + '\'' +
                 '}';
     }
