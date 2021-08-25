@@ -123,6 +123,8 @@ EMService service = new EMService(properties);
   用于发送消息
 - [User](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/user/UserApi.html)
   用于管理用户
+- [Token](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/token/TokenApi.html)
+  用于获取用户Token
 - [Room](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/room/RoomApi.html)
   用于管理聊天室
 
