@@ -1,8 +1,7 @@
-package com.easemob.im.server.api.metadata;
+package com.easemob.im.server.api.token;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.api.token.Token;
 import com.easemob.im.server.api.token.agora.AccessToken2;
 import com.easemob.im.server.api.token.allocate.TokenRequest;
 import com.easemob.im.server.api.token.allocate.TokenResponse;
