@@ -32,6 +32,11 @@ com.easemob.im.server.api.message.history
 com.easemob.im.server.api.message.missed
 com.easemob.im.server.api.message.send
 com.easemob.im.server.api.message.status
+com.easemob.im.server.api.metadata
+com.easemob.im.server.api.metadata.user.delete
+com.easemob.im.server.api.metadata.user.get
+com.easemob.im.server.api.metadata.user.set
+com.easemob.im.server.api.metadata.user.usage
 com.easemob.im.server.api.room
 com.easemob.im.server.api.room.admin.demote
 com.easemob.im.server.api.room.admin.list
@@ -48,6 +53,7 @@ com.easemob.im.server.api.room.superadmin.list
 com.easemob.im.server.api.room.superadmin.promote
 com.easemob.im.server.api.room.update
 com.easemob.im.server.api.token
+com.easemob.im.server.api.token.agora
 com.easemob.im.server.api.token.allocate
 com.easemob.im.server.api.user
 com.easemob.im.server.api.user.create
