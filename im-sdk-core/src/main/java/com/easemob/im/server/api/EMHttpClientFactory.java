@@ -8,7 +8,6 @@ import org.apache.logging.log4j.util.Strings;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.ProxyProvider;
-import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.net.InetSocketAddress;
 
