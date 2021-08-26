@@ -4,13 +4,11 @@ import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMUnsupportedEncodingException;
-import com.easemob.im.server.model.EMUser;
 import org.apache.logging.log4j.util.Strings;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.function.Consumer;
 
 public class EMProperties {
 
@@ -23,11 +21,12 @@ public class EMProperties {
     private final String serverTimezone;
     private final int agoraTokenExpireInSeconds;
     private final AdvancedByteBufFormat httpLogFormat;
+    private final boolean validateUserName;
 
 
     private EMProperties(Realm realm, String appKey, Credentials credentials, String baseUri,
             EMProxy proxy, int httpConnectionPoolSize, String serverTimezone,
-            int agoraTokenExpireInSeconds, AdvancedByteBufFormat httpLogFormat) {
+            int agoraTokenExpireInSeconds, AdvancedByteBufFormat httpLogFormat, boolean validateUserName) {
         this.realm = realm;
         this.appKey = appKey;
         this.credentials = credentials;
@@ -37,6 +36,7 @@ public class EMProperties {
         this.serverTimezone = serverTimezone;
         this.agoraTokenExpireInSeconds = agoraTokenExpireInSeconds;
         this.httpLogFormat = httpLogFormat;
+        this.validateUserName = validateUserName;
     }
 
     /**
@@ -61,6 +61,7 @@ public class EMProperties {
         this.serverTimezone = serverTimezone;
         this.agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
         this.httpLogFormat = AdvancedByteBufFormat.SIMPLE;
+        this.validateUserName = true;
     }
 
     // easemob realm by default
@@ -168,6 +169,10 @@ public class EMProperties {
         return httpLogFormat;
     }
 
+    public boolean getValidateUserName() {
+        return validateUserName;
+    }
+
     @Override
     public String toString() {
         return "EMProperties{" +
@@ -180,6 +185,7 @@ public class EMProperties {
                 ", serverTimezone='" + serverTimezone + '\'' +
                 ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
                 ", httpLogFormat=" + httpLogFormat +
+                ", validateUserName=" + validateUserName +
                 '}';
     }
 
@@ -209,6 +215,7 @@ public class EMProperties {
         private String serverTimezone = "+8";
         private int agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
         private AdvancedByteBufFormat httpLogFormat = AdvancedByteBufFormat.SIMPLE;
+        private boolean validateUserName = true;
 
         public Builder setRealm(Realm realm) {
             this.realm = realm;
@@ -298,6 +305,12 @@ public class EMProperties {
             return this;
         }
 
+        public Builder turnOffUserNameValidation() {
+            this.validateUserName = false;
+            return this;
+        }
+
+
         public EMProperties build() {
             if (this.realm == null) {
                 throw new EMInvalidStateException("realm not set");
@@ -319,7 +332,7 @@ public class EMProperties {
                         new EasemobAppCredentials(this.clientId, this.clientSecret);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
                         this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
-                        this.agoraTokenExpireInSeconds, this.httpLogFormat);
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
                 if (this.appId == null) {
                     throw new EMInvalidStateException("appId not set");
@@ -333,7 +346,7 @@ public class EMProperties {
                 Credentials credentials = new AgoraAppCredentials(this.appId, this.appCert);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
                         this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
-                        this.agoraTokenExpireInSeconds, this.httpLogFormat);
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName);
             } else {
                 throw new EMInvalidStateException(
                         String.format("invalid realm type %s", this.realm.toString()));
@@ -355,6 +368,7 @@ public class EMProperties {
                     ", serverTimezone='" + serverTimezone + '\'' +
                     ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
                     ", httpLogFormat=" + httpLogFormat +
+                    ", validateUserName=" + validateUserName +
                     '}';
         }
     }

@@ -61,7 +61,9 @@ public class UserApi {
      */
     public Mono<Void> create(String username, String password) {
         try {
-            EMUser.validateUsername(username);
+            if (context.getProperties().getValidateUserName()) {
+                EMUser.validateUsername(username);
+            }
             EMUser.validatePassword(password);
         } catch (EMInvalidArgumentException e) {
             return Mono.error(e);
