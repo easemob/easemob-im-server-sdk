@@ -22,6 +22,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     env:
+      IM_REALM: ${{ secrets.IM_REALM }}
+      IM_BASE_URI: ${{ secrets.IM_BASE_URI }}
       IM_APPKEY: ${{ secrets.IM_APPKEY }}
       IM_CLIENT_ID: ${{ secrets.IM_CLIENT_ID }}
       IM_CLIENT_SECRET: ${{ secrets.IM_CLIENT_SECRET }}
