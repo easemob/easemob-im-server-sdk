@@ -18,3 +18,5 @@ git add .
 git commit --message "v$SNAPSHOT Development"
 
 git push && git push --tags
+
+mvn deploy
