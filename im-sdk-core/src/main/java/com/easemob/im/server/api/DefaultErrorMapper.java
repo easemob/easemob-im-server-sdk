@@ -40,14 +40,6 @@ public class DefaultErrorMapper implements ErrorMapper {
         }
     }
 
-//    @Override
-//    public Mono<HttpClientResponse> apply(HttpClientResponse response, ByteBuf buf) {
-//        if (response.status().code() < 400) {
-//            return Mono.just(response);
-//        }
-//        return Mono.error(toException(response, decode(buf, EMErrorResponse.class)));
-//    }
-
     private EMException toException(HttpClientResponse response, EMErrorResponse errorResponse) {
         String reason =
                 String.format("%s %s -> %d %s, \n error_description -> %s", response.method().toString(), response.uri(),

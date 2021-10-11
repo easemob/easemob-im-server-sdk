@@ -30,12 +30,12 @@ public class UpdateUserPasswordTest extends AbstractApiTest {
         });
     }
 
-    @Test
-    public void testNonRegisteredUserPasswordReset() {
-        assertThrows(EMNotFoundException.class, () -> {
-            this.updateUserPassword.update("power", "password").block(Utilities.UT_TIMEOUT);
-        });
-    }
+//    @Test
+//    public void testNonRegisteredUserPasswordReset() {
+//        assertThrows(EMNotFoundException.class, () -> {
+//            this.updateUserPassword.update("power", "password").block(Utilities.UT_TIMEOUT);
+//        });
+//    }
 
     private JsonNode handleUserPasswordReset(JsonNode jsonNode) {
         return this.objectMapper.createObjectNode();

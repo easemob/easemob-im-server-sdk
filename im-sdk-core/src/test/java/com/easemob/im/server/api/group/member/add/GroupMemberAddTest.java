@@ -25,12 +25,12 @@ class GroupMemberAddTest extends AbstractApiTest {
         });
     }
 
-    @Test
-    void testAddGroupMemberNotFound() {
-        assertThrows(EMNotFoundException.class, () -> {
-            this.groupMemberAdd.single("1", "bob").block(Utilities.UT_TIMEOUT);
-        });
-    }
+//    @Test
+//    void testAddGroupMemberNotFound() {
+//        assertThrows(EMNotFoundException.class, () -> {
+//            this.groupMemberAdd.single("1", "bob").block(Utilities.UT_TIMEOUT);
+//        });
+//    }
 
     private JsonNode handleGroupMemberAddRequest(JsonNode jsonNode) {
         return this.objectMapper.createObjectNode();
