@@ -16,7 +16,11 @@ public class MessageStatus {
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/offline_msg_status/%s", username, messageId))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, MessageStatusResponse.class))
                 .map(rsp -> rsp.isMessageDelivered(messageId));
     }

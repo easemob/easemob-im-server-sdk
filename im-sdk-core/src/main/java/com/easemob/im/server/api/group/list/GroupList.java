@@ -33,7 +33,11 @@ public class GroupList {
                 .flatMap(httpClient -> httpClient.get()
                         .uri(uriString)
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
                 .map(GroupListResponse::toEMPage);
     }
@@ -43,7 +47,11 @@ public class GroupList {
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/joined_chatgroups", username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
                 .flatMapIterable(GroupListResponse::getGroupIds);
     }

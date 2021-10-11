@@ -22,7 +22,11 @@ public class ListRoomSuperAdmins {
                 .flatMap(httpClient -> httpClient.get()
                         .uri(uri)
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomSuperAdminsResponse.class));
     }
 

@@ -33,7 +33,11 @@ public class ListRooms {
                 .flatMap(httpClient -> httpClient.get()
                         .uri(uriString)
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
                 .map(ListRoomsResponse::toEMPage);
     }
@@ -43,7 +47,11 @@ public class ListRooms {
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/joined_chatrooms", username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
                 .flatMapIterable(ListRoomsResponse::getRoomIds);
     }

@@ -94,8 +94,11 @@ public class AgoraTokenIT {
         assertThrows(EMUnauthorizedException.class, () -> {
             EMUser bobUser = clientWithAliceEasemobToken
                     .get().uri(String.format("/users/%s", bobUserName))
-                    .responseSingle((rsp, buf) -> service.getContext().getErrorMapper().apply(rsp)
-                            .then(buf))
+                    .responseSingle((rsp, buf) -> {
+                        service.getContext().getErrorMapper().statusCode(rsp);
+                        return buf;
+                    })
+                    .doOnNext(buf -> service.getContext().getErrorMapper().checkError(buf))
                     .map(buf -> service.getContext().getCodec().decode(buf, UserGetResponse.class))
                     .block(Utilities.IT_TIMEOUT)
                     .getEMUser(bobUserName);
@@ -106,8 +109,11 @@ public class AgoraTokenIT {
         assertDoesNotThrow(() -> {
             EMUser aliceUserFetchedWithHerToken = clientWithAliceEasemobToken
                     .get().uri(String.format("/users/%s", aliceUserName))
-                    .responseSingle((rsp, buf) -> service.getContext().getErrorMapper().apply(rsp)
-                            .then(buf))
+                    .responseSingle((rsp, buf) -> {
+                        service.getContext().getErrorMapper().statusCode(rsp);
+                        return buf;
+                    })
+                    .doOnNext(buf -> service.getContext().getErrorMapper().checkError(buf))
                     .map(buf -> service.getContext().getCodec().decode(buf, UserGetResponse.class))
                     .block(Utilities.IT_TIMEOUT)
                     .getEMUser(aliceUserName);

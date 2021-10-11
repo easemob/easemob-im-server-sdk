@@ -16,7 +16,12 @@ public class BlockUserLogin {
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/users/%s/deactivate", username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 
     public Mono<Void> unblockUser(String username) {
@@ -24,6 +29,11 @@ public class BlockUserLogin {
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/users/%s/activate", username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 }

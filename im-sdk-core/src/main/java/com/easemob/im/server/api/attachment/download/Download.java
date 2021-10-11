@@ -21,8 +21,11 @@ public class Download {
                 .flatMap(out -> this.context.getHttpClient()
                         .flatMap(httpClient -> httpClient.get()
                                 .uri(String.format("/chatfiles/%s", id))
-                                .response((rsp, buf) -> this.context.getErrorMapper().apply(rsp)
-                                        .thenMany(buf))
+                                .response((rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                                .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
                                 .doOnNext(buf -> FileSystem.append(out, buf))
                                 .doFinally(sig -> FileSystem.close(out))
                                 .then()))

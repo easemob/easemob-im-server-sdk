@@ -24,7 +24,11 @@ public class Upload {
                         .sendForm((req, form) -> form.multipart(true)
                                 .attr("filename", path.getFileName().toString())
                                 .file("file", path.toFile())).responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UploadFileResponse.class))
                 .handle((rsp, sink) -> {
                     if (rsp.getFiles().isEmpty()) {

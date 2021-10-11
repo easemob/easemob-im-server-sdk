@@ -39,7 +39,11 @@ public class TokenApi {
                         .send(Mono.create(sink -> sink.success(context.getCodec()
                                 .encode(tokenRequest))))
                         .responseSingle(
-                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> context.getErrorMapper().checkError(buf)))
                 .map(buf -> context.getCodec().decode(buf, TokenResponse.class))
                 .map(TokenResponse::asToken);
     }

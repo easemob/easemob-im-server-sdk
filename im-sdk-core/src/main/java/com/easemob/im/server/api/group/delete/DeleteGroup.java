@@ -15,8 +15,12 @@ public class DeleteGroup {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatgroups/%s", groupId))
-                        .response())
-                .flatMap(rsp -> this.context.getErrorMapper().apply(rsp))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty())
                 .then();
     }

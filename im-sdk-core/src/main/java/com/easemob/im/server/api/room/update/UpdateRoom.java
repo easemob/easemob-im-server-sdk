@@ -26,7 +26,11 @@ public class UpdateRoom {
                         .send(Mono.create(sink -> sink
                                 .success(this.context.getCodec().encode(request))))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UpdateRoomResponse.class))
                 .handle((rsp, sink) -> {
                     List<String> notUpdated = new ArrayList<>();

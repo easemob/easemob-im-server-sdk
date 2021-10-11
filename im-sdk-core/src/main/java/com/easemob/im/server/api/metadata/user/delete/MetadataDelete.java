@@ -15,7 +15,11 @@ public class MetadataDelete {
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/metadata/user/%s", username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, MetadataDeleteResponse.class))
                 .map(MetadataDeleteResponse::getSuccess);
     }

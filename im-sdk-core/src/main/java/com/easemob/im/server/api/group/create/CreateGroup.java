@@ -23,7 +23,11 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, true, owner,
                                         members, maxMembers, false, needApproveToJoin)))))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
@@ -43,7 +47,11 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, false, owner,
                                         members, maxMembers, canMemberInvite, !canMemberInvite)))))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();

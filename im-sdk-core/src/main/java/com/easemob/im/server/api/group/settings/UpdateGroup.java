@@ -24,7 +24,11 @@ public class UpdateGroup {
                         .send(Mono.create(sink -> sink
                                 .success(this.context.getCodec().encode(request))))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UpdateGroupResponse.class))
                 .doOnNext(rsp -> {
                     if (request.getMaxMembers() != null && (rsp.getMaxMembersUpdated() == null
@@ -53,6 +57,11 @@ public class UpdateGroup {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new UpdateGroupOwnerRequest(owner)))))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 }

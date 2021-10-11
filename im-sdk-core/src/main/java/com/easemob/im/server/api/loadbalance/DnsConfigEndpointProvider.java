@@ -30,7 +30,11 @@ public class DnsConfigEndpointProvider implements EndpointProvider {
         return this.httpClient.get()
                 .uri(String.format("/easemob/server.json?app_key=%s",
                         this.properties.getAppkeyUrlEncoded()))
-                .responseSingle((rsp, buf) -> this.errorMapper.apply(rsp).then(buf))
+                .responseSingle((rsp, buf) -> {
+                    this.errorMapper.statusCode(rsp);
+                    return buf;
+                })
+                .doOnNext(this.errorMapper::checkError)
                 .map(buf -> this.codec.decode(buf, GetDnsConfigResponse.class))
                 .map(GetDnsConfigResponse::toEndpoints);
     }

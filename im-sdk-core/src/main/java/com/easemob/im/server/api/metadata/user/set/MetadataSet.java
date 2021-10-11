@@ -23,6 +23,11 @@ public class MetadataSet {
                                     form.multipart(false).charset(StandardCharsets.UTF_8);
                             metadata.forEach(clientForm::attr);
                         }).responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 }

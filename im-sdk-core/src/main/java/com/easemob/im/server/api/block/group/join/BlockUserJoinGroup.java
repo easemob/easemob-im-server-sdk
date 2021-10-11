@@ -19,7 +19,11 @@ public class BlockUserJoinGroup {
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/blocks/users", groupId))
                         .responseSingle(
-                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> context.getCodec().decode(buf, GetBlockedUsersResponse.class))
                 .flatMapIterable(GetBlockedUsersResponse::getUsernames)
                 .map(username -> new EMBlock(username, null));
@@ -30,7 +34,11 @@ public class BlockUserJoinGroup {
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, BlockUserJoinGroupResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess()) {
@@ -46,7 +54,11 @@ public class BlockUserJoinGroup {
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UnblockUserJoinGroupResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess()) {

@@ -17,7 +17,11 @@ public class AddRoomMember {
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatrooms/%s/users/%s", roomId, username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, AddRoomMemberResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {

@@ -19,7 +19,12 @@ public class GroupAdminAdd {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new GroupAdminAddRequest(username)))))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then())
                 .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty());
     }
 }

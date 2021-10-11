@@ -16,8 +16,12 @@ public class UpdateUserPassword {
                         .uri(String.format("/users/%s/password", username))
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new UserPasswordResetRequest(password)))))
-                        .response())
-                .flatMap(r -> this.context.getErrorMapper().apply(r))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .then();
     }
 }

@@ -16,7 +16,11 @@ public class MetadataUsage {
                 .flatMap(httpClient -> httpClient.get()
                         .uri("/metadata/user/capacity")
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, MetadataUsageResponse.class))
                 .map(MetadataUsageResponse::getBytesUsed)
                 .map(EMMetadataUsage::new);

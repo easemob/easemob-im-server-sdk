@@ -24,7 +24,11 @@ public class BlockUserSendMsgToGroup {
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/mute", groupId))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(rsp -> this.context.getCodec()
                         .decode(rsp, GetUsersBlockedSendMsgToGroupResponse.class))
                 .flatMapIterable(GetUsersBlockedSendMsgToGroupResponse::getEMBlocks);
@@ -38,7 +42,11 @@ public class BlockUserSendMsgToGroup {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(BlockUserSendMsgToGroupRequest.of(username, duration)))))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec()
                         .decode(buf, BlockUserSendMsgToGroupResponse.class))
                 .handle((rsp, sink) -> {
@@ -55,7 +63,11 @@ public class BlockUserSendMsgToGroup {
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatgroups/%s/mute/%s", groupId, username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec()
                         .decode(buf, UnblockUserSendMsgToGroupResponse.class))
                 .handle((rsp, sink) -> {

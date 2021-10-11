@@ -27,7 +27,11 @@ public class SendMessage {
                                 .encode(new SendMessageRequest(from, toType, tos, message,
                                         SendMessageRequest.parseExtensions(extensions))))))
                         .responseSingle(
-                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> context.getCodec().decode(buf, SendMessageResponse.class))
                 .map(SendMessageResponse::toEMSentMessages);
     }

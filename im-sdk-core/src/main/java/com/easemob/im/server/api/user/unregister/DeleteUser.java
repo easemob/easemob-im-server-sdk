@@ -19,7 +19,11 @@ public class DeleteUser {
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/users/%s", username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class))
                 .handle((rsp, sink) -> {
                     if (rsp.getError() != null) {
@@ -50,7 +54,11 @@ public class DeleteUser {
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(uirString)
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(b -> this.context.getCodec().decode(b, UserUnregisterResponse.class));
     }
 }

@@ -19,7 +19,11 @@ public class PromoteRoomAdmin {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new PromoteRoomAdminRequest(username)))))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, PromoteRoomAdminResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {

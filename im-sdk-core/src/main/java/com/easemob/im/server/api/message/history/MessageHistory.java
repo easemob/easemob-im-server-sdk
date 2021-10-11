@@ -2,6 +2,7 @@ package com.easemob.im.server.api.message.history;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.util.FileSystem;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
@@ -26,7 +27,11 @@ public class MessageHistory {
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/chatmessages/%s", toPath(instant)))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, MessageHistoryResponse.class))
                 .map(MessageHistoryResponse::getUrl);
     }
@@ -49,8 +54,11 @@ public class MessageHistory {
                             .flatMap(out -> this.context.getHttpClient()
                                     .flatMap(httpClient -> httpClient.get()
                                             .uri(uri)
-                                            .response((rsp, buf) -> this.context.getErrorMapper()
-                                                    .apply(rsp).thenMany(buf))
+                                            .response((rsp, buf) -> {
+                                                this.context.getErrorMapper().statusCode(rsp);
+                                                return buf;
+                                            })
+                                            .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
                                             .doOnNext(buf -> FileSystem.append(out, buf))
                                             .doFinally(sig -> FileSystem.close(out))
                                             .then()))

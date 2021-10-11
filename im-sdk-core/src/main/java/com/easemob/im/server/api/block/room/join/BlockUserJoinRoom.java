@@ -19,7 +19,11 @@ public class BlockUserJoinRoom {
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/chatrooms/%s/blocks/users", roomId))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GetBlockedUsersResponse.class))
                 .flatMapIterable(GetBlockedUsersResponse::getUsernames)
                 .map(username -> new EMBlock(username, null));
@@ -30,7 +34,11 @@ public class BlockUserJoinRoom {
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatrooms/%s/blocks/users/%s", roomId, username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, BlockUserJoinRoomResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {
@@ -46,7 +54,11 @@ public class BlockUserJoinRoom {
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatrooms/%s/blocks/users/%s", roomId, username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, UnblockUserJoinRoomResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {

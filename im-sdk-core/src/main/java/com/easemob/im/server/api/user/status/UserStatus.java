@@ -16,7 +16,11 @@ public class UserStatus {
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/status", username))
                         .responseSingle(
-                                (rsp, buf) -> context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                                .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> context.getCodec().decode(buf, UserStatusResponse.class))
                 .map(rsp -> rsp.isUserOnline(username));
     }

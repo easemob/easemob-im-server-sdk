@@ -17,7 +17,11 @@ public class GroupAnnouncement {
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/announcement", groupId))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GroupAnnouncementGetResponse.class))
                 .map(GroupAnnouncementGetResponse::getAnnouncement);
     }
@@ -32,8 +36,11 @@ public class GroupAnnouncement {
                         .uri(String.format("/chatgroups/%s/announcement", groupId))
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new GroupAnnouncementResource(announcement)))))
-                        .response())
-                .flatMap(rsp -> this.context.getErrorMapper().apply(rsp))
+                        .responseSingle((rsp, buf) -> {
+                            this.context.getErrorMapper().statusCode(rsp);
+                            return buf;
+                        })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .then();
     }
 }

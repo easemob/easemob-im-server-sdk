@@ -17,7 +17,12 @@ public class ContactUser {
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/users/%s/contacts/users/%s", user, contact))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 
     public Mono<Void> remove(String user, String contact) {
@@ -25,7 +30,12 @@ public class ContactUser {
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/users/%s/contacts/users/%s", user, contact))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then()));
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 
     public Flux<String> list(String user) {
@@ -33,7 +43,11 @@ public class ContactUser {
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/contacts/users", user))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
                         .map(buf -> this.context.getCodec()
                                 .decode(buf, ContactUserListResponse.class))
                         .flatMapIterable(ContactUserListResponse::getUsernames));

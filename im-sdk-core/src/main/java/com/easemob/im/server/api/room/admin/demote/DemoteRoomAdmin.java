@@ -17,7 +17,11 @@ public class DemoteRoomAdmin {
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatrooms/%s/admin/%s", roomId, username))
                         .responseSingle(
-                                (rsp, buf) -> this.context.getErrorMapper().apply(rsp).then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, DemoteRoomAdminResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {

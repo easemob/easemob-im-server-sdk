@@ -20,8 +20,11 @@ public class SendMsgToUser {
                 .flatMapMany(httpClient -> httpClient.get()
                         .uri(String.format("/users/%s/blocks/users", username))
                         .responseSingle(
-                                (httpRsp, buf) -> this.context.getErrorMapper().apply(httpRsp)
-                                        .then(buf)))
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec()
                         .decode(buf, GetUsersBlockedSendMsgToUserResponse.class))
                 .flatMapIterable(GetUsersBlockedSendMsgToUserResponse::getUsernames)
@@ -38,15 +41,25 @@ public class SendMsgToUser {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new BlockUsersSendMsgToUserRequest(
                                         Arrays.asList(fromUser))))))
-                        .response())
-                .flatMap(rsp -> this.context.getErrorMapper().apply(rsp).then());
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 
     public Mono<Void> unblockUser(String fromUser, String toUser) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/users/%s/blocks/users/%s", toUser, fromUser))
-                        .responseSingle((rsp, buf) -> context.getErrorMapper().apply(rsp).then()));
+                        .responseSingle((rsp, buf) -> {
+                            this.context.getErrorMapper().statusCode(rsp);
+                            return buf;
+                        })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 
 }
