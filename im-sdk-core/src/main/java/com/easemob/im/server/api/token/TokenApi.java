@@ -49,6 +49,14 @@ public class TokenApi {
     }
 
     /**
+     * 获取 App Token
+     * @return token
+     */
+    public Mono<Token> getAppToken() {
+        return this.context.getTokenProvider().fetchAppToken();
+    }
+
+    /**
      * 获取 User Token
      * <p>
      * 可获取 Easemob userToken 或 Agora userToken. 如您初始化 service 时使用的是 Agora App Credentials,

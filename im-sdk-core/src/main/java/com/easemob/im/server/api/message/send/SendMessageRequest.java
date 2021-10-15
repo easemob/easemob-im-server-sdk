@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.message.send;
 
+import com.easemob.im.server.api.message.RouteType;
 import com.easemob.im.server.model.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -29,6 +30,9 @@ public class SendMessageRequest {
     @JsonProperty("ext")
     private Map<String, Object> extensions;
 
+    @JsonProperty("routetype")
+    private String routeType;
+
     @JsonCreator
     public SendMessageRequest(@JsonProperty("from") String from,
             @JsonProperty("target_type") String targetType,
@@ -40,6 +44,21 @@ public class SendMessageRequest {
         this.targets = targets;
         this.message = Message.of(message);
         this.extensions = extensions;
+    }
+
+    @JsonCreator
+    public SendMessageRequest(@JsonProperty("from") String from,
+                              @JsonProperty("target_type") String targetType,
+                              @JsonProperty("target") Set<String> targets,
+                              @JsonProperty("msg") EMMessage message,
+                              @JsonProperty("ext") Map<String, Object> extensions,
+                              @JsonProperty("routetype") String routeType) {
+        this.from = from;
+        this.targetType = targetType;
+        this.targets = targets;
+        this.message = Message.of(message);
+        this.extensions = extensions;
+        this.routeType = routeType;
     }
 
     public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {

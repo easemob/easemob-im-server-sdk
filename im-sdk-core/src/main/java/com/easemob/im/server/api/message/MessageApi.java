@@ -99,6 +99,23 @@ public class MessageApi {
     }
 
     /**
+     * 发送消息(只投递在线消息)。
+     *
+     * @param from       发送者用户名
+     * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos        目标id列表
+     * @param message    要发送的消息
+     * @param extensions 要发送的扩展，可以为空
+     * @param routeType  只投递在线消息，请传入 `ROUTE_ONLINE`
+     * @return 发消息响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
+     */
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+                                       EMMessage message, Set<EMKeyValue> extensions, String routeType) {
+        return this.sendMessage.send(from, toType, tos, message, extensions, routeType);
+    }
+
+    /**
      * 获取消息历史文件的下载地址。
      * 历史文件是每小时一个文件，比如指定12:10，则返回12点的历史文件。
      *

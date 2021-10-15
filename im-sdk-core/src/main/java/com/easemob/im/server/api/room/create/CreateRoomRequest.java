@@ -15,6 +15,8 @@ public class CreateRoomRequest {
     private String owner;
     @JsonProperty("members")
     private List<String> members;
+    @JsonProperty("scale")
+    private String scale;
 
     private CreateRoomRequest(String name, String description, String owner, List<String> members,
             int maxMembers) {
@@ -23,6 +25,7 @@ public class CreateRoomRequest {
         this.owner = owner;
         this.members = members;
         this.maxMembers = maxMembers;
+        this.scale = "large";
     }
 
     public static CreateRoomRequest of(String name, String description, String owner,

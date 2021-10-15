@@ -19,13 +19,31 @@ public class SendMessage {
     }
 
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
-            EMMessage message, Set<EMKeyValue> extensions) {
+                                       EMMessage message, Set<EMKeyValue> extensions) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri("/messages?useMsgId=true")
                         .send(Mono.create(sink -> sink.success(context.getCodec()
                                 .encode(new SendMessageRequest(from, toType, tos, message,
                                         SendMessageRequest.parseExtensions(extensions))))))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                .map(buf -> context.getCodec().decode(buf, SendMessageResponse.class))
+                .map(SendMessageResponse::toEMSentMessages);
+    }
+
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+                                       EMMessage message, Set<EMKeyValue> extensions, String routeType) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/messages?useMsgId=true")
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(new SendMessageRequest(from, toType, tos, message,
+                                        SendMessageRequest.parseExtensions(extensions), routeType)))))
                         .responseSingle(
                                 (rsp, buf) -> {
                                     this.context.getErrorMapper().statusCode(rsp);
@@ -152,11 +170,21 @@ public class SendMessage {
 
         private Set<EMKeyValue> extensions;
 
+        private String routeType;
+
         SendSpec(String from, String toType, Set<String> tos, EMMessage message) {
             this.from = from;
             this.toType = toType;
             this.tos = tos;
             this.message = message;
+        }
+
+        SendSpec(String from, String toType, Set<String> tos, EMMessage message, String routeType) {
+            this.from = from;
+            this.toType = toType;
+            this.tos = tos;
+            this.message = message;
+            this.routeType = routeType;
         }
 
         public SendSpec extension(Consumer<Set<EMKeyValue>> customizer) {
@@ -167,7 +195,17 @@ public class SendMessage {
             return this;
         }
 
+        public SendSpec routeType(String type) {
+            this.routeType = type;
+            return this;
+        }
+
+
         public Mono<EMSentMessageIds> send() {
+            if (extensions != null && extensions.size() > 0) {
+                return SendMessage.this
+                        .send(this.from, this.toType, this.tos, this.message, this.extensions, this.routeType);
+            }
             return SendMessage.this
                     .send(this.from, this.toType, this.tos, this.message, this.extensions);
         }
