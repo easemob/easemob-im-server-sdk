@@ -95,20 +95,6 @@ EMProperties properties = EMProperties.builder()
 EMService service = new EMService(properties);
 ```
 
-### 2. 使用 Agora App Credentials 的情况
-``` java
-EMProperties properties = EMProperties.builder()
-    .setAppkey(appkey)
-    .setAppId(appId)
-    .setAppCert(appCert)
-    .setRealm(EMProperties.Realm.AGORA_REALM)
-    .setBaseUri(baseUri) // optional
-    .setHttpConnectionPoolSize(10) // optional
-    .setServerTimezone("+8") // optional
-    .build();
-
-EMService service = new EMService(properties);
-```
 根据业务资源，API分为：
 
 - [Attachment](https://easemob.github.io/easemob-im-server-sdk/com/easemob/im/server/api/attachment/AttachmentApi.html)
