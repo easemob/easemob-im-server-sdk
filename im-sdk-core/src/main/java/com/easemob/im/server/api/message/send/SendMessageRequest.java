@@ -92,6 +92,9 @@ public class SendMessageRequest {
                 case JSON_STRING:
                     mapped.put(keyValue.key(), keyValue.asString());
                     break;
+                case OBJECT:
+                    mapped.put(keyValue.key(), keyValue.asObject());
+                    break;
             }
         }
         return mapped;

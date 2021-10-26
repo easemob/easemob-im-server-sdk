@@ -6,6 +6,7 @@ import com.easemob.im.server.model.EMKeyValue;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -212,6 +213,38 @@ public class MessageIT extends AbstractIT {
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
                 .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    /**
+     * 测试扩展字段ext支持Object类型
+     */
+    @Test
+    void testExtensionSupportObject() throws InterruptedException {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.message().send()
+                .fromUser(randomFromUsername)
+                .toUser(randomToUsername)
+                .custom(msg -> msg.customEvent("liked").customExtension("name", "forest"))
+                .extension(exts -> exts.add(EMKeyValue.of("extension-object", new HashMap<String, String>() {
+                    {
+                        put("em_push_content", "custom-content");
+                        put("extension_key", "extension-value");
+                    }
+                })))
+                .send()
+                .block(Utilities.IT_TIMEOUT));
+
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
