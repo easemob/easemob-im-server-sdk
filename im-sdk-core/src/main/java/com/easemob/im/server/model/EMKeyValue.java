@@ -55,6 +55,8 @@ public class EMKeyValue {
             return EMKeyValue.of(k, (double) v);
         } else if (v instanceof String) {
             return EMKeyValue.of(k, (String) v);
+        } else if (v instanceof Object) {
+            return new EMKeyValue(k, Type.OBJECT, v);
         } else {
             throw new IllegalArgumentException("can not convert the type: " + v.getClass());
         }
@@ -120,5 +122,6 @@ public class EMKeyValue {
         DOUBLE,
         STRING,
         JSON_STRING,
+        OBJECT,
     }
 }
