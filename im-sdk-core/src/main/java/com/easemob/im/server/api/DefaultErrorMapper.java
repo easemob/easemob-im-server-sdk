@@ -45,30 +45,33 @@ public class DefaultErrorMapper implements ErrorMapper {
                 String.format("%s %s -> %d %s, \n error_description -> %s", response.method().toString(), response.uri(),
                         response.status().code(), response.status().reasonPhrase(), errorResponse.getErrorDescription());
         HttpResponseStatus status = response.status();
+        EMException emException = new EMUnknownException(reason);
         if (HttpResponseStatus.BAD_REQUEST.equals(status)
                 || HttpResponseStatus.METHOD_NOT_ALLOWED.equals(status)
                 || HttpResponseStatus.NOT_ACCEPTABLE.equals(status)
                 || HttpResponseStatus.UNSUPPORTED_MEDIA_TYPE.equals(status)) {
-            return new EMBadRequestException(reason);
+            emException = new EMBadRequestException(reason);
         } else if (HttpResponseStatus.UNAUTHORIZED.equals(status)) {
-            return new EMUnauthorizedException(reason);
+            emException = new EMUnauthorizedException(reason);
         } else if (HttpResponseStatus.PAYMENT_REQUIRED.equals(status)
                 || HttpResponseStatus.FORBIDDEN.equals(status)) {
-            return new EMForbiddenException(reason);
+            emException = new EMForbiddenException(reason);
         } else if (HttpResponseStatus.NOT_FOUND.equals(status)) {
-            return new EMNotFoundException(reason);
+            emException = new EMNotFoundException(reason);
         } else if (HttpResponseStatus.TOO_MANY_REQUESTS.equals(status)) {
-            return new EMTooManyRequestsException(reason);
+            emException = new EMTooManyRequestsException(reason);
         } else if (HttpResponseStatus.INTERNAL_SERVER_ERROR.equals(status)) {
-            return new EMInternalServerErrorException(reason);
+            emException = new EMInternalServerErrorException(reason);
         } else if (HttpResponseStatus.BAD_GATEWAY.equals(status)) {
-            return new EMBadGatewayException(reason);
+            emException = new EMBadGatewayException(reason);
         } else if (HttpResponseStatus.SERVICE_UNAVAILABLE.equals(status)) {
-            return new EMServiceUnavailableException(reason);
+            emException = new EMServiceUnavailableException(reason);
         } else if (HttpResponseStatus.GATEWAY_TIMEOUT.equals(status)) {
-            return new EMGatewayTimeoutException(reason);
+            emException = new EMGatewayTimeoutException(reason);
         }
-        return new EMUnknownException(reason);
+        //设置错误状态码
+        emException.setErrorCode(statusCode);
+        return emException;
     }
 
     public <T> T decode(ByteBuf buffer, Class<T> tClass) {
