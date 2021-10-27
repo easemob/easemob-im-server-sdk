@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserNameIT {
 
-    EMService serviceWithUserNameValidation;
+    /*EMService serviceWithUserNameValidation;
     EMService serviceNoUserNameValidation;
 
     public UserNameIT() {
@@ -101,5 +101,5 @@ public class UserNameIT {
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(()-> serviceNoUserNameValidation.user().delete(badUserName)
                 .block(Utilities.IT_TIMEOUT));
-    }
+    }*/
 }
