@@ -1,5 +1,7 @@
 package com.easemob.im.server.api;
 
+import com.easemob.im.server.EMErrorResponse;
+import com.easemob.im.server.exception.EMBadRequestException;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMJsonException;
@@ -25,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 public class MockingHttpServer {
-    private static final ByteBuf EMPTY_OBJECT = Unpooled.wrappedBuffer(new byte[] {'{', '}'});
+    private static final ByteBuf EMPTY_OBJECT = Unpooled.wrappedBuffer(new byte[]{'{', '}'});
 
     private final ObjectMapper objectMapper = new ObjectMapper()
             .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
@@ -45,7 +47,17 @@ public class MockingHttpServer {
                 .handle((req, rsp) -> {
                     String path = String.format("%s %s", req.method().toString(), req.uri());
                     if (!this.handlers.containsKey(path)) {
-                        return rsp.status(HttpResponseStatus.NOT_FOUND).send();
+                        EMBadRequestException emBadRequestException = new EMBadRequestException(" request path not exists ");
+                        emBadRequestException.setErrorCode(HttpResponseStatus.NOT_FOUND.code());
+                        byte[] arrayNotFound;
+                        try {
+                            arrayNotFound = this.objectMapper.writeValueAsBytes(emBadRequestException);
+                        } catch (JsonProcessingException e) {
+                            throw new EMJsonException(e.getMessage());
+                        }
+                        return rsp.status(HttpResponseStatus.NOT_FOUND).send(Mono
+                                .create(sink -> sink
+                                        .success(Unpooled.wrappedBuffer(arrayNotFound))));
                     }
 
                     Function<JsonNode, JsonNode> handler = this.handlers.get(path);
