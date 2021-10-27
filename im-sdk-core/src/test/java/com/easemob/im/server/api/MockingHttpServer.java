@@ -1,7 +1,6 @@
 package com.easemob.im.server.api;
 
 import com.easemob.im.server.EMErrorResponse;
-import com.easemob.im.server.exception.EMBadRequestException;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMJsonException;
@@ -20,7 +19,6 @@ import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,11 +45,10 @@ public class MockingHttpServer {
                 .handle((req, rsp) -> {
                     String path = String.format("%s %s", req.method().toString(), req.uri());
                     if (!this.handlers.containsKey(path)) {
-                        EMBadRequestException emBadRequestException = new EMBadRequestException(" request path not exists ");
-                        emBadRequestException.setErrorCode(HttpResponseStatus.NOT_FOUND.code());
+                        EMErrorResponse emErrorResponse = new EMErrorResponse(" request path not exist ");
                         byte[] arrayNotFound;
                         try {
-                            arrayNotFound = this.objectMapper.writeValueAsBytes(emBadRequestException);
+                            arrayNotFound = this.objectMapper.writeValueAsBytes(emErrorResponse);
                         } catch (JsonProcessingException e) {
                             throw new EMJsonException(e.getMessage());
                         }
