@@ -1,15 +1,14 @@
 package com.easemob.im.server.api.user;
 
-import com.easemob.im.server.EMException;
 import com.easemob.im.server.api.AbstractIT;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserIT extends AbstractIT {
 
@@ -353,22 +352,6 @@ class UserIT extends AbstractIT {
         // notice the deprecated stuff
         assertDoesNotThrow(() -> this.service.user().getToken(randomUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
-    }
-
-    @Test
-    void testReturnExceptionErrorCode() {
-        String randomUsername = Utilities.randomUserName();
-        String randomPassword = Utilities.randomPassword();
-        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
-                .doOnError(err -> System.out.println("error: " + err.getMessage()))
-                .onErrorResume(EMException.class, meException -> {
-                    assertNotNull(meException.getErrorCode());
-                    System.out.println("errorCode: " + meException.getErrorCode());
-                    return Mono.empty();
-                })
-                .block());
     }
 
 }
