@@ -6,6 +6,7 @@ import com.easemob.im.server.api.block.BlockApi;
 import com.easemob.im.server.api.attachment.AttachmentApi;
 import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.metadata.MetadataApi;
+import com.easemob.im.server.api.push.PushApi;
 import com.easemob.im.server.api.token.TokenApi;
 import com.easemob.im.server.api.room.RoomApi;
 import com.easemob.im.server.api.group.GroupApi;
@@ -41,6 +42,8 @@ public class EMService {
 
     private final TokenApi tokenApi;
 
+    private final PushApi pushApi;
+
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
         this.context = new DefaultContext(properties);
@@ -54,6 +57,7 @@ public class EMService {
         this.userApi = new UserApi(this.context);
         this.metadataApi = new MetadataApi(this.context);
         this.tokenApi = new TokenApi(this.context);
+        this.pushApi = new PushApi(context);
     }
 
     public Context getContext() {
@@ -217,4 +221,14 @@ public class EMService {
         return this.tokenApi;
     }
 
+    /**
+     * 推送API.<br>
+     * 支持：<br>
+     * - 设置推送昵称<br>
+     *
+     * @return {@code PushApi}
+     */
+    public PushApi push() {
+        return this.pushApi;
+    }
 }
