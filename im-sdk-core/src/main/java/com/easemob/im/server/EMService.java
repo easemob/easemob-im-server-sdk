@@ -57,7 +57,7 @@ public class EMService {
         this.userApi = new UserApi(this.context);
         this.metadataApi = new MetadataApi(this.context);
         this.tokenApi = new TokenApi(this.context);
-        this.pushApi = new PushApi(context);
+        this.pushApi = new PushApi(this.context);
     }
 
     public Context getContext() {
