@@ -1,26 +1,19 @@
 package com.easemob.im.server.api.push.nickname;
 
-import com.easemob.im.server.api.user.UserResource;
-import com.easemob.im.server.model.EMUser;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 public class UpdateUserNicknameResponse {
 
-    @JsonProperty("entities")
-    private List<UserResource> entities;
-
+    @JsonProperty("error")
+    private String error;
 
     @JsonCreator
-    public UpdateUserNicknameResponse(@JsonProperty("entities") List<UserResource> entities) {
-        this.entities = entities;
+    public UpdateUserNicknameResponse(@JsonProperty("error") String error) {
+        this.error = error;
     }
 
-    public EMUser getEMUser(String username) {
-        return this.entities.stream()
-                .filter(user -> user.getUsername().equals(username)).findFirst()
-                .map(UserResource::toEMUser).orElse(null);
+    public String getError() {
+        return this.error;
     }
 }

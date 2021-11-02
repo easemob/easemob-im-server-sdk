@@ -26,12 +26,14 @@ public class PushApi {
     }
 
     /**
+     * 设置推送昵称。
+     *
      * @param username  用户名
      * @param nickname  推送昵称
      * @return {@code Mono}
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%AE%BE%E7%BD%AE%E6%8E%A8%E9%80%81%E6%98%B5%E7%A7%B0">设置推送昵称</a>
      */
-    public Mono<EMUser> updateUserNickname(String username, String nickname) {
+    public Mono<Void> updateUserNickname(String username, String nickname) {
         try {
             if (context.getProperties().getValidateUserName()) {
                 EMUser.validateUsername(username);
