@@ -2,7 +2,6 @@ package com.easemob.im.server.api.push;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.push.nickname.UpdateUserNickname;
-import com.easemob.im.server.api.user.UserApi;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMUser;
 import org.slf4j.Logger;

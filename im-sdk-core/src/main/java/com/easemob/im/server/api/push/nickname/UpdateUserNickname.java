@@ -1,7 +1,6 @@
 package com.easemob.im.server.api.push.nickname;
 
 import com.easemob.im.server.api.Context;
-import com.easemob.im.server.exception.EMUnknownException;
 import reactor.core.publisher.Mono;
 
 public class UpdateUserNickname {
@@ -23,15 +22,8 @@ public class UpdateUserNickname {
                                     this.context.getErrorMapper().statusCode(rsp);
                                     return buf;
                                 })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
-                .map(buf -> context.getCodec().decode(buf, UpdateUserNicknameResponse.class))
-                .handle((rsp, sink) -> {
-                    if (rsp.getError() != null) {
-                        sink.error(new EMUnknownException(rsp.getError()));
-                        return;
-                    }
-                    sink.complete();
-                });
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
     }
 
 }
