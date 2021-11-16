@@ -3,6 +3,7 @@ package com.easemob.im.server.api.group.get;
 import com.easemob.im.server.model.EMGroup;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.netty.util.internal.StringUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,10 +56,35 @@ public class GetGroupResponse {
         @JsonProperty("public")
         private boolean isPublic;
 
+        @JsonProperty("affiliations_count")
+        private int affiliationsCount;
+
+        @JsonProperty("affiliations")
+        private List<Affiliation> affiliations;
+
         public EMGroup toEMGroup() {
+            String[] groupMembers = affiliations.stream().filter(affiliation -> StringUtil.isNullOrEmpty(affiliation.getOwner()))
+                    .map(Affiliation::getMember).toArray(String[]::new);
             return new EMGroup(this.groupId, this.name, this.description, this.isPublic,
                     this.needApproveToJoin, this.memberCanInviteOthers,
-                    this.owner, this.maxMembers);
+                    this.owner, this.maxMembers, this.affiliationsCount, groupMembers);
+        }
+    }
+
+    private static class Affiliation {
+
+        @JsonProperty("owner")
+        private String owner;
+
+        @JsonProperty("member")
+        private String member;
+
+        public String getOwner() {
+            return owner;
+        }
+
+        public String getMember() {
+            return member;
         }
     }
 

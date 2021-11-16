@@ -12,8 +12,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GroupIT extends AbstractIT {
 
@@ -164,22 +163,36 @@ public class GroupIT extends AbstractIT {
         String randomPassword = Utilities.randomPassword();
 
         String randomMemberUsername = Utilities.randomUserName();
+        String randomAdminUsername = Utilities.randomUserName();
         List<String> members = new ArrayList<>();
         members.add(randomMemberUsername);
+        members.add(randomAdminUsername);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomAdminUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
                         true).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
-                () -> this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT));
+                () -> this.service.group().addGroupAdmin(groupId, randomAdminUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> {
+                    EMGroup emGroup = this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT);
+                    assertEquals(emGroup.getAffiliationsCount(), 3);
+                    assertNotNull(emGroup.getAffiliations());
+                    EMGroup.Affiliation affiliation = emGroup.getAffiliations();
+                    assertEquals(affiliation.getMembers().length, 2);
+                });
         assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomAdminUsername)
                 .block(Utilities.IT_TIMEOUT));
     }
 

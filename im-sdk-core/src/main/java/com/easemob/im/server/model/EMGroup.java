@@ -16,9 +16,13 @@ public class EMGroup extends EMEntity {
 
     private final int maxMembers;
 
+    private final int affiliationsCount;
+
+    private final Affiliation affiliations;
+
     public EMGroup(String groupId, String name, String description, boolean isPublic,
-            boolean needApproveToJoin, boolean canMemberInviteOthers,
-            String owner, int maxMembers) {
+                   boolean needApproveToJoin, boolean canMemberInviteOthers,
+                   String owner, int maxMembers, int affiliationsCount, String[] groupMembers) {
         super(EntityType.GROUP);
         super.id(groupId);
         this.name = name;
@@ -28,6 +32,8 @@ public class EMGroup extends EMEntity {
         this.canMemberInviteOthers = canMemberInviteOthers;
         this.owner = owner;
         this.maxMembers = maxMembers;
+        this.affiliationsCount = affiliationsCount;
+        this.affiliations = new Affiliation(owner, groupMembers);
     }
 
     public String getGroupId() {
@@ -60,5 +66,32 @@ public class EMGroup extends EMEntity {
 
     public int getMaxMembers() {
         return this.maxMembers;
+    }
+
+    public int getAffiliationsCount() {
+        return this.affiliationsCount;
+    }
+
+    public Affiliation getAffiliations() {
+        return this.affiliations;
+    }
+
+    public class Affiliation {
+        private final String owner;
+
+        private final String[] members;
+
+        public Affiliation(String owner, String[] members) {
+            this.owner = owner;
+            this.members = members;
+        }
+
+        public String getOwner() {
+            return this.owner;
+        }
+
+        public String[] getMembers() {
+            return this.members;
+        }
     }
 }
