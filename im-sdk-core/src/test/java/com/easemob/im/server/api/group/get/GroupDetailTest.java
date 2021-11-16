@@ -54,6 +54,7 @@ class GroupDetailTest extends AbstractApiTest {
         group1.put("allowinvites", false);
         group1.put("owner", "alice");
         group1.put("maxusers", 200);
+        group1.put("affiliations_count", 1);
         return group1;
     }
 
