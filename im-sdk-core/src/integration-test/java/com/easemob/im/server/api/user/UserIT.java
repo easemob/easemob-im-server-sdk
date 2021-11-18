@@ -7,6 +7,8 @@ import com.easemob.im.server.model.EMBlock;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -338,6 +340,18 @@ class UserIT extends AbstractIT {
         if (isOnline) {
             throw new RuntimeException(String.format("%s is online status", randomUsername));
         }
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testQueryUserStatus() throws InterruptedException {
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().queryUserStatus(Arrays.asList(randomUsername))
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
     }

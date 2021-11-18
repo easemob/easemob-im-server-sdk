@@ -14,11 +14,13 @@ import com.easemob.im.server.api.user.unregister.DeleteUser;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMPage;
 import com.easemob.im.server.model.EMUser;
+import com.easemob.im.server.model.EMUserStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -178,6 +180,20 @@ public class UserApi {
      */
     public Mono<Boolean> isUserOnline(String username) {
         return this.userStatus.isUserOnline(username);
+    }
+
+    /**
+     * 批量获取用户在线状态
+     *
+     * @param usernames 需要查询状态的用户名
+     * @return 是否在线或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9C%A8%E7%BA%BF%E7%8A%B6%E6%80%81">批量获取用户在线状态</a>
+     */
+    public Mono<List<EMUserStatus>> queryUserStatus(List<String> usernames) {
+        if (usernames == null || usernames.size() == 0) {
+            return Mono.error(new EMInvalidArgumentException("usernames must not be null or empty"));
+        }
+        return this.userStatus.queryUserStatus(usernames);
     }
 
     /**
