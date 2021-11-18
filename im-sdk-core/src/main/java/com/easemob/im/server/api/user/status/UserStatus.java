@@ -1,7 +1,12 @@
 package com.easemob.im.server.api.user.status;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.model.EMUserStatus;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class UserStatus {
 
@@ -20,9 +25,36 @@ public class UserStatus {
                                     this.context.getErrorMapper().statusCode(rsp);
                                     return buf;
                                 })
-                                .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> context.getCodec().decode(buf, UserStatusResponse.class))
                 .map(rsp -> rsp.isUserOnline(username));
     }
 
+    public Mono<List<EMUserStatus>> queryUserStatus(List<String> usernames) {
+        return context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/users/batch/status")
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new UserStatusBatchQueryRequest(usernames)))))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                .map(buf -> context.getCodec().decode(buf, UserStatusBatchQueryResponse.class))
+                .map(rsp -> {
+                    List<EMUserStatus> emUserStatusList = new ArrayList<>(usernames.size());
+                    if (rsp.getUserStatusList() != null && rsp.getUserStatusList().size() > 0) {
+                        for (Map<String, String> map : rsp.getUserStatusList()) {
+                            map.forEach((username, status) -> {
+                                Boolean isOnline = "online".equals(status);
+                                EMUserStatus emUserStatus = new EMUserStatus(username, isOnline);
+                                emUserStatusList.add(emUserStatus);
+                            });
+                        }
+                    }
+                    return emUserStatusList;
+                });
+    }
 }
