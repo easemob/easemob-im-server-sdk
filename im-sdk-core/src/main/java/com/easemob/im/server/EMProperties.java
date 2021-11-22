@@ -18,6 +18,7 @@ public class EMProperties {
     private final String baseUri;
     private final EMProxy proxy;
     private final int httpConnectionPoolSize;
+    private final int httpConnectionMaxIdleTime;
     private final String serverTimezone;
     private final int agoraTokenExpireInSeconds;
     private final AdvancedByteBufFormat httpLogFormat;
@@ -25,8 +26,8 @@ public class EMProperties {
 
 
     private EMProperties(Realm realm, String appKey, Credentials credentials, String baseUri,
-            EMProxy proxy, int httpConnectionPoolSize, String serverTimezone,
-            int agoraTokenExpireInSeconds, AdvancedByteBufFormat httpLogFormat, boolean validateUserName) {
+                         EMProxy proxy, int httpConnectionPoolSize, String serverTimezone,
+                         int agoraTokenExpireInSeconds, AdvancedByteBufFormat httpLogFormat, boolean validateUserName, int httpConnectionMaxIdleTime) {
         this.realm = realm;
         this.appKey = appKey;
         this.credentials = credentials;
@@ -37,6 +38,7 @@ public class EMProperties {
         this.agoraTokenExpireInSeconds = agoraTokenExpireInSeconds;
         this.httpLogFormat = httpLogFormat;
         this.validateUserName = validateUserName;
+        this.httpConnectionMaxIdleTime = httpConnectionMaxIdleTime;
     }
 
     /**
@@ -47,11 +49,12 @@ public class EMProperties {
      * @param clientSecret
      * @param httpConnectionPoolSize
      * @param serverTimezone
+     * @param httpConnectionMaxIdleTime
      * @deprecated use {@link #builder()} instead.
      */
     @Deprecated
     public EMProperties(String baseUri, String appKey, EMProxy proxy, String clientId,
-            String clientSecret, int httpConnectionPoolSize, String serverTimezone) {
+                        String clientSecret, int httpConnectionPoolSize, String serverTimezone, int httpConnectionMaxIdleTime) {
         this.realm = Realm.EASEMOB_REALM;
         this.appKey = appKey;
         this.credentials = new EasemobAppCredentials(clientId, clientSecret);
@@ -62,6 +65,7 @@ public class EMProperties {
         this.agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
         this.httpLogFormat = AdvancedByteBufFormat.SIMPLE;
         this.validateUserName = true;
+        this.httpConnectionMaxIdleTime = httpConnectionMaxIdleTime;
     }
 
     // easemob realm by default
@@ -153,6 +157,10 @@ public class EMProperties {
         return this.httpConnectionPoolSize;
     }
 
+    public int getHttpConnectionMaxIdleTime() {
+        return this.httpConnectionMaxIdleTime;
+    }
+
     public String getServerTimezone() {
         return this.serverTimezone;
     }
@@ -182,6 +190,7 @@ public class EMProperties {
                 ", baseUri='" + baseUri + '\'' +
                 ", proxy=" + proxy +
                 ", httpConnectionPoolSize=" + httpConnectionPoolSize +
+                ", httpConnectionMaxIdleTime=" + httpConnectionMaxIdleTime +
                 ", serverTimezone='" + serverTimezone + '\'' +
                 ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
                 ", httpLogFormat=" + httpLogFormat +
@@ -212,6 +221,7 @@ public class EMProperties {
         private String baseUri;
         private EMProxy proxy;
         private int httpConnectionPoolSize = 10;
+        private int httpConnectionMaxIdleTime = 20 * 1000;
         private String serverTimezone = "+8";
         private int agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
         private AdvancedByteBufFormat httpLogFormat = AdvancedByteBufFormat.SIMPLE;
@@ -310,6 +320,18 @@ public class EMProperties {
             return this;
         }
 
+        /**
+         * @param httpConnectionMaxIdleTime httpConnection最大空闲时间 单位：毫秒
+         * @return
+         */
+        public Builder httpConnectionMaxIdleTime(int httpConnectionMaxIdleTime) {
+            if (httpConnectionMaxIdleTime <= 0) {
+                throw new EMInvalidArgumentException("httpConnectionMaxIdleTime must not be negative");
+            }
+            this.httpConnectionMaxIdleTime = httpConnectionMaxIdleTime;
+            return this;
+        }
+
 
         public EMProperties build() {
             if (this.realm == null) {
@@ -332,7 +354,7 @@ public class EMProperties {
                         new EasemobAppCredentials(this.clientId, this.clientSecret);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
                         this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
-                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName);
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName, this.httpConnectionMaxIdleTime);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
                 if (this.appId == null) {
                     throw new EMInvalidStateException("appId not set");
@@ -346,7 +368,7 @@ public class EMProperties {
                 Credentials credentials = new AgoraAppCredentials(this.appId, this.appCert);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
                         this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
-                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName);
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName, this.httpConnectionMaxIdleTime);
             } else {
                 throw new EMInvalidStateException(
                         String.format("invalid realm type %s", this.realm.toString()));
