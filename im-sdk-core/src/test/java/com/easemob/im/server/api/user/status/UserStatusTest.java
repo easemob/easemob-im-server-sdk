@@ -34,7 +34,7 @@ public class UserStatusTest extends AbstractApiTest {
 
     @Test
     public void testUserStatusBatch() {
-        List<EMUserStatus> userStatusList = this.userStatus.queryUserStatus(Arrays.asList("alice")).block(Utilities.UT_TIMEOUT);
+        List<EMUserStatus> userStatusList = this.userStatus.isUsersOnline(Arrays.asList("alice")).block(Utilities.UT_TIMEOUT);
         assertEquals(true, userStatusList.get(0).isOnline());
     }
 

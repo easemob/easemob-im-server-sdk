@@ -189,11 +189,11 @@ public class UserApi {
      * @return 是否在线或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9C%A8%E7%BA%BF%E7%8A%B6%E6%80%81">批量获取用户在线状态</a>
      */
-    public Mono<List<EMUserStatus>> queryUserStatus(List<String> usernames) {
+    public Mono<List<EMUserStatus>> isUsersOnline(List<String> usernames) {
         if (usernames == null || usernames.size() == 0) {
             return Mono.error(new EMInvalidArgumentException("usernames must not be null or empty"));
         }
-        return this.userStatus.queryUserStatus(usernames);
+        return this.userStatus.isUsersOnline(usernames);
     }
 
     /**
