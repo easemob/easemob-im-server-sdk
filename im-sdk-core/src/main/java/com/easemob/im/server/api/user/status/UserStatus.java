@@ -30,7 +30,7 @@ public class UserStatus {
                 .map(rsp -> rsp.isUserOnline(username));
     }
 
-    public Mono<List<EMUserStatus>> queryUserStatus(List<String> usernames) {
+    public Mono<List<EMUserStatus>> isUsersOnline(List<String> usernames) {
         return context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri("/users/batch/status")
@@ -43,18 +43,6 @@ public class UserStatus {
                                 })
                         .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> context.getCodec().decode(buf, UserStatusBatchQueryResponse.class))
-                .map(rsp -> {
-                    List<EMUserStatus> emUserStatusList = new ArrayList<>(usernames.size());
-                    if (rsp.getUserStatusList() != null && rsp.getUserStatusList().size() > 0) {
-                        for (Map<String, String> map : rsp.getUserStatusList()) {
-                            map.forEach((username, status) -> {
-                                Boolean isOnline = "online".equals(status);
-                                EMUserStatus emUserStatus = new EMUserStatus(username, isOnline);
-                                emUserStatusList.add(emUserStatus);
-                            });
-                        }
-                    }
-                    return emUserStatusList;
-                });
+                .map(rsp -> rsp.getUsersOnline());
     }
 }

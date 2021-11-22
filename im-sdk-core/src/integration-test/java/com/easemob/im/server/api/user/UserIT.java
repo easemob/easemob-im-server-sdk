@@ -345,12 +345,12 @@ class UserIT extends AbstractIT {
     }
 
     @Test
-    void testQueryUserStatus() throws InterruptedException {
+    void testIsUsersOnline() {
         String randomUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.user().queryUserStatus(Arrays.asList(randomUsername))
+        assertDoesNotThrow(() -> this.service.user().isUsersOnline(Arrays.asList(randomUsername))
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
