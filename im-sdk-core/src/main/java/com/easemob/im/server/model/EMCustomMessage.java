@@ -1,5 +1,7 @@
 package com.easemob.im.server.model;
 
+import com.easemob.im.server.exception.EMInvalidArgumentException;
+
 import java.util.*;
 
 public class EMCustomMessage extends EMMessage {
@@ -24,6 +26,12 @@ public class EMCustomMessage extends EMMessage {
     }
 
     public EMCustomMessage customExtensions(Set<EMKeyValue> customParams) {
+        if (customParams != null && !customParams.isEmpty()) {
+            long errorCount = customParams.stream().filter(kv -> kv.type() != EMKeyValue.Type.STRING).count();
+            if (errorCount > 0) {
+                throw new EMInvalidArgumentException("customExtensions require key and value must be string");
+            }
+        }
         this.customExtensions = customParams;
         return this;
     }
