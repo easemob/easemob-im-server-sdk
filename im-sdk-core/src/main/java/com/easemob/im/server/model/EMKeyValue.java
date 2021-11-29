@@ -43,7 +43,21 @@ public class EMKeyValue {
     }
 
     public static EMKeyValue of(String k, Object v) {
-        return new EMKeyValue(k, Type.OBJECT, v);
+        if (v instanceof Boolean) {
+            return EMKeyValue.of(k, (boolean) v);
+        } else if (v instanceof Integer) {
+            return EMKeyValue.of(k, (int) v);
+        } else if (v instanceof Long) {
+            return EMKeyValue.of(k, (long) v);
+        } else if (v instanceof Float) {
+            return EMKeyValue.of(k, (float) v);
+        } else if (v instanceof Double) {
+            return EMKeyValue.of(k, (double) v);
+        } else if (v instanceof String) {
+            return EMKeyValue.of(k, (String) v);
+        } else {
+            return new EMKeyValue(k, Type.OBJECT, v);
+        }
     }
 
     public static Set<EMKeyValue> of(Map<String, Object> map) {

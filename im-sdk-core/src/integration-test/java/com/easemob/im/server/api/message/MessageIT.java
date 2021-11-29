@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -232,10 +234,14 @@ public class MessageIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
+
+        Map<String, Object> hashMap = new HashMap<>();
+        hashMap.put("name", "forest");
+        Set<EMKeyValue> kvSet = EMKeyValue.of(hashMap);
         assertDoesNotThrow(() -> this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
-                .custom(msg -> msg.customEvent("liked").customExtension("name", "forest"))
+                .custom(msg -> msg.customEvent("liked").customExtensions(kvSet))
                 .extension(exts -> exts.add(EMKeyValue.of("extension-object", new HashMap<String, String>() {
                     {
                         put("em_push_content", "custom-content");
