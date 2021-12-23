@@ -6,12 +6,12 @@
 
     <groupId>com.easemob.im</groupId>
     <artifactId>im-sdk-core</artifactId>
-    <version>0.4.6</version>
+    <version>0.4.7-SNAPSHOT</version>
     <description>Easemob IM SDK Core</description>
     <parent>
         <groupId>com.easemob.im</groupId>
         <artifactId>im-sdk-parent</artifactId>
-        <version>0.4.6</version>
+        <version>0.4.7-SNAPSHOT</version>
     </parent>
 
     <properties>
