@@ -125,10 +125,6 @@ service.user().create(username, password).block();
 
 API的返回值是响应式的，如果希望阻塞，可以使用上面例子中的block()。
 
-## DEMO
-
-可以参考[im-sdk-cli](https://github.com/easemob/easemob-im-server-sdk/tree/master/im-sdk-cli) ，这是一个使用该SDK构建的CLI程序。
-
 ## 参考
 
 SDK的api文档在[这里](https://easemob.github.io/easemob-im-server-sdk/) 。
