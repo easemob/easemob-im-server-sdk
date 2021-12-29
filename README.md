@@ -111,4 +111,28 @@ API的返回值是响应式的，如果希望阻塞，可以使用上面例子�
 
 SDK的api文档在[这里](https://easemob.github.io/easemob-im-server-sdk/) 。
 
+## 常见问题
+如果你想看Server SDK的请求与响应，可以在配置文件中添加:
+``` java
+logging.level.com.easemob.im.http=debug
+```
+
+## 注意事项
+
+Server SDK是对环信IM [服务端API](http://docs-im.easemob.com/im/server/ready/intro) 的封装，但并没有封装所有的API，只封装了开发者常用的API。
+
+对于注册环信id的规则，Server SDK有自己的限制, 正则为^[a-z][0-9a-z-]{1,32}$，这点与 [官网文档](https://docs-im.easemob.com/im/server/ready/user#%E7%8E%AF%E4%BF%A1_id_%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99) 中说明的环信id规则是有区别的，这样做是因为目前环信id注册的限制范围比较广，Server SDK考虑缩小环信id注册的限制范围使其更加规范，在此说明一下。
+
+如果不想使用server sdk注册环信id的限制，可以在初始化配置时添加 'turnOffUserNameValidation()' （sdk需要使用0.3.5以上的版本）。
+
+强烈建议不要使用纯数字或者有规律的字符串来注册环信id，否则自己的用户可能会遭受到攻击、垃圾消息等后果。
+``` java
+EMProperties properties = EMProperties.builder()
+        .setAppkey("appkey")
+        .setClientId("Client ID")
+        .setClientSecret("ClientSecret")
+        .turnOffUserNameValidation()
+        .build();
+```
+
 
