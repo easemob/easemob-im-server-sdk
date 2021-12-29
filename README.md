@@ -11,43 +11,20 @@
 
 ## 安装
 
-如果你的项目使用Maven构建并且spring boot是2.4.3以上版本，在pom.xml中添加下面代码即可：
+如果你的项目使用Maven构建，在pom.xml中添加下面代码即可：
 
 ``` xml
 <dependency>
     <groupId>com.easemob.im</groupId>
     <artifactId>im-sdk-core</artifactId>
-    <version>0.3.5</version>
+    <version>0.4.6</version>
 </dependency>
-```
-
-如果你使用的spring-boot是2.4.3以下版本的，则还需要在pom.xml中添加:
-
-``` xml
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-bom</artifactId>
-            <version>4.1.59.Final</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-bom</artifactId>
-            <version>2020.0.4</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
 ```
 
 如果你的项目使用Gradle构建，可以在build.grade中添加下面代码：
 
 ``` gradle
-implementation 'com.easemob.im:im-sdk-core:0.3.5'
+implementation 'com.easemob.im:im-sdk-core:0.4.6'
 ```
 
 ## 准备
@@ -82,17 +59,22 @@ implementation 'com.easemob.im:im-sdk-core:0.3.5'
 
 ### 1. 使用 Easemob App Credentials 的情况
 ``` java
-EMProperties properties = EMProperties.builder()
-    .setAppkey(appkey)
-    .setClientId(clientId)
-    .setClientSecret(clientSecret)
-    .setRealm(EMProperties.Realm.EASEMOB_REALM) // optional
-    .setBaseUri(baseUri) // optional
-    .setHttpConnectionPoolSize(10) // optional
-    .setServerTimezone("+8") // optional
-    .build();
+建议写到配置类中，示例如下：
+@Configuration
+public class Config {
 
-EMService service = new EMService(properties);
+    @Bean
+    public EMService service() {
+        
+        EMProperties properties = EMProperties.builder()
+                .setAppkey("Appkey")
+                .setClientId("Client ID")
+                .setClientSecret("ClientSecret")
+                .build();
+
+        return new EMService(properties);
+    }
+}
 ```
 
 根据业务资源，API分为：
