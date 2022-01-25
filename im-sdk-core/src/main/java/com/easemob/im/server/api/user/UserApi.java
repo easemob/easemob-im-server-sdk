@@ -55,7 +55,7 @@ public class UserApi {
 
     /**
      * 创建用户。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -86,7 +86,7 @@ public class UserApi {
 
     /**
      * 删除用户。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -108,7 +108,7 @@ public class UserApi {
 
     /**
      * 获取全部用户。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -129,7 +129,7 @@ public class UserApi {
 
     /**
      * 分页获取用户列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -173,9 +173,9 @@ public class UserApi {
 
     /**
      * 删除全部用户。
-     *
+     * <p>
      * 请谨慎使用。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -196,7 +196,7 @@ public class UserApi {
 
     /**
      * 获取用户详情。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -221,7 +221,7 @@ public class UserApi {
 
     /**
      * 修改用户密码。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -250,7 +250,7 @@ public class UserApi {
 
     /**
      * 强制指定用户所有设备下线。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -297,7 +297,7 @@ public class UserApi {
 
     /**
      * 获取用户在线状态。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -319,7 +319,7 @@ public class UserApi {
 
     /**
      * 批量获取用户在线状态
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -348,7 +348,7 @@ public class UserApi {
 
     /**
      * 获取用户token。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;

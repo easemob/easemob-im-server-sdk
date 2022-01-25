@@ -33,7 +33,7 @@ public class MetadataApi {
 
     /**
      * 设置用户属性
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -61,7 +61,7 @@ public class MetadataApi {
 
     /**
      * 获取用户属性
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -83,8 +83,8 @@ public class MetadataApi {
     }
 
     /**
-     * 获取app用户属性当前所占空间
-     *
+     * 获取app用户属性当前所占空间。
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -105,8 +105,8 @@ public class MetadataApi {
     }
 
     /**
-     * 删除用户属性
-     *
+     * 删除用户属性。
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;

@@ -40,7 +40,7 @@ public class MessageApi {
 
     /**
      * 查询用户离线消息数。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -62,7 +62,7 @@ public class MessageApi {
 
     /**
      * 查询某条离线消息的状态，如是否已经传达。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -102,16 +102,25 @@ public class MessageApi {
      * }
      * }</pre>
      *
-     * 将上述发送文本消息示例中的 `.text(...) `替换掉，来发送其他类型消息示例：
+     * <p>
      * 如果需要向一个群组或聊天室发消息，将示例中的 toUser 改成 toGroup 或 toRoom，并传入对应的群组或聊天室id
+     * <p>
      * 如果需要向多个用户或群组或聊天室发消息，将示例中的 toUser 改成 toUsers 或 toGroups 或 toRooms，并传入对应的用户或群组或聊天室id
-     *
+     * <p>
+     * 将上述发送文本消息示例中的 `.text(...) `替换掉，来发送其他类型消息示例：
+     * <p>
      * 发送图片消息：{@code .image(msg -> msg.uri(URI.create("http://example/image.png")).secret("secret").displayName("image.png"))}
+     * <p>
      * 发送语音消息：{@code .voice(msg -> msg.uri(URI.create("http://example/voice.amr")).duration(3).secret("secret").displayName("voice.amr"))}
+     * <p>
      * 发送视频消息：{@code .video(msg -> msg.uri(URI.create("http://example/video.mp4")).duration(3).secret("secret").displayName("video.mp4").thumb("http://example/videoThumbnail").thumbSecret("thumbSecret"))}
+     * <p>
      * 发送文件消息：{@code .file(msg -> msg.uri(URI.create("http://example/file.txt")).secret("secret").displayName("file.txt"))}
+     * <p>
      * 发送位置消息：{@code .location(msg -> msg.latitude(1.234567).longitude(1.234567).address("some where"))}
+     * <p>
      * 发送自定义类型消息：{@code .custom(msg -> msg.customEvent("liked").customExtension("name", "forest"))}
+     * <p>
      *
      * @return 发送消息的构造器
      * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
@@ -122,7 +131,7 @@ public class MessageApi {
 
     /**
      * 发送消息。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -187,8 +196,9 @@ public class MessageApi {
 
     /**
      * 发送消息(只投递在线消息)。
-     *
+     * <p>
      * API使用示例：请参考上方 发送消息
+     * <p>
      *
      * @param from       发送者用户名
      * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
@@ -206,8 +216,9 @@ public class MessageApi {
 
     /**
      * 获取消息历史文件的下载地址。
+     * <p>
      * 历史文件是每小时一个文件，比如指定12:10，则返回12点的历史文件。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -230,7 +241,9 @@ public class MessageApi {
 
     /**
      * 下载消息历史文件到本地。
+     * <p>
      * 消息历史文件是gz压缩的。
+     * <p>
      *
      * API使用示例：
      * <pre> {@code

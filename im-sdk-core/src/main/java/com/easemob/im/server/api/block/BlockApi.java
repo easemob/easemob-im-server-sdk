@@ -49,7 +49,8 @@ public class BlockApi {
 
     /**
      * 获取禁言列表，即这个用户禁言的其他用户。
-     *
+     * <p>
+     * API使用示例：
      * <pre> {@code
      * EMService service;
      * try {
@@ -70,8 +71,9 @@ public class BlockApi {
 
     /**
      * 用户禁言，阻止向这个用户发消息。
-     *
-     * 要阻止 userA 给 userB发送消息：<br>
+     * <p>
+     * 要阻止 userA 给 userB发送消息：
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -94,8 +96,9 @@ public class BlockApi {
 
     /**
      * 解除用户禁言，恢复向这个用户发消息。
-     *
-     * 要恢复 userA 给 userB发送消息：<br>
+     * <p>
+     * 要恢复 userA 给 userB发送消息：
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -118,7 +121,7 @@ public class BlockApi {
 
     /**
      * 用户账号禁用，阻止该用户登录。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -140,7 +143,7 @@ public class BlockApi {
 
     /**
      * 用户账号解禁，恢复该用户登录。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -162,7 +165,7 @@ public class BlockApi {
 
     /**
      * 获取阻止进群的用户列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -184,7 +187,7 @@ public class BlockApi {
 
     /**
      * 阻止进群。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -207,7 +210,7 @@ public class BlockApi {
 
     /**
      * 解除阻止进群。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -230,7 +233,7 @@ public class BlockApi {
 
     /**
      * 获取阻止进聊天室的用户列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -251,7 +254,7 @@ public class BlockApi {
 
     /**
      * 阻止进聊天室。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -273,7 +276,7 @@ public class BlockApi {
 
     /**
      * 解除阻止进聊天室。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -295,7 +298,7 @@ public class BlockApi {
 
     /**
      * 获取群禁言列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -317,7 +320,7 @@ public class BlockApi {
 
     /**
      * 添加群禁言。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -341,7 +344,7 @@ public class BlockApi {
 
     /**
      * 解除群禁言。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -364,7 +367,7 @@ public class BlockApi {
 
     /**
      * 获取聊天室禁言列表。
-
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -386,7 +389,7 @@ public class BlockApi {
 
     /**
      * 添加聊天室禁言。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -410,7 +413,7 @@ public class BlockApi {
 
     /**
      * 解除聊天室禁言。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
