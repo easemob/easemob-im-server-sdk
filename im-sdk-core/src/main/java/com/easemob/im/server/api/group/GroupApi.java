@@ -65,9 +65,29 @@ public class GroupApi {
     /**
      * 创建公开群。
      * 需要注意的是，目前公开群不允许成员邀请其他用户加入。如果要允许，可以用修改群API设置:
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     * try {
+     *     String groupId = service.group().createPublicGroup("owner", "groupName", "description", members, 200, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * <pre>{@code
-     *      EMService service;
-     *      service.group().updateSetting("group-id", settings -> settings.memberCanInvite(true)).block();
+     * EMService service;
+     * try {
+     *     // 修改群组API，允许成员邀请其他用户加入
+     *     service.group().updateSetting("group-id", settings -> settings.memberCanInvite(true)).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
      * }</pre>
      *
      * @param owner             群主的用户名
@@ -88,6 +108,19 @@ public class GroupApi {
     /**
      * 创建私有群。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     * try {
+     *     String groupId = service.group().privateGroup("owner", "groupName", "description", members, 200, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param owner           群主的用户名
      * @param groupName       群名
      * @param description     群介绍
@@ -106,6 +139,19 @@ public class GroupApi {
     /**
      * 注销群。
      *
+     * 请谨慎使用。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     String groupId = service.group().destroyGroup("groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param groupId 群id
      * @return 成功或错误
      */
@@ -115,6 +161,17 @@ public class GroupApi {
 
     /**
      * 获取全部群列表。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> groups = service.group().listAllGroups().collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @return 每个群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96app%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%BE%A4%E7%BB%84_%E5%8F%AF%E5%88%86%E9%A1%B5">获取群列表</a>
@@ -127,20 +184,35 @@ public class GroupApi {
      * 分页获取群列表。
      * <p>
      * 初次调用时，{@code cursor} 传 {@code null}。之后的调用，{@code cursor} 传上次返回的值。
-     * <p>
-     * 可以这样遍历群列表：
+     *
+     * API使用示例：
      * <pre>{@code
-     *  EMService service;
-     *  GroupListResponse response = service.listGroups(20, null).block();
-     *  List<String> groupIds = response.getGroupIds();
-     *  // ... do something with the groupIds ...
-     *  String cursor = response.getCursor();
-     *  // cursor == null indicates the end of the list
-     *  while (cursor != null) {
-     *      response = service.listGroups(20, cursor);
-     *      // ... do something to the groupIds ...
-     *      cursor = response.getCursor();
-     *  }
+     * EMPage<String> page = null;
+     * try {
+     *     page = service.group().listGroups(10, null).block();
+     *     List<String> groupIds = page.getValues();
+     *     System.out.println("群组列表:" + groupIds);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * // ... do something with the groupIds ...
+     * if (page != null) {
+     *      String cursor = page.getCursor();
+     *      // cursor == null indicates the end of the list
+     *      while (cursor != null) {
+     *          try {
+     *              page = service.group().listGroups(10, cursor).block();
+     *              System.out.println("群组列表:" + page.getValues());
+     *              // ... do something to the groupIds ...
+     *              cursor = page.getCursor();
+     *          } catch (EMException e) {
+     *              e.getErrorCode();
+     *              e.getMessage();
+     *          }
+     *      }
+     * }
      * }</pre>
      *
      * @param limit  每次取回多少个群id
@@ -154,7 +226,18 @@ public class GroupApi {
     }
 
     /**
-     * List groups user joined.
+     * 获取用户加入的所有群组。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> groups = service.group().listGroupsUserJoined("username").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username the username
      * @return A {@code Flux} which emits {@code EMGroup} on successful.
@@ -165,6 +248,18 @@ public class GroupApi {
 
     /**
      * 获取群详情。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     EMGroup group = service.group().getGroup("groupId").block();
+     *     String groupName = group.getName();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param groupId 群id
      * @return 群详情或错误
@@ -177,10 +272,16 @@ public class GroupApi {
     /**
      * 修改群详情。
      * 支持修改的参数见{@code GroupSettingsUpdateRequest}
+     *
      * 比如，更新群最大成员数：
      * <pre>{@code
      * EMService service;
-     * service.group().updateSettings("1", settings -> settings.maxMembers(100)).block();
+     * try {
+     *     service.group().updateSettings("1", settings -> settings.maxMembers(100)).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
      * }</pre>
      *
      * @param groupId    群id
@@ -196,6 +297,17 @@ public class GroupApi {
     /**
      * 修改群主。新群主需要已经是群成员，否则会报错{@code EMForbiddenException}。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.group().updateGroupOwner("groupId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param groupId  群id
      * @param username 新群主的用户名
      * @return 成功或错误
@@ -208,6 +320,17 @@ public class GroupApi {
     /**
      * 获取群公告。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     String groupAnnouncement = service.group().getGroupAnnouncement("groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param groupId 群id
      * @return 群公告或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E5%85%AC%E5%91%8A">获取群公告</a>
@@ -218,6 +341,17 @@ public class GroupApi {
 
     /**
      * 更新群公告。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.group().updateGroupAnnouncement("groupId", "announcement").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param groupId      群id
      * @param announcement 群公告
@@ -230,6 +364,17 @@ public class GroupApi {
 
     /**
      * 获取群全部成员。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> members = service.group().listAllGroupMembers("username").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param groupId 群id
      * @return 每个群成员或错误
@@ -248,14 +393,30 @@ public class GroupApi {
      *
      * <pre>{@code
      * EMService service;
-     * GroupListResponse response = service.listGroupMemberss("group-id", 10, null).block();
-     * List<EMGroupMembers> groups = response.getEMGroups();
+     * EMPage<String> page = null;
+     * try {
+     *     page = service.group().listGroupMembers(groupId, 1, null).block();
+     *     List<String> members = page.getValues();
+     *     System.out.println("群组成员列表:" + members);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
      * // ... do something to the members ...
-     * String cursor = response.getCursor();
-     * while (cursor != null) {
-     *     response = service.listGroupMembers("group-id", 10, cursor);
-     *     // ... do something to the members ...
-     *     cursor = response.getCursor();
+     * if (page != null) {
+     *      String cursor = page.getCursor();
+     *      while (cursor != null) {
+     *              try {
+     *              page = service.group().listGroupMembers(groupId, 1, cursor).block();
+     *              System.out.println("群组成员列表:" + page.getValues());
+     *              // ... do something to the members ...
+     *              cursor = page.getCursor();
+     *          } catch (EMException e) {
+     *              e.getErrorCode();
+     *              e.getMessage();
+     *          }
+     *      }
      * }
      * }</pre>
      *
@@ -273,6 +434,17 @@ public class GroupApi {
     /**
      * 添加群成员。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.group().addGroupMember("groupId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param groupId  群id
      * @param username 要添加的用户的用户名
      * @return 成功或错误
@@ -284,6 +456,17 @@ public class GroupApi {
 
     /**
      * 移除群成员。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.group().removeGroupMember("groupId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param groupId  群id
      * @param username 要移除的用户的用户名
@@ -297,6 +480,17 @@ public class GroupApi {
     /**
      * 获取群全部管理员。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> admins = service.group().listGroupAdmins("groupId").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param groupId 群id
      * @return 每个管理员或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">获取群管理员</a>
@@ -307,6 +501,17 @@ public class GroupApi {
 
     /**
      * 升级群成员为群管理员。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.group().addGroupAdmin("groupId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param groupId  群id
      * @param username 被升级的群成员的用户名
@@ -319,6 +524,17 @@ public class GroupApi {
 
     /**
      * 降级群管理员为群成员。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.group().removeGroupAdmin("groupId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param groupId  群id
      * @param username 被降级的群管理员的用户名

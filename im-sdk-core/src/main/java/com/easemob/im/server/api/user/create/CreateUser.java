@@ -1,14 +1,10 @@
 package com.easemob.im.server.api.user.create;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.user.get.UserGetResponse;
 import com.easemob.im.server.exception.EMUnknownException;
-import io.netty.handler.codec.http.HttpResponse;
+import com.easemob.im.server.model.EMUser;
 import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufMono;
-import reactor.netty.http.client.HttpClientResponse;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class CreateUser {
 
@@ -18,7 +14,7 @@ public class CreateUser {
         this.context = context;
     }
 
-    public Mono<Void> single(String username, String password) {
+    public Mono<EMUser> single(String username, String password) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
                         .uri("/users")
@@ -30,13 +26,14 @@ public class CreateUser {
                                     return buf;
                                 })
                         .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
-                .map(buf -> this.context.getCodec().decode(buf, CreateUserResponse.class))
+                .map(buf -> this.context.getCodec().decode(buf, UserGetResponse.class))
                 .handle((rsp, sink) -> {
-                    if (rsp.getError() != null) {
-                        sink.error(new EMUnknownException(rsp.getError()));
+                    EMUser user = rsp.getEMUser(username);
+                    if (user == null) {
+                        sink.error(new EMUnknownException(String.format("user:%s", username)));
                         return;
                     }
-                    sink.complete();
+                    sink.next(user);
                 });
     }
 

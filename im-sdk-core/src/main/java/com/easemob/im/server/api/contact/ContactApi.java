@@ -19,6 +19,17 @@ public class ContactApi {
     /**
      * 向用户通讯录添加联系人。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.contact().add("user", "contact").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param user    所属用户的用户名
      * @param contact 联系人的用户名
      * @return 成功或错误
@@ -31,6 +42,17 @@ public class ContactApi {
     /**
      * 从用户通讯录移除联系人
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.contact().remove("user", "contact").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param user    所属用户的用户名
      * @param contact 联系人的用户名
      * @return 成功或错误
@@ -42,6 +64,17 @@ public class ContactApi {
 
     /**
      * 获取用户联系人列表。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> users = service.contact().list("user").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param user 所属用户的用户名
      * @return 每个联系人的用户名

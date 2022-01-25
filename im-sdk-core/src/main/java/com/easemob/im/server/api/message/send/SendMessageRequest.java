@@ -1,11 +1,9 @@
 package com.easemob.im.server.api.message.send;
 
-import com.easemob.im.server.api.message.RouteType;
 import com.easemob.im.server.model.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.HashMap;
 import java.util.HashSet;

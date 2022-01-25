@@ -56,12 +56,23 @@ public class UserApi {
     /**
      * 创建用户。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     EMUser user = service.user().create("username", "password").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 用户名，可以包含小写字母、数字、减号，有效长度1至32个字节
      * @param password 密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;*-_=+&lt;&gt;;:,./?)，有效长度1至32字节
-     * @return A {@code Mono}
+     * @return EMUser
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%B3%A8%E5%86%8C%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7_%E6%8E%88%E6%9D%83">注册用户</a>
      */
-    public Mono<Void> create(String username, String password) {
+    public Mono<EMUser> create(String username, String password) {
         try {
             if (context.getProperties().getValidateUserName()) {
                 EMUser.validateUsername(username);
@@ -76,6 +87,17 @@ public class UserApi {
     /**
      * 删除用户。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.user().delete("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 要删除的用户的用户名
      * @return 成功或失败
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E5%88%A0%E9%99%A4%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7">删除用户</a>
@@ -87,6 +109,17 @@ public class UserApi {
     /**
      * 获取全部用户。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> users = service.user().listAllUsers().collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @return 用户名或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7">获取用户列表</a>
      */
@@ -96,6 +129,37 @@ public class UserApi {
 
     /**
      * 分页获取用户列表。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * EMPage<String> page = null;
+     * try {
+     *     page = service.user().listUsers(10, null).block();
+     *     List<String> users = page.getValues();
+     *     System.out.println("用户列表:" + users);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * // ... do something with the users ...
+     * if (page != null) {
+     *      String cursor = page.getCursor();
+     *      // cursor == null indicates the end of the list
+     *      while (cursor != null) {
+     *          try {
+     *              page = service.user().listUsers(10, cursor).block();
+     *              System.out.println("用户列表:" + page.getValues());
+     *              // ... do something to the users ...
+     *              cursor = page.getCursor();
+     *          } catch (EMException e) {
+     *              e.getErrorCode();
+     *              e.getMessage();
+     *          }
+     *      }
+     * }
+     * }</pre>
      *
      * @param limit  返回多少用户
      * @param cursor 开始位置
@@ -110,6 +174,19 @@ public class UserApi {
     /**
      * 删除全部用户。
      *
+     * 请谨慎使用。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> users = service.user().deleteAll().collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @return 删除的每个用户名或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7">删除全部用户</a>
      */
@@ -119,6 +196,20 @@ public class UserApi {
 
     /**
      * 获取用户详情。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     EMUser user = service.user().get("username").block();
+     *     String uuid = user.getUuid();
+     *     String username = user.getUsername();
+     *     Boolean canLogin = user.getCanLogin();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 用户名
      * @return A {@code Mono} emits {@code EMUser} on success.
@@ -130,6 +221,17 @@ public class UserApi {
 
     /**
      * 修改用户密码。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.user().updateUserPassword("username", "password").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 要修改的用户的用户名
      * @param password 新密码
@@ -149,6 +251,17 @@ public class UserApi {
     /**
      * 强制指定用户所有设备下线。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.user().forceLogoutAllDevices("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 要强制下线的用户的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E5%BC%BA%E5%88%B6%E4%B8%8B%E7%BA%BF">强制下线</a>
@@ -162,6 +275,17 @@ public class UserApi {
      * <p>
      * TODO: 增加查询用户在线设备id的API
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.user().forceLogoutOneDevice("username", "resource").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 要强制下线的用户的用户名
      * @param resource 要强制下线的设备id，获取设备id的方法待补充
      * @return 成功或错误
@@ -174,6 +298,17 @@ public class UserApi {
     /**
      * 获取用户在线状态。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     Boolean isOnline = service.user().isUserOnline("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 要查询的用户的用户名
      * @return 是否在线或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9C%A8%E7%BA%BF%E7%8A%B6%E6%80%81">获取用户在线状态</a>
@@ -184,6 +319,21 @@ public class UserApi {
 
     /**
      * 批量获取用户在线状态
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> users = new ArrayList<>();
+     * users.add("user1");
+     * users.add("user2");
+     *
+     * try {
+     *     List<EMUserStatus> userStatuses = service.user().isUsersOnline(users).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param usernames 需要查询状态的用户名
      * @return 是否在线或错误
@@ -198,6 +348,18 @@ public class UserApi {
 
     /**
      * 获取用户token。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     Token token = service.user().getToken("u1", "123").block();
+     *     String userToken = token.getValue();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 要获取token的用户名
      * @param password 要获取token的用户名密码
