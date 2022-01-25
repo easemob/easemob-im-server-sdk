@@ -37,7 +37,7 @@ public class PushApi {
 
     /**
      * 设置推送昵称。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -68,7 +68,7 @@ public class PushApi {
 
     /**
      * 设置推送消息展示方式，指客户端的推送通知栏展示消息的样式。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -104,8 +104,9 @@ public class PushApi {
 
     /**
      * 设置推送免打扰。
+     * <p>
      * 设置 IM 用户免打扰，在免打扰期间，用户将不会收到离线消息推送。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -142,8 +143,9 @@ public class PushApi {
 
     /**
      * 取消推送免打扰。
+     * <p>
      * 设置 IM 用户免打扰，在免打扰期间，用户将不会收到离线消息推送。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;

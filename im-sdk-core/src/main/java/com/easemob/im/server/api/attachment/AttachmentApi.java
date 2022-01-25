@@ -27,8 +27,8 @@ public class AttachmentApi {
     }
 
     /**
-     * 上传附件
-     *
+     * 上传附件。
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -55,8 +55,8 @@ public class AttachmentApi {
     /* TODO: 上传带有密码保护的附件 */
 
     /**
-     * 下载附件
-     *
+     * 下载附件。
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;

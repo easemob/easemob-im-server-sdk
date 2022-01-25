@@ -64,8 +64,9 @@ public class GroupApi {
 
     /**
      * 创建公开群。
+     * <p>
      * 需要注意的是，目前公开群不允许成员邀请其他用户加入。如果要允许，可以用修改群API设置:
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -107,7 +108,7 @@ public class GroupApi {
 
     /**
      * 创建私有群。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -138,9 +139,9 @@ public class GroupApi {
 
     /**
      * 注销群。
-     *
+     * <p>
      * 请谨慎使用。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -161,7 +162,7 @@ public class GroupApi {
 
     /**
      * 获取全部群列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -184,7 +185,7 @@ public class GroupApi {
      * 分页获取群列表。
      * <p>
      * 初次调用时，{@code cursor} 传 {@code null}。之后的调用，{@code cursor} 传上次返回的值。
-     *
+     * <p>
      * API使用示例：
      * <pre>{@code
      * EMPage<String> page = null;
@@ -227,7 +228,7 @@ public class GroupApi {
 
     /**
      * 获取用户加入的所有群组。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -248,7 +249,7 @@ public class GroupApi {
 
     /**
      * 获取群详情。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -271,8 +272,11 @@ public class GroupApi {
 
     /**
      * 修改群详情。
+     * <p>
      * 支持修改的参数见{@code GroupSettingsUpdateRequest}
-     *
+     * <p>
+     * API使用示例：
+     * <p>
      * 比如，更新群最大成员数：
      * <pre>{@code
      * EMService service;
@@ -296,7 +300,7 @@ public class GroupApi {
 
     /**
      * 修改群主。新群主需要已经是群成员，否则会报错{@code EMForbiddenException}。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -319,7 +323,7 @@ public class GroupApi {
 
     /**
      * 获取群公告。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -341,7 +345,7 @@ public class GroupApi {
 
     /**
      * 更新群公告。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -364,7 +368,7 @@ public class GroupApi {
 
     /**
      * 获取群全部成员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -386,6 +390,8 @@ public class GroupApi {
 
     /**
      * 分页获取群成员。
+     * <p>
+     * API使用示例：
      * <p>
      * 首次调用时，{@code cursor} 传 {@code null}。之后每次调用，{@code cursor} 传上次返回的值。
      * <p>
@@ -433,7 +439,7 @@ public class GroupApi {
 
     /**
      * 添加群成员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -456,7 +462,7 @@ public class GroupApi {
 
     /**
      * 移除群成员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -479,7 +485,7 @@ public class GroupApi {
 
     /**
      * 获取群全部管理员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -501,7 +507,7 @@ public class GroupApi {
 
     /**
      * 升级群成员为群管理员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -524,7 +530,7 @@ public class GroupApi {
 
     /**
      * 降级群管理员为群成员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;

@@ -76,7 +76,7 @@ public class RoomApi {
 
     /**
      * 创建聊天室。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -106,7 +106,7 @@ public class RoomApi {
 
     /**
      * 获取聊天室详情。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -134,6 +134,7 @@ public class RoomApi {
      * 可修改的字段参考 {@link com.easemob.im.server.api.room.update.UpdateRoomRequest UpdateRoomRequest}
      * <p>
      * API使用示例：
+     * <p>
      * 比如，要更新聊天室名称，可以这么做:
      * <pre>{@code
      * EMService service;
@@ -157,7 +158,7 @@ public class RoomApi {
 
     /**
      * 获取全部聊天室列表
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -178,7 +179,7 @@ public class RoomApi {
 
     /**
      * 分页获取聊天室列表
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -221,7 +222,7 @@ public class RoomApi {
 
     /**
      * 获取用户加入的聊天室列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -243,7 +244,7 @@ public class RoomApi {
 
     /**
      * 获取聊天室全部成员列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -265,7 +266,7 @@ public class RoomApi {
 
     /**
      * 分页获取聊天室成员列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -309,7 +310,7 @@ public class RoomApi {
 
     /**
      * 向聊天室添加成员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -332,7 +333,7 @@ public class RoomApi {
 
     /**
      * 从聊天室移除成员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -355,7 +356,7 @@ public class RoomApi {
 
     /**
      * 获取聊天室管理员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -377,7 +378,7 @@ public class RoomApi {
 
     /**
      * 升级聊天室成员至管理员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -400,7 +401,7 @@ public class RoomApi {
 
     /**
      * 降级聊天室管理员至成员。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -423,7 +424,7 @@ public class RoomApi {
 
     /**
      * 获取所有超级管理员列表。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -444,7 +445,7 @@ public class RoomApi {
 
     /**
      * 升级用户为超级管理员，只有超级管理员有权限创建聊天室。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -466,7 +467,7 @@ public class RoomApi {
 
     /**
      * 降级超级管理员为普通用户
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -488,9 +489,9 @@ public class RoomApi {
 
     /**
      * 注销聊天室
-     *
+     * <p>
      * 请谨慎使用。
-     *
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
