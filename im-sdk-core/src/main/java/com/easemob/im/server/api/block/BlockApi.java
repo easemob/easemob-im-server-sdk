@@ -50,6 +50,16 @@ public class BlockApi {
     /**
      * 获取禁言列表，即这个用户禁言的其他用户。
      *
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<EMBlock> blocks = service.block().getUsersBlockedFromSendMsgToUser("username").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 发起禁言的用户名
      * @return 每个被禁言用户的用户的用户名或错误
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E8%8E%B7%E5%8F%96%E9%BB%91%E5%90%8D%E5%8D%95">获取用户禁言列表</a>
@@ -60,14 +70,18 @@ public class BlockApi {
 
     /**
      * 用户禁言，阻止向这个用户发消息。
-     * <p>
-     * 要阻止 userA 给 userB发送消息:
-     * <code>
+     *
+     * 要阻止 userA 给 userB发送消息：<br>
+     * API使用示例：
+     * <pre> {@code
      * EMService service;
-     * service.block().blockUserFromSendingMessagesToUser(Flux.just("userA", "userB"), "userC");
-     * </code>
-     * <p>
-     * 注意，用户不能自己禁言自己。
+     * try {
+     *     service.block().blockUserSendMsgToUser("userA", "userB").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param fromUser 被阻止的用户的用户名
      * @param toUser   接收消息的用户的用户名
@@ -81,6 +95,18 @@ public class BlockApi {
     /**
      * 解除用户禁言，恢复向这个用户发消息。
      *
+     * 要恢复 userA 给 userB发送消息：<br>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().unblockUserSendMsgToUser("userA", "userB").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param fromUser 被阻止的用户的用户名
      * @param toUser   接受消息的用户的用户名
      * @return 成功或错误
@@ -93,6 +119,17 @@ public class BlockApi {
     /**
      * 用户账号禁用，阻止该用户登录。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().blockUserLogin("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 被阻止的用户的用户名
      * @return 成功或失败
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E7%94%A8%E6%88%B7%E8%B4%A6%E5%8F%B7%E7%A6%81%E7%94%A8">用户账号禁用</a>
@@ -103,6 +140,17 @@ public class BlockApi {
 
     /**
      * 用户账号解禁，恢复该用户登录。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().unblockUserLogin("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 被阻止的用户的用户名
      * @return 成功或失败
@@ -115,6 +163,17 @@ public class BlockApi {
     /**
      * 获取阻止进群的用户列表。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<EMBlock> blocks = service.block().getUsersBlockedJoinGroup("groupId").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param groupId 群id
      * @return 被阻止进入的用户名
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%9F%A5%E8%AF%A2%E7%BE%A4%E7%BB%84%E9%BB%91%E5%90%8D%E5%8D%95">获取阻止进群列表</a>
@@ -125,6 +184,17 @@ public class BlockApi {
 
     /**
      * 阻止进群。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().blockUserJoinGroup("username", "groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 被阻止的用户的用户名
      * @param groupId  群id
@@ -138,6 +208,17 @@ public class BlockApi {
     /**
      * 解除阻止进群。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().unblockUserJoinGroup("username", "groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 被阻止的用户的用户名
      * @param groupId  群id
      * @return 成功或错误
@@ -150,6 +231,17 @@ public class BlockApi {
     /**
      * 获取阻止进聊天室的用户列表。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<EMBlock> blocks = service.block().getUsersBlockedJoinRoom("roomId").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param roomId 聊天室id
      * @return 被阻止进入的用户名
      */
@@ -159,6 +251,17 @@ public class BlockApi {
 
     /**
      * 阻止进聊天室。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().blockUserJoinRoom("username", "roomId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 被阻止的用户的用户名
      * @param roomId   聊天室id
@@ -171,6 +274,17 @@ public class BlockApi {
     /**
      * 解除阻止进聊天室。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().unblockUserJoinRoom("username", "roomId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 被阻止的用户的用户名
      * @param roomId   聊天室id
      * @return 成功或错误
@@ -182,6 +296,17 @@ public class BlockApi {
     /**
      * 获取群禁言列表。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<EMBlock> blocks = service.block().getUsersBlockedSendMsgToGroup("groupId").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param groupId 群id
      * @return 每个禁言或错误.
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%A6%81%E8%A8%80%E5%88%97%E8%A1%A8">获取禁言列表</a>
@@ -192,6 +317,17 @@ public class BlockApi {
 
     /**
      * 添加群禁言。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().blockUserSendMsgToGroup("username", "groupId", Duration.ofMillis(6000)).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 被禁言的用户的用户名
      * @param groupId  群id
@@ -206,6 +342,17 @@ public class BlockApi {
     /**
      * 解除群禁言。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().unblockUserSendMsgToGroup("username", "groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 被禁言的用户的用户名
      * @param groupId  群id
      * @return 成功或错误
@@ -217,6 +364,17 @@ public class BlockApi {
 
     /**
      * 获取聊天室禁言列表。
+
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<EMBlock> blocks = service.block().listUsersBlockedSendMsgToRoom("roomId").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param roomId 聊天室id
      * @return 每个禁言或错误
@@ -228,6 +386,17 @@ public class BlockApi {
 
     /**
      * 添加聊天室禁言。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().blockUserSendMsgToRoom("username", "roomId", Duration.ofMillis(6000)).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 被禁言的用户的用户名
      * @param roomId   聊天室id
@@ -241,6 +410,17 @@ public class BlockApi {
 
     /**
      * 解除聊天室禁言。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().unblockUserSendMsgToRoom("username", "roomId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 被禁言的用户的用户名
      * @param roomId   聊天室id

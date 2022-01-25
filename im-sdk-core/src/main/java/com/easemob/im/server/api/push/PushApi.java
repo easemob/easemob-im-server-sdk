@@ -38,6 +38,18 @@ public class PushApi {
     /**
      * 设置推送昵称。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * try {
+     *     service.push().updateUserNickname("username", "nickname").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username  用户名
      * @param nickname  推送昵称
      * @return {@code Mono}
@@ -56,6 +68,18 @@ public class PushApi {
 
     /**
      * 设置推送消息展示方式，指客户端的推送通知栏展示消息的样式。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * try {
+     *     service.push().setNotificationDisplayStyle("username", DisplayStyle.DETAILS).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username  用户名
      * @param style  展示方式，DEFAULT 仅通知，DETAILS 通知以及消息详情
@@ -82,6 +106,18 @@ public class PushApi {
      * 设置推送免打扰。
      * 设置 IM 用户免打扰，在免打扰期间，用户将不会收到离线消息推送。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * try {
+     *     service.push().openNotificationNoDisturbing("username", 10, 13).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username  用户名
      * @param startTime  免打扰起始时间，单位是小时
      * @param endTime  免打扰结束时间，单位是小时
@@ -107,6 +143,18 @@ public class PushApi {
     /**
      * 取消推送免打扰。
      * 设置 IM 用户免打扰，在免打扰期间，用户将不会收到离线消息推送。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * try {
+     *     service.push().closeNotificationNoDisturbing("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username  用户名
      * @return {@code Mono}

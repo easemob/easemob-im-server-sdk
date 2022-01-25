@@ -29,6 +29,21 @@ public class AttachmentApi {
     /**
      * 上传附件
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * Path uploadPath = Paths.get("/local/path/.../icon_180.png");
+     * try {
+     *     EMAttachment attachment = service.attachment().uploadFile(uploadPath).block();
+     *     String fileId = attachment.getId();
+     *     String url = attachment.getUrl();
+     *     String secret = attachment.getSecret();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param path 要上传的文件的路径
      * @return 上传完成后返回附件的id
      * @see <a href="http://docs-im.easemob.com/im/server/basics/fileoperation#%E4%B8%8A%E4%BC%A0%E8%AF%AD%E9%9F%B3%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6">上传附件</a>
@@ -41,6 +56,18 @@ public class AttachmentApi {
 
     /**
      * 下载附件
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     Path downloadPath = Paths.get("/local/path/...");
+     *     Path path = service.attachment().downloadFile("fileId", downloadPath, "filename").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param fileId   附件的id
      * @param dir      下载到哪个目录，如果不存在会自动创建

@@ -77,6 +77,20 @@ public class RoomApi {
     /**
      * 创建聊天室。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     *
+     * try {
+     *     String roomId = service.room().createRoom("name", "description", "owner", members, 200).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param name        聊天室名称
      * @param description 聊天室描述
      * @param owner       聊天室主
@@ -93,6 +107,19 @@ public class RoomApi {
     /**
      * 获取聊天室详情。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     EMRoom room = service.room().getRoom(roomId).block();
+     *     String roomName = room.name();
+     *     String roomDescription = room.description();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param id 聊天室id
      * @return 聊天室详情或错误.
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E8%AF%A6%E6%83%85">获取聊天室详情</a>
@@ -106,10 +133,16 @@ public class RoomApi {
      * <p>
      * 可修改的字段参考 {@link com.easemob.im.server.api.room.update.UpdateRoomRequest UpdateRoomRequest}
      * <p>
+     * API使用示例：
      * 比如，要更新聊天室名称，可以这么做:
      * <pre>{@code
      * EMService service;
-     * service.updateRoom(roomId, request -> request.withName("some cool name")).block(timeout);
+     * try {
+     *     service.updateRoom(roomId, request -> request.withName("some cool name")).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
      * }</pre>
      *
      * @param id         聊天室id
@@ -125,6 +158,17 @@ public class RoomApi {
     /**
      * 获取全部聊天室列表
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> rooms = service.room().listRoomsAll().collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @return 每个聊天室的id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96_app_%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取聊天室列表</a>
      */
@@ -134,6 +178,36 @@ public class RoomApi {
 
     /**
      * 分页获取聊天室列表
+     *
+     * API使用示例：
+     * EMService service;
+     * EMPage<String> page = null;
+     * try {
+     *     service.room().listRooms(10, null).block();
+     *     List<String> roomIds = page.getValues();
+     *     System.out.println("聊天室列表:" + roomIds);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * // ... do something with the roomIds ...
+     * if (page != null) {
+     *      String cursor = page.getCursor();
+     *      // cursor == null indicates the end of the list
+     *      while (cursor != null) {
+     *              try {
+     *                  page = service.room().listRooms(10, cursor).block();
+     *                  System.out.println("聊天室列表:" + page.getValues());
+     *                  // ... do something to the roomIds ...
+     *                  cursor = page.getCursor();
+     *              } catch (EMException e) {
+     *                  e.getErrorCode();
+     *                  e.getMessage();
+     *              }
+     *      }
+     * }
+     * }</pre>
      *
      * @param limit  返回多少个聊天室id
      * @param cursor 开始位置
@@ -147,6 +221,17 @@ public class RoomApi {
     /**
      * 获取用户加入的聊天室列表。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> rooms = service.room().listRoomsUserJoined("username").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 用户名
      * @return 每个聊天室的id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%8A%A0%E5%85%A5%E7%9A%84%E8%81%8A%E5%A4%A9%E5%AE%A4">获取用户加入的聊天室</a>
@@ -158,6 +243,17 @@ public class RoomApi {
     /**
      * 获取聊天室全部成员列表。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> members = service.room().listRoomMembersAll("roomId").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param roomId 聊天室id
      * @return 每个聊天室成员或者错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
@@ -168,6 +264,36 @@ public class RoomApi {
 
     /**
      * 分页获取聊天室成员列表。
+     *
+     * API使用示例：
+     * EMService service;
+     * EMPage<String> page = null;
+     * try {
+     *     service.room().listRoomMembers(roomId, 1, null).block();
+     *     List<String> members = page.getValues();
+     *     System.out.println("聊天室成员列表:" + members);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * // ... do something with the roomIds ...
+     * if (page != null) {
+     *      String cursor = page.getCursor();
+     *      // cursor == null indicates the end of the list
+     *      while (cursor != null) {
+     *              try {
+     *                  page = service.room().listRoomMembers(roomId, 1, cursor).block();
+     *                  System.out.println("聊天室成员列表:" + page.getValues());
+     *                  // ... do something to the members ...
+     *                  cursor = page.getCursor();
+     *              } catch (EMException e) {
+     *                  e.getErrorCode();
+     *                  e.getMessage();
+     *              }
+     *      }
+     * }
+     * }</pre>
      *
      * @param roomId 聊天室id
      * @param limit  返回多少个聊天室成员
@@ -182,6 +308,17 @@ public class RoomApi {
     /**
      * 向聊天室添加成员。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.room().addRoomMember("roomId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param roomId   聊天室id
      * @param username 要添加的用户的用户名
      * @return 成功或错误
@@ -193,6 +330,17 @@ public class RoomApi {
 
     /**
      * 从聊天室移除成员。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.room().removeRoomMember("roomId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param roomId   聊天室id
      * @param username 要移除的成员的用户名
@@ -206,6 +354,17 @@ public class RoomApi {
     /**
      * 获取聊天室管理员。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> admins = service.room().listRoomAdminsAll("roomId").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param roomId 聊天室id
      * @return 每个管理员的用户名或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">获取聊天室管理员</a>
@@ -216,6 +375,17 @@ public class RoomApi {
 
     /**
      * 升级聊天室成员至管理员。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.room().promoteRoomAdmin("roomId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param roomId   聊天室id
      * @param username 要升级的成员的用户名
@@ -229,6 +399,17 @@ public class RoomApi {
     /**
      * 降级聊天室管理员至成员。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.room().demoteRoomAdmin("roomId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param roomId   聊天室id
      * @param username 要降级的管理员的用户名
      * @return 成功或错误
@@ -241,6 +422,17 @@ public class RoomApi {
     /**
      * 获取所有超级管理员列表。
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> superAdmins = service.room().listRoomSuperAdminsAll().collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @return 所有超级管理员的用户名
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">分页获取聊天室超级管理员列表</a>
      */
@@ -250,6 +442,17 @@ public class RoomApi {
 
     /**
      * 升级用户为超级管理员，只有超级管理员有权限创建聊天室。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.room().promoteRoomSuperAdmin("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param username 要升级的用户的用户名
      * @return 成功或错误
@@ -262,6 +465,17 @@ public class RoomApi {
     /**
      * 降级超级管理员为普通用户
      *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.room().demoteRoomSuperAdmin("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
      * @param username 要降级的超级管理员的用户名
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98">移除超级管理员</a>
@@ -272,6 +486,19 @@ public class RoomApi {
 
     /**
      * 注销聊天室
+     *
+     * 请谨慎使用。
+     *
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.room().destroyRoom("roomId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
      *
      * @param roomId 聊天室id
      * @return 成功或错误
