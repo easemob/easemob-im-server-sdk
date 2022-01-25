@@ -42,14 +42,14 @@ public class EMProperties {
     }
 
     /**
-     * @param baseUri
-     * @param appKey
-     * @param proxy
-     * @param clientId
-     * @param clientSecret
-     * @param httpConnectionPoolSize
-     * @param serverTimezone
-     * @param httpConnectionMaxIdleTime
+     * @param baseUri baseUri
+     * @param appKey appKey
+     * @param proxy proxy
+     * @param clientId clientId
+     * @param clientSecret clientSecret
+     * @param httpConnectionPoolSize httpConnectionPoolSize
+     * @param serverTimezone serverTimezone
+     * @param httpConnectionMaxIdleTime httpConnectionMaxIdleTime
      * @deprecated use {@link #builder()} instead.
      */
     @Deprecated
@@ -322,7 +322,7 @@ public class EMProperties {
 
         /**
          * @param httpConnectionMaxIdleTime httpConnection最大空闲时间 单位：毫秒
-         * @return
+         * @return Builder
          */
         public Builder httpConnectionMaxIdleTime(int httpConnectionMaxIdleTime) {
             if (httpConnectionMaxIdleTime <= 0) {

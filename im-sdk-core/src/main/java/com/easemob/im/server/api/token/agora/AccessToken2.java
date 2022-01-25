@@ -30,8 +30,8 @@ public class AccessToken2 {
 
     /**
      *
-     * @param appId
-     * @param appCert
+     * @param appId appId
+     * @param appCert appCert
      * @param expire expire Duration in seconds
      */
     public AccessToken2(String appId, String appCert, int expire) {

@@ -180,6 +180,7 @@ public class RoomApi {
      * 分页获取聊天室列表
      *
      * API使用示例：
+     * <pre> {@code
      * EMService service;
      * EMPage<String> page = null;
      * try {
@@ -266,6 +267,7 @@ public class RoomApi {
      * 分页获取聊天室成员列表。
      *
      * API使用示例：
+     * <pre> {@code
      * EMService service;
      * EMPage<String> page = null;
      * try {
