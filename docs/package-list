@@ -37,6 +37,12 @@ com.easemob.im.server.api.metadata.user.delete
 com.easemob.im.server.api.metadata.user.get
 com.easemob.im.server.api.metadata.user.set
 com.easemob.im.server.api.metadata.user.usage
+com.easemob.im.server.api.push
+com.easemob.im.server.api.push.displaystyle.set
+com.easemob.im.server.api.push.nickname
+com.easemob.im.server.api.push.nodisturbing
+com.easemob.im.server.api.push.nodisturbing.close
+com.easemob.im.server.api.push.nodisturbing.open
 com.easemob.im.server.api.room
 com.easemob.im.server.api.room.admin.demote
 com.easemob.im.server.api.room.admin.list
