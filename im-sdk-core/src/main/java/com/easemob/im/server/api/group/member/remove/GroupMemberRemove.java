@@ -3,10 +3,8 @@ package com.easemob.im.server.api.group.member.remove;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMRemoveMember;
-import com.sun.deploy.util.StringUtils;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,12 +44,12 @@ public class GroupMemberRemove {
                         .map(GroupMemberRemoveResponse::getMembers));
     }
 
-    private String convert(Collection var0) {
+    private String convert(List<String> var0) {
         String var1 = ",";
 
-        StringBuffer var2 = new StringBuffer();
+        StringBuilder var2 = new StringBuilder();
 
-        for(Iterator var3 = var0.iterator(); var3.hasNext(); var2.append((String)var3.next())) {
+        for(Iterator<String> var3 = var0.iterator(); var3.hasNext(); var2.append(var3.next())) {
             if (var2.length() != 0) {
                 var2.append(var1);
             }
