@@ -2,7 +2,11 @@ package com.easemob.im.server.api.group.member.remove;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.exception.EMNotFoundException;
+import com.easemob.im.server.model.EMRemoveMember;
 import reactor.core.publisher.Mono;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class GroupMemberRemove {
 
@@ -24,5 +28,33 @@ public class GroupMemberRemove {
                         .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
                         .then())
                 .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty());
+    }
+
+    public Mono<List<EMRemoveMember>> batch(String groupId, List<String> usernames) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.delete()
+                        .uri(String.format("/chatgroups/%s/users/%s", groupId, convert(usernames)))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .map(buf -> this.context.getCodec().decode(buf, GroupMemberRemoveResponse.class))
+                        .map(GroupMemberRemoveResponse::getMembers));
+    }
+
+    private String convert(List<String> var0) {
+        String var1 = ",";
+
+        StringBuilder var2 = new StringBuilder();
+
+        for(Iterator<String> var3 = var0.iterator(); var3.hasNext(); var2.append(var3.next())) {
+            if (var2.length() != 0) {
+                var2.append(var1);
+            }
+        }
+
+        return var2.toString();
     }
 }
