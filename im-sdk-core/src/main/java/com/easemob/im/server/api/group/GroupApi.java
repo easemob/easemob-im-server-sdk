@@ -17,9 +17,11 @@ import com.easemob.im.server.api.group.settings.UpdateGroupRequest;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMPage;
+import com.easemob.im.server.model.EMRemoveMember;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -516,7 +518,7 @@ public class GroupApi {
     }
 
     /**
-     * 添加群成员。
+     * 添加群成员(单个)。
      * <p>
      * API使用示例：
      * <pre> {@code
@@ -539,13 +541,48 @@ public class GroupApi {
     }
 
     /**
+     * 添加群成员(多个)。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> members = new ArrayList<>();
+     *     members.add("member1");
+     *     members.add("member2");
+     *
+     *     service.group().addGroupMembers("groupId", members).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId  群id
+     * @param usernames 要添加的用户的用户名列表
+     * @return 成功或错误
+     * @see <a href="https://docs-im.easemob.com/im/server/basics/group#%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">添加群成员(多个)</a>
+     */
+    public Mono<Void> addGroupMembers(String groupId, List<String> usernames) {
+        if (usernames != null && usernames.size() > 0 && usernames.size() <= 60) {
+            return this.groupMemberAdd.batch(groupId, usernames);
+        } else {
+            throw new EMInvalidArgumentException("usernames is illegal");
+        }
+    }
+
+    /**
      * 移除群成员。
      * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
      * try {
-     *     service.group().removeGroupMember("groupId", "username").block();
+     *     List<String> members = new ArrayList<>();
+     *     members.add("member1");
+     *     members.add("member2");
+     *
+     *     service.group().removeGroupMembers("groupId", members).block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -559,6 +596,33 @@ public class GroupApi {
      */
     public Mono<Void> removeGroupMember(String groupId, String username) {
         return this.groupMemberRemove.single(groupId, username);
+    }
+
+    /**
+     * 移除群成员(多个)。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.group().removeGroupMember("groupId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId  群id
+     * @param usernames 要移除的用户的用户名列表
+     * @return EMRemoveMember或错误
+     * @see <a href="https://docs-im.easemob.com/im/server/basics/group#%E6%89%B9%E9%87%8F%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">移除群成员(多个)</a>
+     */
+    public Mono<List<EMRemoveMember>> removeGroupMembers(String groupId, List<String> usernames) {
+        if (usernames != null && usernames.size() > 0 && usernames.size() <= 60) {
+            return this.groupMemberRemove.batch(groupId, usernames);
+        } else {
+            throw new EMInvalidArgumentException("usernames is illegal");
+        }
     }
 
     /**
