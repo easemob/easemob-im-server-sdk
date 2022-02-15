@@ -52,6 +52,37 @@ public class GroupIT extends AbstractIT {
     }
 
     @Test
+    void testGroupCreatePublicWithCustom() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPublicGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true, "custom").block(Utilities.IT_TIMEOUT));
+        EMPage<String> groupMemberPage = assertDoesNotThrow(
+                () -> this.service.group().listGroupMembers(groupId, 10, null)
+                        .block(Utilities.IT_TIMEOUT));
+        List<String> groupMembers = groupMemberPage.getValues();
+        if (groupMembers.size() != members.size()) {
+            throw new RuntimeException(
+                    String.format("incorrect number of group %s members", groupId));
+        }
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
     void testGroupCreatePrivate() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
@@ -185,6 +216,47 @@ public class GroupIT extends AbstractIT {
                     assertNotNull(emGroup.getAffiliations());
                     EMGroup.Affiliation affiliation = emGroup.getAffiliations();
                     assertEquals(affiliation.getMembers().length, 2);
+                });
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomAdminUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testGroupGetWithCustom() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        String randomAdminUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        members.add(randomAdminUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomAdminUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true, "custom").block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.group().addGroupAdmin(groupId, randomAdminUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> {
+                    EMGroup emGroup = this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT);
+                    assertEquals(emGroup.getAffiliationsCount(), 3);
+                    assertNotNull(emGroup.getAffiliations());
+                    EMGroup.Affiliation affiliation = emGroup.getAffiliations();
+                    assertEquals(affiliation.getMembers().length, 2);
+                    assertEquals(emGroup.getIsMute(), false);
+                    assertEquals(emGroup.getCustom(), "custom");
                 });
         assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));

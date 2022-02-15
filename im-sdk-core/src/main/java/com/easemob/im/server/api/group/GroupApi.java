@@ -14,6 +14,7 @@ import com.easemob.im.server.api.group.member.list.GroupMemberList;
 import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
 import com.easemob.im.server.api.group.settings.UpdateGroup;
 import com.easemob.im.server.api.group.settings.UpdateGroupRequest;
+import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMPage;
 import reactor.core.publisher.Flux;
@@ -92,8 +93,8 @@ public class GroupApi {
      * }</pre>
      *
      * @param owner             群主的用户名
-     * @param groupName         群名
-     * @param description       群介绍
+     * @param groupName         群名，最大长度为 128 字符
+     * @param description       群介绍，最大长度为 512 字符
      * @param members           初始群成员的用户名列表
      * @param maxMembers        群最大成员数
      * @param needApproveToJoin 新成员加入需要管理员审批
@@ -104,6 +105,51 @@ public class GroupApi {
             List<String> members, int maxMembers, boolean needApproveToJoin) {
         return this.createGroup
                 .publicGroup(owner, groupName, description, members, maxMembers, needApproveToJoin);
+    }
+
+    /**
+     * 创建公开群。
+     * <p>
+     * 需要注意的是，目前公开群不允许成员邀请其他用户加入。如果要允许，可以用修改群API设置:
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     * try {
+     *     String groupId = service.group().createPublicGroup("owner", "groupName", "description", members, 200, true, "custom").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * <pre>{@code
+     * EMService service;
+     * try {
+     *     // 修改群组API，允许成员邀请其他用户加入
+     *     service.group().updateSetting("group-id", settings -> settings.memberCanInvite(true)).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param owner             群主的用户名
+     * @param groupName         群名，最大长度为 128 字符
+     * @param description       群介绍，最大长度为 512 字符
+     * @param members           初始群成员的用户名列表
+     * @param maxMembers        群最大成员数
+     * @param needApproveToJoin 新成员加入需要管理员审批
+     * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
+     * @return 群id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
+     */
+    public Mono<String> createPublicGroup(String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean needApproveToJoin, String custom) {
+        return this.createGroup
+                .publicGroup(owner, groupName, description, members, maxMembers, needApproveToJoin, custom);
     }
 
     /**
@@ -123,8 +169,8 @@ public class GroupApi {
      * }</pre>
      *
      * @param owner           群主的用户名
-     * @param groupName       群名
-     * @param description     群介绍
+     * @param groupName       群名，最大长度为 128 字符
+     * @param description     群介绍，最大长度为 512 字符
      * @param members         初始群成员的用户名列表
      * @param maxMembers      群最大成员数
      * @param canMemberInvite 新成员加入需要管理员审批
@@ -135,6 +181,38 @@ public class GroupApi {
             List<String> members, int maxMembers, boolean canMemberInvite) {
         return this.createGroup
                 .privateGroup(owner, groupName, description, members, maxMembers, canMemberInvite);
+    }
+
+    /**
+     * 创建私有群。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     * try {
+     *     String groupId = service.group().privateGroup("owner", "groupName", "description", members, 200, true, "custom").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param owner           群主的用户名
+     * @param groupName       群名，最大长度为 128 字符
+     * @param description     群介绍，最大长度为 512 字符
+     * @param members         初始群成员的用户名列表
+     * @param maxMembers      群最大成员数
+     * @param canMemberInvite 新成员加入需要管理员审批
+     * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
+     * @return 群id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
+     */
+    public Mono<String> createPrivateGroup(String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean canMemberInvite, String custom) {
+        return this.createGroup
+                .privateGroup(owner, groupName, description, members, maxMembers, canMemberInvite, custom);
     }
 
     /**
