@@ -6,6 +6,7 @@ import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMPage;
+import com.easemob.im.server.model.EMRemoveMember;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -452,7 +453,7 @@ public class GroupIT extends AbstractIT {
     }
 
     @Test
-    void testGroupAddMember() {
+    void testGroupAddMemberSingle() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
 
@@ -489,7 +490,51 @@ public class GroupIT extends AbstractIT {
     }
 
     @Test
-    void testGroupRemoveMember() {
+    void testGroupAddMemberBatch() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        String randomMemberUsername1 = Utilities.randomUserName();
+        String randomMemberUsername2 = Utilities.randomUserName();
+
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername2, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+
+        List<String> addMembers = new ArrayList<>();
+        addMembers.add(randomMemberUsername1);
+        addMembers.add(randomMemberUsername2);
+
+        assertDoesNotThrow(() -> this.service.group().addGroupMembers(groupId, addMembers)
+                .block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername2)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testGroupRemoveMemberSingle() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
 
@@ -520,6 +565,55 @@ public class GroupIT extends AbstractIT {
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testGroupRemoveMemberBatch() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        String randomMemberUsername1 = Utilities.randomUserName();
+        String randomMemberUsername2 = Utilities.randomUserName();
+
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername2, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        members.add(randomMemberUsername1);
+        members.add(randomMemberUsername2);
+
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+
+
+        List<String> removeMembers = new ArrayList<>();
+        removeMembers.add(randomMemberUsername1);
+        removeMembers.add(randomMemberUsername2);
+        removeMembers.add("randomMemberUsername3");
+
+        assertDoesNotThrow(
+                () -> this.service.group().removeGroupMembers(groupId, removeMembers)
+                        .block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername2)
                 .block(Utilities.IT_TIMEOUT));
     }
 
