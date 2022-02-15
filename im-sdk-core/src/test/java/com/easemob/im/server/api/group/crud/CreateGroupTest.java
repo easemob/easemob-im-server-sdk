@@ -32,12 +32,32 @@ class CreateGroupTest extends AbstractApiTest {
     }
 
     @Test
+    public void testCreatePublicGroupWithCustom() {
+        List<String> members = new ArrayList<>();
+        members.add("madhat");
+        members.add("rabbit");
+        assertEquals("group-create-test",
+                this.createGroup.publicGroup("alice", "test-group", "test-desc", members, 10, true, "custom")
+                        .block(Utilities.UT_TIMEOUT));
+    }
+
+    @Test
     public void testCreatePrivateGroup() {
         List<String> members = new ArrayList<>();
         members.add("madhat");
         members.add("rabbit");
         assertEquals("group-create-test",
                 this.createGroup.privateGroup("alice", "test-group", "test-desc", members, 10, true)
+                        .block(Utilities.UT_TIMEOUT));
+    }
+
+    @Test
+    public void testCreatePrivateGroupWithCustom() {
+        List<String> members = new ArrayList<>();
+        members.add("madhat");
+        members.add("rabbit");
+        assertEquals("group-create-test",
+                this.createGroup.privateGroup("alice", "test-group", "test-desc", members, 10, true, "custom")
                         .block(Utilities.UT_TIMEOUT));
     }
 

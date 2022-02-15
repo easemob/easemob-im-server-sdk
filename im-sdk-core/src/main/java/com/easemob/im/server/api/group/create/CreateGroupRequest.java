@@ -27,8 +27,11 @@ public class CreateGroupRequest {
     @JsonProperty("allowinvites")
     private boolean memberCanInviteOthers;
 
-    @JsonProperty("membersonly")
+    @JsonProperty("members_only")
     private boolean needApproveToJoin;
+
+    @JsonProperty("custom")
+    private String custom;
 
     @SuppressWarnings("java:S107")
     public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner,
@@ -42,6 +45,21 @@ public class CreateGroupRequest {
         this.maxMembers = maxMembers;
         this.memberCanInviteOthers = memberCanInviteOthers;
         this.needApproveToJoin = needApproveToJoin;
+    }
+
+    @SuppressWarnings("java:S107")
+    public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner,
+            List<String> members, int maxMembers, boolean memberCanInviteOthers,
+            boolean needApproveToJoin, String custom) {
+        this.groupName = groupName;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.owner = owner;
+        this.members = members;
+        this.maxMembers = maxMembers;
+        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.needApproveToJoin = needApproveToJoin;
+        this.custom = custom;
     }
 
     public String getGroupName() {

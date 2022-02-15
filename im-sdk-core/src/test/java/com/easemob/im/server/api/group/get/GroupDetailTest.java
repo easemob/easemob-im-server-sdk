@@ -30,6 +30,8 @@ class GroupDetailTest extends AbstractApiTest {
         assertEquals(false, detail.getCanMemberInviteOthers());
         assertEquals("alice", detail.getOwner());
         assertEquals(200, detail.getMaxMembers());
+        assertEquals(true, detail.getIsMute());
+        assertEquals("custom", detail.getCustom());
     }
 
     private JsonNode handleGroupDetailRequest1(JsonNode jsonNode) {
@@ -55,6 +57,8 @@ class GroupDetailTest extends AbstractApiTest {
         group1.put("owner", "alice");
         group1.put("maxusers", 200);
         group1.put("affiliations_count", 1);
+        group1.put("mute", true);
+        group1.put("custom", "custom");
         return group1;
     }
 

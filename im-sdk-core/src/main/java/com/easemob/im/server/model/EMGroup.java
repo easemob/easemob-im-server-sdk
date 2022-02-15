@@ -20,9 +20,14 @@ public class EMGroup extends EMEntity {
 
     private final Affiliation affiliations;
 
+    private final boolean isMute;
+
+    private final String custom;
+
     public EMGroup(String groupId, String name, String description, boolean isPublic,
-                   boolean needApproveToJoin, boolean canMemberInviteOthers,
-                   String owner, int maxMembers, int affiliationsCount, String[] groupMembers) {
+            boolean needApproveToJoin, boolean canMemberInviteOthers,
+            String owner, int maxMembers, int affiliationsCount, String[] groupMembers,
+            boolean isMute, String custom) {
         super(EntityType.GROUP);
         super.id(groupId);
         this.name = name;
@@ -34,6 +39,8 @@ public class EMGroup extends EMEntity {
         this.maxMembers = maxMembers;
         this.affiliationsCount = affiliationsCount;
         this.affiliations = new Affiliation(owner, groupMembers);
+        this.isMute = isMute;
+        this.custom = custom;
     }
 
     public String getGroupId() {
@@ -41,11 +48,11 @@ public class EMGroup extends EMEntity {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public boolean getIsPublic() {
@@ -93,5 +100,13 @@ public class EMGroup extends EMEntity {
         public String[] getMembers() {
             return this.members;
         }
+    }
+
+    public boolean getIsMute() {
+        return this.isMute;
+    }
+
+    public String getCustom() {
+        return this.custom;
     }
 }

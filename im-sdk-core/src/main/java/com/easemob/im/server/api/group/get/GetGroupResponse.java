@@ -63,15 +63,22 @@ public class GetGroupResponse {
         @JsonProperty("affiliations")
         private List<Affiliation> affiliations;
 
+        @JsonProperty("mute")
+        private boolean isMute;
+
+        @JsonProperty("custom")
+        private String custom;
+
         public EMGroup toEMGroup() {
             String[] groupMembers = Optional.ofNullable(affiliations).map(list -> list.stream()
-                            .filter(affiliation -> StringUtil.isNullOrEmpty(affiliation.getOwner()))
-                            .map(Affiliation::getMember)
-                            .toArray(String[]::new))
+                    .filter(affiliation -> StringUtil.isNullOrEmpty(affiliation.getOwner()))
+                    .map(Affiliation::getMember)
+                    .toArray(String[]::new))
                     .orElse(null);
             return new EMGroup(this.groupId, this.name, this.description, this.isPublic,
                     this.needApproveToJoin, this.memberCanInviteOthers,
-                    this.owner, this.maxMembers, this.affiliationsCount, groupMembers);
+                    this.owner, this.maxMembers, this.affiliationsCount, groupMembers, this.isMute,
+                    this.custom);
         }
     }
 
