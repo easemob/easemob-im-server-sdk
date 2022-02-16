@@ -578,11 +578,7 @@ public class GroupApi {
      * <pre> {@code
      * EMService service;
      * try {
-     *     List<String> members = new ArrayList<>();
-     *     members.add("member1");
-     *     members.add("member2");
-     *
-     *     service.group().removeGroupMembers("groupId", members).block();
+     *     service.group().removeGroupMember("groupId", "username").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -605,7 +601,11 @@ public class GroupApi {
      * <pre> {@code
      * EMService service;
      * try {
-     *     service.group().removeGroupMember("groupId", "username").block();
+     *     List<String> members = new ArrayList<>();
+     *     members.add("member1");
+     *     members.add("member2");
+     *
+     *     List<EMRemoveMember> removeMembers = service.group().removeGroupMembers("groupId", members).collectList().block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
