@@ -6,6 +6,7 @@ import com.easemob.im.server.api.block.BlockApi;
 import com.easemob.im.server.api.attachment.AttachmentApi;
 import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.metadata.MetadataApi;
+import com.easemob.im.server.api.moderation.ModerationApi;
 import com.easemob.im.server.api.push.PushApi;
 import com.easemob.im.server.api.token.TokenApi;
 import com.easemob.im.server.api.room.RoomApi;
@@ -44,6 +45,8 @@ public class EMService {
 
     private final PushApi pushApi;
 
+    private final ModerationApi moderationApi;
+
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
         this.context = new DefaultContext(properties);
@@ -58,6 +61,7 @@ public class EMService {
         this.metadataApi = new MetadataApi(this.context);
         this.tokenApi = new TokenApi(this.context);
         this.pushApi = new PushApi(this.context);
+        this.moderationApi = new ModerationApi(this.context);
     }
 
     public Context getContext() {
@@ -230,5 +234,18 @@ public class EMService {
      */
     public PushApi push() {
         return this.pushApi;
+    }
+
+    /**
+     * 内容审核记录API.
+     * 支持：<br>
+     * - 按查询条件导出文件<br>
+     * - 获取导出详情列表<br>
+     * - 下载内容审核记录文件<br>
+     *
+     * @return
+     */
+    public ModerationApi moderation() {
+        return this.moderationApi;
     }
 }
