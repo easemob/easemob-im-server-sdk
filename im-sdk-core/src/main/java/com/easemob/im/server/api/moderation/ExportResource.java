@@ -79,6 +79,46 @@ public class ExportResource {
         this.updatedTime = updatedTime;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getCond() {
+        return cond;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public String getExpiredTime() {
+        return expiredTime;
+    }
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public String getUpdatedTime() {
+        return updatedTime;
+    }
+
     @Override public String toString() {
         return "ExportResource{" +
                 "id='" + id + '\'' +
