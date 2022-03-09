@@ -72,6 +72,38 @@ public class ExportDetailsListResponse {
         this.totalElements = totalElements;
     }
 
+    public List<ExportResource> getEntities() {
+        return entities;
+    }
+
+    public Boolean getFirst() {
+        return first;
+    }
+
+    public Boolean getLast() {
+        return last;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public Long getNumberOfElements() {
+        return numberOfElements;
+    }
+
+    public Long getTotalPages() {
+        return totalPages;
+    }
+
+    public Long getTotalElements() {
+        return totalElements;
+    }
+
     @Override public String toString() {
         return "ExportDetailsListResponse{" +
                 "entities=" + entities +
