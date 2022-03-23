@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ModerationIT extends AbstractIT {
@@ -24,8 +25,7 @@ public class ModerationIT extends AbstractIT {
 
     @Test
     public void testExportDetailsList() {
-        assertThrows(EMException.class,
-                () -> this.service.moderation().get(1, 10, "287c0730-9e97-11ec-ba62-139a925bb42e").block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.moderation().get(1, 10, "287c0730-9e97-11ec-ba62-139a925bb42e").block(Utilities.IT_TIMEOUT));
     }
 
     @Test
