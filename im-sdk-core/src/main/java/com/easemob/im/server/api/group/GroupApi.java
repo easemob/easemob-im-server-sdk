@@ -710,7 +710,7 @@ public class GroupApi {
      * }</pre>
      *
      * @param groupId  群id
-     * @param newOwner 群组的新管理员ID
+     * @param newOwner 被转让群组的用户名
      * @return 成功或错误
      * @see <a href="https://docs-im.easemob.com/im/server/basics/group#%E8%BD%AC%E8%AE%A9%E7%BE%A4%E7%BB%84">转让群组</a>
      */
