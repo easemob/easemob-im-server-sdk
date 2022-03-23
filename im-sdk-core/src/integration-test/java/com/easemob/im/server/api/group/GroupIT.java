@@ -286,7 +286,7 @@ public class GroupIT extends AbstractIT {
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
                         true).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.group()
-                .updateGroup(groupId, settings -> settings.setMaxMembers(maxMembers))
+                .updateGroup(groupId, settings -> settings.setMaxMembers(maxMembers).setCustom("group custom"))
                 .block(Utilities.IT_TIMEOUT));
         EMGroup group = assertDoesNotThrow(
                 () -> this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT));
