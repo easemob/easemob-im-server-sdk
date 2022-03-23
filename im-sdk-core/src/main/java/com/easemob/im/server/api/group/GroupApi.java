@@ -14,6 +14,7 @@ import com.easemob.im.server.api.group.member.list.GroupMemberList;
 import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
 import com.easemob.im.server.api.group.settings.UpdateGroup;
 import com.easemob.im.server.api.group.settings.UpdateGroupRequest;
+import com.easemob.im.server.api.group.assign.AssignGroup;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMPage;
@@ -21,7 +22,6 @@ import com.easemob.im.server.model.EMRemoveMember;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -36,6 +36,7 @@ public class GroupApi {
 
     private GetGroup getGroup;
     private UpdateGroup updateGroup;
+    private AssignGroup assignGroup;
 
     private GroupAnnouncement groupAnnouncement;
     private GroupMemberList groupMemberList;
@@ -53,6 +54,7 @@ public class GroupApi {
 
         this.getGroup = new GetGroup(context);
         this.updateGroup = new UpdateGroup(context);
+        this.assignGroup = new AssignGroup(context);
 
         this.groupAnnouncement = new GroupAnnouncement(context);
 
@@ -691,6 +693,29 @@ public class GroupApi {
      */
     public Mono<Void> removeGroupAdmin(String groupId, String username) {
         return this.groupAdminRemove.single(groupId, username);
+    }
+
+    /**
+     * 转让群组。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.group().assignGroup("groupId", "newOwner").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId  群id
+     * @param newOwner 群组的新管理员ID
+     * @return 成功或错误
+     * @see <a href="https://docs-im.easemob.com/im/server/basics/group#%E8%BD%AC%E8%AE%A9%E7%BE%A4%E7%BB%84">转让群组</a>
+     */
+    public Mono<Void> assignGroup(String groupId, String newOwner){
+        return this.assignGroup.execute(groupId, newOwner);
     }
 
 }
