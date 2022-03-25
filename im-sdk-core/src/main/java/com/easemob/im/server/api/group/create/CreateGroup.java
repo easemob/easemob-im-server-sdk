@@ -109,4 +109,28 @@ public class CreateGroup {
                     sink.next(groupId);
                 });
     }
+
+    public Mono<String> privateGroup(String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean canMemberInvite, boolean needInviteConfirm, boolean needApproveToJoin, String custom) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/chatgroups")
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new CreateGroupRequest(groupName, description, false, owner,
+                                        members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom)))))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .handle((rsp, sink) -> {
+                    String groupId = rsp.getGroupId();
+                    if (groupId == null) {
+                        sink.error(new EMUnknownException("groupId is null"));
+                    }
+                    sink.next(groupId);
+                });
+    }
 }
