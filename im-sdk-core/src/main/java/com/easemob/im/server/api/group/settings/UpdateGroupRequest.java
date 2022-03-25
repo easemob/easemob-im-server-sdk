@@ -14,6 +14,9 @@ public class UpdateGroupRequest {
     @JsonProperty("allowinvites")
     private Boolean canMemberInviteOthers;
 
+    @JsonProperty("invite_need_confirm")
+    private Boolean needInviteConfirm;
+
     @JsonProperty("membersonly")
     private Boolean needApproveToJoin;
 
@@ -27,6 +30,7 @@ public class UpdateGroupRequest {
         this.name = null;
         this.description = null;
         this.canMemberInviteOthers = null;
+        this.needInviteConfirm = null;
         this.needApproveToJoin = null;
         this.maxMembers = null;
         this.custom = null;
@@ -55,6 +59,23 @@ public class UpdateGroupRequest {
         this.name = name;
         this.description = description;
         this.canMemberInviteOthers = canMemberInviteOthers;
+        this.needApproveToJoin = needApproveToJoin;
+        this.maxMembers = maxMembers;
+        this.custom = custom;
+    }
+
+    @JsonCreator
+    public UpdateGroupRequest(@JsonProperty("name") String name,
+            @JsonProperty("description") String description,
+            @JsonProperty("allowinvites") Boolean canMemberInviteOthers,
+            @JsonProperty("invite_need_confirm") Boolean needInviteConfirm,
+            @JsonProperty("membersonly") Boolean needApproveToJoin,
+            @JsonProperty("maxusers") Integer maxMembers,
+            @JsonProperty("custom") String custom) {
+        this.name = name;
+        this.description = description;
+        this.canMemberInviteOthers = canMemberInviteOthers;
+        this.needInviteConfirm = needInviteConfirm;
         this.needApproveToJoin = needApproveToJoin;
         this.maxMembers = maxMembers;
         this.custom = custom;
@@ -93,6 +114,15 @@ public class UpdateGroupRequest {
 
     public UpdateGroupRequest setNeedApproveToJoin(Boolean needApproveToJoin) {
         this.needApproveToJoin = needApproveToJoin;
+        return this;
+    }
+
+    public Boolean getNeedInviteConfirm() {
+        return needInviteConfirm;
+    }
+
+    public UpdateGroupRequest setNeedInviteConfirm(Boolean needInviteConfirm) {
+        this.needInviteConfirm = needInviteConfirm;
         return this;
     }
 

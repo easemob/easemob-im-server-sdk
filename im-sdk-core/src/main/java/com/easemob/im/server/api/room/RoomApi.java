@@ -4,6 +4,7 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.room.admin.demote.DemoteRoomAdmin;
 import com.easemob.im.server.api.room.admin.list.ListRoomAdmins;
 import com.easemob.im.server.api.room.admin.promote.PromoteRoomAdmin;
+import com.easemob.im.server.api.room.assign.AssignRoom;
 import com.easemob.im.server.api.room.create.CreateRoom;
 import com.easemob.im.server.api.room.delete.DeleteRoom;
 import com.easemob.im.server.api.room.detail.GetRoomDetail;
@@ -57,6 +58,8 @@ public class RoomApi {
 
     private DeleteRoom deleteRoom;
 
+    private AssignRoom assignRoom;
+
     public RoomApi(Context context) {
         this.createRoom = new CreateRoom(context);
         this.getRoomDetail = new GetRoomDetail(context);
@@ -72,6 +75,7 @@ public class RoomApi {
         this.promoteRoomSuperAdmin = new PromoteRoomSuperAdmin(context);
         this.demoteRoomSuperAdmin = new DemoteRoomSuperAdmin(context);
         this.deleteRoom = new DeleteRoom(context);
+        this.assignRoom = new AssignRoom(context);
     }
 
     /**
@@ -102,6 +106,37 @@ public class RoomApi {
     public Mono<String> createRoom(String name, String description, String owner,
             List<String> members, int maxMembers) {
         return this.createRoom.createRoom(name, description, owner, members, maxMembers);
+    }
+
+    /**
+     * 创建聊天室。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     *
+     * try {
+     *     String roomId = service.room().createRoom("name", "description", "owner", members, 200).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param name        聊天室名称
+     * @param description 聊天室描述
+     * @param owner       聊天室主
+     * @param members     聊天室初始成员的用户名列表
+     * @param maxMembers  聊天室最大成员数
+     * @param custom  聊天室扩展信息，例如可以给聊天室添加业务相关的标记
+     * @return 聊天室id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%9B%E5%BB%BA%E8%81%8A%E5%A4%A9%E5%AE%A4">创建聊天室</a>
+     */
+    public Mono<String> createRoom(String name, String description, String owner,
+            List<String> members, int maxMembers, String custom) {
+        return this.createRoom.createRoom(name, description, owner, members, maxMembers, custom);
     }
 
     /**
@@ -509,5 +544,27 @@ public class RoomApi {
      */
     public Mono<Void> destroyRoom(String roomId) {
         return this.deleteRoom.byId(roomId);
+    }
+
+    /**
+     * 转让聊天室。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.room().assignRoom("chatroomId", "newOwner").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param chatroomId  聊天室id
+     * @param newOwner 被转让聊天室的用户名
+     * @return 成功或错误
+     */
+    public Mono<Void> assignRoom(String chatroomId, String newOwner){
+        return this.assignRoom.execute(chatroomId, newOwner);
     }
 }
