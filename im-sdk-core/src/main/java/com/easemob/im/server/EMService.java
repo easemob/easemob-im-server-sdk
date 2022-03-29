@@ -7,6 +7,7 @@ import com.easemob.im.server.api.attachment.AttachmentApi;
 import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.metadata.MetadataApi;
 import com.easemob.im.server.api.moderation.ModerationApi;
+import com.easemob.im.server.api.mute.MuteApi;
 import com.easemob.im.server.api.push.PushApi;
 import com.easemob.im.server.api.token.TokenApi;
 import com.easemob.im.server.api.room.RoomApi;
@@ -47,6 +48,8 @@ public class EMService {
 
     private final ModerationApi moderationApi;
 
+    private final MuteApi  muteApi;
+
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
         this.context = new DefaultContext(properties);
@@ -62,6 +65,7 @@ public class EMService {
         this.tokenApi = new TokenApi(this.context);
         this.pushApi = new PushApi(this.context);
         this.moderationApi = new ModerationApi(this.context);
+        this.muteApi = new MuteApi(this.context);
     }
 
     public Context getContext() {
@@ -247,5 +251,18 @@ public class EMService {
      */
     public ModerationApi moderation() {
         return this.moderationApi;
+    }
+
+    /**
+     * 用户全局禁言API.
+     * 支持：<br>
+     * - 设置用户全局禁言<br>
+     * - 查询单个用户全局禁言剩余时间<br>
+     * - 查询所有用户全局禁言剩余时间<br>
+     *
+     * @return
+     */
+    public MuteApi mute() {
+        return this.muteApi;
     }
 }
