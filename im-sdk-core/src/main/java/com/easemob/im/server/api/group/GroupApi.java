@@ -9,6 +9,9 @@ import com.easemob.im.server.api.group.create.CreateGroup;
 import com.easemob.im.server.api.group.delete.DeleteGroup;
 import com.easemob.im.server.api.group.get.GetGroup;
 import com.easemob.im.server.api.group.list.GroupList;
+import com.easemob.im.server.api.group.list.GroupListResponse;
+import com.easemob.im.server.api.group.list.GroupResource;
+import com.easemob.im.server.api.group.list.JoinGroupResource;
 import com.easemob.im.server.api.group.member.add.GroupMemberAdd;
 import com.easemob.im.server.api.group.member.list.GroupMemberList;
 import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
@@ -298,6 +301,27 @@ public class GroupApi {
     }
 
     /**
+     * 获取全部群列表，返回值携带群组信息。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<GroupResource> groups = service.group().listAllGroupsWithInfo().collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @return 每个群组或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96app%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%BE%A4%E7%BB%84_%E5%8F%AF%E5%88%86%E9%A1%B5">获取群列表</a>
+     */
+    public Flux<GroupResource> listAllGroupsWithInfo() {
+        return this.groupList.allWithInfo(20);
+    }
+
+    /**
      * 分页获取群列表。
      * <p>
      * 初次调用时，{@code cursor} 传 {@code null}。之后的调用，{@code cursor} 传上次返回的值。
@@ -343,6 +367,51 @@ public class GroupApi {
     }
 
     /**
+     * 分页获取群列表，返回值携带群组信息。
+     * <p>
+     * 初次调用时，{@code cursor} 传 {@code null}。之后的调用，{@code cursor} 传上次返回的值。
+     * <p>
+     * API使用示例：
+     * <pre>{@code
+     * EMPage<GroupResource> page = null;
+     * try {
+     *     page = service.group().listGroupsWithInfo(10, null).block();
+     *     List<GroupResource> groupIds = page.getValues();
+     *     System.out.println("群组列表:" + groupIds);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * // ... do something with the groupIds ...
+     * if (page != null) {
+     *      String cursor = page.getCursor();
+     *      // cursor == null indicates the end of the list
+     *      while (cursor != null) {
+     *          try {
+     *              page = service.group().listGroupsWithInfo(10, cursor).block();
+     *              System.out.println("群组列表:" + page.getValues());
+     *              // ... do something to the groupIds ...
+     *              cursor = page.getCursor();
+     *          } catch (EMException e) {
+     *              e.getErrorCode();
+     *              e.getMessage();
+     *          }
+     *      }
+     * }
+     * }</pre>
+     *
+     * @param limit  每次取回多少个群组
+     * @param cursor 上次返回的{@code cursor}
+     * @return 群列表响应或错误
+     * @see com.easemob.im.server.model.EMPage
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96app%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%BE%A4%E7%BB%84_%E5%8F%AF%E5%88%86%E9%A1%B5">获取群列表</a>
+     */
+    public Mono<EMPage<GroupResource>> listGroupsWithInfo(int limit, String cursor) {
+        return this.groupList.nextWithInfo(limit, cursor);
+    }
+
+    /**
      * 获取用户加入的所有群组。
      * <p>
      * API使用示例：
@@ -361,6 +430,27 @@ public class GroupApi {
      */
     public Flux<String> listGroupsUserJoined(String username) {
         return this.groupList.userJoined(username);
+    }
+
+    /**
+     * 获取用户加入的所有群组，返回值携带群组信息。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<JoinGroupResource> groups = service.group().listGroupsUserJoined("username").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param username the username
+     * @return A {@code Flux} which emits {@code EMGroup} on successful.
+     */
+    public Flux<JoinGroupResource> listGroupsUserJoinedWithInfo(String username) {
+        return this.groupList.userJoinedWithInfo(username);
     }
 
     /**

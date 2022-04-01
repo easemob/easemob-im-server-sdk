@@ -16,7 +16,7 @@ import static reactor.netty.resources.ConnectionProvider.DEFAULT_POOL_ACQUIRE_TI
 public class EMHttpClientFactory {
 
     public static HttpClient create(EMProperties properties) {
-        ConnectionProvider connectionProvider =  ConnectionProvider.builder("easemob-sdk")
+        ConnectionProvider connectionProvider = ConnectionProvider.builder("easemob-sdk")
                 .maxConnections(properties.getHttpConnectionPoolSize())
                 .maxIdleTime(Duration.ofMillis(properties.getHttpConnectionMaxIdleTime()))
                 .pendingAcquireTimeout(Duration.ofMillis(DEFAULT_POOL_ACQUIRE_TIMEOUT))

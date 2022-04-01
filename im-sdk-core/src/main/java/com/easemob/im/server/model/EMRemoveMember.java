@@ -50,4 +50,12 @@ public class EMRemoveMember {
     public String getFailReason() {
         return failReason;
     }
+
+    @Override public String toString() {
+        return "EMRemoveMember{" +
+                "isSuccess=" + isSuccess +
+                ", memberName='" + memberName + '\'' +
+                ", failReason='" + failReason + '\'' +
+                '}';
+    }
 }

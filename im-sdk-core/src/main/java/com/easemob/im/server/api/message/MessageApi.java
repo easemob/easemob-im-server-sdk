@@ -2,9 +2,12 @@ package com.easemob.im.server.api.message;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.message.deletechannel.DeleteMessageChannel;
 import com.easemob.im.server.api.message.history.MessageHistory;
 import com.easemob.im.server.api.message.missed.MessageMissed;
 import com.easemob.im.server.api.message.missed.MissedMessageCount;
+import com.easemob.im.server.api.message.recall.RecallMessage;
+import com.easemob.im.server.api.message.recall.RecallMessageSource;
 import com.easemob.im.server.api.message.send.SendMessage;
 import com.easemob.im.server.api.message.status.MessageStatus;
 import com.easemob.im.server.model.EMKeyValue;
@@ -15,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,12 +34,18 @@ public class MessageApi {
 
     private MessageStatus messageStatus;
 
+  private RecallMessage recallMessage;
+
+    private DeleteMessageChannel deleteMessageChannel;
+
     public MessageApi(Context context) {
         EMProperties properties = context.getProperties();
         this.missed = new MessageMissed(context);
         this.sendMessage = new SendMessage(context);
         this.messageHistory = new MessageHistory(context, properties.getServerTimezone());
         this.messageStatus = new MessageStatus(context);
+        this.recallMessage = new RecallMessage(context);
+        this.deleteMessageChannel = new DeleteMessageChannel(context);
     }
 
     /**
@@ -266,6 +276,53 @@ public class MessageApi {
      */
     public Mono<Path> getHistoryAsLocalFile(Instant instant, Path dir, String filename) {
         return this.messageHistory.toLocalFile(instant, dir, filename);
+    }
+
+    /**
+     * 消息撤回。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<RecallMessageSource> messageSources = new ArrayList<>();
+     *     messageSources.add(new RecallMessageSource("messageId", "chat", "u1", "u2", true));
+     *     service.message().recallMessage(messageSources).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     * @param messageSources messageSources
+     * @return 消息撤回响应或错误
+     * @see <a href="https://docs-im.easemob.com/ccim/rest/message#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B6%88%E6%81%AF%E6%92%A4%E5%9B%9E">发送消息</a>
+     */
+    public Mono<Void> recallMessage(List<RecallMessageSource> messageSources) {
+        return this.recallMessage.execute(messageSources);
+    }
+
+    /**
+     * 服务端单向删除会话。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.message().deleteChannel("u1", "u2", "chat", false).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     * @param username username 删除会话方，例如 A 要将与 B 的单聊会话删除，username 为 A，channelName 为 B
+     * @param channelName channelName 要删除的会话 ID
+     * @param channelType channelType 会话类型。chat:单聊会话；groupchat:群聊会话
+     * @param deleteRoam deleteRoam 是否删除服务端消息，不允许为空。true：是；false：否
+     * @return 消息撤回响应或错误
+     * @see <a href="https://docs-im.easemob.com/ccim/rest/message#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E4%BC%9A%E8%AF%9D">服务端单向删除会话</a>
+     */
+    public Mono<Void> deleteChannel(String username, String channelName, String channelType, Boolean deleteRoam) {
+        return this.deleteMessageChannel.execute(username, channelName, channelType, deleteRoam);
     }
 
 }

@@ -52,7 +52,49 @@ public class GroupList {
                                     return buf;
                                 })
                         .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, JoinGroupListResponse.class))
+                .flatMapIterable(JoinGroupListResponse::getGroupIds);
+    }
+
+    public Flux<GroupResource> allWithInfo(int limit) {
+        return nextWithInfo(limit, null)
+                .expand(rsp -> rsp.getCursor() == null ?
+                        Mono.empty() :
+                        nextWithInfo(limit, rsp.getCursor()))
+                .concatMapIterable(EMPage::getValues);
+    }
+
+    public Mono<EMPage<GroupResource>> nextWithInfo(int limit, String cursor) {
+        QueryStringEncoder encoder = new QueryStringEncoder("/chatgroups");
+        encoder.addParam("limit", String.valueOf(limit));
+        if (cursor != null) {
+            encoder.addParam("cursor", cursor);
+        }
+        String uriString = encoder.toString();
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.get()
+                        .uri(uriString)
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
-                .flatMapIterable(GroupListResponse::getGroupIds);
+                .map(GroupListResponse::toEMPageWithInfo);
+    }
+
+    public Flux<JoinGroupResource> userJoinedWithInfo(String username) {
+        return this.context.getHttpClient()
+                .flatMapMany(httpClient -> httpClient.get()
+                        .uri(String.format("/users/%s/joined_chatgroups", username))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, JoinGroupListResponse.class))
+                .flatMapIterable(JoinGroupListResponse::getGroups);
     }
 }

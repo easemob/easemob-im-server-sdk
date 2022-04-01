@@ -7,36 +7,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GroupListResponse {
+public class JoinGroupListResponse {
 
     @JsonProperty("data")
-    private List<GroupResource> groups;
+    private List<JoinGroupResource> groups;
 
     @JsonProperty("cursor")
     private String cursor;
 
     @JsonCreator
-    public GroupListResponse(@JsonProperty("data") List<GroupResource> groups,
+    public JoinGroupListResponse(@JsonProperty("data") List<JoinGroupResource> groups,
             @JsonProperty("cursor") String cursor) {
         this.groups = groups;
         this.cursor = cursor;
     }
 
     public List<String> getGroupIds() {
-        return groups.stream().map(GroupResource::getGroupId).collect(Collectors.toList());
+        return groups.stream().map(JoinGroupResource::getGroupId).collect(Collectors.toList());
     }
 
-    public List<GroupResource> getGroups() {
+    public List<JoinGroupResource> getGroups() {
         return groups;
     }
 
     public EMPage<String> toEMPage() {
         List<String> groupIds =
-                groups.stream().map(GroupResource::getGroupId).collect(Collectors.toList());
+                groups.stream().map(JoinGroupResource::getGroupId).collect(Collectors.toList());
         return new EMPage<>(groupIds, cursor);
     }
 
-    public EMPage<GroupResource> toEMPageWithInfo() {
+    public EMPage<JoinGroupResource> toEMPageWithInfo() {
         return new EMPage<>(groups, cursor);
     }
 
@@ -46,7 +46,7 @@ public class GroupListResponse {
 
     @Override
     public String toString() {
-        return "GroupListResponse{" +
+        return "JoinGroupListResponse{" +
                 "groups=" + groups +
                 ", cursor='" + cursor + '\'' +
                 '}';
