@@ -39,7 +39,7 @@ public class MetadataApi {
      * EMService service;
      * Map<String, String> map = new HashMap<>();
      * map.put("nickname", "昵称");
-     * map.put("avatar", "http://www.easemob.com/avatar.png");
+     * map.put("avatarurl", "http://www.easemob.com/avatar.png");
      * map.put("phone", "159");
      *
      * try {

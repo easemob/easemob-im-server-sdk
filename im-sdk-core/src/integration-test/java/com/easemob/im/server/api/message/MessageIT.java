@@ -1,14 +1,14 @@
 package com.easemob.im.server.api.message;
 
 import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.api.message.recall.RecallMessageSource;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.model.EMKeyValue;
+import com.easemob.im.server.model.EMSentMessageIds;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -251,6 +251,44 @@ public class MessageIT extends AbstractIT {
                 .send()
                 .block(Utilities.IT_TIMEOUT));
 
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testRecallMessage() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+
+        List<RecallMessageSource> messageSourceList = new ArrayList<>();
+        messageSourceList.add(new RecallMessageSource("13132131", "chat", randomFromUsername, randomToUsername, true));
+
+        assertDoesNotThrow(() -> this.service.message().recallMessage(messageSourceList).block());
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testDeleteMessageChannel() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.message().deleteChannel(randomFromUsername, randomToUsername, "chat", true).block());
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
