@@ -17,14 +17,14 @@
 <dependency>
     <groupId>com.easemob.im</groupId>
     <artifactId>im-sdk-core</artifactId>
-    <version>0.4.8</version>
+    <version>0.5.4</version>
 </dependency>
 ```
 
 如果你的项目使用 Gradle 构建，可以在 build.grade 中添加下面代码：
 
 ``` gradle
-implementation 'com.easemob.im:im-sdk-core:0.4.8'
+implementation 'com.easemob.im:im-sdk-core:0.5.4'
 ```
 
 ## 准备
