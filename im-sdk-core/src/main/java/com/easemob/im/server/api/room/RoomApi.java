@@ -140,6 +140,38 @@ public class RoomApi {
     }
 
     /**
+     * 创建聊天室。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     *
+     * try {
+     *     String roomId = service.room().createRoom("name", "description", "owner", members, 200, "custom", true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param name        聊天室名称
+     * @param description 聊天室描述
+     * @param owner       聊天室主
+     * @param members     聊天室初始成员的用户名列表
+     * @param maxMembers  聊天室最大成员数
+     * @param custom  聊天室扩展信息，例如可以给聊天室添加业务相关的标记
+     * @param needVerify 是否审核聊天室名称（付费功能，需联系商务开通）
+     * @return 聊天室id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%9B%E5%BB%BA%E8%81%8A%E5%A4%A9%E5%AE%A4">创建聊天室</a>
+     */
+    public Mono<String> createRoom(String name, String description, String owner,
+            List<String> members, int maxMembers, String custom, Boolean needVerify) {
+        return this.createRoom.createRoom(name, description, owner, members, maxMembers, custom, needVerify);
+    }
+
+    /**
      * 获取聊天室详情。
      * <p>
      * API使用示例：

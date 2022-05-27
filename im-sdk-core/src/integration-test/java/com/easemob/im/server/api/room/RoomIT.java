@@ -42,6 +42,29 @@ public class RoomIT extends AbstractIT {
     }
 
     @Test
+    void testRoomCreateWithNeedVerify() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String roomId = assertDoesNotThrow(() -> this.service.room()
+                .createRoom("chat room", "room description", randomOwnerUsername, members, 200, "custom", Boolean.TRUE)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
     void testRoomGet() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();

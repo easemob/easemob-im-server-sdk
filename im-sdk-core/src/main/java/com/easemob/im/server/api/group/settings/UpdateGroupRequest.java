@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.group.settings;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UpdateGroupRequest {
@@ -25,6 +26,10 @@ public class UpdateGroupRequest {
 
     @JsonProperty("custom")
     private String custom;
+
+    @JsonProperty("need_verify")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean needVerify;
 
     public UpdateGroupRequest() {
         this.name = null;
@@ -79,6 +84,25 @@ public class UpdateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.maxMembers = maxMembers;
         this.custom = custom;
+    }
+
+    @JsonCreator
+    public UpdateGroupRequest(@JsonProperty("name") String name,
+            @JsonProperty("description") String description,
+            @JsonProperty("allowinvites") Boolean canMemberInviteOthers,
+            @JsonProperty("invite_need_confirm") Boolean needInviteConfirm,
+            @JsonProperty("membersonly") Boolean needApproveToJoin,
+            @JsonProperty("maxusers") Integer maxMembers,
+            @JsonProperty("custom") String custom,
+            @JsonProperty("need_verify")  Boolean needVerify) {
+        this.name = name;
+        this.description = description;
+        this.canMemberInviteOthers = canMemberInviteOthers;
+        this.needInviteConfirm = needInviteConfirm;
+        this.needApproveToJoin = needApproveToJoin;
+        this.maxMembers = maxMembers;
+        this.custom = custom;
+        this.needVerify = needVerify;
     }
 
     public String getName() {
@@ -143,4 +167,14 @@ public class UpdateGroupRequest {
         this.custom = custom;
         return this;
     }
+
+    public UpdateGroupRequest setNeedVerify(Boolean needVerify) {
+        this.needVerify = needVerify;
+        return this;
+    }
+
+    public Boolean getNeedVerify() {
+        return needVerify;
+    }
+
 }

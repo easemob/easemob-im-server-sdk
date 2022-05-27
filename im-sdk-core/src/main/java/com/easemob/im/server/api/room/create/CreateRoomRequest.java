@@ -19,6 +19,12 @@ public class CreateRoomRequest {
     private String scale;
     @JsonProperty("custom")
     private String custom;
+    @JsonProperty("need_verify")
+    private Boolean needVerify;
+
+    {
+        needVerify = true;
+    }
 
     private CreateRoomRequest(String name, String description, String owner, List<String> members,
             int maxMembers) {
@@ -41,6 +47,18 @@ public class CreateRoomRequest {
         this.custom = custom;
     }
 
+    private CreateRoomRequest(String name, String description, String owner, List<String> members,
+            int maxMembers, String custom, Boolean needVerify) {
+        this.name = name;
+        this.description = description;
+        this.owner = owner;
+        this.members = members;
+        this.maxMembers = maxMembers;
+        this.scale = "large";
+        this.custom = custom;
+        this.needVerify = needVerify;
+    }
+
     public static CreateRoomRequest of(String name, String description, String owner,
             List<String> members, int maxMembers) {
         return new CreateRoomRequest(name, description, owner, members, maxMembers);
@@ -49,5 +67,10 @@ public class CreateRoomRequest {
     public static CreateRoomRequest of(String name, String description, String owner,
             List<String> members, int maxMembers, String custom) {
         return new CreateRoomRequest(name, description, owner, members, maxMembers, custom);
+    }
+
+    public static CreateRoomRequest of(String name, String description, String owner,
+            List<String> members, int maxMembers, String custom, Boolean needVerify) {
+        return new CreateRoomRequest(name, description, owner, members, maxMembers, custom, needVerify);
     }
 }
