@@ -231,7 +231,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().privateGroup("owner", "groupName", "description", members, 200, true, "custom").block();
+     *     String groupId = service.group().privateGroup("owner", "groupName", "description", members, 200, true, true, true, "custom").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -579,7 +579,7 @@ public class GroupApi {
      * <pre> {@code
      * EMService service;
      * try {
-     *     List<String> members = service.group().listAllGroupMembers("username").collectList().block();
+     *     List<String> members = service.group().listAllGroupMembers("groupId").collectList().block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -591,7 +591,30 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
     public Flux<String> listAllGroupMembers(String groupId) {
-        return this.groupMemberList.all(groupId, 20);
+        return this.groupMemberList.all(groupId, 20, null);
+    }
+
+    /**
+     * 获取群全部成员。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> members = service.group().listAllGroupMembers("groupId", "asc").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId 群id
+     * @param sort 群成员排序方法 asc:根据加入顺序升序排序  desc:根据加入顺序降序排序
+     * @return 每个群成员或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
+     */
+    public Flux<String> listAllGroupMembers(String groupId, String sort) {
+        return this.groupMemberList.all(groupId, 20, sort);
     }
 
     /**
@@ -640,7 +663,57 @@ public class GroupApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
      */
     public Mono<EMPage<String>> listGroupMembers(String groupId, int limit, String cursor) {
-        return this.groupMemberList.next(groupId, limit, cursor);
+        return this.groupMemberList.next(groupId, limit, cursor, null);
+    }
+
+    /**
+     * 分页获取群成员。
+     * <p>
+     * API使用示例：
+     * <p>
+     * 首次调用时，{@code cursor} 传 {@code null}。之后每次调用，{@code cursor} 传上次返回的值。
+     * <p>
+     * 比如：
+     *
+     * <pre>{@code
+     * EMService service;
+     * EMPage<String> page = null;
+     * try {
+     *     page = service.group().listGroupMembers(groupId, 1, null, "asc").block();
+     *     List<String> members = page.getValues();
+     *     System.out.println("群组成员列表:" + members);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * // ... do something to the members ...
+     * if (page != null) {
+     *      String cursor = page.getCursor();
+     *      while (cursor != null) {
+     *              try {
+     *              page = service.group().listGroupMembers(groupId, 1, cursor, "asc").block();
+     *              System.out.println("群组成员列表:" + page.getValues());
+     *              // ... do something to the members ...
+     *              cursor = page.getCursor();
+     *          } catch (EMException e) {
+     *              e.getErrorCode();
+     *              e.getMessage();
+     *          }
+     *      }
+     * }
+     * }</pre>
+     *
+     * @param groupId 群id
+     * @param limit   返回多少群成员id
+     * @param cursor  开始位置
+     * @param sort 群成员排序方法 asc:根据加入顺序升序排序  desc:根据加入顺序降序排序
+     * @return 获取群成员响应或错误
+     * @see com.easemob.im.server.api.group.member.list.GroupMemberListResponse
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
+     */
+    public Mono<EMPage<String>> listGroupMembers(String groupId, int limit, String cursor, String sort) {
+        return this.groupMemberList.next(groupId, limit, cursor, sort);
     }
 
     /**

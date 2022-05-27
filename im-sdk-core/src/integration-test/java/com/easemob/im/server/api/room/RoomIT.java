@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RoomIT extends AbstractIT {
 
@@ -170,23 +171,31 @@ public class RoomIT extends AbstractIT {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
 
-        String randomMemberUsername = Utilities.randomUserName();
+        String randomMemberUsername1 = Utilities.randomUserName();
+        String randomMemberUsername2 = Utilities.randomUserName();
         List<String> members = new ArrayList<>();
-        members.add(randomMemberUsername);
+        members.add(randomMemberUsername1);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername2, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
         String roomId = assertDoesNotThrow(() -> this.service.room()
                 .createRoom("chat room", "room description", randomOwnerUsername, members, 200)
                 .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.room().listRoomMembersAll(roomId)
+        assertDoesNotThrow(() -> this.service.room().addRoomMember(roomId,randomMemberUsername2)
+                .block(Utilities.IT_TIMEOUT));
+        String firstJoinMember =assertDoesNotThrow(() -> this.service.room().listRoomMembersAll(roomId,"asc")
                 .blockFirst(Utilities.IT_TIMEOUT));
+        assertEquals(randomMemberUsername1, firstJoinMember);
         assertDoesNotThrow(
                 () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername2)
                 .block(Utilities.IT_TIMEOUT));
     }
 

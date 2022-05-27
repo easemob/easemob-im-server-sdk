@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -523,34 +524,36 @@ public class GroupIT extends AbstractIT {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
 
-        String randomMemberUsername = Utilities.randomUserName();
+        String randomMemberUsername1 = Utilities.randomUserName();
+        String randomMemberUsername2 = Utilities.randomUserName();
         List<String> members = new ArrayList<>();
-        members.add(randomMemberUsername);
+        members.add(randomMemberUsername1);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername2, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
                         true).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.group().addGroupMember(groupId, randomMemberUsername2)
+                .block(Utilities.IT_TIMEOUT));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
-                () -> this.service.group().listGroupMembers(groupId, 2, null)
+                () -> this.service.group().listGroupMembers(groupId, 2, null, "asc")
                         .block(Utilities.IT_TIMEOUT));
         List<String> groupMembers = groupMemberPage.getValues();
         if (!groupMembers.isEmpty()) {
-            groupMembers.forEach(member -> {
-                if (!member.equals(randomMemberUsername)) {
-                    throw new RuntimeException(
-                            String.format("%s does not exist in %s group member list", member,
-                                    groupId));
-                }
-            });
+            assertTrue(groupMembers.containsAll(Arrays.asList(randomMemberUsername1,randomMemberUsername2)));
+            assertTrue(randomMemberUsername1.equals(groupMembers.get(0)));
         }
         assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername2)
                 .block(Utilities.IT_TIMEOUT));
     }
 
