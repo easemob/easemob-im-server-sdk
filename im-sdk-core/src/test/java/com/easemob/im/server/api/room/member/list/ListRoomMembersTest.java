@@ -49,7 +49,7 @@ class ListRoomMembersTest extends AbstractApiTest {
     @Test
     void testListRoomMembers() {
         List<String> members =
-                this.listRoomMembers.all("r1", 2).collectList().block(Utilities.UT_TIMEOUT);
+                this.listRoomMembers.all("r1", 2, null).collectList().block(Utilities.UT_TIMEOUT);
         assertEquals(3, members.size());
         assertEquals("alice", members.get(0));
         assertEquals("rabbit", members.get(1));

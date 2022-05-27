@@ -26,7 +26,7 @@ class GroupMemberListTest extends AbstractApiTest {
 
     @Test
     public void testListGroupMemberAll() {
-        List<String> usernames = this.groupMemberList.all("1", 10).collect(Collectors.toList())
+        List<String> usernames = this.groupMemberList.all("1", 10, null).collect(Collectors.toList())
                 .block(Utilities.UT_TIMEOUT);
         assertEquals(15, usernames.size());
     }

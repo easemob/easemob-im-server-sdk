@@ -296,7 +296,30 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
      */
     public Flux<String> listRoomMembersAll(String roomId) {
-        return this.listRoomMembers.all(roomId, 10);
+        return this.listRoomMembers.all(roomId, 10, null);
+    }
+
+    /**
+     * 获取聊天室全部成员列表。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> members = service.room().listRoomMembersAll("roomId", "asc").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param roomId 聊天室id
+     * @param sort 聊天室成员排序方法 asc:根据加入顺序升序排序  desc:根据加入顺序降序排序
+     * @return 每个聊天室成员或者错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
+     */
+    public Flux<String> listRoomMembersAll(String roomId, String sort) {
+        return this.listRoomMembers.all(roomId, 10, sort);
     }
 
     /**
@@ -340,7 +363,52 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
      */
     public Mono<EMPage<String>> listRoomMembers(String roomId, int limit, String cursor) {
-        return this.listRoomMembers.next(roomId, limit, cursor);
+        return this.listRoomMembers.next(roomId, limit, cursor, null);
+    }
+
+    /**
+     * 分页获取聊天室成员列表。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * EMPage<String> page = null;
+     * try {
+     *     service.room().listRoomMembers(roomId, 1, null, "asc").block();
+     *     List<String> members = page.getValues();
+     *     System.out.println("聊天室成员列表:" + members);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * // ... do something with the roomIds ...
+     * if (page != null) {
+     *      String cursor = page.getCursor();
+     *      // cursor == null indicates the end of the list
+     *      while (cursor != null) {
+     *              try {
+     *                  page = service.room().listRoomMembers(roomId, 1, cursor, "asc").block();
+     *                  System.out.println("聊天室成员列表:" + page.getValues());
+     *                  // ... do something to the members ...
+     *                  cursor = page.getCursor();
+     *              } catch (EMException e) {
+     *                  e.getErrorCode();
+     *                  e.getMessage();
+     *              }
+     *      }
+     * }
+     * }</pre>
+     *
+     * @param roomId 聊天室id
+     * @param limit  返回多少个聊天室成员
+     * @param cursor 开始位置
+     * @param sort 聊天室成员排序方法 asc:根据加入顺序升序排序  desc:根据加入顺序降序排序
+     * @return 获取聊天室成员响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
+     */
+    public Mono<EMPage<String>> listRoomMembers(String roomId, int limit, String cursor, String sort) {
+        return this.listRoomMembers.next(roomId, limit, cursor, sort);
     }
 
     /**

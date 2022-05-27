@@ -14,21 +14,24 @@ public class GroupMemberList {
         this.context = context;
     }
 
-    public Flux<String> all(String groupId, int limit) {
-        return next(groupId, limit, null)
+    public Flux<String> all(String groupId, int limit, String sort) {
+        return next(groupId, limit, null, sort)
                 .expand(rsp -> rsp.getCursor() == null ?
                         Mono.empty() :
-                        next(groupId, limit, rsp.getCursor()))
+                        next(groupId, limit, rsp.getCursor(), sort))
                 .concatMapIterable(EMPage::getValues);
     }
 
-    public Mono<EMPage<String>> next(String groupId, int limit, String cursor) {
+    public Mono<EMPage<String>> next(String groupId, int limit, String cursor, String sort) {
         final String uriPath = String.format("/chatgroups/%s/users", groupId);
         QueryStringEncoder encoder = new QueryStringEncoder(uriPath);
         encoder.addParam("version", "v3");
         encoder.addParam("limit", String.valueOf(limit));
         if (cursor != null) {
             encoder.addParam("cursor", cursor);
+        }
+        if (sort != null) {
+            encoder.addParam("sort", sort);
         }
         String uriString = encoder.toString();
         return this.context.getHttpClient()
