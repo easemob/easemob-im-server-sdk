@@ -85,6 +85,38 @@ public class GroupIT extends AbstractIT {
     }
 
     @Test
+    void testGroupCreatePrivateWithNeedVerify() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true, true, true, "custom", false).block(Utilities.IT_TIMEOUT));
+        EMPage<String> groupMemberPage = assertDoesNotThrow(
+                () -> this.service.group().listGroupMembers(groupId, 100, null)
+                        .block(Utilities.IT_TIMEOUT));
+
+        List<String> groupMembers = groupMemberPage.getValues();
+        if (groupMembers.size() != members.size()) {
+            throw new RuntimeException(
+                    String.format("incorrect number of group %s members", groupId));
+        }
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
     void testGroupCreatePrivate() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
@@ -103,6 +135,37 @@ public class GroupIT extends AbstractIT {
                 () -> this.service.group().listGroupMembers(groupId, 100, null)
                         .block(Utilities.IT_TIMEOUT));
 
+        List<String> groupMembers = groupMemberPage.getValues();
+        if (groupMembers.size() != members.size()) {
+            throw new RuntimeException(
+                    String.format("incorrect number of group %s members", groupId));
+        }
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testGroupCreatePublicWithNeedVerify() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPublicGroup(randomOwnerUsername, "politics", "group description", members, 200,
+                        true, "custom", true).block(Utilities.IT_TIMEOUT));
+        EMPage<String> groupMemberPage = assertDoesNotThrow(
+                () -> this.service.group().listGroupMembers(groupId, 10, null)
+                        .block(Utilities.IT_TIMEOUT));
         List<String> groupMembers = groupMemberPage.getValues();
         if (groupMembers.size() != members.size()) {
             throw new RuntimeException(
