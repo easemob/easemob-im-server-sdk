@@ -10,6 +10,7 @@ import com.easemob.im.server.api.message.recall.RecallMessage;
 import com.easemob.im.server.api.message.recall.RecallMessageSource;
 import com.easemob.im.server.api.message.send.SendMessage;
 import com.easemob.im.server.api.message.status.MessageStatus;
+import com.easemob.im.server.api.message.upload.ImportMessage;
 import com.easemob.im.server.model.EMKeyValue;
 import com.easemob.im.server.model.EMMessage;
 import com.easemob.im.server.model.EMSentMessageIds;
@@ -34,9 +35,11 @@ public class MessageApi {
 
     private MessageStatus messageStatus;
 
-  private RecallMessage recallMessage;
+    private RecallMessage recallMessage;
 
     private DeleteMessageChannel deleteMessageChannel;
+
+    private ImportMessage importMessage;
 
     public MessageApi(Context context) {
         EMProperties properties = context.getProperties();
@@ -46,6 +49,7 @@ public class MessageApi {
         this.messageStatus = new MessageStatus(context);
         this.recallMessage = new RecallMessage(context);
         this.deleteMessageChannel = new DeleteMessageChannel(context);
+        this.importMessage = new ImportMessage(context);
     }
 
     /**
@@ -325,4 +329,93 @@ public class MessageApi {
         return this.deleteMessageChannel.execute(username, channelName, channelType, deleteRoam);
     }
 
+    /**
+     * 导入单聊消息
+     *
+     * API使用示例：
+     * <pre> {@code
+     *
+     * 例如，导入带扩展字段的文本消息
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     Instant time = Instant.parse("2021-05-20T18:00:00.631Z").minusMillis((TimeUnit.HOURS.toMillis(8)));
+     *     Long msgTimestamp = time.toEpochMilli();
+     *     String messageId = service.message()
+     *                               .importChatMessage("fromUserName", "toUserName",
+     *                                  textMessage, exts, true, msgTimestamp, false)
+     *                               .block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from       发送者用户名
+     * @param to         目标用户名
+     * @param message    要导入的消息，EMTextMessage文本消息，EMImageMessage图片消息，EMVoiceMessage语音消息，
+     *                   EMVideoMessage视频消息，EMFileMessage文件消息，EMCommandMessage透传消息，EMCustomMessage自定义类型消息，
+     *                   各种类型消息需要自己构造
+     * @param extensions 要导入的扩展内容，可以为空
+     * @param isAckRead  是否设置消息为已读
+     * @param msgTimestamp 导入的消息的时间戳
+     * @param needDownload 是否需要下载附件资源
+     * @return 导入成功后消息的id
+     */
+    public Mono<String> importChatMessage(String from, String to,
+            EMMessage message, Set<EMKeyValue> extensions, Boolean isAckRead,
+            Long msgTimestamp, Boolean needDownload) {
+        return this.importMessage.importChatMessage(from, to, message, extensions,
+                isAckRead, msgTimestamp, needDownload);
+    }
+
+    /**
+     * 导入群聊消息
+     *
+     * API使用示例：
+     * <pre> {@code
+     *
+     * 例如，导入带扩展字段的文本消息
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     Instant time = Instant.parse("2021-05-20T18:00:00.631Z").minusMillis((TimeUnit.HOURS.toMillis(8)));
+     *     Long msgTimestamp = time.toEpochMilli();
+     *     String groupId = "18273849454"
+     *     String messageId = service.message()
+     *                               .importChatGroupMessage("fromUserName", groupId,
+     *                                  textMessage, exts, true, msgTimestamp, false)
+     *                               .block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param from       发送者用户名
+     * @param to         目标群id
+     * @param message    要导入的消息，EMTextMessage文本消息，EMImageMessage图片消息，EMVoiceMessage语音消息，
+     *                   EMVideoMessage视频消息，EMFileMessage文件消息，EMCommandMessage透传消息，EMCustomMessage自定义类型消息，
+     *                   各种类型消息需要自己构造
+     * @param extensions 要导入的扩展内容，可以为空
+     * @param isAckRead  是否设置消息为已读
+     * @param msgTimestamp 导入的消息的时间戳
+     * @param needDownload 是否需要下载附件资源
+     * @return 导入成功后消息的id
+     */
+    public Mono<String> importChatGroupMessage(String from, String to,
+            EMMessage message, Set<EMKeyValue> extensions, Boolean isAckRead,
+            Long msgTimestamp, Boolean needDownload) {
+        return this.importMessage.importChatGroupMessage(from, to, message, extensions, isAckRead,
+                msgTimestamp, needDownload);
+    }
 }
