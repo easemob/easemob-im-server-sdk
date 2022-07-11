@@ -145,11 +145,20 @@ public class ImportMessage {
         }
 
         public Mono<String> importChatMessage() {
-            return ImportMessage.this
-                    .importChatMessage(this.from, this.to, this.message, this.extensions,
-                            this.isAckRead, this.msgTimestamp, this.needDownload);
+            if ("users".equalsIgnoreCase(toType)) {
+                return ImportMessage.this
+                        .importChatMessage(this.from, this.to, this.message, this.extensions,
+                                this.isAckRead, this.msgTimestamp, this.needDownload);
+            } else {
+                return ImportMessage.this
+                        .importChatGroupMessage(this.from, this.to, this.message, this.extensions,
+                                this.isAckRead, this.msgTimestamp, this.needDownload);
+            }
         }
+    }
 
+    public RouteSpec from(String from) {
+        return new RouteSpec(from);
     }
 
     public Mono<String> importChatMessage(String from, String to,

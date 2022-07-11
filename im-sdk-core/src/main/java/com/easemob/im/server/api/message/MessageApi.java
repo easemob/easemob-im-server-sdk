@@ -330,6 +330,55 @@ public class MessageApi {
     }
 
     /**
+     * 构造消息并导入。
+     * <p>
+     * 例如，导入一条带有扩展字段的单聊文本消息:
+     * <pre>{@code
+     * EMService service;
+     * try {
+     *     service.message().importMessage()
+     *                      .from("alice")
+     *                      .toUser("rabbit")
+     *                      .text(msg -> msg.text("hello"))
+     *                      .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+     *                      .isAckRead(true)
+     *                      .msgTimestamp(Instant.now().toEpochMilli())
+     *                      .needDownload(true)
+     *                      .importChatMessage()
+     *                      .block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * <p>
+     * 如果需要向一个群组导入消息，将示例中的 toUser 改成 toGroup，并传入对应的群组或聊天室id
+     * <p>
+     * 将上述发送文本消息示例中的 `.text(...) `替换掉，来发送其他类型消息示例：
+     * <p>
+     * 导入图片消息：{@code .image(msg -> msg.uri(URI.create("http://example/image.png")).secret("secret").displayName("image.png"))}
+     * <p>
+     * 导入语音消息：{@code .voice(msg -> msg.uri(URI.create("http://example/voice.amr")).duration(3).secret("secret").displayName("voice.amr"))}
+     * <p>
+     * 导入视频消息：{@code .video(msg -> msg.uri(URI.create("http://example/video.mp4")).duration(3).secret("secret").displayName("video.mp4").thumb("http://example/videoThumbnail").thumbSecret("thumbSecret"))}
+     * <p>
+     * 导入文件消息：{@code .file(msg -> msg.uri(URI.create("http://example/file.txt")).secret("secret").displayName("file.txt"))}
+     * <p>
+     * 导入位置消息：{@code .location(msg -> msg.latitude(1.234567).longitude(1.234567).address("some where"))}
+     * <p>
+     * 导入自定义类型消息：{@code .custom(msg -> msg.customEvent("liked").customExtension("name", "forest"))}
+     * <p>
+     *
+     * @return 导入消息的构造器
+     *
+     */
+    public ImportMessage importMessage() {
+        return this.importMessage;
+    }
+
+
+    /**
      * 导入单聊消息
      *
      * API使用示例：
