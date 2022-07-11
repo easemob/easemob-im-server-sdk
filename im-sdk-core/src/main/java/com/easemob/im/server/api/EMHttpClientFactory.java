@@ -20,7 +20,7 @@ public class EMHttpClientFactory {
                 .maxConnections(properties.getHttpConnectionPoolSize())
                 .maxIdleTime(Duration.ofMillis(properties.getHttpConnectionMaxIdleTime()))
                 .pendingAcquireTimeout(Duration.ofMillis(DEFAULT_POOL_ACQUIRE_TIMEOUT))
-                .lifo()
+                .fifo()
                 .build();
         HttpClient httpClient = HttpClient.create(connectionProvider)
                 .headers(headers -> headers.add("User-Agent",
