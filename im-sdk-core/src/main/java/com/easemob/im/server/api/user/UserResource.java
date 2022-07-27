@@ -4,6 +4,8 @@ import com.easemob.im.server.model.EMUser;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class UserResource {
 
     @JsonProperty("username")
@@ -15,14 +17,19 @@ public class UserResource {
     @JsonProperty("activated")
     private boolean activated;
 
+    @JsonProperty("pushInfo")
+    private List<PushResource> pushResources;
+
     @JsonCreator
     public UserResource(
             @JsonProperty("username") String username,
             @JsonProperty("uuid") String uuid,
-            @JsonProperty("activated") boolean activated) {
+            @JsonProperty("activated") boolean activated,
+            @JsonProperty("pushInfo") List<PushResource> pushResources) {
         this.username = username;
         this.uuid = uuid;
         this.activated = activated;
+        this.pushResources = pushResources;
     }
 
     public String getUuid() {
@@ -38,15 +45,15 @@ public class UserResource {
     }
 
     public EMUser toEMUser() {
-        return new EMUser(this.username, this.uuid, this.activated);
+        return new EMUser(this.username, this.uuid, this.activated, this.pushResources);
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "UserResource{" +
                 "username='" + username + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", activated=" + activated +
+                ", pushResources=" + pushResources +
                 '}';
     }
 }

@@ -1,8 +1,10 @@
 package com.easemob.im.server.model;
 
+import com.easemob.im.server.api.user.PushResource;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import org.apache.logging.log4j.util.Strings;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -16,23 +18,25 @@ public class EMUser extends EMEntity {
     private final String username;
     private final String uuid;
     private final Boolean canLogin;
+    private final List<PushResource> pushResources;
 
     /**
      * @param username 用户名
      * @param canLogin 是否可登录
-     * @deprecated use {@link #EMUser(String, String, Boolean)} instead
+     * @deprecated use {@link EMUser} instead
      */
     @Deprecated
     public EMUser(String username, Boolean canLogin) {
-        this(username, null, canLogin);
+        this(username, null, canLogin, null);
     }
 
     /**
      * @param username 用户名
      * @param uuid     用户 UUID
      * @param canLogin 是否可登录
+     * @param pushResources 推送信息，例如 deviceId、deviceToken
      */
-    public EMUser(String username, String uuid, Boolean canLogin) {
+    public EMUser(String username, String uuid, Boolean canLogin, List<PushResource> pushResources) {
         super(EntityType.USER);
         if (Strings.isBlank(username)) {
             throw new EMInvalidArgumentException("username cannot be blank");
@@ -41,6 +45,7 @@ public class EMUser extends EMEntity {
         this.username = username;
         this.uuid = uuid;
         this.canLogin = canLogin;
+        this.pushResources = pushResources;
     }
 
     public static void validateUsername(String username) {
@@ -77,6 +82,10 @@ public class EMUser extends EMEntity {
         return this.canLogin;
     }
 
+    public List<PushResource> getPushResources() {
+        return pushResources;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -94,12 +103,12 @@ public class EMUser extends EMEntity {
         return Objects.hash(username);
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "EMUser{" +
                 "username='" + username + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", canLogin=" + canLogin +
+                ", pushResources=" + pushResources +
                 '}';
     }
 }

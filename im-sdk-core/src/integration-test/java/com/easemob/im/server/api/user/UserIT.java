@@ -5,6 +5,7 @@ import com.easemob.im.server.api.token.agora.AccessToken2;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
+import com.easemob.im.server.model.EMUser;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
