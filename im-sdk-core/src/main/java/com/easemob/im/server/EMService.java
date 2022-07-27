@@ -247,7 +247,7 @@ public class EMService {
      * - 获取导出详情列表<br>
      * - 下载内容审核记录文件<br>
      *
-     * @return
+     * @return {@code ModerationApi}
      */
     public ModerationApi moderation() {
         return this.moderationApi;
@@ -260,7 +260,7 @@ public class EMService {
      * - 查询单个用户全局禁言剩余时间<br>
      * - 查询所有用户全局禁言剩余时间<br>
      *
-     * @return
+     * @return {@code MuteApi}
      */
     public MuteApi mute() {
         return this.muteApi;
