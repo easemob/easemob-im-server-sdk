@@ -3,6 +3,7 @@ package com.easemob.im.server.api.token;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.token.agora.AccessToken2;
+import com.easemob.im.server.api.token.allocate.InheritTokenRequest;
 import com.easemob.im.server.api.token.allocate.TokenRequest;
 import com.easemob.im.server.api.token.allocate.TokenResponse;
 import com.easemob.im.server.api.token.allocate.UserTokenRequest;
@@ -10,6 +11,7 @@ import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMForbiddenException;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
+import com.easemob.im.server.exception.EMNotImplementedException;
 import com.easemob.im.server.model.EMUser;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
@@ -135,6 +137,23 @@ public class TokenApi {
             String userName = user.getUsername();
             return fetchUserTokenWithEasemobRealm(this.context,
                     UserTokenRequest.of(userName, password))
+                    .map(Token::getValue).block(Utilities.IT_TIMEOUT);
+        } else {
+            throw new EMInvalidStateException(String.format("invalid realm value %s", realm));
+        }
+    }
+
+    public String getUserTokenWithInherit(String username) {
+        if (username == null || username.isEmpty()) {
+            throw new EMInvalidArgumentException("user cannot be null");
+        }
+        EMProperties properties = context.getProperties();
+        EMProperties.Realm realm = properties.getRealm();
+        if (realm.equals(EMProperties.Realm.AGORA_REALM)) {
+            throw new EMNotImplementedException("get user token with agora realm not implemented");
+        } else if (realm.equals(EMProperties.Realm.EASEMOB_REALM)) {
+            return fetchUserTokenWithEasemobRealm(this.context,
+                    InheritTokenRequest.of(username, true))
                     .map(Token::getValue).block(Utilities.IT_TIMEOUT);
         } else {
             throw new EMInvalidStateException(String.format("invalid realm value %s", realm));
