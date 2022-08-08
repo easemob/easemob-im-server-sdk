@@ -1,7 +1,6 @@
 package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.AbstractIT;
-import com.easemob.im.server.api.token.agora.AccessToken2;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
@@ -17,23 +16,6 @@ class UserIT extends AbstractIT {
 
     UserIT() {
         super();
-    }
-
-    @Test
-    public void getAppToken() {
-        AccessToken2 accessToken2 = new AccessToken2("ba85504621304fb894790708d304794f", "fe57b133cff8401b8366eb8879eb8e1d", 86400);
-        AccessToken2.Service serviceChat = new AccessToken2.ServiceChat();
-        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP, 86400);
-        accessToken2.addService(serviceChat);
-
-        String token = null;
-        try {
-            token = accessToken2.build();
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        System.out.println("appToken : \n"+ token);
     }
 
     @Test
