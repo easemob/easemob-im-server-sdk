@@ -24,7 +24,9 @@ public class UserGetResponse {
 
     public EMUser getEMUser(String username) {
         return this.entities.stream()
-                .filter(user -> user.getUsername().equals(username)).findFirst()
+                .filter(user -> {
+                    return user.getUsername().toLowerCase().equals(username);
+                }).findFirst()
                 .map(UserResource::toEMUser).orElse(null);
     }
 
