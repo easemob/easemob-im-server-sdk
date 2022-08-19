@@ -621,7 +621,8 @@ public class RoomIT extends AbstractIT {
     }
 
     @Test
-    void testRoomUnblockAllUserSendMsg() {
+    void testRoomGetAnnouncement() {
+
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
 
@@ -653,6 +654,46 @@ public class RoomIT extends AbstractIT {
         assertNotNull(unblockRoom);
         assertEquals(false, unblockRoom.mute());
 
+        assertDoesNotThrow(() -> this.service.room().assignRoom(roomId, randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.room().getRoomAnnouncement(roomId)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+
+    }
+
+    @Test
+    void testRoomUpdateAnnouncement() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String roomId = assertDoesNotThrow(() -> this.service.room()
+                .createRoom("chat room", "room description", randomOwnerUsername, members, 200)
+                .block(Utilities.IT_TIMEOUT));
+
+        String updateAnnouncement = "update announcement";
+
+        assertDoesNotThrow(
+                () -> this.service.room().updateRoomAnnouncement(roomId, updateAnnouncement)
+                        .block(Utilities.IT_TIMEOUT));
+        String newAnnouncement = assertDoesNotThrow(
+                () -> this.service.room().getRoomAnnouncement(roomId)
+                        .block(Utilities.IT_TIMEOUT));
+        if (!updateAnnouncement.equals(newAnnouncement)) {
+            throw new RuntimeException(String.format("update %s group announcement fail", roomId));
+        }
         assertDoesNotThrow(
                 () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
