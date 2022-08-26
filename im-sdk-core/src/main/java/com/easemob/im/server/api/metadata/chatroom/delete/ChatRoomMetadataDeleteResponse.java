@@ -24,4 +24,12 @@ public class ChatRoomMetadataDeleteResponse {
         }
     }
 
+    public List<String> getSuccessKeys() {
+        return successKeys;
+    }
+
+    public Map<String, String> getErrorKeys() {
+        return errorKeys;
+    }
+
 }

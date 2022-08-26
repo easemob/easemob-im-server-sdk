@@ -7,11 +7,15 @@ import java.util.Map;
 
 public class ChatRoomMetadataGetResponse {
 
-    private Map<String, String> metaData;
+    private Map<String, String> metadata;
 
     @JsonCreator
     public ChatRoomMetadataGetResponse(@JsonProperty("data") Map<String, String> result) {
-        this.metaData = result;
+        this.metadata = result;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
     }
 
 }
