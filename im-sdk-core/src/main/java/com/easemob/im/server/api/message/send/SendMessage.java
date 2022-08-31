@@ -1,8 +1,14 @@
 package com.easemob.im.server.api.message.send;
 
+import com.easemob.im.server.EMException;
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.DefaultErrorMapper;
+import com.easemob.im.server.api.ErrorMapper;
+import com.easemob.im.server.api.user.get.UserGetResponse;
+import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.*;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClientResponse;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -52,6 +58,68 @@ public class SendMessage {
                         .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
                 .map(buf -> context.getCodec().decode(buf, SendMessageResponse.class))
                 .map(SendMessageResponse::toEMSentMessages);
+    }
+
+    public Mono<EMSentMessageIds> sendMessageToLargeChatroom(String from, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri(String.format(String.format("/chatroom/%s/messages?isLarge=true&useMsgId=true", tos.toArray()[0])))
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(new SendChatroomMessageRequest(from, "chatrooms", tos, message,
+                                        SendMessageRequest.parseExtensions(extensions), UUID.randomUUID().toString())))))
+                        .responseSingle((rsp, buf) -> {
+                            return Mono.zip(Mono.just(rsp), buf);
+                        })
+                        .flatMap(tuple2 -> {
+                            HttpClientResponse clientResponse = tuple2.getT1();
+
+                            return Mono.defer(() -> {
+                                ErrorMapper mapper = new DefaultErrorMapper();
+                                mapper.statusCode(clientResponse);
+                                mapper.checkError(tuple2.getT2());
+                                return Mono.just(tuple2.getT2());
+                            }).onErrorResume(e -> {
+                                if (e instanceof EMException) {
+                                    return Mono.error(e);
+                                }
+                                return Mono.error(new EMUnknownException(e.getMessage()));
+                            }).flatMap(byteBuf -> {
+                                SendMessageResponse sendMessageResponse = context.getCodec().decode(byteBuf, SendMessageResponse.class);
+                                return Mono.just(sendMessageResponse.toEMSentMessages());
+                            });
+                        }));
+    }
+
+    public Mono<EMSentMessageIds> sendMessageToSmallChatroom(String from, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri(String.format("/chatroom/%s/messages?isLarge=false&useMsgId=true", tos.toArray()[0]))
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(new SendChatroomMessageRequest(from, "chatrooms", tos, message,
+                                        SendMessageRequest.parseExtensions(extensions), UUID.randomUUID().toString())))))
+                        .responseSingle((rsp, buf) -> {
+                            return Mono.zip(Mono.just(rsp), buf);
+                        })
+                        .flatMap(tuple2 -> {
+                            HttpClientResponse clientResponse = tuple2.getT1();
+
+                            return Mono.defer(() -> {
+                                ErrorMapper mapper = new DefaultErrorMapper();
+                                mapper.statusCode(clientResponse);
+                                mapper.checkError(tuple2.getT2());
+                                return Mono.just(tuple2.getT2());
+                            }).onErrorResume(e -> {
+                                if (e instanceof EMException) {
+                                    return Mono.error(e);
+                                }
+                                return Mono.error(new EMUnknownException(e.getMessage()));
+                            }).flatMap(byteBuf -> {
+                                SendMessageResponse sendMessageResponse = context.getCodec().decode(byteBuf, SendMessageResponse.class);
+                                return Mono.just(sendMessageResponse.toEMSentMessages());
+                            });
+                        }));
     }
 
     public class RouteSpec {
