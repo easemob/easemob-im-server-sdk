@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-public class SendMessageRequest {
+public class SendChatroomMessageRequest {
     @JsonProperty("from")
     private String from;
 
@@ -28,38 +28,22 @@ public class SendMessageRequest {
     @JsonProperty("ext")
     private Map<String, Object> extensions;
 
-    @JsonProperty("routetype")
-    private String routeType;
-
     @JsonProperty("client_id")
     private String clientId;
 
     @JsonCreator
-    public SendMessageRequest(@JsonProperty("from") String from,
+    public SendChatroomMessageRequest(@JsonProperty("from") String from,
             @JsonProperty("target_type") String targetType,
             @JsonProperty("target") Set<String> targets,
             @JsonProperty("msg") EMMessage message,
-            @JsonProperty("ext") Map<String, Object> extensions) {
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("client_id") String clientId) {
         this.from = from;
         this.targetType = targetType;
         this.targets = targets;
         this.message = Message.of(message);
         this.extensions = extensions;
-    }
-
-    @JsonCreator
-    public SendMessageRequest(@JsonProperty("from") String from,
-                              @JsonProperty("target_type") String targetType,
-                              @JsonProperty("target") Set<String> targets,
-                              @JsonProperty("msg") EMMessage message,
-                              @JsonProperty("ext") Map<String, Object> extensions,
-                              @JsonProperty("routetype") String routeType) {
-        this.from = from;
-        this.targetType = targetType;
-        this.targets = targets;
-        this.message = Message.of(message);
-        this.extensions = extensions;
-        this.routeType = routeType;
+        this.clientId = clientId;
     }
 
     public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {
@@ -119,6 +103,10 @@ public class SendMessageRequest {
 
     public Set<EMKeyValue> getExtensions() {
         return populateExtensions(this.extensions);
+    }
+
+    public String getClientId() {
+        return clientId;
     }
 
     @SuppressWarnings("unchecked")
