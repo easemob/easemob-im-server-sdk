@@ -4,7 +4,6 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.room.admin.demote.DemoteRoomAdmin;
 import com.easemob.im.server.api.room.admin.list.ListRoomAdmins;
 import com.easemob.im.server.api.room.admin.promote.PromoteRoomAdmin;
-import com.easemob.im.server.api.room.announcement.RoomAnnouncement;
 import com.easemob.im.server.api.room.assign.AssignRoom;
 import com.easemob.im.server.api.room.create.CreateRoom;
 import com.easemob.im.server.api.room.delete.DeleteRoom;
@@ -61,8 +60,6 @@ public class RoomApi {
 
     private AssignRoom assignRoom;
 
-    private RoomAnnouncement roomAnnouncement;
-
     public RoomApi(Context context) {
         this.createRoom = new CreateRoom(context);
         this.getRoomDetail = new GetRoomDetail(context);
@@ -79,7 +76,6 @@ public class RoomApi {
         this.demoteRoomSuperAdmin = new DemoteRoomSuperAdmin(context);
         this.deleteRoom = new DeleteRoom(context);
         this.assignRoom = new AssignRoom(context);
-        this.roomAnnouncement=new RoomAnnouncement(context);
     }
 
     /**
@@ -671,48 +667,4 @@ public class RoomApi {
     public Mono<Void> assignRoom(String chatroomId, String newOwner){
         return this.assignRoom.execute(chatroomId, newOwner);
     }
-
-    /**
-     * 获取聊天室公告。
-     * <p>
-     * API使用示例：
-     * <pre> {@code
-     * EMService service;
-     * try {
-     *     String roomAnnouncement = service.room().getRoomAnnouncement("roomId").block();
-     * } catch (EMException e) {
-     *     e.getErrorCode();
-     *     e.getMessage();
-     * }
-     * }</pre>
-     *
-     * @param chatroomId 聊天室id
-     * @return 聊天室公告或错误
-     */
-    public Mono<String> getRoomAnnouncement(String chatroomId) {
-        return this.roomAnnouncement.get(chatroomId);
-    }
-
-    /**
-     * 更新聊天室公告。
-     * <p>
-     * API使用示例：
-     * <pre> {@code
-     * EMService service;
-     * try {
-     *     service.room().updateRoomAnnouncement("chatroomId", "announcement").block();
-     * } catch (EMException e) {
-     *     e.getErrorCode();
-     *     e.getMessage();
-     * }
-     * }</pre>
-     *
-     * @param chatroomId   聊天室id
-     * @param announcement 聊天室公告
-     * @return 成功或错误
-     */
-    public Mono<Void> updateRoomAnnouncement(String chatroomId, String announcement) {
-        return this.roomAnnouncement.set(chatroomId, announcement);
-    }
-
 }
