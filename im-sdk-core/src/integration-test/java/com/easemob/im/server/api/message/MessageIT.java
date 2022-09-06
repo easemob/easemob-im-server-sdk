@@ -1,16 +1,19 @@
 package com.easemob.im.server.api.message;
 
+import com.easemob.im.server.EMException;
 import com.easemob.im.server.api.AbstractIT;
 import com.easemob.im.server.api.message.recall.RecallMessageSource;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.model.EMKeyValue;
 import com.easemob.im.server.model.EMSentMessageIds;
+import com.easemob.im.server.model.EMSentMessageResults;
+import com.easemob.im.server.model.EMTextMessage;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageIT extends AbstractIT {
 
@@ -28,13 +31,210 @@ public class MessageIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.message().send()
+        assertDoesNotThrow(() -> {
+            EMSentMessageIds messageIds = this.service.message().send()
                 .fromUser(randomFromUsername)
                 .toUser(randomToUsername)
                 .text(msg -> msg.text("hello"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
+                .block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(() -> {
+            Set<String> tos = new HashSet<>();
+            tos.add(randomToUsername);
+
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+
+            EMSentMessageIds messageIds = this.service.message().send(randomFromUsername, "users", tos, new EMTextMessage().text("你好"), exts).block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testMessageSendTextWithoutMsgId() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageResults messageResults = this.service.message().send()
+                .fromUser(randomFromUsername)
+                .toUser(randomToUsername)
+                .text(msg -> msg.text("hello"))
+                .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                .sendWithoutMsgId()
+                .block(Utilities.IT_TIMEOUT);
+            assertEquals("success", messageResults.getMessageResultsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(() -> {
+            Set<String> tos = new HashSet<>();
+            tos.add(randomToUsername);
+
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+
+            EMSentMessageResults messageResults = this.service.message().sendWithoutMsgId(randomFromUsername, "users", tos, new EMTextMessage().text("你好"), exts).block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageResults.getMessageResultsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testMessageSendTextDeliveryOnline() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageIds messageIds = this.service.message().send()
+                    .fromUser(randomFromUsername)
+                    .toUser(randomToUsername)
+                    .text(msg -> msg.text("hello"))
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .routeType("ROUTE_ONLINE")
+                    .send()
+                    .block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(() -> {
+            Set<String> tos = new HashSet<>();
+            tos.add(randomToUsername);
+
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+
+            EMSentMessageIds messageIds = this.service.message().send(randomFromUsername, "users", tos, new EMTextMessage().text("你好"), exts, "ROUTE_ONLINE").block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testMessageSendTextDeliveryOnlineWithoutMsgId() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageResults messageResults = this.service.message().send()
+                    .fromUser(randomFromUsername)
+                    .toUser(randomToUsername)
+                    .text(msg -> msg.text("hello"))
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .routeType("ROUTE_ONLINE")
+                    .sendWithoutMsgId()
+                    .block(Utilities.IT_TIMEOUT);
+            assertEquals("success", messageResults.getMessageResultsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(() -> {
+            Set<String> tos = new HashSet<>();
+            tos.add(randomToUsername);
+
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+
+            EMSentMessageResults messageResults = this.service.message().sendWithoutMsgId(randomFromUsername, "users", tos, new EMTextMessage().text("你好"), exts, "ROUTE_ONLINE").block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageResults.getMessageResultsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testMessageSendTextSyncDevice() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageIds messageIds = this.service.message().send()
+                    .fromUser(randomFromUsername)
+                    .toUser(randomToUsername)
+                    .text(msg -> msg.text("hello"))
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .syncDevice(true)
+                    .send()
+                    .block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(() -> {
+            Set<String> tos = new HashSet<>();
+            tos.add(randomToUsername);
+
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+
+            EMSentMessageIds messageIds = this.service.message().send(randomFromUsername, "users", tos, new EMTextMessage().text("你好"), exts, true).block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testMessageSendTextSyncDeviceWithoutMsgId() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageResults messageResults = this.service.message().send()
+                    .fromUser(randomFromUsername)
+                    .toUser(randomToUsername)
+                    .text(msg -> msg.text("hello"))
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .syncDevice(true)
+                    .sendWithoutMsgId()
+                    .block(Utilities.IT_TIMEOUT);
+            assertEquals("success", messageResults.getMessageResultsByEntityId().get(randomToUsername));
+        });
+        assertDoesNotThrow(() -> {
+            Set<String> tos = new HashSet<>();
+            tos.add(randomToUsername);
+
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+
+            EMSentMessageResults messageResults = this.service.message().sendWithoutMsgId(randomFromUsername, "users", tos, new EMTextMessage().text("你好"), exts, false).block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageResults.getMessageResultsByEntityId().get(randomToUsername));
+        });
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(

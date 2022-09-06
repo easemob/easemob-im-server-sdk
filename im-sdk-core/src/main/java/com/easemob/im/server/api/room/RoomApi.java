@@ -11,6 +11,7 @@ import com.easemob.im.server.api.room.detail.GetRoomDetail;
 import com.easemob.im.server.api.room.list.ListRooms;
 import com.easemob.im.server.api.room.member.add.AddRoomMember;
 import com.easemob.im.server.api.room.member.list.ListRoomMembers;
+import com.easemob.im.server.api.room.member.list.ListRoomMembersResponseV1;
 import com.easemob.im.server.api.room.member.remove.RemoveRoomMember;
 import com.easemob.im.server.api.room.superadmin.demote.DemoteRoomSuperAdmin;
 import com.easemob.im.server.api.room.superadmin.list.ListRoomSuperAdmins;
@@ -23,6 +24,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -355,6 +357,28 @@ public class RoomApi {
     }
 
     /**
+     * 获取聊天室全部成员列表，包括聊天室的 Owner。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<Map<String, String>> members = service.room().listRoomMembersAllWithOwner("roomId").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param roomId 聊天室id
+     * @return 每个聊天室成员或者错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
+     */
+    public Flux<Map<String, String>> listRoomMembersAllWithOwner(String roomId) {
+        return this.listRoomMembers.all(roomId, 10);
+    }
+
+    /**
      * 分页获取聊天室成员列表。
      * <p>
      * API使用示例：
@@ -362,7 +386,7 @@ public class RoomApi {
      * EMService service;
      * EMPage<String> page = null;
      * try {
-     *     service.room().listRoomMembers(roomId, 1, null).block();
+     *     EMPage<String> page = service.room().listRoomMembers(roomId, 1, null).block();
      *     List<String> members = page.getValues();
      *     System.out.println("聊天室成员列表:" + members);
      * } catch (EMException e) {
@@ -399,6 +423,33 @@ public class RoomApi {
     }
 
     /**
+     * 分页获取聊天室成员列表，包括聊天室的 Owner。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * EMPage<String> page = null;
+     * try {
+     *     List<Map<String, String>> members = service.room().listRoomMembers(roomId, 1, 10).block();
+     *     System.out.println("聊天室成员列表:" + members);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *}</pre>
+     *
+     * @param roomId 聊天室id
+     * @param pageNum  当前页码。默认从第 1 页开始获取
+     * @param pageSize 每页期望返回的群组成员数量。取值范围为[1,100]。默认为 10。
+     * @return 获取聊天室成员响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E6%88%90%E5%91%98">获取聊天室成员</a>
+     */
+    public Mono<List<Map<String, String>>> listRoomMembersWithOwner(String roomId, int pageNum, int pageSize) {
+        return this.listRoomMembers.next(roomId, pageNum, pageSize).map(
+                ListRoomMembersResponseV1::getMembers);
+    }
+
+    /**
      * 分页获取聊天室成员列表。
      * <p>
      * API使用示例：
@@ -406,7 +457,7 @@ public class RoomApi {
      * EMService service;
      * EMPage<String> page = null;
      * try {
-     *     service.room().listRoomMembers(roomId, 1, null, "asc").block();
+     *     EMPage<String> page = service.room().listRoomMembers(roomId, 1, null, "asc").block();
      *     List<String> members = page.getValues();
      *     System.out.println("聊天室成员列表:" + members);
      * } catch (EMException e) {

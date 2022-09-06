@@ -5,8 +5,10 @@ import com.easemob.im.server.api.block.group.join.BlockUserJoinGroup;
 import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroup;
 import com.easemob.im.server.api.block.login.BlockUserLogin;
 import com.easemob.im.server.api.block.room.join.BlockUserJoinRoom;
+import com.easemob.im.server.api.block.room.msg.block.BlockAllUserSendMsgToRoom;
 import com.easemob.im.server.api.block.room.msg.block.BlockUserSendMsgToRoom;
 import com.easemob.im.server.api.block.room.msg.list.ListUsersBlockedSendMsgToRoom;
+import com.easemob.im.server.api.block.room.msg.unblock.UnblockAllUserSendMsgToRoom;
 import com.easemob.im.server.api.block.room.msg.unblock.UnblockUserSendMsgToRoom;
 import com.easemob.im.server.api.block.user.SendMsgToUser;
 import com.easemob.im.server.model.EMBlock;
@@ -36,6 +38,10 @@ public class BlockApi {
 
     private ListUsersBlockedSendMsgToRoom listUsersBlockedSendMsgToRoom;
 
+    private UnblockAllUserSendMsgToRoom unblockAllUserSendMsgToRoom;
+
+    private BlockAllUserSendMsgToRoom blockAllUserSendMsgToRoom;
+
     public BlockApi(Context context) {
         this.sendMsgToUser = new SendMsgToUser(context);
         this.blockUserLogin = new BlockUserLogin(context);
@@ -45,6 +51,8 @@ public class BlockApi {
         this.unblockUserSendMsgToRoom = new UnblockUserSendMsgToRoom(context);
         this.blockUserSendMsgToRoom = new BlockUserSendMsgToRoom(context);
         this.listUsersBlockedSendMsgToRoom = new ListUsersBlockedSendMsgToRoom(context);
+        this.unblockAllUserSendMsgToRoom = new UnblockAllUserSendMsgToRoom(context);
+        this.blockAllUserSendMsgToRoom = new BlockAllUserSendMsgToRoom(context);
     }
 
     /**
@@ -432,5 +440,49 @@ public class BlockApi {
      */
     public Mono<Void> unblockUserSendMsgToRoom(String username, String roomId) {
         return this.unblockUserSendMsgToRoom.single(username, roomId);
+    }
+
+    /**
+     * 解除聊天室全员禁言。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().unblockAllUserSendMsgToRoom("roomId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param roomId   聊天室id
+     * @return 成功或错误
+     * @see <a href="https://docs-im.easemob.com/ccim/rest/chatroom#%E8%A7%A3%E9%99%A4%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%A8%E5%91%98%E7%A6%81%E8%A8%80">解除聊天室全员禁言</a>
+     */
+    public Mono<Void> unblockAllUserSendMsgToRoom(String roomId) {
+        return this.unblockAllUserSendMsgToRoom.single(roomId);
+    }
+
+    /**
+     * 禁言聊天室全体成员。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().blockAllUserSendMsgToRoom("roomId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param roomId   聊天室id
+     * @return 成功或错误
+     * @see <a href="https://docs-im.easemob.com/ccim/rest/chatroom#%E7%A6%81%E8%A8%80%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%A8%E4%BD%93%E6%88%90%E5%91%98">禁言聊天室全体成员</a>
+     */
+    public Mono<Void> blockAllUserSendMsgToRoom(String roomId) {
+        return this.blockAllUserSendMsgToRoom.single(roomId);
     }
 }

@@ -31,8 +31,8 @@ public class SendMessageRequest {
     @JsonProperty("routetype")
     private String routeType;
 
-    @JsonProperty("client_id")
-    private String clientId;
+    @JsonProperty("sync_device")
+    private Boolean syncDevice;
 
     @JsonCreator
     public SendMessageRequest(@JsonProperty("from") String from,
@@ -60,6 +60,38 @@ public class SendMessageRequest {
         this.message = Message.of(message);
         this.extensions = extensions;
         this.routeType = routeType;
+    }
+
+    @JsonCreator
+    public SendMessageRequest(@JsonProperty("from") String from,
+            @JsonProperty("target_type") String targetType,
+            @JsonProperty("target") Set<String> targets,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("sync_device") Boolean syncDevice) {
+        this.from = from;
+        this.targetType = targetType;
+        this.targets = targets;
+        this.message = Message.of(message);
+        this.extensions = extensions;
+        this.syncDevice = syncDevice;
+    }
+
+    @JsonCreator
+    public SendMessageRequest(@JsonProperty("from") String from,
+            @JsonProperty("target_type") String targetType,
+            @JsonProperty("target") Set<String> targets,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("routetype") String routeType,
+            @JsonProperty("sync_device") Boolean syncDevice) {
+        this.from = from;
+        this.targetType = targetType;
+        this.targets = targets;
+        this.message = Message.of(message);
+        this.extensions = extensions;
+        this.routeType = routeType;
+        this.syncDevice = syncDevice;
     }
 
     public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {
@@ -119,6 +151,14 @@ public class SendMessageRequest {
 
     public Set<EMKeyValue> getExtensions() {
         return populateExtensions(this.extensions);
+    }
+
+    public String getRouteType() {
+        return routeType;
+    }
+
+    public Boolean getSyncDevice() {
+        return syncDevice;
     }
 
     @SuppressWarnings("unchecked")
@@ -261,7 +301,7 @@ public class SendMessageRequest {
         }
 
         public static Message of(EMTextMessage msg) {
-            Message send = new Message("text");
+            Message send = new Message("txt");
             send.text = msg.text();
             return send;
         }

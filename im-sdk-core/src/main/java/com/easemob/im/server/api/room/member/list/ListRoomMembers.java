@@ -6,6 +6,8 @@ import io.netty.handler.codec.http.QueryStringEncoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 public class ListRoomMembers {
 
     private Context context;
@@ -47,4 +49,32 @@ public class ListRoomMembers {
                 .map(ListRoomMembersResponse::toEMPage);
     }
 
+    public Flux<Map<String, String>> all(String roomId, int pageSize) {
+        return next(roomId, 1, pageSize)
+                .expand(rsp -> {
+                    return rsp.getMemberCount() < pageSize ?
+                        Mono.empty() :
+                        next(roomId,  Integer.parseInt(rsp.getParamsInfo().getPageNum()) + 1, pageSize);
+                })
+                .concatMapIterable(ListRoomMembersResponseV1::getMembers);
+    }
+
+    public Mono<ListRoomMembersResponseV1> next(String roomId, int pageNum, int pageSize) {
+        final String uriPath = String.format("/chatrooms/%s/users", roomId);
+        QueryStringEncoder encoder = new QueryStringEncoder(uriPath);
+        encoder.addParam("pagenum", String.valueOf(pageNum));
+        encoder.addParam("pagesize", String.valueOf(pageSize));
+
+        String uriString = encoder.toString();
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.get()
+                        .uri(uriString)
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                .map(buf -> this.context.getCodec().decode(buf, ListRoomMembersResponseV1.class));
+    }
 }
