@@ -23,8 +23,7 @@ public class GroupAdminAdd {
                                     this.context.getErrorMapper().statusCode(rsp);
                                     return buf;
                                 })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
-                        .then())
-                .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty());
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                .then();
     }
 }

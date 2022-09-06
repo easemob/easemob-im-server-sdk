@@ -23,8 +23,8 @@ public class AbstractIT {
             String appCert = System.getenv("IM_APP_CERT");
 
             properties = EMProperties.builder()
-                    .setBaseUri(baseUri)
                     .setRealm(EMProperties.Realm.AGORA_REALM)
+                    .setBaseUri(baseUri)
                     .setAppkey(appkey)
                     .setAppId(appId)
                     .setAppCert(appCert)
@@ -33,6 +33,7 @@ public class AbstractIT {
         } else {
 //            String clientId = System.getenv("IM_CLIENT_ID");
 //            String clientSecret = System.getenv("IM_CLIENT_SECRET");
+
             String clientId = "YXA6a1jQXZnASMeiRB_z6Vo9wA";
             String clientSecret = "YXA6LDJ_YHmppwgccxHNEZmyMnjWy1E";
 

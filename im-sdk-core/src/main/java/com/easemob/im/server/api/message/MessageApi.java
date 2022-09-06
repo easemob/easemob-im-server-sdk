@@ -14,6 +14,7 @@ import com.easemob.im.server.api.message.upload.ImportMessage;
 import com.easemob.im.server.model.EMKeyValue;
 import com.easemob.im.server.model.EMMessage;
 import com.easemob.im.server.model.EMSentMessageIds;
+import com.easemob.im.server.model.EMSentMessageResults;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -209,6 +210,71 @@ public class MessageApi {
     }
 
     /**
+     * 发送消息，不返回消息 ID。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向用户发送一条带有扩展字段的文本消息
+     * Set<String> toUsers = new HashSet<>();
+     * toUsers.add("toUserName");
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().sendWithoutMsgId("fromUserName", "users", toUsers, textMessage, exts).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * 例如，向群组发送一条带有扩展字段的图片消息
+     * Set<String> toGroups = new HashSet<>();
+     * toGroups.add("toGroupId");
+     *
+     * EMImageMessage imageMessage =
+     *         new EMImageMessage().uri(URI.create("http://example/image.png")).secret("secret")
+     *                 .displayName("image.png");
+     *
+     * Set<EMKeyValue> exts1 = new HashSet<>();
+     * exts1.add(EMKeyValue.of("key", "value"));
+     * exts1.add(EMKeyValue.of("key1", 10));
+     * exts1.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+     *     {
+     *         put("mkey1", "mvalue1");
+     *         put("mkey2", "mvalue2");
+     *     }
+     * }));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().sendWithoutMsgId("fromUserName", "chatgroups", toGroups, imageMessage, exts1).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from       发送者用户名
+     * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos        目标id列表
+     * @param message    要发送的消息，EMTextMessage文本消息，EMImageMessage图片消息，EMVoiceMessage语音消息，
+     *                   EMVideoMessage视频消息，EMFileMessage文件消息，EMCommandMessage透传消息，EMCustomMessage自定义类型消息，
+     *                   各种类型消息需要自己构造
+     * @param extensions 要发送的扩展，可以为空
+     * @return 发消息响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
+     */
+    public Mono<EMSentMessageResults> sendWithoutMsgId(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions) {
+        return this.sendMessage.sendWithoutMsgId(from, toType, tos, message, extensions);
+    }
+
+    /**
      * 向大型聊天室发送消息
      *
      * @param from       发送者用户名
@@ -241,10 +307,54 @@ public class MessageApi {
     }
 
     /**
-     * 发送消息(只投递在线消息)。
+     * 发送消息（只投递在线消息）。
      * <p>
-     * API使用示例：请参考上方 发送消息
-     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向用户发送一条带有扩展字段的文本消息
+     * Set<String> toUsers = new HashSet<>();
+     * toUsers.add("toUserName");
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().send("fromUserName", "users", toUsers, textMessage, exts, "ROUTE_ONLINE").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * 例如，向群组发送一条带有扩展字段的图片消息
+     * Set<String> toGroups = new HashSet<>();
+     * toGroups.add("toGroupId");
+     *
+     * EMImageMessage imageMessage =
+     *         new EMImageMessage().uri(URI.create("http://example/image.png")).secret("secret")
+     *                 .displayName("image.png");
+     *
+     * Set<EMKeyValue> exts1 = new HashSet<>();
+     * exts1.add(EMKeyValue.of("key", "value"));
+     * exts1.add(EMKeyValue.of("key1", 10));
+     * exts1.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+     *     {
+     *         put("mkey1", "mvalue1");
+     *         put("mkey2", "mvalue2");
+     *     }
+     * }));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().send("fromUserName", "chatgroups", toGroups, imageMessage, exts1, "ROUTE_ONLINE").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
      *
      * @param from       发送者用户名
      * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
@@ -258,6 +368,328 @@ public class MessageApi {
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
                                        EMMessage message, Set<EMKeyValue> extensions, String routeType) {
         return this.sendMessage.send(from, toType, tos, message, extensions, routeType);
+    }
+
+    /**
+     * 发送消息（只投递在线消息），不返回消息 ID。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向用户发送一条带有扩展字段的文本消息
+     * Set<String> toUsers = new HashSet<>();
+     * toUsers.add("toUserName");
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageResults messageResults = service.message().send("fromUserName", "users", toUsers, textMessage, exts, "ROUTE_ONLINE").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * 例如，向群组发送一条带有扩展字段的图片消息
+     * Set<String> toGroups = new HashSet<>();
+     * toGroups.add("toGroupId");
+     *
+     * EMImageMessage imageMessage =
+     *         new EMImageMessage().uri(URI.create("http://example/image.png")).secret("secret")
+     *                 .displayName("image.png");
+     *
+     * Set<EMKeyValue> exts1 = new HashSet<>();
+     * exts1.add(EMKeyValue.of("key", "value"));
+     * exts1.add(EMKeyValue.of("key1", 10));
+     * exts1.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+     *     {
+     *         put("mkey1", "mvalue1");
+     *         put("mkey2", "mvalue2");
+     *     }
+     * }));
+     *
+     * try {
+     *     EMSentMessageResults messageResults = service.message().send("fromUserName", "chatgroups", toGroups, imageMessage, exts1, "ROUTE_ONLINE").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from       发送者用户名
+     * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos        目标id列表
+     * @param message    要发送的消息
+     * @param extensions 要发送的扩展，可以为空
+     * @param routeType  只投递在线消息，请传入 `ROUTE_ONLINE`
+     * @return 发消息响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
+     */
+    public Mono<EMSentMessageResults> sendWithoutMsgId(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, String routeType) {
+        return this.sendMessage.sendWithoutMsgId(from, toType, tos, message, extensions, routeType);
+    }
+
+    /**
+     * 发送消息。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向用户发送一条带有扩展字段的文本消息
+     * Set<String> toUsers = new HashSet<>();
+     * toUsers.add("toUserName");
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().send("fromUserName", "users", toUsers, textMessage, exts, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * 例如，向群组发送一条带有扩展字段的图片消息
+     * Set<String> toGroups = new HashSet<>();
+     * toGroups.add("toGroupId");
+     *
+     * EMImageMessage imageMessage =
+     *         new EMImageMessage().uri(URI.create("http://example/image.png")).secret("secret")
+     *                 .displayName("image.png");
+     *
+     * Set<EMKeyValue> exts1 = new HashSet<>();
+     * exts1.add(EMKeyValue.of("key", "value"));
+     * exts1.add(EMKeyValue.of("key1", 10));
+     * exts1.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+     *     {
+     *         put("mkey1", "mvalue1");
+     *         put("mkey2", "mvalue2");
+     *     }
+     * }));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().send("fromUserName", "chatgroups", toGroups, imageMessage, exts1, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from       发送者用户名
+     * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos        目标id列表
+     * @param message    要发送的消息
+     * @param extensions 要发送的扩展，可以为空
+     * @param syncDevice  消息发送成功后，是否将消息同步到发送方，true：是同步给发送方，false：是不同给发送方
+     * @return 发消息响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
+     */
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, Boolean syncDevice) {
+        return this.sendMessage.send(from, toType, tos, message, extensions, syncDevice);
+    }
+
+    /**
+     * 发送消息，不返回消息 ID。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向用户发送一条带有扩展字段的文本消息
+     * Set<String> toUsers = new HashSet<>();
+     * toUsers.add("toUserName");
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageResults messageResults = service.message().sendWithoutMsgId("fromUserName", "users", toUsers, textMessage, exts, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * 例如，向群组发送一条带有扩展字段的图片消息
+     * Set<String> toGroups = new HashSet<>();
+     * toGroups.add("toGroupId");
+     *
+     * EMImageMessage imageMessage =
+     *         new EMImageMessage().uri(URI.create("http://example/image.png")).secret("secret")
+     *                 .displayName("image.png");
+     *
+     * Set<EMKeyValue> exts1 = new HashSet<>();
+     * exts1.add(EMKeyValue.of("key", "value"));
+     * exts1.add(EMKeyValue.of("key1", 10));
+     * exts1.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+     *     {
+     *         put("mkey1", "mvalue1");
+     *         put("mkey2", "mvalue2");
+     *     }
+     * }));
+     *
+     * try {
+     *     EMSentMessageResults messageResults = service.message().sendWithoutMsgId("fromUserName", "chatgroups", toGroups, imageMessage, exts1, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from       发送者用户名
+     * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos        目标id列表
+     * @param message    要发送的消息
+     * @param extensions 要发送的扩展，可以为空
+     * @param syncDevice  消息发送成功后，是否将消息同步到发送方，true：是同步给发送方，false：是不同给发送方
+     * @return 发消息响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
+     */
+    public Mono<EMSentMessageResults> sendWithoutMsgId(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, Boolean syncDevice) {
+        return this.sendMessage.sendWithoutMsgId(from, toType, tos, message, extensions, syncDevice);
+    }
+
+    /**
+     * 发送消息。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向用户发送一条带有扩展字段的文本消息
+     * Set<String> toUsers = new HashSet<>();
+     * toUsers.add("toUserName");
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().send("fromUserName", "users", toUsers, textMessage, exts, "ROUTE_ONLINE", true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * 例如，向群组发送一条带有扩展字段的图片消息
+     * Set<String> toGroups = new HashSet<>();
+     * toGroups.add("toGroupId");
+     *
+     * EMImageMessage imageMessage =
+     *         new EMImageMessage().uri(URI.create("http://example/image.png")).secret("secret")
+     *                 .displayName("image.png");
+     *
+     * Set<EMKeyValue> exts1 = new HashSet<>();
+     * exts1.add(EMKeyValue.of("key", "value"));
+     * exts1.add(EMKeyValue.of("key1", 10));
+     * exts1.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+     *     {
+     *         put("mkey1", "mvalue1");
+     *         put("mkey2", "mvalue2");
+     *     }
+     * }));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().send("fromUserName", "chatgroups", toGroups, imageMessage, exts1, "ROUTE_ONLINE", true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from       发送者用户名
+     * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos        目标id列表
+     * @param message    要发送的消息
+     * @param extensions 要发送的扩展，可以为空
+     * @param routeType  只投递在线消息，请传入 `ROUTE_ONLINE`
+     * @param syncDevice  消息发送成功后，是否将消息同步到发送方，true：是同步给发送方，false：是不同给发送方
+     * @return 发消息响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
+     */
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, String routeType, Boolean syncDevice) {
+        return this.sendMessage.send(from, toType, tos, message, extensions, routeType, syncDevice);
+    }
+
+    /**
+     * 发送消息，不返回消息 ID。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向用户发送一条带有扩展字段的文本消息
+     * Set<String> toUsers = new HashSet<>();
+     * toUsers.add("toUserName");
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageResults messageResults = service.message().sendWithoutMsgId("fromUserName", "users", toUsers, textMessage, exts, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * 例如，向群组发送一条带有扩展字段的图片消息
+     * Set<String> toGroups = new HashSet<>();
+     * toGroups.add("toGroupId");
+     *
+     * EMImageMessage imageMessage =
+     *         new EMImageMessage().uri(URI.create("http://example/image.png")).secret("secret")
+     *                 .displayName("image.png");
+     *
+     * Set<EMKeyValue> exts1 = new HashSet<>();
+     * exts1.add(EMKeyValue.of("key", "value"));
+     * exts1.add(EMKeyValue.of("key1", 10));
+     * exts1.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+     *     {
+     *         put("mkey1", "mvalue1");
+     *         put("mkey2", "mvalue2");
+     *     }
+     * }));
+     *
+     * try {
+     *     EMSentMessageResults messageResults = service.message().sendWithoutMsgId("fromUserName", "chatgroups", toGroups, imageMessage, exts1, "ROUTE_ONLINE", true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from       发送者用户名
+     * @param toType     目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos        目标id列表
+     * @param message    要发送的消息
+     * @param extensions 要发送的扩展，可以为空
+     * @param routeType  只投递在线消息，请传入 `ROUTE_ONLINE`
+     * @param syncDevice  消息发送成功后，是否将消息同步到发送方，true：是同步给发送方，false：是不同给发送方
+     * @return 发消息响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
+     */
+    public Mono<EMSentMessageResults> sendWithoutMsgId(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, String routeType, Boolean syncDevice) {
+        return this.sendMessage.sendWithoutMsgId(from, toType, tos, message, extensions, routeType, syncDevice);
     }
 
     /**

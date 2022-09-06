@@ -220,7 +220,7 @@ public class EMProperties {
 
         private String baseUri;
         private EMProxy proxy;
-        private int httpConnectionPoolSize = 50;
+        private int httpConnectionPoolSize = 10;
         private int httpConnectionMaxIdleTime = 10 * 1000;
         private String serverTimezone = "+8";
         private int agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
