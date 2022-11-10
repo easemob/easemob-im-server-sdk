@@ -23,22 +23,15 @@ public class DeleteUser {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/users/%s", username))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                        .flatMap(tuple2 -> {
-                            HttpClientResponse clientResponse = tuple2.getT1();
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
 
-                            return Mono.defer(() -> {
-                                ErrorMapper mapper = new DefaultErrorMapper();
-                                mapper.statusCode(clientResponse);
-                                mapper.checkError(tuple2.getT2());
-                                return Mono.just(tuple2.getT2());
-                            }).onErrorResume(e -> {
-                                if (e instanceof EMException) {
-                                    return Mono.error(e);
-                                }
-                                return Mono.error(new EMUnknownException(e.getMessage()));
-                            }).then();
-                        }));
+                    return tuple2.getT2();
+                })
+                .then();
     }
 
     public Flux<String> all(int limit) {
@@ -60,24 +53,18 @@ public class DeleteUser {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(uirString)
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                        .flatMap(tuple2 -> {
-                            HttpClientResponse clientResponse = tuple2.getT1();
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
 
-                            return Mono.defer(() -> {
-                                ErrorMapper mapper = new DefaultErrorMapper();
-                                mapper.statusCode(clientResponse);
-                                mapper.checkError(tuple2.getT2());
-                                return Mono.just(tuple2.getT2());
-                            }).onErrorResume(e -> {
-                                if (e instanceof EMException) {
-                                    return Mono.error(e);
-                                }
-                                return Mono.error(new EMUnknownException(e.getMessage()));
-                            }).flatMap(byteBuf -> {
-                                UserUnregisterResponse userUnregisterResponse = this.context.getCodec().decode(byteBuf, UserUnregisterResponse.class);
-                                return Mono.just(userUnregisterResponse);
-                            });
-                        }));
+                    return tuple2.getT2();
+                })
+                .map(byteBuf -> {
+                    UserUnregisterResponse userUnregisterResponse =
+                            this.context.getCodec().decode(byteBuf, UserUnregisterResponse.class);
+                    return userUnregisterResponse;
+                });
     }
 }

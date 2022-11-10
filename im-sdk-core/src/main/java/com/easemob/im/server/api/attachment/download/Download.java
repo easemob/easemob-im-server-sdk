@@ -1,7 +1,10 @@
 package com.easemob.im.server.api.attachment.download;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.DefaultErrorMapper;
+import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.util.FileSystem;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
@@ -21,11 +24,14 @@ public class Download {
                 .flatMap(out -> this.context.getHttpClient()
                         .flatMap(httpClient -> httpClient.get()
                                 .uri(String.format("/chatfiles/%s", id))
-                                .response((rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
+                                .response((rsp, buf) -> Flux.zip(Mono.just(rsp), buf))
+                                .map(tuple2 -> {
+                                    ErrorMapper mapper = new DefaultErrorMapper();
+                                    mapper.statusCode(tuple2.getT1());
+                                    mapper.checkError(tuple2.getT2());
+
+                                    return tuple2.getT2();
                                 })
-                                .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
                                 .doOnNext(buf -> FileSystem.append(out, buf))
                                 .doFinally(sig -> FileSystem.close(out))
                                 .then()))

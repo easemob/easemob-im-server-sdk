@@ -13,8 +13,6 @@ public class AbstractIT {
 //        String appkey = System.getenv("IM_APPKEY");
         String appkey = "62242102#90";
         String baseUri = System.getenv("IM_BASE_URI");
-        System.setProperty(ReactorNetty.IO_WORKER_COUNT,"256");
-        System.setProperty(ReactorNetty.SSL_HANDSHAKE_TIMEOUT, "60000");
 
         EMProperties properties = null;
 

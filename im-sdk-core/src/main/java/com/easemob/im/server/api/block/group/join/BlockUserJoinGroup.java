@@ -1,6 +1,8 @@
 package com.easemob.im.server.api.block.group.join;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.DefaultErrorMapper;
+import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.EMBlock;
 import reactor.core.publisher.Flux;
@@ -16,14 +18,17 @@ public class BlockUserJoinGroup {
 
     public Flux<EMBlock> getBlockedUsers(String groupId) {
         return this.context.getHttpClient()
-                .flatMapMany(httpClient -> httpClient.get()
+                .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/blocks/users", groupId))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> context.getCodec().decode(buf, GetBlockedUsersResponse.class))
                 .flatMapIterable(GetBlockedUsersResponse::getUsernames)
                 .map(username -> new EMBlock(username, null));
@@ -34,11 +39,14 @@ public class BlockUserJoinGroup {
                 .flatMap(httpClient -> httpClient.post()
                         .uri(String.format("/chatgroups/%s/blocks/users/%s", groupId, username))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, BlockUserJoinGroupResponse.class))
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess()) {

@@ -19,6 +19,7 @@ public class EMProperties {
     private final EMProxy proxy;
     private final int httpConnectionPoolSize;
     private final int httpConnectionMaxIdleTime;
+    private final int nettyWorkerCount;
     private final String serverTimezone;
     private final int agoraTokenExpireInSeconds;
     private final AdvancedByteBufFormat httpLogFormat;
@@ -26,8 +27,9 @@ public class EMProperties {
 
 
     private EMProperties(Realm realm, String appKey, Credentials credentials, String baseUri,
-                         EMProxy proxy, int httpConnectionPoolSize, String serverTimezone,
-                         int agoraTokenExpireInSeconds, AdvancedByteBufFormat httpLogFormat, boolean validateUserName, int httpConnectionMaxIdleTime) {
+            EMProxy proxy, int httpConnectionPoolSize, String serverTimezone,
+            int agoraTokenExpireInSeconds, AdvancedByteBufFormat httpLogFormat,
+            boolean validateUserName, int httpConnectionMaxIdleTime, int nettyWorkerCount) {
         this.realm = realm;
         this.appKey = appKey;
         this.credentials = credentials;
@@ -39,6 +41,7 @@ public class EMProperties {
         this.httpLogFormat = httpLogFormat;
         this.validateUserName = validateUserName;
         this.httpConnectionMaxIdleTime = httpConnectionMaxIdleTime;
+        this.nettyWorkerCount = nettyWorkerCount;
     }
 
     /**
@@ -50,11 +53,14 @@ public class EMProperties {
      * @param httpConnectionPoolSize httpConnectionPoolSize
      * @param serverTimezone serverTimezone
      * @param httpConnectionMaxIdleTime httpConnectionMaxIdleTime
+     * @param nettyWorkerCount nettyWorkerCount
      * @deprecated use {@link #builder()} instead.
      */
     @Deprecated
     public EMProperties(String baseUri, String appKey, EMProxy proxy, String clientId,
-                        String clientSecret, int httpConnectionPoolSize, String serverTimezone, int httpConnectionMaxIdleTime) {
+            String clientSecret, int httpConnectionPoolSize, String serverTimezone,
+            int httpConnectionMaxIdleTime, int nettyWorkerCount) {
+        this.nettyWorkerCount = nettyWorkerCount;
         this.realm = Realm.EASEMOB_REALM;
         this.appKey = appKey;
         this.credentials = new EasemobAppCredentials(clientId, clientSecret);
@@ -181,6 +187,10 @@ public class EMProperties {
         return validateUserName;
     }
 
+    public int getNettyWorkerCount() {
+        return nettyWorkerCount;
+    }
+
     @Override
     public String toString() {
         return "EMProperties{" +
@@ -222,6 +232,7 @@ public class EMProperties {
         private EMProxy proxy;
         private int httpConnectionPoolSize = 10;
         private int httpConnectionMaxIdleTime = 10 * 1000;
+        private int nettyWorkerCount = 16;
         private String serverTimezone = "+8";
         private int agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
         private AdvancedByteBufFormat httpLogFormat = AdvancedByteBufFormat.SIMPLE;
@@ -332,6 +343,17 @@ public class EMProperties {
             return this;
         }
 
+        /**
+         * @param nettyWorkerCount netty最大工作线程数
+         * @return Builder
+         */
+        public Builder nettyWorkerCount(int nettyWorkerCount) {
+            if (nettyWorkerCount <= 0) {
+                throw new EMInvalidArgumentException("nettyWorkerCount must not be negative");
+            }
+            this.nettyWorkerCount = nettyWorkerCount;
+            return this;
+        }
 
         public EMProperties build() {
             if (this.realm == null) {
@@ -354,7 +376,8 @@ public class EMProperties {
                         new EasemobAppCredentials(this.clientId, this.clientSecret);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
                         this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
-                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName, this.httpConnectionMaxIdleTime);
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName, this.httpConnectionMaxIdleTime,
+                        nettyWorkerCount);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
                 if (this.appId == null) {
                     throw new EMInvalidStateException("appId not set");
@@ -368,7 +391,8 @@ public class EMProperties {
                 Credentials credentials = new AgoraAppCredentials(this.appId, this.appCert);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
                         this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
-                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName, this.httpConnectionMaxIdleTime);
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName, this.httpConnectionMaxIdleTime,
+                        nettyWorkerCount);
             } else {
                 throw new EMInvalidStateException(
                         String.format("invalid realm type %s", this.realm.toString()));
@@ -387,6 +411,7 @@ public class EMProperties {
                     ", baseUri='" + baseUri + '\'' +
                     ", proxy=" + proxy +
                     ", httpConnectionPoolSize=" + httpConnectionPoolSize +
+                    ", nettyWorkerCount=" + nettyWorkerCount +
                     ", serverTimezone='" + serverTimezone + '\'' +
                     ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
                     ", httpLogFormat=" + httpLogFormat +

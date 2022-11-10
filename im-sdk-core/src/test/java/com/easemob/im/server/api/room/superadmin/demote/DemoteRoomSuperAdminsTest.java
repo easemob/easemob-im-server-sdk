@@ -31,6 +31,6 @@ class DemoteRoomSuperAdminsTest extends AbstractApiTest {
     @Test
     void testDemoteRoomSuperAdmin() {
         assertDoesNotThrow(
-                () -> this.demoteRoomSuperAdmin.singnle("rabbit").block(Utilities.UT_TIMEOUT));
+                () -> this.demoteRoomSuperAdmin.single("rabbit").block(Utilities.UT_TIMEOUT));
     }
 }

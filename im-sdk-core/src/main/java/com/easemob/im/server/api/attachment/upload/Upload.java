@@ -1,6 +1,8 @@
 package com.easemob.im.server.api.attachment.upload;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.DefaultErrorMapper;
+import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.EMAttachment;
 import reactor.core.publisher.Mono;
@@ -24,11 +26,14 @@ public class Upload {
                         .sendForm((req, form) -> form.multipart(true)
                                 .attr("filename", path.getFileName().toString())
                                 .file("file", path.toFile())).responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, UploadFileResponse.class))
                 .handle((rsp, sink) -> {
                     if (rsp.getFiles().isEmpty()) {

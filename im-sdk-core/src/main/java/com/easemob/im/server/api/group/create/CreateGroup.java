@@ -1,6 +1,8 @@
 package com.easemob.im.server.api.group.create;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.DefaultErrorMapper;
+import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMUnknownException;
 import reactor.core.publisher.Mono;
 
@@ -23,11 +25,14 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, true, owner,
                                         members, maxMembers, false, needApproveToJoin)))))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
@@ -47,11 +52,14 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, true, owner,
                                         members, maxMembers, false, needApproveToJoin, custom)))))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
@@ -71,11 +79,14 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, true, owner,
                                         members, maxMembers, false, needApproveToJoin, custom, needVerify)))))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
@@ -95,11 +106,14 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, false, owner,
                                         members, maxMembers, canMemberInvite, !canMemberInvite)))))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
@@ -119,11 +133,14 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, false, owner,
                                         members, maxMembers, canMemberInvite, !canMemberInvite, custom)))))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
@@ -143,11 +160,14 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, false, owner,
                                         members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom)))))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
@@ -168,11 +188,14 @@ public class CreateGroup {
                                 .encode(new CreateGroupRequest(groupName, description, false, owner,
                                         members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom, needVerify)))))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();

@@ -27,28 +27,18 @@ public class ChatRoomMetadataDelete {
                         .uri(String.format("/metadata/chatroom/%s/user/%s", chatroomId, operator))
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new ChatRoomMetadataRequest(keys)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                        .flatMap(tuple2 -> {
-                            HttpClientResponse clientResponse = tuple2.getT1();
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
 
-                            return Mono.defer(() -> {
-                                ErrorMapper mapper = new DefaultErrorMapper();
-                                mapper.statusCode(clientResponse);
-                                mapper.checkError(tuple2.getT2());
-                                return Mono.just(tuple2.getT2());
-                            }).onErrorResume(e -> {
-                                if (e instanceof EMException) {
-                                    return Mono.error(e);
-                                }
-                                return Mono.error(new EMUnknownException(
-                                        String.format("chatroomId:%s", chatroomId)));
-                            }).flatMap(byteBuf -> {
-                                ChatRoomMetadataDeleteResponse
-                                        chatRoomMetadataDeleteResponse = this.context.getCodec()
-                                        .decode(byteBuf, ChatRoomMetadataDeleteResponse.class);
-                                return Mono.just(chatRoomMetadataDeleteResponse);
-                            });
-                        }));
+                    return tuple2.getT2();
+                })
+                .map(byteBuf -> {
+                    return this.context.getCodec()
+                    .decode(byteBuf, ChatRoomMetadataDeleteResponse.class);
+                });
     }
 
     public Mono<ChatRoomMetadataDeleteResponse> fromChatRoomForced(String chatroomId,
@@ -59,28 +49,17 @@ public class ChatRoomMetadataDelete {
                         .uri(String.format("/metadata/chatroom/%s/user/admin/forced", chatroomId))
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new ChatRoomMetadataRequest(keys)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                        .flatMap(tuple2 -> {
-                            HttpClientResponse clientResponse = tuple2.getT1();
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
 
-                            return Mono.defer(() -> {
-                                ErrorMapper mapper = new DefaultErrorMapper();
-                                mapper.statusCode(clientResponse);
-                                mapper.checkError(tuple2.getT2());
-                                return Mono.just(tuple2.getT2());
-                            }).onErrorResume(e -> {
-                                if (e instanceof EMException) {
-                                    return Mono.error(e);
-                                }
-                                return Mono.error(new EMUnknownException(
-                                        String.format("chatroomId:%s", chatroomId)));
-                            }).flatMap(byteBuf -> {
-                                ChatRoomMetadataDeleteResponse
-                                        chatRoomMetadataDeleteResponse = this.context.getCodec()
-                                        .decode(byteBuf, ChatRoomMetadataDeleteResponse.class);
-                                return Mono.just(chatRoomMetadataDeleteResponse);
-                            });
-                        }));
+                    return tuple2.getT2();
+                })
+                .map(byteBuf -> {
+                    return this.context.getCodec()
+                    .decode(byteBuf, ChatRoomMetadataDeleteResponse.class);
+                });
     }
-
 }

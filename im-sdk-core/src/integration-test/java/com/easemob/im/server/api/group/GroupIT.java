@@ -348,6 +348,8 @@ public class GroupIT extends AbstractIT {
         assertDoesNotThrow(
                 () -> this.service.group().listGroupsUserJoinedWithInfo(randomMemberUsername).blockFirst(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
+                () -> this.service.group().listGroupsUserJoinedWithInfo(randomMemberUsername, 1, 1).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));

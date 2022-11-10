@@ -442,15 +442,29 @@ public class RoomIT extends AbstractIT {
     @Test
     void testRoomSuperAdminsAll() {
         String randomUsername = Utilities.randomUserName();
+        String randomUsername1 = Utilities.randomUserName();
+        String randomUsername2 = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername2, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.room().promoteRoomSuperAdmin(randomUsername)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.room().promoteRoomSuperAdmin(randomUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.room().promoteRoomSuperAdmin(randomUsername2)
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.room().listRoomSuperAdminsAll()
                 .blockFirst(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername1).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername2).block(Utilities.IT_TIMEOUT));
     }
 
     @Test

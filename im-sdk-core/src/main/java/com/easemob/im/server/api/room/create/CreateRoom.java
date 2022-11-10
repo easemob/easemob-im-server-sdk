@@ -26,29 +26,20 @@ public class CreateRoom {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(CreateRoomRequest
                                         .of(name, description, owner, members, maxMembers)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                        .flatMap(tuple2 -> {
-                            HttpClientResponse clientResponse = tuple2.getT1();
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
 
-                            return Mono.defer(() -> {
-                                ErrorMapper mapper = new DefaultErrorMapper();
-                                mapper.statusCode(clientResponse);
-                                mapper.checkError(tuple2.getT2());
-                                return Mono.just(tuple2.getT2());
-                            }).onErrorResume(e -> {
-                                if (e instanceof EMException) {
-                                    return Mono.error(e);
-                                }
-                                return Mono.error(new EMUnknownException(
-                                        String.format("name:%s,description:%s,owner:%s", name,
-                                                description, owner)));
-                            }).flatMap(byteBuf -> {
-                                CreateRoomResponse
-                                        createRoomResponse = this.context.getCodec()
-                                        .decode(byteBuf, CreateRoomResponse.class);
-                                return Mono.just(createRoomResponse.getRoomId());
-                            });
-                        }));
+                    return tuple2.getT2();
+                })
+                .map(byteBuf -> {
+                    CreateRoomResponse
+                            createRoomResponse = this.context.getCodec()
+                            .decode(byteBuf, CreateRoomResponse.class);
+                    return createRoomResponse.getRoomId();
+                });
     }
 
     public Mono<String> createRoom(String name, String description, String owner,
@@ -60,29 +51,20 @@ public class CreateRoom {
                                 .encode(CreateRoomRequest
                                         .of(name, description, owner, members, maxMembers,
                                                 custom)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                        .flatMap(tuple2 -> {
-                            HttpClientResponse clientResponse = tuple2.getT1();
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
 
-                            return Mono.defer(() -> {
-                                ErrorMapper mapper = new DefaultErrorMapper();
-                                mapper.statusCode(clientResponse);
-                                mapper.checkError(tuple2.getT2());
-                                return Mono.just(tuple2.getT2());
-                            }).onErrorResume(e -> {
-                                if (e instanceof EMException) {
-                                    return Mono.error(e);
-                                }
-                                return Mono.error(new EMUnknownException(
-                                        String.format("name:%s,description:%s,owner:%s", name,
-                                                description, owner)));
-                            }).flatMap(byteBuf -> {
-                                CreateRoomResponse
-                                        createRoomResponse = this.context.getCodec()
-                                        .decode(byteBuf, CreateRoomResponse.class);
-                                return Mono.just(createRoomResponse.getRoomId());
-                            });
-                        }));
+                    return tuple2.getT2();
+                })
+                .map(byteBuf -> {
+                    CreateRoomResponse
+                            createRoomResponse = this.context.getCodec()
+                            .decode(byteBuf, CreateRoomResponse.class);
+                    return createRoomResponse.getRoomId();
+                });
     }
 
     public Mono<String> createRoom(String name, String description, String owner,
@@ -94,29 +76,20 @@ public class CreateRoom {
                                 .encode(CreateRoomRequest
                                         .of(name, description, owner, members, maxMembers, custom,
                                                 needVerify)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                        .flatMap(tuple2 -> {
-                            HttpClientResponse clientResponse = tuple2.getT1();
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
 
-                            return Mono.defer(() -> {
-                                ErrorMapper mapper = new DefaultErrorMapper();
-                                mapper.statusCode(clientResponse);
-                                mapper.checkError(tuple2.getT2());
-                                return Mono.just(tuple2.getT2());
-                            }).onErrorResume(e -> {
-                                if (e instanceof EMException) {
-                                    return Mono.error(e);
-                                }
-                                return Mono.error(new EMUnknownException(
-                                        String.format("name:%s,description:%s,owner:%s", name,
-                                                description, owner)));
-                            }).flatMap(byteBuf -> {
-                                CreateRoomResponse
-                                        createRoomResponse = this.context.getCodec()
-                                        .decode(byteBuf, CreateRoomResponse.class);
-                                return Mono.just(createRoomResponse.getRoomId());
-                            });
-                        }));
+                    return tuple2.getT2();
+                })
+                .map(byteBuf -> {
+                    CreateRoomResponse
+                            createRoomResponse = this.context.getCodec()
+                            .decode(byteBuf, CreateRoomResponse.class);
+                    return createRoomResponse.getRoomId();
+                });
     }
 
 }

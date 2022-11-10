@@ -536,6 +536,36 @@ public class GroupApi {
     }
 
     /**
+     * 分页获取用户加入的所有群组，返回值携带群组信息。
+     * <p>
+     * 初次调用时，{@code cursor} 传 {@code null}。之后的调用，{@code cursor} 传上次返回的值。
+     * <p>
+     * API使用示例：
+     * <pre>{@code
+     * try {
+     *     List<JoinGroupResource> groupResources = service.group().listGroupsUserJoinedWithInfo("username", 1, 10).block();
+     *     if (groupResources != null && groupResources.size() > 0) {
+     *          groupResources.forEach(groupResource -> {
+     *          System.out.println("groupId : " + groupResource.getGroupId());
+     *          System.out.println("groupName : " + groupResource.getGroupName());
+     *      });
+     *     }
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param username the username
+     * @param pageNum  当前页码
+     * @param pageSize 每页获取已加入的群组数量
+     * @return 群列表响应或错误
+     */
+    public Mono<List<JoinGroupResource>> listGroupsUserJoinedWithInfo(String username, int pageNum, int pageSize) {
+        return this.groupList.userJoinedWithInfo(username, pageNum, pageSize);
+    }
+
+    /**
      * 获取群详情。
      * <p>
      * API使用示例：

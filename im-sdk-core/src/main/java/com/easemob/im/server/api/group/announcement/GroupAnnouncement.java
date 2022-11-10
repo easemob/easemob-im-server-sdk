@@ -1,6 +1,8 @@
 package com.easemob.im.server.api.group.announcement;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.DefaultErrorMapper;
+import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import reactor.core.publisher.Mono;
 
@@ -17,11 +19,14 @@ public class GroupAnnouncement {
                 .flatMap(httpClient -> httpClient.get()
                         .uri(String.format("/chatgroups/%s/announcement", groupId))
                         .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec().decode(buf, GroupAnnouncementGetResponse.class))
                 .map(GroupAnnouncementGetResponse::getAnnouncement);
     }

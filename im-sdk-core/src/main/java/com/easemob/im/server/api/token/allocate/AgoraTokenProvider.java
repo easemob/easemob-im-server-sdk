@@ -2,6 +2,7 @@ package com.easemob.im.server.api.token.allocate;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Codec;
+import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.loadbalance.EndpointRegistry;
 import com.easemob.im.server.api.loadbalance.LoadBalancer;
@@ -58,11 +59,14 @@ public class AgoraTokenProvider implements TokenProvider {
                 .post().uri("/token")
                 .send(Mono.create(sink -> sink
                         .success(codec.encode(ExchangeTokenRequest.getInstance()))))
-                .responseSingle((rsp, buf) -> {
-                    errorMapper.statusCode(rsp);
-                    return buf;
+                .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
                 })
-                .doOnNext(buf -> errorMapper.checkError(buf))
                 .map(buf -> codec.decode(buf, ExchangeTokenResponse.class))
                 .map(ExchangeTokenResponse::asToken);
     }

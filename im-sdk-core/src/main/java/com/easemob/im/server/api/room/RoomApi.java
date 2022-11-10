@@ -498,7 +498,7 @@ public class RoomApi {
         return this.listRoomMembers.next(roomId, limit, cursor, sort);
     }
 
-    /**
+    /**m
      * 向聊天室添加成员。
      * <p>
      * API使用示例：
@@ -630,7 +630,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E5%88%97%E8%A1%A8">分页获取聊天室超级管理员列表</a>
      */
     public Flux<String> listRoomSuperAdminsAll() {
-        return this.listRoomSuperAdmins.all(10);
+        return this.listRoomSuperAdmins.all(1);
     }
 
     /**
@@ -674,7 +674,7 @@ public class RoomApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98">移除超级管理员</a>
      */
     public Mono<Void> demoteRoomSuperAdmin(String username) {
-        return this.demoteRoomSuperAdmin.singnle(username);
+        return this.demoteRoomSuperAdmin.single(username);
     }
 
     /**
