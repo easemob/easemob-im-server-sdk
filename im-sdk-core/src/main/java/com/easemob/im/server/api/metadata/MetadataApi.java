@@ -9,10 +9,13 @@ import com.easemob.im.server.api.metadata.chatroom.get.ChatRoomMetadataGetRespon
 import com.easemob.im.server.api.metadata.chatroom.set.ChatRoomMetadataSet;
 import com.easemob.im.server.api.metadata.chatroom.set.ChatRoomMetadataSetResponse;
 import com.easemob.im.server.api.metadata.user.delete.MetadataDelete;
+import com.easemob.im.server.api.metadata.user.get.MetadataBatchGet;
 import com.easemob.im.server.api.metadata.user.get.MetadataGet;
 import com.easemob.im.server.api.metadata.user.set.MetadataSet;
 import com.easemob.im.server.api.metadata.user.usage.MetadataUsage;
+import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMMetadata;
+import com.easemob.im.server.model.EMMetadataBatch;
 import com.easemob.im.server.model.EMMetadataUsage;
 import reactor.core.publisher.Mono;
 
@@ -28,6 +31,8 @@ public class MetadataApi {
 
     private MetadataGet metadataGet;
 
+    private MetadataBatchGet metadataBatchGet;
+
     private MetadataUsage metadataUsage;
 
     private MetadataDelete metadataDelete;
@@ -41,6 +46,7 @@ public class MetadataApi {
     public MetadataApi(Context context) {
         this.metadataSet = new MetadataSet(context);
         this.metadataGet = new MetadataGet(context);
+        this.metadataBatchGet = new MetadataBatchGet(context);
         this.metadataUsage = new MetadataUsage(context);
         this.metadataDelete = new MetadataDelete(context);
         this.chatRoomMetadataSet=new ChatRoomMetadataSet(context);
@@ -97,6 +103,45 @@ public class MetadataApi {
      */
     public Mono<EMMetadata> getMetadataFromUser(String username) {
         return this.metadataGet.fromUser(username);
+    }
+
+    /**
+     * 批量获取用户属性
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> targets = new ArrayList<>();
+     * targets.add("user1");
+     * targets.add("user2");
+     *
+     * List<String> properties = new ArrayList<>();
+     * properties.add("nickname");
+     *
+     * try {
+     *     EMMetadataBatch metadataBatch = service.metadata().getMetadataFromUsers(targets, properties).block();
+     *     metadataBatch.getData();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param targets 需要获取用户属性的用户名列表，最多 100 个用户名。
+     * @param properties 属性名列表，查询结果只返回该列表中包含的属性，不在该列表中的属性将被忽略。
+     * @return 返回获取到的用户属性列表
+     * @see <a href="http://docs-im-beta.easemob.com/document/server-side/userprofile.html#%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7">批量获取用户属性</a>
+     */
+    public Mono<EMMetadataBatch> getMetadataFromUsers(List<String> targets, List<String> properties) {
+        if (targets == null || targets.isEmpty() || targets.size() > 100) {
+            return Mono.error(new EMInvalidArgumentException("targets is illegal"));
+        }
+
+        if (properties == null || properties.isEmpty()) {
+            return Mono.error(new EMInvalidArgumentException("properties is illegal"));
+        }
+
+        return this.metadataBatchGet.fromUsers(targets, properties);
     }
 
     /**

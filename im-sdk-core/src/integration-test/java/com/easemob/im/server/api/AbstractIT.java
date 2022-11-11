@@ -2,7 +2,6 @@ package com.easemob.im.server.api;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.EMService;
-import reactor.netty.ReactorNetty;
 
 public class AbstractIT {
 
