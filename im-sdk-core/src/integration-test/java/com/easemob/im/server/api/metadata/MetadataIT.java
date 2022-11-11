@@ -3,6 +3,7 @@ package com.easemob.im.server.api.metadata;
 import com.easemob.im.server.api.AbstractIT;
 import com.easemob.im.server.api.metadata.chatroom.AutoDelete;
 import com.easemob.im.server.api.util.Utilities;
+import com.easemob.im.server.model.EMMetadataBatch;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -53,6 +54,42 @@ public class MetadataIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    public void testMetadataBatchGet() {
+        Map<String, String> map = new HashMap<>();
+        map.put("nickname", "昵称");
+        map.put("avatar", "http://www.easemob.com/avatar.png");
+        map.put("phone", "159");
+
+        String randomUsername = Utilities.randomUserName();
+        String randomUsername1 = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername, map)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.metadata().setMetadataToUser(randomUsername1, map)
+                .block(Utilities.IT_TIMEOUT));
+
+        List<String> targets = new ArrayList<>();
+        targets.add(randomUsername);
+        targets.add(randomUsername1);
+
+        List<String> properties = new ArrayList<>();
+        properties.add("nickname");
+        properties.add("avatar");
+        properties.add("phone");
+
+        assertDoesNotThrow(() -> this.service.metadata().getMetadataFromUsers(targets, properties)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername1).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
