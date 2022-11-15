@@ -2,6 +2,7 @@ package com.easemob.im.server.api.mute;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.mute.detail.MuteDetail;
+import com.easemob.im.server.api.mute.list.GetMuteListResponse;
 import com.easemob.im.server.api.mute.list.MuteList;
 import com.easemob.im.server.api.mute.mute.MuteUser;
 import com.easemob.im.server.api.mute.mute.MuteUserRequest;
@@ -86,7 +87,7 @@ public class MuteApi {
      * @return 成功或错误
      * @see <a href="https://docs-im.easemob.com/ccim/rest/accountban#%E6%9F%A5%E8%AF%A2_app_key_%E7%9A%84%E7%94%A8%E6%88%B7%E7%A6%81%E8%A8%80">查询所有用户全局禁言剩余时间</a>
      */
-    public Mono<List<EMMute>> muteList() {
+    public Mono<GetMuteListResponse> muteList() {
         return this.muteList.execute();
     }
 }

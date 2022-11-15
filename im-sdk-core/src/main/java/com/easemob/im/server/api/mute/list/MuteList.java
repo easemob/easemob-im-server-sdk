@@ -16,7 +16,7 @@ public class MuteList {
         this.context = context;
     }
 
-    public Mono<List<EMMute>> execute() {
+    public Mono<GetMuteListResponse> execute() {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri("/mutes")
@@ -29,7 +29,6 @@ public class MuteList {
 
                     return tuple2.getT2();
                 })
-                .map(buf -> this.context.getCodec().decode(buf, GetMuteListResponse.class))
-                .map(GetMuteListResponse::toEMMute);
+                .map(buf -> this.context.getCodec().decode(buf, GetMuteListResponse.class));
     }
 }
