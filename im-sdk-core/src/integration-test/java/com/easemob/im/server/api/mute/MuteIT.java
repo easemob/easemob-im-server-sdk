@@ -46,6 +46,17 @@ public class MuteIT extends AbstractIT {
 
     @Test
     void testMuteList() {
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(() -> this.service.mute()
+                .muteUser(MuteUserRequest.builder().username(randomUsername).chat(100).build())
+                .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.mute().muteList().block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomUsername)
+                .block(Utilities.IT_TIMEOUT));
     }
 }
