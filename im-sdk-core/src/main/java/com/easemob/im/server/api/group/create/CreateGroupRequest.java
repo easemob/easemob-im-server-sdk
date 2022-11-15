@@ -6,6 +6,9 @@ import java.util.List;
 
 public class CreateGroupRequest {
 
+    @JsonProperty("groupid")
+    private String groupId;
+
     @JsonProperty("groupname")
     private String groupName;
 
@@ -87,6 +90,22 @@ public class CreateGroupRequest {
         this.needVerify = needVerify;
     }
 
+    public CreateGroupRequest(String groupId, String groupName, String description, boolean isPublic, String owner,
+            List<String> members, int maxMembers, boolean memberCanInviteOthers,
+            boolean needApproveToJoin, String custom, boolean needVerify) {
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.owner = owner;
+        this.members = members;
+        this.maxMembers = maxMembers;
+        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.needApproveToJoin = needApproveToJoin;
+        this.custom = custom;
+        this.needVerify = needVerify;
+    }
+
     @SuppressWarnings("java:S107")
     public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
@@ -119,6 +138,29 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+    }
+
+    @SuppressWarnings("java:S107")
+    public CreateGroupRequest(String groupId, String groupName, String description, boolean isPublic, String owner,
+            List<String> members, int maxMembers, boolean memberCanInviteOthers,
+            boolean needInviteConfirm, boolean needApproveToJoin, String custom,
+            boolean needVerify) {
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.owner = owner;
+        this.members = members;
+        this.maxMembers = maxMembers;
+        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.needInviteConfirm = needInviteConfirm;
+        this.needApproveToJoin = needApproveToJoin;
+        this.custom = custom;
+        this.needVerify = needVerify;
+    }
+
+    public String getGroupId() {
+        return groupId;
     }
 
     public String getGroupName() {
@@ -161,4 +203,7 @@ public class CreateGroupRequest {
         return needVerify;
     }
 
+    public String getCustom() {
+        return custom;
+    }
 }
