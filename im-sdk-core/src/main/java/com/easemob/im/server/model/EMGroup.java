@@ -1,6 +1,13 @@
 package com.easemob.im.server.model;
 
+import com.easemob.im.server.exception.EMInvalidArgumentException;
+import org.apache.logging.log4j.util.Strings;
+
+import java.util.regex.Pattern;
+
 public class EMGroup extends EMEntity {
+
+    private static final Pattern GROUP_ID_PATTERN = Pattern.compile("^[1-9][0-9]{1,17}$");
 
     private final String name;
 
@@ -41,6 +48,17 @@ public class EMGroup extends EMEntity {
         this.affiliations = new Affiliation(owner, groupMembers);
         this.isMute = isMute;
         this.custom = custom;
+    }
+
+    public static void validateGroupId(String groupId) {
+        if (Strings.isBlank(groupId)) {
+            throw new EMInvalidArgumentException("groupId must not be null or blank");
+        }
+        if (!GROUP_ID_PATTERN.matcher(groupId).matches()) {
+            throw new EMInvalidArgumentException(
+                    String.format("groupId '%s' should match regex %s", groupId,
+                            GROUP_ID_PATTERN));
+        }
     }
 
     public String getGroupId() {

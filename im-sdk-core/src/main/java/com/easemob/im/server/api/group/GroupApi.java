@@ -206,6 +206,54 @@ public class GroupApi {
     }
 
     /**
+     * 指定群组ID，创建公开群。
+     * 需要联系商务开通此功能才可以使用。
+     * <p>
+     * 需要注意的是，目前公开群不允许成员邀请其他用户加入。如果要允许，可以用修改群API设置:
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     * try {
+     *     String groupId = service.group().createPublicGroup("groupId", "owner", "groupName", "description", members, 200, true, "custom", true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * <pre>{@code
+     * EMService service;
+     * try {
+     *     // 修改群组API，允许成员邀请其他用户加入
+     *     service.group().updateSetting("group-id", settings -> settings.memberCanInvite(true)).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param owner             群主的用户名
+     * @param groupName         群名，最大长度为 128 字符
+     * @param description       群介绍，最大长度为 512 字符
+     * @param members           初始群成员的用户名列表
+     * @param maxMembers        群最大成员数
+     * @param needApproveToJoin 新成员加入需要管理员审批
+     * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
+     * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @return 群id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
+     */
+    public Mono<String> createPublicGroup(String groupId, String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean needApproveToJoin, String custom, boolean needVerify) {
+        EMGroup.validateGroupId(groupId);
+        return this.createGroup
+                .publicGroup(groupId, owner, groupName, description, members, maxMembers, needApproveToJoin, custom, needVerify);
+    }
+
+    /**
      * 创建私有群。
      * <p>
      * API使用示例：
@@ -336,6 +384,45 @@ public class GroupApi {
             boolean needInviteConfirm, String custom, boolean needVerify) {
         return this.createGroup
                 .privateGroup(owner, groupName, description, members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom, needVerify);
+    }
+
+    /**
+     * 指定群组ID，创建私有群。
+     * 需要联系商务开通此功能才可以使用。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> members = new ArrayList<>();
+     * members.add("userA");
+     * try {
+     *     String groupId = service.group().privateGroup("groupId", "owner", "groupName", "description", members, 200, true, true, true, "custom", true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId         群组ID
+     * @param owner           群主的用户名
+     * @param groupName       群名，最大长度为 128 字符
+     * @param description     群介绍，最大长度为 512 字符
+     * @param members         初始群成员的用户名列表
+     * @param maxMembers      群最大成员数
+     * @param canMemberInvite 普通群成员是否允许邀请新用户入群
+     * @param needInviteConfirm 邀请加群，受邀用户是否需要确认
+     * @param needApproveToJoin 新成员加入是否需要管理员审批
+     * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
+     * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @return 群id或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
+     */
+    public Mono<String> createPrivateGroup(String groupId, String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean canMemberInvite, boolean needApproveToJoin,
+            boolean needInviteConfirm, String custom, boolean needVerify) {
+        EMGroup.validateGroupId(groupId);
+        return this.createGroup
+                .privateGroup(groupId, owner, groupName, description, members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom, needVerify);
     }
 
     /**
