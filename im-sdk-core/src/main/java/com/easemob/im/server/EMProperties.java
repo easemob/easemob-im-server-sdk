@@ -4,7 +4,7 @@ import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMUnsupportedEncodingException;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.io.UnsupportedEncodingException;
@@ -244,7 +244,7 @@ public class EMProperties {
         }
 
         public Builder setAppkey(String appKey) {
-            if (Strings.isBlank(appKey)) {
+            if (StringUtil.isNullOrEmpty(appKey)) {
                 throw new EMInvalidArgumentException("appKey must not be null or blank");
             }
             String[] tokens = appKey.split("#");
@@ -262,7 +262,7 @@ public class EMProperties {
         }
 
         public Builder setClientId(String clientId) {
-            if (Strings.isBlank(clientId)) {
+            if (StringUtil.isNullOrEmpty(clientId)) {
                 throw new EMInvalidArgumentException("clientId must not be null or blank");
             }
             this.clientId = clientId;
@@ -270,7 +270,7 @@ public class EMProperties {
         }
 
         public Builder setClientSecret(String clientSecret) {
-            if (Strings.isBlank(clientSecret)) {
+            if (StringUtil.isNullOrEmpty(clientSecret)) {
                 throw new EMInvalidArgumentException("clientSecret must not be null or blank");
             }
             this.clientSecret = clientSecret;
@@ -278,7 +278,7 @@ public class EMProperties {
         }
 
         public Builder setAppId(String appId) {
-            if (Strings.isBlank(appId)) {
+            if (StringUtil.isNullOrEmpty(appId)) {
                 throw new EMInvalidArgumentException("appId must not be null or blank");
             }
             this.appId = appId;
@@ -286,7 +286,7 @@ public class EMProperties {
         }
 
         public Builder setAppCert(String appCert) {
-            if (Strings.isBlank(appCert)) {
+            if (StringUtil.isNullOrEmpty(appCert)) {
                 throw new EMInvalidArgumentException("appCert must not be null or blank");
             }
             this.appCert = appCert;

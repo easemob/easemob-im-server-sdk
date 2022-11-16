@@ -13,7 +13,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
@@ -127,7 +127,7 @@ public class MockingHttpServer {
         private Map<String, Function<JsonNode, JsonNode>> postHandlers = new HashMap<>();
 
         public Builder addHandler(String path, Function<JsonNode, JsonNode> handler) {
-            if (Strings.isBlank(path)) {
+            if (StringUtil.isNullOrEmpty(path)) {
                 throw new EMInvalidArgumentException("path must not be null or blank");
             }
             if (handler == null) {

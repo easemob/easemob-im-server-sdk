@@ -2,7 +2,7 @@ package com.easemob.im.server.model;
 
 import com.easemob.im.server.api.user.PushResource;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +38,7 @@ public class EMUser extends EMEntity {
      */
     public EMUser(String username, String uuid, Boolean canLogin, List<PushResource> pushResources) {
         super(EntityType.USER);
-        if (Strings.isBlank(username)) {
+        if (StringUtil.isNullOrEmpty(username)) {
             throw new EMInvalidArgumentException("username cannot be blank");
         }
         super.id(username);
@@ -49,7 +49,7 @@ public class EMUser extends EMEntity {
     }
 
     public static void validateUsername(String username) {
-        if (Strings.isBlank(username)) {
+        if (StringUtil.isNullOrEmpty(username)) {
             throw new EMInvalidArgumentException("username must not be null or blank");
         }
         if (!USERNAME_PATTERN.matcher(username).matches()) {
@@ -60,7 +60,7 @@ public class EMUser extends EMEntity {
     }
 
     public static void validatePassword(String password) {
-        if (Strings.isBlank(password)) {
+        if (StringUtil.isNullOrEmpty(password)) {
             throw new EMInvalidArgumentException("password must not be null or empty");
         }
         if (!PASSWORD_PATTERN.matcher(password).matches()) {

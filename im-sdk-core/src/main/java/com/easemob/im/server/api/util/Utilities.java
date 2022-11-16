@@ -1,6 +1,6 @@
 package com.easemob.im.server.api.util;
 
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -27,7 +27,7 @@ public class Utilities {
     }
 
     public static String mask(String text) {
-        if (Strings.isBlank(text)) {
+        if (StringUtil.isNullOrEmpty(text)) {
             return text;
         } else {
             return text.replaceAll(".", "*");

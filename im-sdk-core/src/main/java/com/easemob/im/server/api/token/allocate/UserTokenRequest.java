@@ -3,7 +3,7 @@ package com.easemob.im.server.api.token.allocate;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 
 public class UserTokenRequest implements TokenRequest {
     @SuppressWarnings("java:S1170")
@@ -24,10 +24,10 @@ public class UserTokenRequest implements TokenRequest {
     @JsonCreator
     public static UserTokenRequest of(@JsonProperty("username") String username,
             @JsonProperty("password") String password) {
-        if (Strings.isBlank(username)) {
+        if (StringUtil.isNullOrEmpty(username)) {
             throw new EMInvalidArgumentException("username must not be null or blank");
         }
-        if (Strings.isBlank(password)) {
+        if (StringUtil.isNullOrEmpty(password)) {
             throw new EMInvalidArgumentException("password must not be null or blank");
         }
         return new UserTokenRequest(username, password);
