@@ -15,7 +15,7 @@ import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMNotImplementedException;
 import com.easemob.im.server.model.EMUser;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -136,7 +136,7 @@ public class TokenApi {
                 throw new EMInvalidStateException(ERROR_MSG);
             }
         } else if (realm.equals(EMProperties.Realm.EASEMOB_REALM)) {
-            if (Strings.isBlank(password)) {
+            if (StringUtil.isNullOrEmpty(password)) {
                 throw new EMInvalidArgumentException("password cannot be blank");
             }
             String userName = user.getUsername();
@@ -175,7 +175,7 @@ public class TokenApi {
         AccessToken2.ServiceChat serviceChat = (AccessToken2.ServiceChat) service;
         String userId = serviceChat.getUserId();
         Map<Short, Integer> chatPrivileges = serviceChat.getPrivileges();
-        boolean hasUserId = Strings.isNotBlank(userId);
+        boolean hasUserId = StringUtil.isNullOrEmpty(userId);
         boolean hasAppPrivilege =
                 chatPrivileges.get(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP.intValue) != null;
         boolean hasUserPrivilege =

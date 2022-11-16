@@ -2,14 +2,14 @@ package com.easemob.im.server;
 
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 
 public class EasemobAppCredentials implements Credentials {
     private final String clientId;
     private final String clientSecret;
 
     public EasemobAppCredentials(String clientId, String clientSecret) {
-        if (Strings.isBlank(clientId) || Strings.isBlank(clientSecret)) {
+        if (StringUtil.isNullOrEmpty(clientId) || StringUtil.isNullOrEmpty(clientSecret)) {
             throw new EMInvalidArgumentException("clientId/clientSecret cannot be blank");
         }
         this.clientId = clientId;

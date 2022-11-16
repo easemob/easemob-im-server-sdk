@@ -1,7 +1,7 @@
 package com.easemob.im.server;
 
 import com.easemob.im.server.exception.EMInvalidArgumentException;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 
 public class EMProxy {
     private String ip;
@@ -53,7 +53,7 @@ public class EMProxy {
         private String password;
 
         public Builder setIP(String ip) {
-            if (Strings.isBlank(ip)) {
+            if (StringUtil.isNullOrEmpty(ip)) {
                 throw new EMInvalidArgumentException("ip must not be null or blank");
             }
             this.ip = ip;
@@ -79,7 +79,7 @@ public class EMProxy {
         }
 
         public EMProxy build() {
-            if (Strings.isBlank(this.ip)) {
+            if (StringUtil.isNullOrEmpty(this.ip)) {
                 throw new EMInvalidArgumentException(
                         "the IP of setting proxy cannot be null or blank");
             }

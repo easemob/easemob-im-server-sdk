@@ -6,7 +6,7 @@ import com.easemob.im.server.EMVersion;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.ProxyProvider;
@@ -48,7 +48,7 @@ public class EMHttpClientFactory {
             final String ip = proxyInfo.getIp();
             final int port = proxyInfo.getPort();
 
-            if (Strings.isNotBlank(username) && Strings.isNotBlank(password)) {
+            if (StringUtil.isNullOrEmpty(username) && StringUtil.isNullOrEmpty(password)) {
                 return httpClient.proxy(
                         proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
                                 .address(new InetSocketAddress(ip, port))

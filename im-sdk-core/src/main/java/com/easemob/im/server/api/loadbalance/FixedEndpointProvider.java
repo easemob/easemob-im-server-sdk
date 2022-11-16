@@ -2,7 +2,7 @@ package com.easemob.im.server.api.loadbalance;
 
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -27,7 +27,7 @@ public class FixedEndpointProvider implements EndpointProvider {
     }
 
     private URI baseUriStringToURI(String baseUri) {
-        if (Strings.isBlank(baseUri)) {
+        if (StringUtil.isNullOrEmpty(baseUri)) {
             throw new EMInvalidArgumentException("baseUri must not be null or blank");
         }
         try {

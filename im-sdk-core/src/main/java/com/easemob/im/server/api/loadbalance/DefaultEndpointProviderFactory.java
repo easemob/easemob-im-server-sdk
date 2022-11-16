@@ -3,7 +3,7 @@ package com.easemob.im.server.api.loadbalance;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Codec;
 import com.easemob.im.server.api.ErrorMapper;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 import reactor.netty.http.client.HttpClient;
 
 public class DefaultEndpointProviderFactory implements EndpointProviderFactory {
@@ -24,7 +24,7 @@ public class DefaultEndpointProviderFactory implements EndpointProviderFactory {
     @Override
     public EndpointProvider create() {
         final String baseUri = properties.getBaseUri();
-        if (Strings.isBlank(baseUri)) {
+        if (StringUtil.isNullOrEmpty(baseUri)) {
             return new DnsConfigEndpointProvider(properties, codec, httpClient, errorMapper);
         } else {
             return new FixedEndpointProvider(properties);

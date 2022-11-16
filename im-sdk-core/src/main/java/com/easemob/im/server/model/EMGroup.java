@@ -1,7 +1,7 @@
 package com.easemob.im.server.model;
 
 import com.easemob.im.server.exception.EMInvalidArgumentException;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 
 import java.util.regex.Pattern;
 
@@ -51,7 +51,7 @@ public class EMGroup extends EMEntity {
     }
 
     public static void validateGroupId(String groupId) {
-        if (Strings.isBlank(groupId)) {
+        if (StringUtil.isNullOrEmpty(groupId)) {
             throw new EMInvalidArgumentException("groupId must not be null or blank");
         }
         if (!GROUP_ID_PATTERN.matcher(groupId).matches()) {

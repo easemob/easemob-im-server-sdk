@@ -3,7 +3,7 @@ package com.easemob.im.server.api.token.allocate;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.logging.log4j.util.Strings;
+import io.netty.util.internal.StringUtil;
 
 public class InheritTokenRequest implements TokenRequest {
 
@@ -25,7 +25,7 @@ public class InheritTokenRequest implements TokenRequest {
     @JsonCreator
     public static InheritTokenRequest of(@JsonProperty("username") String username,
             @JsonProperty("autoCreateUser") Boolean autoCreateUser) {
-        if (Strings.isBlank(username)) {
+        if (StringUtil.isNullOrEmpty(username)) {
             throw new EMInvalidArgumentException("username must not be null or blank");
         }
         return new InheritTokenRequest(username, autoCreateUser);
