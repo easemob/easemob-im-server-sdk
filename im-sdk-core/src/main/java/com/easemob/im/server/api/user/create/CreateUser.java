@@ -33,7 +33,7 @@ public class CreateUser {
                 .map(byteBuf -> {
                     UserGetResponse userGetResponse =
                             this.context.getCodec().decode(byteBuf, UserGetResponse.class);
-                    return userGetResponse.getEMUser(username);
+                    return userGetResponse.getEMUser(username.toLowerCase());
                 });
     }
 
