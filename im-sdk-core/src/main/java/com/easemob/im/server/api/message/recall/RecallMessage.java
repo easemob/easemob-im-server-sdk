@@ -31,4 +31,19 @@ public class RecallMessage {
                 })
                 .then();
     }
+
+    public Mono<Void> execute(RecallMessageSource recallMessage) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/messages/msg_recall")
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(recallMessage))))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    this.context.getErrorMapper().statusCode(rsp);
+                                    return buf;
+                                })
+                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
+                        .then());
+    }
 }
