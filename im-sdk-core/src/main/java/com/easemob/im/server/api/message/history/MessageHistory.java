@@ -59,17 +59,19 @@ public class MessageHistory {
                             .flatMap(out -> this.context.getHttpClient()
                                     .flatMap(httpClient -> httpClient.get()
                                             .uri(uri)
-                                            .response((rsp, buf) -> Flux.zip(Mono.just(rsp), buf))
-                                            .map(tuple2 -> {
-                                                ErrorMapper mapper = new DefaultErrorMapper();
-                                                mapper.statusCode(tuple2.getT1());
-                                                mapper.checkError(tuple2.getT2());
+                                            .responseSingle(
+                                                    (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
+                                    .map(tuple2 -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(tuple2.getT1());
+                                        mapper.checkError(tuple2.getT2());
 
-                                                return tuple2.getT2();
-                                            })
-                                            .doOnNext(buf -> FileSystem.append(out, buf))
-                                            .doFinally(sig -> FileSystem.close(out))
-                                            .then()))
+                                        return FileSystem.append(out, tuple2.getT2());
+                                    })
+                                    .doOnSuccess(suc -> {
+                                        FileSystem.close(out);
+                                    })
+                                    .then())
                             .thenReturn(local);
                 });
     }
