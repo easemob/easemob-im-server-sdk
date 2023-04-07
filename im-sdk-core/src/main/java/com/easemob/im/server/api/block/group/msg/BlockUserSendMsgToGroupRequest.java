@@ -27,4 +27,9 @@ public class BlockUserSendMsgToGroupRequest {
         return new BlockUserSendMsgToGroupRequest(usernames,
                 duration == null ? -1 : duration.toMillis());
     }
+
+    public static BlockUserSendMsgToGroupRequest of(List<String> usernames, Duration duration) {
+        return new BlockUserSendMsgToGroupRequest(usernames,
+                duration == null ? -1 : duration.toMillis());
+    }
 }

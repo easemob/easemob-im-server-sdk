@@ -40,6 +40,10 @@ public class UserResource {
         return username;
     }
 
+    public List<PushResource> getPushResources() {
+        return pushResources;
+    }
+
     public boolean isActivated() {
         return activated;
     }

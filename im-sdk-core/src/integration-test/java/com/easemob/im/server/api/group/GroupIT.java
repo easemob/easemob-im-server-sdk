@@ -1085,6 +1085,50 @@ public class GroupIT extends AbstractIT {
     }
 
     @Test
+    void testGroupBlockUsersSendMsg() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        String randomMemberUsername1 = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        members.add(randomMemberUsername1);
+
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.block()
+                .blockUsersSendMsgToGroup(members, groupId, Duration.ofMillis(3000))
+                .block(Utilities.IT_TIMEOUT));
+        List<EMBlock> blocks = assertDoesNotThrow(
+                () -> this.service.block().getUsersBlockedSendMsgToGroup(groupId).collectList().block()
+        );
+        if (blocks == null) {
+            throw new RuntimeException(
+                    String.format("block %s send message to %s group fail", randomMemberUsername,
+                            groupId));
+        }
+
+        assertEquals(2, blocks.size());
+
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername1)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
     void testGroupUnblockUserSendMsg() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();

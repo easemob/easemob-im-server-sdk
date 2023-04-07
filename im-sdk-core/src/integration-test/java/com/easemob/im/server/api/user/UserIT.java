@@ -4,10 +4,13 @@ import com.easemob.im.server.api.AbstractIT;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
+import com.easemob.im.server.model.EMCreateUser;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,6 +33,34 @@ class UserIT extends AbstractIT {
                 () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertThrows(EMNotFoundException.class,
                 () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testBatchCreateUser() {
+        String randomUsername = Utilities.randomUserName();
+        String randomUsername1 = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        List<EMCreateUser> createUserList = new ArrayList<>();
+        EMCreateUser createUser = new EMCreateUser(randomUsername, randomPassword);
+        EMCreateUser createUser1 = new EMCreateUser(randomUsername1, randomPassword);
+        createUserList.add(createUser);
+        createUserList.add(createUser1);
+
+        assertDoesNotThrow(() -> this.service.user().create(createUserList)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().get(randomUsername1).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername1).block(Utilities.IT_TIMEOUT));
+        assertThrows(EMNotFoundException.class,
+                () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertThrows(EMNotFoundException.class,
+                () -> this.service.user().get(randomUsername1).block(Utilities.IT_TIMEOUT));
     }
 
     @Test

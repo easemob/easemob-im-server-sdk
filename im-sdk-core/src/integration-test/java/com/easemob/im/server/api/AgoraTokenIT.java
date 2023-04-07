@@ -32,7 +32,6 @@ public class AgoraTokenIT {
     private static final int USER_TOKEN_EXPIRE_IN_SECONDS = 600;
     private static final int APP_TOKEN_EXPIRE_IN_SECONDS = 10;
 
-    private static final Logger log = LoggerFactory.getLogger(AgoraTokenProvider.class);
     protected EMService service;
 
     String realm = System.getenv("IM_REALM");
@@ -102,7 +101,6 @@ public class AgoraTokenIT {
                     .map(buf -> service.getContext().getCodec().decode(buf, UserGetResponse.class))
                     .block(Utilities.IT_TIMEOUT)
                     .getEMUser(bobUserName);
-            log.debug("bobUser = {}", bobUser.toString());
         });
 
         // With an Easemob User Token you are able to GET the token owner
@@ -117,7 +115,6 @@ public class AgoraTokenIT {
                     .map(buf -> service.getContext().getCodec().decode(buf, UserGetResponse.class))
                     .block(Utilities.IT_TIMEOUT)
                     .getEMUser(aliceUserName);
-            log.debug("aliceUser = {}", aliceUserFetchedWithHerToken.toString());
         });
 
         service.user().delete(aliceUserName).block(IT_TIMEOUT);

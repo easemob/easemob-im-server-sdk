@@ -16,6 +16,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 封禁API，提供封禁相关的功能。
@@ -348,6 +350,34 @@ public class BlockApi {
      */
     public Mono<Void> blockUserSendMsgToGroup(String username, String groupId, Duration duration) {
         return this.blockUserSendMsgToGroup.blockUser(username, groupId, duration);
+    }
+
+    /**
+     * 添加群禁言，支持同时禁言多个用户。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> usernames = new ArrayList<>();
+     *     usernames.add("user1");
+     *     usernames.add("user2");
+     *
+     *     service.block().blockUsersSendMsgToGroup(usernames, "groupId", Duration.ofMillis(6000)).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param usernames 被禁言的用户的用户名列表
+     * @param groupId  群id
+     * @param duration 禁言多长时间，为null则永久禁言
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80">添加禁言</a>
+     */
+    public Mono<Void> blockUsersSendMsgToGroup(List<String> usernames, String groupId, Duration duration) {
+        return this.blockUserSendMsgToGroup.blockUsers(usernames, groupId, duration);
     }
 
     /**

@@ -12,6 +12,7 @@ import com.easemob.im.server.api.user.password.UpdateUserPassword;
 import com.easemob.im.server.api.user.status.UserStatus;
 import com.easemob.im.server.api.user.unregister.DeleteUser;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
+import com.easemob.im.server.model.EMCreateUser;
 import com.easemob.im.server.model.EMPage;
 import com.easemob.im.server.model.EMUser;
 import com.easemob.im.server.model.EMUserStatus;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -56,6 +58,9 @@ public class UserApi {
     /**
      * 创建用户。
      * <p>
+     * Server SDK 对创建的用户名有自己的限制，如果不想使用该限制，请查看此文档：
+     * <a href="https://docs-im-beta.easemob.com/document/server-side/java_server_sdk.html#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">用户名限制</a>
+     * <p>
      * API使用示例：
      * <pre> {@code
      * EMService service;
@@ -82,6 +87,38 @@ public class UserApi {
             return Mono.error(e);
         }
         return this.createUser.single(username, password);
+    }
+
+    /**
+     * 批量创建用户。
+     * <p>
+     * Server SDK 对创建的用户名有自己的限制，如果不想使用该限制，请查看此文档：
+     * <a href="https://docs-im-beta.easemob.com/document/server-side/java_server_sdk.html#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">用户名限制</a>
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<EMCreateUser> createUsers = new ArrayList<>();
+     *     EMCreateUser createUser1 = new EMCreateUser("user1", "123456");
+     *     EMCreateUser createUser2 = new EMCreateUser("user2", "123456");
+     *     createUsers.add(createUser1);
+     *     createUsers.add(createUser2);
+     *
+     *     List<EMUser> users = service.user().create(createUsers).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param createUsers 需要创建用户的列表，EMCreateUser中包含用户名以及密码，用户名可以包含小写字母、数字、减号，有效长度1至32个字节
+     *                    密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;*-_=+&lt;&gt;;:,./?)，有效长度1至32字节
+     * @return EMUser
+     * @see <a href="https://docs-im-beta.easemob.com/document/server-side/account_system.html#%E6%89%B9%E9%87%8F%E6%B3%A8%E5%86%8C%E7%94%A8%E6%88%B7">批量注册用户</a>
+     */
+    public Mono<List<EMUser>> create(List<EMCreateUser> createUsers) {
+        return this.createUser.batch(createUsers);
     }
 
     /**
