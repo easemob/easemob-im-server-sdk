@@ -384,4 +384,12 @@ class UserIT extends AbstractIT {
         });
     }
 
+    @Test
+    void testGenerateDynamicToken() {
+        String randomUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> {
+            String token = service.token().buildDynamicToken(randomUsername, 600L);
+        });
+    }
+
 }

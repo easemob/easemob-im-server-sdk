@@ -3,21 +3,20 @@ package com.easemob.im.server.api.token;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.token.agora.AccessToken2;
-import com.easemob.im.server.api.token.allocate.InheritTokenRequest;
-import com.easemob.im.server.api.token.allocate.TokenRequest;
-import com.easemob.im.server.api.token.allocate.TokenResponse;
-import com.easemob.im.server.api.token.allocate.UserTokenRequest;
+import com.easemob.im.server.api.token.allocate.*;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMForbiddenException;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMInvalidStateException;
 import com.easemob.im.server.exception.EMNotImplementedException;
 import com.easemob.im.server.model.EMUser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -143,6 +142,15 @@ public class TokenApi {
         }
     }
 
+    /**
+     * 获取 User Token
+     * <p>
+     *     该方法与 {@link #getUserToken(EMUser, Integer, Consumer, String)} 的区别是该方法获取token
+     *     需要使用app级别的token来获取 user token , 只需要传入username即可
+     * </p>
+     * @param username 用户名
+     * @return user token
+     */
     public String getUserTokenWithInherit(String username) {
         if (username == null || username.isEmpty()) {
             throw new EMInvalidArgumentException("user cannot be null");
@@ -155,6 +163,34 @@ public class TokenApi {
             return fetchUserTokenWithEasemobRealm(this.context,
                     InheritTokenRequest.of(username, true))
                     .map(Token::getValue).block(Utilities.IT_TIMEOUT);
+        } else {
+            throw new EMInvalidStateException(String.format("invalid realm value %s", realm));
+        }
+    }
+
+    /**
+     * 服务端本地生成 user token
+     * <p>
+     *     dynamicToken 是环信服务端新支持的一种token，目前只允许生成user级别的token，不支持app级别的token
+     *     dynamicToken 的权限和普通的user token一样，不需要再调用环信的接口来获取user token
+     * </p>
+     *
+     * @param username 用户名
+     * @param ttl      token有效时间
+     * @return token
+     */
+    public String buildDynamicToken(String username, Long ttl)
+            throws NoSuchAlgorithmException, JsonProcessingException {
+        EMProperties properties = context.getProperties();
+        EMProperties.Realm realm = properties.getRealm();
+        if (realm.equals(EMProperties.Realm.AGORA_REALM)) {
+            throw new EMNotImplementedException("build dynamic token with agora realm not implemented");
+        } else if (realm.equals(EMProperties.Realm.EASEMOB_REALM)) {
+            String clientId = properties.getClientId();
+            String clientSecret = properties.getClientSecret();
+            String appkey = properties.getAppkey();
+            return DynamicTokenGenerator.generateToken(clientId, clientSecret, appkey, username,
+                    ttl);
         } else {
             throw new EMInvalidStateException(String.format("invalid realm value %s", realm));
         }
