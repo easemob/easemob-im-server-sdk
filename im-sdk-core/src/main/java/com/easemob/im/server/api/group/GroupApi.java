@@ -8,10 +8,7 @@ import com.easemob.im.server.api.group.announcement.GroupAnnouncement;
 import com.easemob.im.server.api.group.create.CreateGroup;
 import com.easemob.im.server.api.group.delete.DeleteGroup;
 import com.easemob.im.server.api.group.get.GetGroup;
-import com.easemob.im.server.api.group.list.GroupList;
-import com.easemob.im.server.api.group.list.GroupListResponse;
-import com.easemob.im.server.api.group.list.GroupResource;
-import com.easemob.im.server.api.group.list.JoinGroupResource;
+import com.easemob.im.server.api.group.list.*;
 import com.easemob.im.server.api.group.member.add.GroupMemberAdd;
 import com.easemob.im.server.api.group.member.list.GroupMemberList;
 import com.easemob.im.server.api.group.member.remove.GroupMemberRemove;
@@ -26,6 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -82,17 +80,6 @@ public class GroupApi {
      * members.add("userA");
      * try {
      *     String groupId = service.group().createPublicGroup("owner", "groupName", "description", members, 200, true).block();
-     * } catch (EMException e) {
-     *     e.getErrorCode();
-     *     e.getMessage();
-     * }
-     * }</pre>
-     *
-     * <pre>{@code
-     * EMService service;
-     * try {
-     *     // 修改群组API，允许成员邀请其他用户加入
-     *     service.group().updateSetting("group-id", settings -> settings.memberCanInvite(true)).block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -676,6 +663,32 @@ public class GroupApi {
     }
 
     /**
+     * 获取多个群详情。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> groupIdList = new ArrayList<>();
+     *     groupIdList.add("193100825821185");
+     *     groupIdList.add("193100825821186");
+     *
+     *     List<EMGroup> groupList = service.group().getGroupList(groupIdList).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupIdList 群id列表
+     * @return 群详情或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E8%AF%A6%E6%83%85">获取群详情</a>
+     */
+    public Mono<List<EMGroup>> getGroupList(List<String> groupIdList) {
+        return this.getGroup.execute(groupIdList);
+    }
+
+    /**
      * 修改群详情。
      * <p>
      * 支持修改的参数见{@code GroupSettingsUpdateRequest}
@@ -686,7 +699,7 @@ public class GroupApi {
      * <pre>{@code
      * EMService service;
      * try {
-     *     service.group().updateSettings("1", settings -> settings.maxMembers(100)).block();
+     *     service.group().updateGroup("1", settings -> settings.maxMembers(100)).block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -772,7 +785,7 @@ public class GroupApi {
     }
 
     /**
-     * 获取群全部成员。
+     * 获取群全部成员，不包括群组的 Owner。
      * <p>
      * API使用示例：
      * <pre> {@code
@@ -794,7 +807,7 @@ public class GroupApi {
     }
 
     /**
-     * 获取群全部成员。
+     * 获取群全部成员，不包括群组的 Owner。
      * <p>
      * API使用示例：
      * <pre> {@code
@@ -814,6 +827,65 @@ public class GroupApi {
      */
     public Flux<String> listAllGroupMembers(String groupId, String sort) {
         return this.groupMemberList.all(groupId, 20, sort);
+    }
+
+    /**
+     * 获取群全部成员，包括群组的 Owner。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<Map<String, String>> members = service.group().listAllGroupMembersIncludeOwner("groupId", "asc").collectList().block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId 群id
+     * @param sort asc:根据加入顺序升序排序  desc:根据加入顺序降序排序
+     * @return 每个群成员或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
+     */
+    public Flux<Map<String, String>> listAllGroupMembersIncludeOwner(String groupId, String sort) {
+        return this.groupMemberList.allIncludeOwner(groupId, 20, sort);
+    }
+
+    /**
+     * 分页获取群组成员列表，包括群组的 Owner。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * EMPage<String> page = null;
+     * try {
+     *     List<Map<String, String>> members = service.room().listGroupMembersIncludeOwner(groupId, 1, 10, asc).block();
+     *     System.out.println("群组成员列表:" + members);
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *}</pre>
+     *
+     * @param groupId 群组id
+     * @param pageNum  当前页码。默认从第 1 页开始获取
+     * @param pageSize 每页期望返回的群组成员数量。取值范围为[1,100]。默认为 10。
+     * @param sort asc:根据加入顺序升序排序  desc:根据加入顺序降序排序
+     * @return 获取聊天室成员响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%86%E9%A1%B5%E8%8E%B7%E5%8F%96%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98">获取群成员</a>
+     */
+    public Mono<List<Map<String, String>>> listGroupMembersIncludeOwner(String groupId, int pageNum, int pageSize, String sort) {
+        if (pageNum < 1) {
+            pageNum = 1;
+        }
+
+        if (pageSize < 1) {
+            pageSize = 20;
+        }
+
+        return this.groupMemberList.nextIncludeOwner(groupId, pageNum, pageSize, sort).map(
+                ListGroupMembersResponse::getMembers);
     }
 
     /**
@@ -1003,7 +1075,7 @@ public class GroupApi {
      *     members.add("member1");
      *     members.add("member2");
      *
-     *     List<EMRemoveMember> removeMembers = service.group().removeGroupMembers("groupId", members).collectList().block();
+     *     List<EMRemoveMember> removeMembers = service.group().removeGroupMembers("groupId", members).block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();

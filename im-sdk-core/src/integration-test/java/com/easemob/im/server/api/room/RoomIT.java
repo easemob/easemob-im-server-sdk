@@ -519,26 +519,34 @@ public class RoomIT extends AbstractIT {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
 
-        String randomMemberUsername = Utilities.randomUserName();
+        String randomMemberUsername1 = Utilities.randomUserName();
+        String randomMemberUsername2 = Utilities.randomUserName();
         List<String> members = new ArrayList<>();
-        members.add(randomMemberUsername);
+        members.add(randomMemberUsername1);
+        members.add(randomMemberUsername2);
         assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername2, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
         String roomId = assertDoesNotThrow(() -> this.service.room()
                 .createRoom("chat room", "room description", randomOwnerUsername, members, 200)
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.block()
-                .blockUserSendMsgToRoom(randomMemberUsername, roomId, Duration.ofMillis(6000))
+                .blockUserSendMsgToRoom(members, roomId, Duration.ofMillis(6000))
                 .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.block().listUsersBlockedSendMsgToRoom(roomId)
-                .blockFirst(Utilities.IT_TIMEOUT));
+        List<EMBlock> blocks = assertDoesNotThrow(() -> this.service.block().listUsersBlockedSendMsgToRoom(roomId)
+                .collectList()
+                .block(Utilities.IT_TIMEOUT));
+        assertEquals(blocks.size(), 2);
         assertDoesNotThrow(
                 () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername2)
                 .block(Utilities.IT_TIMEOUT));
     }
 
@@ -606,6 +614,46 @@ public class RoomIT extends AbstractIT {
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testRoomUnblockUsersSendMsg() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername1 = Utilities.randomUserName();
+        String randomMemberUsername2 = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername1);
+        members.add(randomMemberUsername2);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername1, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername2, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String roomId = assertDoesNotThrow(() -> this.service.room()
+                .createRoom("chat room", "room description", randomOwnerUsername, members, 200)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.block()
+                .blockUserSendMsgToRoom(members, roomId, Duration.ofMillis(6000))
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.block().unblockUserSendMsgToRoom(members, roomId)
+                        .block(Utilities.IT_TIMEOUT));
+
+        List<EMBlock> blocks = assertDoesNotThrow(
+                () -> this.service.block().listUsersBlockedSendMsgToRoom(roomId).collectList()
+                        .block(Utilities.IT_TIMEOUT));
+        assertEquals(blocks.size(), 0);
+        assertDoesNotThrow(
+                () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername2)
                 .block(Utilities.IT_TIMEOUT));
     }
 

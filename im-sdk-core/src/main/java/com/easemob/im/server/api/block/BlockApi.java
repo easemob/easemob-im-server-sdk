@@ -450,6 +450,32 @@ public class BlockApi {
     }
 
     /**
+     * 将多个用户添加聊天室禁言。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> usernames = new ArrayList<>();
+     *     usernames.add("user1");
+     *     service.block().blockUserSendMsgToRoom(usernames, "roomId", Duration.ofMillis(6000)).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param usernames 被禁言的用户名列表
+     * @param roomId    聊天室id
+     * @param duration  禁言时长，为null则永久禁言
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E6%B7%BB%E5%8A%A0%E7%A6%81%E8%A8%80">添加禁言</a>
+     */
+    public Mono<Void> blockUserSendMsgToRoom(List<String> usernames, String roomId, Duration duration) {
+        return this.blockUserSendMsgToRoom.batch(usernames, roomId, duration);
+    }
+
+    /**
      * 解除聊天室禁言。
      * <p>
      * API使用示例：
@@ -463,13 +489,38 @@ public class BlockApi {
      * }
      * }</pre>
      *
-     * @param username 被禁言的用户的用户名
+     * @param username 被解除禁言的用户的用户名
      * @param roomId   聊天室id
      * @return 成功或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E7%A6%81%E8%A8%80">移除禁言</a>
      */
     public Mono<Void> unblockUserSendMsgToRoom(String username, String roomId) {
         return this.unblockUserSendMsgToRoom.single(username, roomId);
+    }
+
+    /**
+     * 将多个用户解除聊天室禁言。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> usernames = new ArrayList<>();
+     *     usernames.add("user1");
+     *     service.block().unblockUserSendMsgToRoom(usernames, "roomId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param usernames 被解除禁言的用户名列表
+     * @param roomId    聊天室id
+     * @return 成功或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/chatroom#%E7%A7%BB%E9%99%A4%E7%A6%81%E8%A8%80">移除禁言</a>
+     */
+    public Mono<Void> unblockUserSendMsgToRoom(List<String> usernames, String roomId) {
+        return this.unblockUserSendMsgToRoom.batch(usernames, roomId);
     }
 
     /**

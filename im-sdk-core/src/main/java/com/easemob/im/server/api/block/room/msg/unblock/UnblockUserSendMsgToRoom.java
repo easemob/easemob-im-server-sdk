@@ -1,8 +1,14 @@
 package com.easemob.im.server.api.block.room.msg.unblock;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.DefaultErrorMapper;
+import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMUnknownException;
 import reactor.core.publisher.Mono;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class UnblockUserSendMsgToRoom {
 
@@ -16,12 +22,15 @@ public class UnblockUserSendMsgToRoom {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatrooms/%s/mute/%s", roomId, username))
-                        .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf)))
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
+                )
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
                 .map(buf -> this.context.getCodec()
                         .decode(buf, UnblockUserSendMsgToRoomResponse.class))
                 .handle((rsp, sink) -> {
@@ -31,5 +40,35 @@ public class UnblockUserSendMsgToRoom {
                     }
                     sink.complete();
                 });
+    }
+
+    public Mono<Void> batch(List<String> usernames, String roomId) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.delete()
+                        .uri(String.format("/chatrooms/%s/mute/%s", roomId, join(usernames, ",")))
+                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
+                        )
+                .map(tuple2 -> {
+                    ErrorMapper mapper = new DefaultErrorMapper();
+                    mapper.statusCode(tuple2.getT1());
+                    mapper.checkError(tuple2.getT2());
+
+                    return tuple2.getT2();
+                })
+                .map(buf -> this.context.getCodec()
+                        .decode(buf, UnblockUserSendMsgToRoomResponse.class))
+                .then();
+    }
+
+    public static String join(Collection var0, String var1) {
+        StringBuffer var2 = new StringBuffer();
+
+        for(Iterator var3 = var0.iterator(); var3.hasNext(); var2.append((String)var3.next())) {
+            if (var2.length() != 0) {
+                var2.append(var1);
+            }
+        }
+
+        return var2.toString();
     }
 }
