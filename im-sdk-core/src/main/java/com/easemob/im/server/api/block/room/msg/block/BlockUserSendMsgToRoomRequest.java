@@ -28,4 +28,9 @@ public class BlockUserSendMsgToRoomRequest {
         return new BlockUserSendMsgToRoomRequest(usernames,
                 duration == null ? -1 : duration.toMillis());
     }
+
+    public static BlockUserSendMsgToRoomRequest of(List<String> usernames, Duration duration) {
+        return new BlockUserSendMsgToRoomRequest(usernames,
+                duration == null ? -1 : duration.toMillis());
+    }
 }

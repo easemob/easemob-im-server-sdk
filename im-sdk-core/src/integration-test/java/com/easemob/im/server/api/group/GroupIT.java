@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -397,6 +398,54 @@ public class GroupIT extends AbstractIT {
     }
 
     @Test
+    void testGroupListGet() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        String randomAdminUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        members.add(randomAdminUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomAdminUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId1 = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+
+        String groupId2 = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> {
+                    List<String> groupIdList = new ArrayList<>();
+                    groupIdList.add(groupId1);
+                    groupIdList.add(groupId2);
+                    List<EMGroup> emGroupList = this.service.group().getGroupList(groupIdList).block(Utilities.IT_TIMEOUT);
+                    emGroupList.forEach(emGroup -> {
+                        assertEquals(emGroup.getAffiliationsCount(), 3);
+                        assertNotNull(emGroup.getAffiliations());
+                        EMGroup.Affiliation affiliation = emGroup.getAffiliations();
+                        assertEquals(affiliation.getMembers().length, 2);
+                    });
+                });
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId1).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId2).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomAdminUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
     void testGroupGetWithCustom() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
@@ -576,6 +625,60 @@ public class GroupIT extends AbstractIT {
                         true).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.group().listAllGroupMembers(groupId)
                 .blockFirst(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testListAllGroupMembersIncludeOwner() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+        List<Map<String, String>> memberList = assertDoesNotThrow(() -> this.service.group().listAllGroupMembersIncludeOwner(groupId, "asc")
+                .collectList().block(Utilities.IT_TIMEOUT));
+        assertEquals(memberList.size(), 2);
+
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testListGroupMembersIncludeOwner() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+        List<Map<String, String>> memberList = assertDoesNotThrow(() -> this.service.group().listGroupMembersIncludeOwner(groupId, 0, 1, "asc")
+                .block(Utilities.IT_TIMEOUT));
+        assertEquals(memberList.size(), 1);
+
         assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
