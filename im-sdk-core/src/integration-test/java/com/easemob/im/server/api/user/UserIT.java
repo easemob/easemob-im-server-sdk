@@ -415,4 +415,19 @@ class UserIT extends AbstractIT {
         });
     }
 
+    @Test
+    public void testGetUserTokenTtlWithInherit() throws Exception {
+        String randomUsername = Utilities.randomUserName();
+        // notice the deprecated stuff
+        assertDoesNotThrow(() -> {
+            service.token().getUserTokenWithInherit(randomUsername, 1000);
+        });
+        assertDoesNotThrow(() -> {
+            service.user().get(randomUsername).block(Utilities.IT_TIMEOUT);
+        });
+        assertDoesNotThrow(() -> {
+            service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT);
+        });
+    }
+
 }

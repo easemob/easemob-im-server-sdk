@@ -57,6 +57,7 @@ public class EMProperties {
      * @param serverTimezone serverTimezone
      * @param httpConnectionMaxIdleTime httpConnectionMaxIdleTime
      * @param nettyWorkerCount nettyWorkerCount
+     * @param pendingAcquireMaxCount pendingAcquireMaxCount
      * @deprecated use {@link #builder()} instead.
      */
     @Deprecated
