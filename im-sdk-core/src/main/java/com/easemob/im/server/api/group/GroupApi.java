@@ -222,6 +222,7 @@ public class GroupApi {
      * }
      * }</pre>
      *
+     * @param groupId           群组id
      * @param owner             群主的用户名
      * @param groupName         群名，最大长度为 128 字符
      * @param description       群介绍，最大长度为 512 字符
