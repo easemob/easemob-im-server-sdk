@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class MessageSendTest extends AbstractApiTest {
 
-    MessageSend messageSend = new MessageSend(context);
+    MessageSend messageSend = new MessageSend(this.context);
 
     MessageSendTest(){
         this.server
@@ -26,7 +26,7 @@ public class MessageSendTest extends AbstractApiTest {
         System.out.println("send msg request:");
         System.out.println(jsonNode.toPrettyString());
 
-        JsonNode targets = jsonNode.get("target");
+        JsonNode targets = jsonNode.get("to");
 
         ObjectNode messageIdsByReceiverId = this.objectMapper.createObjectNode();
         for (int i = 0; i < targets.size(); i++) {
@@ -45,7 +45,7 @@ public class MessageSendTest extends AbstractApiTest {
                 .text(msg -> msg.text("hello"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Utilities.UT_TIMEOUT));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class MessageSendTest extends AbstractApiTest {
                         .width(200.000))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Utilities.UT_TIMEOUT));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class MessageSendTest extends AbstractApiTest {
                 .voice(msg -> msg.uri(URI.create("http://example/voice.amr")).duration(18))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Utilities.UT_TIMEOUT));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class MessageSendTest extends AbstractApiTest {
                 .video(msg -> msg.uri(URI.create("http://example/video.mp4")).duration(18))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Utilities.UT_TIMEOUT));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class MessageSendTest extends AbstractApiTest {
                 .location(msg -> msg.latitude(1.234567).longitude(1.234567).address("some where"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Utilities.UT_TIMEOUT));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class MessageSendTest extends AbstractApiTest {
                 .command(msg -> msg.action("run").param("name", "rabbit"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Utilities.UT_TIMEOUT));
+                .block(Utilities.IT_TIMEOUT));
     }
 
     @Test
@@ -100,6 +100,6 @@ public class MessageSendTest extends AbstractApiTest {
                 .custom(msg -> msg.customEvent("liked").customExtension("name", "forest"))
                 .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
                 .send()
-                .block(Utilities.UT_TIMEOUT));
+                .block(Utilities.IT_TIMEOUT));
     }
 }

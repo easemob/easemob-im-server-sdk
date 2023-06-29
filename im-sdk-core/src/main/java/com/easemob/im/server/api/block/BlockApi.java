@@ -2,7 +2,9 @@ package com.easemob.im.server.api.block;
 
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.block.group.join.BlockUserJoinGroup;
+import com.easemob.im.server.api.block.group.msg.BlockAllUserSendMsgToGroup;
 import com.easemob.im.server.api.block.group.msg.BlockUserSendMsgToGroup;
+import com.easemob.im.server.api.block.group.msg.UnblockAllUserSendMsgToGroup;
 import com.easemob.im.server.api.block.login.BlockUserLogin;
 import com.easemob.im.server.api.block.room.join.BlockUserJoinRoom;
 import com.easemob.im.server.api.block.room.msg.block.BlockAllUserSendMsgToRoom;
@@ -44,6 +46,10 @@ public class BlockApi {
 
     private BlockAllUserSendMsgToRoom blockAllUserSendMsgToRoom;
 
+    private UnblockAllUserSendMsgToGroup unblockAllUserSendMsgToGroup;
+
+    private BlockAllUserSendMsgToGroup blockAllUserSendMsgToGroup;
+
     public BlockApi(Context context) {
         this.sendMsgToUser = new SendMsgToUser(context);
         this.blockUserLogin = new BlockUserLogin(context);
@@ -55,6 +61,8 @@ public class BlockApi {
         this.listUsersBlockedSendMsgToRoom = new ListUsersBlockedSendMsgToRoom(context);
         this.unblockAllUserSendMsgToRoom = new UnblockAllUserSendMsgToRoom(context);
         this.blockAllUserSendMsgToRoom = new BlockAllUserSendMsgToRoom(context);
+        this.unblockAllUserSendMsgToGroup = new UnblockAllUserSendMsgToGroup(context);
+        this.blockAllUserSendMsgToGroup = new BlockAllUserSendMsgToGroup(context);
     }
 
     /**
@@ -401,6 +409,50 @@ public class BlockApi {
      */
     public Mono<Void> unblockUserSendMsgToGroup(String username, String groupId) {
         return this.blockUserSendMsgToGroup.unblockUser(username, groupId);
+    }
+
+    /**
+     * 解除群组全员禁言。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().unblockAllUserSendMsgToGroup("groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId   群组id
+     * @return 成功或错误
+     * @see <a href="http://docs-im-beta.easemob.com/document/server-side/group.html#%E8%A7%A3%E9%99%A4%E6%88%90%E5%91%98%E7%A6%81%E8%A8%80">解除群组全员禁言</a>
+     */
+    public Mono<Void> unblockAllUserSendMsgToGroup(String groupId) {
+        return this.unblockAllUserSendMsgToGroup.single(groupId);
+    }
+
+    /**
+     * 禁言群组全体成员。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.block().blockAllUserSendMsgToGroup("groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId   群组id
+     * @return 成功或错误
+     * @see <a href="http://docs-im-beta.easemob.com/document/server-side/group.html#%E7%A6%81%E8%A8%80%E5%85%A8%E4%BD%93%E7%BE%A4%E6%88%90%E5%91%98">禁言群组全体成员</a>
+     */
+    public Mono<Void> blockAllUserSendMsgToGroup(String groupId) {
+        return this.blockAllUserSendMsgToGroup.single(groupId);
     }
 
     /**

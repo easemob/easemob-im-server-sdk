@@ -1,6 +1,9 @@
 package com.easemob.im.server.api.metadata;
 
 import com.easemob.im.server.api.Context;
+import com.easemob.im.server.api.metadata.chatgroup.get.ChatGroupMetadataBatchGet;
+import com.easemob.im.server.api.metadata.chatgroup.get.ChatGroupMetadataGet;
+import com.easemob.im.server.api.metadata.chatgroup.set.ChatGroupMetadataSet;
 import com.easemob.im.server.api.metadata.chatroom.AutoDelete;
 import com.easemob.im.server.api.metadata.chatroom.delete.ChatRoomMetadataDelete;
 import com.easemob.im.server.api.metadata.chatroom.delete.ChatRoomMetadataDeleteResponse;
@@ -23,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用户、聊天室属性API。
+ * 用户、群组、聊天室属性API。
  */
 public class MetadataApi {
 
@@ -37,6 +40,12 @@ public class MetadataApi {
 
     private MetadataDelete metadataDelete;
 
+    private ChatGroupMetadataGet chatGroupMetadataGet;
+
+    private ChatGroupMetadataBatchGet chatGroupMetadataBatchGet;
+
+    private ChatGroupMetadataSet chatGroupMetadataSet;
+
     private ChatRoomMetadataSet chatRoomMetadataSet;
 
     private ChatRoomMetadataGet chatRoomMetadataGet;
@@ -48,6 +57,9 @@ public class MetadataApi {
         this.metadataGet = new MetadataGet(context);
         this.metadataBatchGet = new MetadataBatchGet(context);
         this.metadataUsage = new MetadataUsage(context);
+        this.chatGroupMetadataGet = new ChatGroupMetadataGet(context);
+        this.chatGroupMetadataBatchGet = new ChatGroupMetadataBatchGet(context);
+        this.chatGroupMetadataSet = new ChatGroupMetadataSet(context);
         this.metadataDelete = new MetadataDelete(context);
         this.chatRoomMetadataSet=new ChatRoomMetadataSet(context);
         this.chatRoomMetadataGet=new ChatRoomMetadataGet(context);
@@ -350,6 +362,99 @@ public class MetadataApi {
     public Mono<ChatRoomMetadataDeleteResponse> deleteChatRoomMetadataForced(String chatroomId,
             List<String> keys) {
         return this.chatRoomMetadataDelete.fromChatRoomForced(chatroomId, keys);
+    }
+
+    /**
+     * 设置群成员自定义属性
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * Map<String, String> map = new HashMap<>();
+     * map.put("nickname", "昵称");
+     * map.put("avatarurl", "http://www.easemob.com/avatar.png");
+     * map.put("phone", "159");
+     *
+     * try {
+     *     service.metadata().setMetadataToChatGroup("username", "groupId", map).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param username 要被设置群组属性的用户名
+     * @param groupId  要被设置群组属性的群组id
+     * @param metadata 要设置的属性
+     * @return 成功或错误
+     * @see <a href="http://docs-im-beta.easemob.com/document/server-side/group.html#%E8%AE%BE%E7%BD%AE%E7%BE%A4%E6%88%90%E5%91%98%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7">设置群成员自定义属性</a>
+     */
+    public Mono<Void> setMetadataToChatGroupUser(String username, String groupId, Map<String, String> metadata) {
+        return this.chatGroupMetadataSet.toChatGroupUser(username, groupId, metadata);
+    }
+
+    /**
+     * 获取单个群成员的所有自定义属性
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * try {
+     *     EMMetadata userMetadata = service.metadata().getMetadataFromChatGroup("username", "groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param username 要获取的用户名
+     * @param groupId  要获取的群组id
+     * @return 返回获取到的群组用户属性
+     * @see <a href="http://docs-im-beta.easemob.com/document/server-side/group.html#%E8%8E%B7%E5%8F%96%E5%8D%95%E4%B8%AA%E7%BE%A4%E6%88%90%E5%91%98%E7%9A%84%E6%89%80%E6%9C%89%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7">获取单个群成员的所有自定义属性</a>
+     */
+    public Mono<EMMetadata> getMetadataFromChatGroupUser(String username, String groupId) {
+        return this.chatGroupMetadataGet.fromChatGroupUser(username, groupId);
+    }
+
+    /**
+     * 根据属性 key 获取多个群成员的自定义属性
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * List<String> targets = new ArrayList<>();
+     * targets.add("user1");
+     * targets.add("user2");
+     *
+     * List<String> properties = new ArrayList<>();
+     * properties.add("nickname");
+     *
+     * try {
+     *     EMMetadataBatch metadataBatch = service.metadata().getMetadataFromUsers("groupId", targets, properties).block();
+     *     metadataBatch.getData();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId 群组id
+     * @param targets 要获取自定义属性的群成员的用户 ID。一次最多可传 10 个用户 ID。
+     * @param properties 要获取自定义属性的 key 的数组。若该参数设置为空数组或不传，则获取这些群成员的所有自定义属性。
+     * @return 返回获取到的用户属性列表
+     * @see <a href="http://docs-im-beta.easemob.com/document/server-side/group.html#%E6%A0%B9%E6%8D%AE%E5%B1%9E%E6%80%A7-key-%E8%8E%B7%E5%8F%96%E5%A4%9A%E4%B8%AA%E7%BE%A4%E6%88%90%E5%91%98%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7">根据属性 key 获取多个群成员的自定义属性</a>
+     */
+    public Mono<EMMetadataBatch> getMetadataFromChatGroupUsers(String groupId, List<String> targets, List<String> properties) {
+        if (targets == null || targets.isEmpty() || targets.size() > 10) {
+            return Mono.error(new EMInvalidArgumentException("targets is illegal"));
+        }
+
+        if (properties == null || properties.isEmpty()) {
+            return Mono.error(new EMInvalidArgumentException("properties is illegal"));
+        }
+
+        return this.chatGroupMetadataBatchGet.fromChatGroupUsers(groupId, targets, properties);
     }
 
 }

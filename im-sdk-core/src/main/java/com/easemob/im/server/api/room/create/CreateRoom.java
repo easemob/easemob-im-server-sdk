@@ -26,14 +26,16 @@ public class CreateRoom {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(CreateRoomRequest
                                         .of(name, description, owner, members, maxMembers)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .map(byteBuf -> {
                     CreateRoomResponse
                             createRoomResponse = this.context.getCodec()
@@ -51,14 +53,16 @@ public class CreateRoom {
                                 .encode(CreateRoomRequest
                                         .of(name, description, owner, members, maxMembers,
                                                 custom)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .map(byteBuf -> {
                     CreateRoomResponse
                             createRoomResponse = this.context.getCodec()
@@ -76,14 +80,16 @@ public class CreateRoom {
                                 .encode(CreateRoomRequest
                                         .of(name, description, owner, members, maxMembers, custom,
                                                 needVerify)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .map(byteBuf -> {
                     CreateRoomResponse
                             createRoomResponse = this.context.getCodec()

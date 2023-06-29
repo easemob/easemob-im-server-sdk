@@ -23,14 +23,17 @@ public class DeleteUser {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/users/%s", username))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    return buf.switchIfEmpty(
+                                                    Mono.error(new EMUnknownException("response is null")))
+                                            .flatMap(byteBuf -> {
+                                                ErrorMapper mapper = new DefaultErrorMapper();
+                                                mapper.statusCode(rsp);
+                                                mapper.checkError(byteBuf);
+                                                return Mono.just(byteBuf);
+                                            });
+                                }))
                 .then();
     }
 
@@ -53,14 +56,17 @@ public class DeleteUser {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(uirString)
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    return buf.switchIfEmpty(
+                                                    Mono.error(new EMUnknownException("response is null")))
+                                            .flatMap(byteBuf -> {
+                                                ErrorMapper mapper = new DefaultErrorMapper();
+                                                mapper.statusCode(rsp);
+                                                mapper.checkError(byteBuf);
+                                                return Mono.just(byteBuf);
+                                            });
+                                }))
                 .map(byteBuf -> {
                     UserUnregisterResponse userUnregisterResponse =
                             this.context.getCodec().decode(byteBuf, UserUnregisterResponse.class);

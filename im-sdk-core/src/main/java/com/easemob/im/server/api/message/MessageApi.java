@@ -12,15 +12,18 @@ import com.easemob.im.server.api.message.recall.RecallMessageSource;
 import com.easemob.im.server.api.message.send.SendMessage;
 import com.easemob.im.server.api.message.status.MessageStatus;
 import com.easemob.im.server.api.message.upload.ImportMessage;
+import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMKeyValue;
 import com.easemob.im.server.model.EMMessage;
 import com.easemob.im.server.model.EMSentMessageIds;
 import com.easemob.im.server.model.EMSentMessageResults;
+import io.github.resilience4j.core.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -258,7 +261,7 @@ public class MessageApi {
     @Deprecated
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions) {
-        return this.sendMessage.send(from, toType, tos, message, extensions);
+        return this.sendMessage.send(from, toType, checkTos(tos), message, extensions);
     }
 
     /**
@@ -322,8 +325,8 @@ public class MessageApi {
      * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
      */
     public Mono<EMSentMessageIds> sendMsg(String from, String toType, Set<String> tos,
-            EMMessage message, Set<EMKeyValue> extensions){
-        return this.messageSend.send(from, toType, tos, message, extensions);
+            EMMessage message, Set<EMKeyValue> extensions) {
+        return this.messageSend.send(from, toType, checkTos(tos), message, extensions);
     }
 
     /**
@@ -389,7 +392,7 @@ public class MessageApi {
     @Deprecated
     public Mono<EMSentMessageResults> sendWithoutMsgId(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions) {
-        return this.sendMessage.sendWithoutMsgId(from, toType, tos, message, extensions);
+        return this.sendMessage.sendWithoutMsgId(from, toType, checkTos(tos), message, extensions);
     }
 
     /**
@@ -405,7 +408,7 @@ public class MessageApi {
      */
     public Mono<EMSentMessageIds> sendMessageToLargeChatroom(String from, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions) {
-        return this.sendMessage.sendMessageToLargeChatroom(from, tos, message, extensions);
+        return this.sendMessage.sendMessageToLargeChatroom(from, checkTos(tos), message, extensions);
     }
 
     /**
@@ -421,7 +424,7 @@ public class MessageApi {
      */
     public Mono<EMSentMessageIds> sendMessageToSmallChatroom(String from, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions) {
-        return this.sendMessage.sendMessageToSmallChatroom(from, tos, message, extensions);
+        return this.sendMessage.sendMessageToSmallChatroom(from, checkTos(tos), message, extensions);
     }
 
     /**
@@ -486,7 +489,7 @@ public class MessageApi {
     @Deprecated
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
                                        EMMessage message, Set<EMKeyValue> extensions, String routeType) {
-        return this.sendMessage.send(from, toType, tos, message, extensions, routeType);
+        return this.sendMessage.send(from, toType, checkTos(tos), message, extensions, routeType);
     }
     /**
      * 发送消息（只投递在线消息）。
@@ -549,7 +552,7 @@ public class MessageApi {
      */
     public Mono<EMSentMessageIds> sendMsg(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, String routeType) {
-        return this.messageSend.send(from, toType, tos, message, extensions, routeType);
+        return this.messageSend.send(from, toType, checkTos(tos), message, extensions, routeType);
     }
 
     /**
@@ -614,7 +617,7 @@ public class MessageApi {
     @Deprecated
     public Mono<EMSentMessageResults> sendWithoutMsgId(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, String routeType) {
-        return this.sendMessage.sendWithoutMsgId(from, toType, tos, message, extensions, routeType);
+        return this.sendMessage.sendWithoutMsgId(from, toType, checkTos(tos), message, extensions, routeType);
     }
 
     /**
@@ -679,7 +682,7 @@ public class MessageApi {
     @Deprecated
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, Boolean syncDevice) {
-        return this.sendMessage.send(from, toType, tos, message, extensions, syncDevice);
+        return this.sendMessage.send(from, toType, checkTos(tos), message, extensions, syncDevice);
     }
 
     /**
@@ -743,7 +746,7 @@ public class MessageApi {
      */
     public Mono<EMSentMessageIds> sendMsg(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, Boolean syncDevice) {
-        return this.messageSend.send(from, toType, tos, message, extensions, syncDevice);
+        return this.messageSend.send(from, toType, checkTos(tos), message, extensions, syncDevice);
     }
 
     /**
@@ -808,7 +811,7 @@ public class MessageApi {
     @Deprecated
     public Mono<EMSentMessageResults> sendWithoutMsgId(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, Boolean syncDevice) {
-        return this.sendMessage.sendWithoutMsgId(from, toType, tos, message, extensions, syncDevice);
+        return this.sendMessage.sendWithoutMsgId(from, toType, checkTos(tos), message, extensions, syncDevice);
     }
 
     /**
@@ -874,7 +877,7 @@ public class MessageApi {
     @Deprecated
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, String routeType, Boolean syncDevice) {
-        return this.sendMessage.send(from, toType, tos, message, extensions, routeType, syncDevice);
+        return this.sendMessage.send(from, toType, checkTos(tos), message, extensions, routeType, syncDevice);
     }
 
     /**
@@ -939,7 +942,7 @@ public class MessageApi {
      */
     public Mono<EMSentMessageIds> sendMsg(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, String routeType, Boolean syncDevice) {
-        return this.messageSend.send(from, toType, tos, message, extensions, routeType, syncDevice);
+        return this.messageSend.send(from, toType, checkTos(tos), message, extensions, routeType, syncDevice);
     }
 
     /**
@@ -1005,7 +1008,7 @@ public class MessageApi {
     @Deprecated
     public Mono<EMSentMessageResults> sendWithoutMsgId(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, String routeType, Boolean syncDevice) {
-        return this.sendMessage.sendWithoutMsgId(from, toType, tos, message, extensions, routeType, syncDevice);
+        return this.sendMessage.sendWithoutMsgId(from, toType, checkTos(tos), message, extensions, routeType, syncDevice);
     }
 
     /**
@@ -1269,5 +1272,24 @@ public class MessageApi {
             Long msgTimestamp, Boolean needDownload) {
         return this.importMessage.importChatGroupMessage(from, to, message, extensions, isAckRead,
                 msgTimestamp, needDownload);
+    }
+
+    private Set<String> checkTos(Set<String> tos) {
+        if (tos == null || tos.isEmpty()) {
+            throw new EMInvalidArgumentException("tos must not be null or empty");
+        }
+
+        Set<String> usernames = new HashSet<>();
+        tos.forEach(to -> {
+            if (StringUtils.isNotEmpty(to)) {
+                usernames.add(to);
+            }
+        });
+
+        if (tos.isEmpty()) {
+            throw new EMInvalidArgumentException("tos must not be null or empty");
+        }
+
+        return usernames;
     }
 }
