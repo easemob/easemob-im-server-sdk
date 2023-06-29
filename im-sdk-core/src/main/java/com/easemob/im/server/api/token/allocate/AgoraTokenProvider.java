@@ -9,6 +9,7 @@ import com.easemob.im.server.api.loadbalance.LoadBalancer;
 import com.easemob.im.server.api.token.Token;
 import com.easemob.im.server.api.token.agora.AccessToken2;
 import com.easemob.im.server.exception.EMInvalidStateException;
+import com.easemob.im.server.exception.EMUnknownException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -59,13 +60,15 @@ public class AgoraTokenProvider implements TokenProvider {
                 .post().uri("/token")
                 .send(Mono.create(sink -> sink
                         .success(codec.encode(ExchangeTokenRequest.getInstance()))))
-                .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
+                .responseSingle((rsp, buf) -> {
+                    return buf.switchIfEmpty(
+                                    Mono.error(new EMUnknownException("response is null")))
+                            .flatMap(byteBuf -> {
+                                ErrorMapper mapper = new DefaultErrorMapper();
+                                mapper.statusCode(rsp);
+                                mapper.checkError(byteBuf);
+                                return Mono.just(byteBuf);
+                            });
                 })
                 .map(buf -> codec.decode(buf, ExchangeTokenResponse.class))
                 .map(ExchangeTokenResponse::asToken);

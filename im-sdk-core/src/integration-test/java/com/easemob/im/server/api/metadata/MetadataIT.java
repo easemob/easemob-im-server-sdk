@@ -3,7 +3,9 @@ package com.easemob.im.server.api.metadata;
 import com.easemob.im.server.api.AbstractIT;
 import com.easemob.im.server.api.metadata.chatroom.AutoDelete;
 import com.easemob.im.server.api.util.Utilities;
+import com.easemob.im.server.model.EMMetadata;
 import com.easemob.im.server.model.EMMetadataBatch;
+import com.easemob.im.server.model.EMPage;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MetadataIT extends AbstractIT {
     public MetadataIT() {
@@ -20,7 +23,6 @@ public class MetadataIT extends AbstractIT {
 
     @Test
     public void testMetadataSet() {
-
 
         Map<String, String> map = new HashMap<>();
         map.put("nickname", "昵称");
@@ -238,6 +240,106 @@ public class MetadataIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
 
         assertDoesNotThrow(() -> this.service.metadata().listChatRoomMetadataAll(roomId)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    public void testChatGroupMetadataUserSetAndGet() {
+
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPublicGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+
+        Map<String, String> map = new HashMap<>();
+        map.put("nickname", "昵称");
+        map.put("avatar", "http://www.easemob.com/avatar.png");
+        map.put("phone", "159");
+
+        assertDoesNotThrow(() -> this.service.metadata().setMetadataToChatGroupUser(randomMemberUsername, groupId, map)
+                .block(Utilities.IT_TIMEOUT));
+
+        EMMetadata metadata = assertDoesNotThrow(() -> this.service.metadata().getMetadataFromChatGroupUser(randomMemberUsername, groupId)
+                .block(Utilities.IT_TIMEOUT));
+
+        System.out.println("metadata : " + metadata);
+
+        assertEquals("昵称", metadata.getData().get("nickname"));
+        assertEquals("http://www.easemob.com/avatar.png", metadata.getData().get("avatar"));
+        assertEquals("159", metadata.getData().get("phone"));
+
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    public void testChatGroupUsersMetadataBatchGet() {
+
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPublicGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+
+        Map<String, String> map = new HashMap<>();
+        map.put("nickname", "昵称");
+        map.put("avatar", "http://www.easemob.com/avatar.png");
+        map.put("phone", "159");
+
+        assertDoesNotThrow(() -> this.service.metadata().setMetadataToChatGroupUser(randomOwnerUsername, groupId, map)
+                .block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(() -> this.service.metadata().setMetadataToChatGroupUser(randomMemberUsername, groupId, map)
+                .block(Utilities.IT_TIMEOUT));
+
+        List<String> targets = new ArrayList<>();
+        targets.add(randomOwnerUsername);
+        targets.add(randomMemberUsername);
+
+        List<String> properties = new ArrayList<>();
+        properties.add("nickname");
+        properties.add("avatar");
+        properties.add("phone");
+
+        EMMetadataBatch metadataBatch = assertDoesNotThrow(() -> this.service.metadata().getMetadataFromChatGroupUsers(groupId, targets, properties)
+                .block(Utilities.IT_TIMEOUT));
+
+        System.out.println("metadataBatch : " + metadataBatch);
+
+        assertEquals("昵称", metadataBatch.getData().get(randomOwnerUsername).get("nickname"));
+        assertEquals("http://www.easemob.com/avatar.png", metadataBatch.getData().get(randomOwnerUsername).get("avatar"));
+        assertEquals("159", metadataBatch.getData().get(randomOwnerUsername).get("phone"));
+
+        assertEquals("昵称", metadataBatch.getData().get(randomMemberUsername).get("nickname"));
+        assertEquals("http://www.easemob.com/avatar.png", metadataBatch.getData().get(randomMemberUsername).get("avatar"));
+        assertEquals("159", metadataBatch.getData().get(randomMemberUsername).get("phone"));
+
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
                 .block(Utilities.IT_TIMEOUT));
     }
 

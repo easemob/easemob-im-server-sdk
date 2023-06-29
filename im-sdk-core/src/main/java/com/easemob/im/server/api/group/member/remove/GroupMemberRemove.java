@@ -4,6 +4,7 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMNotFoundException;
+import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.EMRemoveMember;
 import reactor.core.publisher.Mono;
 
@@ -22,16 +23,16 @@ public class GroupMemberRemove {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatgroups/%s/users/%s", groupId, username))
-                        .responseSingle(
-                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf))
-                )
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty())
                 .then();
     }
@@ -40,14 +41,18 @@ public class GroupMemberRemove {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.delete()
                         .uri(String.format("/chatgroups/%s/users/%s", groupId, convert(usernames)))
-                        .responseSingle(
-                                (rsp, buf) -> {
-                                    this.context.getErrorMapper().statusCode(rsp);
-                                    return buf;
-                                })
-                        .doOnNext(buf -> this.context.getErrorMapper().checkError(buf))
-                        .map(buf -> this.context.getCodec().decode(buf, GroupMemberRemoveResponse.class))
-                        .map(GroupMemberRemoveResponse::getMembers));
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(buf -> this.context.getCodec().decode(buf, GroupMemberRemoveResponse.class))
+                .map(GroupMemberRemoveResponse::getMembers);
     }
 
     private String convert(List<String> var0) {

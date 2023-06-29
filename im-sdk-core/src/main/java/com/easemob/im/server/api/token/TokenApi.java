@@ -7,10 +7,7 @@ import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.token.agora.AccessToken2;
 import com.easemob.im.server.api.token.allocate.*;
 import com.easemob.im.server.api.util.Utilities;
-import com.easemob.im.server.exception.EMForbiddenException;
-import com.easemob.im.server.exception.EMInvalidArgumentException;
-import com.easemob.im.server.exception.EMInvalidStateException;
-import com.easemob.im.server.exception.EMNotImplementedException;
+import com.easemob.im.server.exception.*;
 import com.easemob.im.server.model.EMUser;
 import io.netty.util.internal.StringUtil;
 import org.slf4j.Logger;
@@ -39,15 +36,16 @@ public class TokenApi {
                         .uri("/token")
                         .send(Mono.create(sink -> sink.success(context.getCodec()
                                 .encode(tokenRequest))))
-                        .responseSingle(
-                                (rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .map(buf -> context.getCodec().decode(buf, TokenResponse.class))
                 .map(TokenResponse::asToken);
     }

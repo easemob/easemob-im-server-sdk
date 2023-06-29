@@ -5,6 +5,7 @@ import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.message.send.SendMessageRequest;
 import com.easemob.im.server.api.message.send.SendMessageResponse;
+import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.*;
 import io.github.resilience4j.core.StringUtils;
 import reactor.core.publisher.Mono;
@@ -32,14 +33,16 @@ public class MessageSend {
                         .send(Mono.create(sink -> sink.success(context.getCodec()
                                 .encode(new MessageSendRequest(from, tos, message,
                                         MessageSendRequest.parseExtensions(extensions))))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse =
                             context.getCodec().decode(byteBuf, SendMessageResponse.class);
@@ -56,14 +59,16 @@ public class MessageSend {
                                 .encode(new MessageSendRequest(from, tos, message,
                                         SendMessageRequest.parseExtensions(extensions),
                                         routeType)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
@@ -80,14 +85,16 @@ public class MessageSend {
                                 .encode(new MessageSendRequest(from, tos, message,
                                         SendMessageRequest.parseExtensions(extensions),
                                         syncDevice)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
@@ -104,14 +111,16 @@ public class MessageSend {
                                 .encode(new MessageSendRequest(from, tos, message,
                                         MessageSendRequest.parseExtensions(extensions), routeType,
                                         syncDevice)))))
-                        .responseSingle((rsp, buf) -> Mono.zip(Mono.just(rsp), buf)))
-                .map(tuple2 -> {
-                    ErrorMapper mapper = new DefaultErrorMapper();
-                    mapper.statusCode(tuple2.getT1());
-                    mapper.checkError(tuple2.getT2());
-
-                    return tuple2.getT2();
-                })
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
