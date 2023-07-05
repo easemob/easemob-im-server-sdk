@@ -946,6 +946,56 @@ public class MessageApi {
     }
 
     /**
+     * 发送消息，支持设置聊天室消息优先级。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向聊天室发送一条带有扩展字段的图片消息
+     * Set<String> toChatRooms = new HashSet<>();
+     * toChatRooms.add("toChatroomId");
+     *
+     * EMImageMessage imageMessage =
+     *         new EMImageMessage().uri(URI.create("http://example/image.png")).secret("secret")
+     *                 .displayName("image.png");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     * exts.add(EMKeyValue.of("key1", 10));
+     * exts.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+     *     {
+     *         put("mkey1", "mvalue1");
+     *         put("mkey2", "mvalue2");
+     *     }
+     * }));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().sendMsg("fromUserName", "chatrooms", toChatRooms, imageMessage, exts, "ROUTE_ONLINE", true, ChatroomMsgLevel.NORMAL).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from             发送者用户名
+     * @param toType           目标类型，可以是 `users`, `chatgroups`, `chatrooms`
+     * @param tos              目标id列表
+     * @param message          要发送的消息
+     * @param extensions       要发送的扩展，可以为空
+     * @param routeType        只投递在线消息，请传入 `ROUTE_ONLINE`
+     * @param syncDevice       消息发送成功后，是否将消息同步到发送方，true：是同步给发送方，false：是不同给发送方
+     * @param chatroomMsgLevel 聊天室消息优先级: LOW-低优先级，NORMAL-普通优先级，HIGH-高优先级
+     * @return 发消息响应或错误
+     * @see <a href="http://docs-im.easemob.com/im/server/basics/messages">发送消息</a>
+     */
+    public Mono<EMSentMessageIds> sendMsg(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, String routeType, Boolean syncDevice, ChatroomMsgLevel chatroomMsgLevel) {
+        return this.messageSend.send(from, toType, checkTos(tos), message, extensions, routeType, syncDevice, chatroomMsgLevel);
+    }
+
+    /**
      * 发送消息，不返回消息 ID。将在后续版本中移除。
      * <p>
      * API使用示例：

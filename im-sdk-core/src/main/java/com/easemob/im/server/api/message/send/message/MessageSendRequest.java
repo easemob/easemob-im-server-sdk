@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.message.send.message;
 
+import com.easemob.im.server.api.message.ChatroomMsgLevel;
 import com.easemob.im.server.model.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,6 +37,9 @@ public class MessageSendRequest {
     @JsonProperty("sync_device")
     private Boolean syncDevice;
 
+    @JsonProperty("chatroom_msg_level")
+    private String chatroomMsgLevel;
+
     @JsonCreator
     public MessageSendRequest(@JsonProperty("from") String from,
             @JsonProperty("to") Set<String> toSet,
@@ -47,6 +51,21 @@ public class MessageSendRequest {
         this.msgType = send.type;
         this.body = send;
         this.extensions = extensions;
+    }
+
+    @JsonCreator
+    public MessageSendRequest(@JsonProperty("from") String from,
+            @JsonProperty("to") Set<String> toSet,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("chatroom_msg_level") ChatroomMsgLevel chatroomMsgLevel) {
+        this.from = from;
+        this.tos = toSet;
+        Message send = Message.of(message);
+        this.msgType = send.type;
+        this.body = send;
+        this.extensions = extensions;
+        this.chatroomMsgLevel = chatroomMsgLevel.getLevel();
     }
 
     @JsonCreator
@@ -69,6 +88,23 @@ public class MessageSendRequest {
             @JsonProperty("to") Set<String> toSet,
             @JsonProperty("msg") EMMessage message,
             @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("routetype") String routeType,
+            @JsonProperty("chatroom_msg_level") ChatroomMsgLevel chatroomMsgLevel) {
+        this.from = from;
+        this.tos = toSet;
+        Message send = Message.of(message);
+        this.msgType = send.type;
+        this.body = send;
+        this.extensions = extensions;
+        this.routeType = routeType;
+        this.chatroomMsgLevel = chatroomMsgLevel.getLevel();
+    }
+
+    @JsonCreator
+    public MessageSendRequest(@JsonProperty("from") String from,
+            @JsonProperty("to") Set<String> toSet,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("ext") Map<String, Object> extensions,
             @JsonProperty("sync_device") Boolean syncDevice) {
         this.from = from;
         this.tos = toSet;
@@ -77,6 +113,23 @@ public class MessageSendRequest {
         this.body = send;
         this.extensions = extensions;
         this.syncDevice = syncDevice;
+    }
+
+    @JsonCreator
+    public MessageSendRequest(@JsonProperty("from") String from,
+            @JsonProperty("to") Set<String> toSet,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("sync_device") Boolean syncDevice,
+            @JsonProperty("chatroom_msg_level") ChatroomMsgLevel chatroomMsgLevel) {
+        this.from = from;
+        this.tos = toSet;
+        Message send = Message.of(message);
+        this.msgType = send.type;
+        this.body = send;
+        this.extensions = extensions;
+        this.syncDevice = syncDevice;
+        this.chatroomMsgLevel = chatroomMsgLevel.getLevel();
     }
 
     @JsonCreator
@@ -94,6 +147,25 @@ public class MessageSendRequest {
         this.extensions = extensions;
         this.routeType = routeType;
         this.syncDevice = syncDevice;
+    }
+
+    @JsonCreator
+    public MessageSendRequest(@JsonProperty("from") String from,
+            @JsonProperty("to") Set<String> toSet,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("routetype") String routeType,
+            @JsonProperty("sync_device") Boolean syncDevice,
+            @JsonProperty("chatroom_msg_level") ChatroomMsgLevel chatroomMsgLevel) {
+        this.from = from;
+        this.tos = toSet;
+        Message send = Message.of(message);
+        this.msgType = send.type;
+        this.body = send;
+        this.extensions = extensions;
+        this.routeType = routeType;
+        this.syncDevice = syncDevice;
+        this.chatroomMsgLevel = chatroomMsgLevel.getLevel();
     }
 
     public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {
@@ -161,6 +233,10 @@ public class MessageSendRequest {
 
     public Boolean getSyncDevice() {
         return syncDevice;
+    }
+
+    public String getChatroomMsgLevel() {
+        return chatroomMsgLevel;
     }
 
     @SuppressWarnings("unchecked")

@@ -3,6 +3,7 @@ package com.easemob.im.server.api.message.send.message;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
+import com.easemob.im.server.api.message.ChatroomMsgLevel;
 import com.easemob.im.server.api.message.send.SendMessageRequest;
 import com.easemob.im.server.api.message.send.SendMessageResponse;
 import com.easemob.im.server.exception.EMUnknownException;
@@ -16,6 +17,8 @@ import java.util.function.Consumer;
 
 public class MessageSend {
     private final Context context;
+
+    private final static String CHAT_ROOMS = "chatrooms";
 
     public MessageSend(Context context) {
         this.context = context;
@@ -33,6 +36,31 @@ public class MessageSend {
                         .send(Mono.create(sink -> sink.success(context.getCodec()
                                 .encode(new MessageSendRequest(from, tos, message,
                                         MessageSendRequest.parseExtensions(extensions))))))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(byteBuf -> {
+                    SendMessageResponse sendMessageResponse =
+                            context.getCodec().decode(byteBuf, SendMessageResponse.class);
+                    return sendMessageResponse.toEMSentMessages();
+                });
+    }
+
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, ChatroomMsgLevel level) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/messages/" + toType)
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(new MessageSendRequest(from, tos, message,
+                                        MessageSendRequest.parseExtensions(extensions), level)))))
                         .responseSingle((rsp, buf) -> {
                             return buf.switchIfEmpty(
                                             Mono.error(new EMUnknownException("response is null")))
@@ -77,6 +105,32 @@ public class MessageSend {
     }
 
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, String routeType, ChatroomMsgLevel level) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/messages/" + toType)
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(new MessageSendRequest(from, tos, message,
+                                        SendMessageRequest.parseExtensions(extensions),
+                                        routeType, level)))))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(byteBuf -> {
+                    SendMessageResponse sendMessageResponse = context.getCodec()
+                            .decode(byteBuf, SendMessageResponse.class);
+                    return sendMessageResponse.toEMSentMessages();
+                });
+    }
+
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, Boolean syncDevice) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
@@ -103,6 +157,32 @@ public class MessageSend {
     }
 
     public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, Boolean syncDevice, ChatroomMsgLevel level) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/messages/" + toType)
+                        .send(Mono.create(sink -> sink.success(context.getCodec()
+                                .encode(new MessageSendRequest(from, tos, message,
+                                        SendMessageRequest.parseExtensions(extensions),
+                                        syncDevice, level)))))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(byteBuf -> {
+                    SendMessageResponse sendMessageResponse = context.getCodec()
+                            .decode(byteBuf, SendMessageResponse.class);
+                    return sendMessageResponse.toEMSentMessages();
+                });
+    }
+
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
             EMMessage message, Set<EMKeyValue> extensions, String routeType, Boolean syncDevice) {
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.post()
@@ -111,6 +191,41 @@ public class MessageSend {
                                 .encode(new MessageSendRequest(from, tos, message,
                                         MessageSendRequest.parseExtensions(extensions), routeType,
                                         syncDevice)))))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(byteBuf -> {
+                    SendMessageResponse sendMessageResponse = context.getCodec()
+                            .decode(byteBuf, SendMessageResponse.class);
+                    return sendMessageResponse.toEMSentMessages();
+                });
+    }
+
+    public Mono<EMSentMessageIds> send(String from, String toType, Set<String> tos,
+            EMMessage message, Set<EMKeyValue> extensions, String routeType, Boolean syncDevice, ChatroomMsgLevel level) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/messages/" + toType)
+                        .send(Mono.create(sink -> {
+                            if (CHAT_ROOMS.equalsIgnoreCase(toType)) {
+                                sink.success(context.getCodec()
+                                        .encode(new MessageSendRequest(from, tos, message,
+                                                MessageSendRequest.parseExtensions(extensions), routeType,
+                                                syncDevice, level)));
+                            }
+
+                            sink.success(context.getCodec()
+                                    .encode(new MessageSendRequest(from, tos, message,
+                                            MessageSendRequest.parseExtensions(extensions), routeType,
+                                            syncDevice)));
+                        }))
                         .responseSingle((rsp, buf) -> {
                             return buf.switchIfEmpty(
                                             Mono.error(new EMUnknownException("response is null")))
@@ -248,6 +363,8 @@ public class MessageSend {
 
         private Boolean syncDevice;
 
+        private ChatroomMsgLevel chatroomMsgLevel;
+
         SendSpec(String from, String toType, Set<String> tos, EMMessage message) {
             this.from = from;
             this.toType = toType;
@@ -282,6 +399,17 @@ public class MessageSend {
             this.syncDevice = syncDevice;
         }
 
+        SendSpec(String from, String toType, Set<String> tos, EMMessage message, String routeType,
+                Boolean syncDevice, ChatroomMsgLevel chatroomMsgLevel) {
+            this.from = from;
+            this.toType = toType;
+            this.tos = tos;
+            this.message = message;
+            this.routeType = routeType;
+            this.syncDevice = syncDevice;
+            this.chatroomMsgLevel = chatroomMsgLevel;
+        }
+
         public MessageSend.SendSpec extension(Consumer<Set<EMKeyValue>> customizer) {
             if (this.extensions == null) {
                 this.extensions = new HashSet<>();
@@ -300,7 +428,31 @@ public class MessageSend {
             return this;
         }
 
+        public MessageSend.SendSpec chatroomMsgLevel(ChatroomMsgLevel chatroomMsgLevel) {
+            this.chatroomMsgLevel = chatroomMsgLevel;
+            return this;
+        }
+
         public Mono<EMSentMessageIds> send() {
+            if (CHAT_ROOMS.equalsIgnoreCase(this.toType)) {
+                if (StringUtils.isNotEmpty(routeType) && syncDevice != null) {
+                    return MessageSend.this
+                            .send(this.from, this.toType, this.tos, this.message, this.extensions,
+                                    this.routeType, this.syncDevice, this.chatroomMsgLevel);
+                } else if (StringUtils.isNotEmpty(routeType)) {
+                    return MessageSend.this
+                            .send(this.from, this.toType, this.tos, this.message, this.extensions,
+                                    this.routeType, this.chatroomMsgLevel);
+                } else if (syncDevice != null) {
+                    return MessageSend.this
+                            .send(this.from, this.toType, this.tos, this.message, this.extensions,
+                                    this.syncDevice, this.chatroomMsgLevel);
+                } else {
+                    return MessageSend.this
+                            .send(this.from, this.toType, this.tos, this.message, this.extensions, this.chatroomMsgLevel);
+                }
+            }
+
             if (StringUtils.isNotEmpty(routeType) && syncDevice != null) {
                 return MessageSend.this
                         .send(this.from, this.toType, this.tos, this.message, this.extensions,
