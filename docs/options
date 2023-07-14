@@ -1,0 +1,24 @@
+-classpath
+'/Users/easemob-dn0164/.m2/repository/org/slf4j/slf4j-api/2.0.1/slf4j-api-2.0.1.jar:/Users/easemob-dn0164/.m2/repository/io/github/resilience4j/resilience4j-circuitbreaker/1.1.0/resilience4j-circuitbreaker-1.1.0.jar:/Users/easemob-dn0164/.m2/repository/io/vavr/vavr/0.10.0/vavr-0.10.0.jar:/Users/easemob-dn0164/.m2/repository/io/vavr/vavr-match/0.10.0/vavr-match-0.10.0.jar:/Users/easemob-dn0164/.m2/repository/io/github/resilience4j/resilience4j-core/1.1.0/resilience4j-core-1.1.0.jar:/Users/easemob-dn0164/.m2/repository/io/github/resilience4j/resilience4j-reactor/1.1.0/resilience4j-reactor-1.1.0.jar:/Users/easemob-dn0164/.m2/repository/io/projectreactor/netty/reactor-netty-core/1.0.4/reactor-netty-core-1.0.4.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-handler/4.1.85.Final/netty-handler-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-common/4.1.85.Final/netty-common-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-resolver/4.1.85.Final/netty-resolver-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-buffer/4.1.85.Final/netty-buffer-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-transport/4.1.85.Final/netty-transport-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-transport-native-unix-common/4.1.85.Final/netty-transport-native-unix-common-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-codec/4.1.85.Final/netty-codec-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-handler-proxy/4.1.85.Final/netty-handler-proxy-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-codec-socks/4.1.85.Final/netty-codec-socks-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-resolver-dns/4.1.85.Final/netty-resolver-dns-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-codec-dns/4.1.85.Final/netty-codec-dns-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-resolver-dns-native-macos/4.1.85.Final/netty-resolver-dns-native-macos-4.1.85.Final-osx-x86_64.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-transport-native-epoll/4.1.85.Final/netty-transport-native-epoll-4.1.85.Final-linux-x86_64.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-transport-classes-epoll/4.1.85.Final/netty-transport-classes-epoll-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/projectreactor/reactor-core/3.4.3/reactor-core-3.4.3.jar:/Users/easemob-dn0164/.m2/repository/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar:/Users/easemob-dn0164/.m2/repository/io/projectreactor/netty/reactor-netty-http/1.0.4/reactor-netty-http-1.0.4.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-codec-http/4.1.85.Final/netty-codec-http-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-codec-http2/4.1.85.Final/netty-codec-http2-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-resolver-dns-native-macos/4.1.85.Final/netty-resolver-dns-native-macos-4.1.85.Final-osx-aarch_64.jar:/Users/easemob-dn0164/.m2/repository/io/netty/netty-resolver-dns-classes-macos/4.1.85.Final/netty-resolver-dns-classes-macos-4.1.85.Final.jar:/Users/easemob-dn0164/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.14.0/jackson-annotations-2.14.0.jar:/Users/easemob-dn0164/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.14.0/jackson-databind-2.14.0.jar:/Users/easemob-dn0164/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.14.0/jackson-core-2.14.0.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/easemob-dn0164/Desktop/IMServer/easemob-im-server-sdk/im-sdk-core/src/main/java:/Users/easemob-dn0164/Desktop/IMServer/easemob-im-server-sdk/im-sdk-core/target/generated-sources/java-templates:/Users/easemob-dn0164/Desktop/IMServer/easemob-im-server-sdk/im-sdk-core/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2023. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/easemob-dn0164/Desktop/IMServer/easemob-im-server-sdk/im-sdk-core/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'im-sdk-core 0.7.3 API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' '/Users/easemob-dn0164/Desktop/IMServer/easemob-im-server-sdk/im-sdk-core/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'im-sdk-core 0.7.3 API'
