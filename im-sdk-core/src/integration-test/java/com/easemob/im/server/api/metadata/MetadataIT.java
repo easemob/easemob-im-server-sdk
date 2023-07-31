@@ -155,6 +155,12 @@ public class MetadataIT extends AbstractIT {
 
         assertDoesNotThrow(() -> this.service.metadata().listChatRoomMetadataAll(roomId)
                 .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomMemberUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
@@ -193,6 +199,12 @@ public class MetadataIT extends AbstractIT {
 
         assertDoesNotThrow(() -> this.service.metadata().listChatRoomMetadataAll(roomId)
                 .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomMemberUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test
@@ -241,6 +253,12 @@ public class MetadataIT extends AbstractIT {
 
         assertDoesNotThrow(() -> this.service.metadata().listChatRoomMetadataAll(roomId)
                 .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomMemberUsername).block(Utilities.IT_TIMEOUT));
     }
 
     @Test

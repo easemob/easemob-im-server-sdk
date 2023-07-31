@@ -23,11 +23,11 @@ public class EMHttpClientFactory {
         ConnectionProvider connectionProvider = ConnectionProvider.builder("easemob-sdk")
                 .maxConnections(properties.getHttpConnectionPoolSize())
                 .maxIdleTime(Duration.ofMillis(properties.getHttpConnectionMaxIdleTime()))
-                .maxLifeTime(Duration.ofSeconds(60))
-                .pendingAcquireMaxCount(properties.getPendingAcquireMaxCount())
-                .pendingAcquireTimeout(Duration.ofSeconds(60))
-                .evictInBackground(Duration.ofSeconds(120))
-                .fifo()
+                .maxLifeTime(Duration.ofMillis(properties.getHttpConnectionMaxLifeTime()))
+                .pendingAcquireMaxCount(properties.getHttpConnectionPendingAcquireMaxCount())
+                .pendingAcquireTimeout(Duration.ofMillis(properties.getHttpConnectionPendingAcquireTimeout()))
+                .evictInBackground(Duration.ofMillis(properties.getHttpConnectionEvictInBackground()))
+                .lifo()
                 .build();
 
         System.setProperty(IO_WORKER_COUNT, String.valueOf(properties.getNettyWorkerCount()));

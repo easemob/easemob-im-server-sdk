@@ -19,52 +19,66 @@ public class EMProperties {
     private final EMProxy proxy;
     private final int httpConnectionPoolSize;
     private final int httpConnectionMaxIdleTime;
-    private final int pendingAcquireMaxCount;
+    private final int httpConnectionMaxLifeTime;
+    private final int httpConnectionEvictInBackground;
+    private final int httpConnectionPendingAcquireMaxCount;
+    private final int httpConnectionPendingAcquireTimeout;
     private final int nettyWorkerCount;
     private final String serverTimezone;
     private final int agoraTokenExpireInSeconds;
     private final AdvancedByteBufFormat httpLogFormat;
     private final boolean validateUserName;
 
-
-    private EMProperties(Realm realm, String appKey, Credentials credentials, String baseUri,
-            EMProxy proxy, int httpConnectionPoolSize, String serverTimezone,
-            int agoraTokenExpireInSeconds, AdvancedByteBufFormat httpLogFormat,
-            boolean validateUserName, int httpConnectionMaxIdleTime, int nettyWorkerCount,
-            int pendingAcquireMaxCount) {
+    public EMProperties(Realm realm, String appKey, Credentials credentials, String baseUri,
+            EMProxy proxy, int httpConnectionPoolSize, int httpConnectionMaxIdleTime,
+            int httpConnectionMaxLifeTime, int httpConnectionEvictInBackground,
+            int httpConnectionPendingAcquireMaxCount, int httpConnectionPendingAcquireTimeout,
+            int nettyWorkerCount, String serverTimezone, int agoraTokenExpireInSeconds,
+            AdvancedByteBufFormat httpLogFormat, boolean validateUserName) {
         this.realm = realm;
         this.appKey = appKey;
         this.credentials = credentials;
         this.baseUri = baseUri;
         this.proxy = proxy;
         this.httpConnectionPoolSize = httpConnectionPoolSize;
+        this.httpConnectionMaxIdleTime = httpConnectionMaxIdleTime;
+        this.httpConnectionMaxLifeTime = httpConnectionMaxLifeTime;
+        this.httpConnectionEvictInBackground = httpConnectionEvictInBackground;
+        this.httpConnectionPendingAcquireMaxCount = httpConnectionPendingAcquireMaxCount;
+        this.httpConnectionPendingAcquireTimeout = httpConnectionPendingAcquireTimeout;
+        this.nettyWorkerCount = nettyWorkerCount;
         this.serverTimezone = serverTimezone;
         this.agoraTokenExpireInSeconds = agoraTokenExpireInSeconds;
         this.httpLogFormat = httpLogFormat;
         this.validateUserName = validateUserName;
-        this.httpConnectionMaxIdleTime = httpConnectionMaxIdleTime;
-        this.nettyWorkerCount = nettyWorkerCount;
-        this.pendingAcquireMaxCount = pendingAcquireMaxCount;
     }
 
     /**
-     * @param baseUri baseUri
-     * @param appKey appKey
-     * @param proxy proxy
-     * @param clientId clientId
-     * @param clientSecret clientSecret
-     * @param httpConnectionPoolSize httpConnectionPoolSize
-     * @param serverTimezone serverTimezone
-     * @param httpConnectionMaxIdleTime httpConnectionMaxIdleTime
-     * @param nettyWorkerCount nettyWorkerCount
-     * @param pendingAcquireMaxCount pendingAcquireMaxCount
+     * @param baseUri                              baseUri
+     * @param appKey                               appKey
+     * @param proxy                                proxy
+     * @param clientId                             clientId
+     * @param clientSecret                         clientSecret
+     * @param httpConnectionPoolSize               httpConnectionPoolSize
+     * @param serverTimezone                       serverTimezone
+     * @param httpConnectionMaxIdleTime            httpConnectionMaxIdleTime
+     * @param httpConnectionMaxLifeTime
+     * @param httpConnectionEvictInBackground
+     * @param nettyWorkerCount                     nettyWorkerCount
+     * @param httpConnectionPendingAcquireMaxCount httpConnectionPendingAcquireMaxCount
+     * @param httpConnectionPendingAcquireTimeout
      * @deprecated use {@link #builder()} instead.
      */
     @Deprecated
     public EMProperties(String baseUri, String appKey, EMProxy proxy, String clientId,
             String clientSecret, int httpConnectionPoolSize, String serverTimezone,
-            int httpConnectionMaxIdleTime, int nettyWorkerCount, int pendingAcquireMaxCount) {
+            int httpConnectionMaxIdleTime, int httpConnectionMaxLifeTime,
+            int httpConnectionEvictInBackground, int nettyWorkerCount, int httpConnectionPendingAcquireMaxCount,
+            int httpConnectionPendingAcquireTimeout) {
+        this.httpConnectionMaxLifeTime = httpConnectionMaxLifeTime;
+        this.httpConnectionEvictInBackground = httpConnectionEvictInBackground;
         this.nettyWorkerCount = nettyWorkerCount;
+        this.httpConnectionPendingAcquireTimeout = httpConnectionPendingAcquireTimeout;
         this.realm = Realm.EASEMOB_REALM;
         this.appKey = appKey;
         this.credentials = new EasemobAppCredentials(clientId, clientSecret);
@@ -76,7 +90,7 @@ public class EMProperties {
         this.httpLogFormat = AdvancedByteBufFormat.SIMPLE;
         this.validateUserName = true;
         this.httpConnectionMaxIdleTime = httpConnectionMaxIdleTime;
-        this.pendingAcquireMaxCount = pendingAcquireMaxCount;
+        this.httpConnectionPendingAcquireMaxCount = httpConnectionPendingAcquireMaxCount;
     }
 
     // easemob realm by default
@@ -172,6 +186,22 @@ public class EMProperties {
         return this.httpConnectionMaxIdleTime;
     }
 
+    public int getHttpConnectionMaxLifeTime() {
+        return httpConnectionMaxLifeTime;
+    }
+
+    public int getHttpConnectionEvictInBackground() {
+        return httpConnectionEvictInBackground;
+    }
+
+    public int getHttpConnectionPendingAcquireMaxCount() {
+        return httpConnectionPendingAcquireMaxCount;
+    }
+
+    public int getHttpConnectionPendingAcquireTimeout() {
+        return httpConnectionPendingAcquireTimeout;
+    }
+
     public String getServerTimezone() {
         return this.serverTimezone;
     }
@@ -196,10 +226,6 @@ public class EMProperties {
         return nettyWorkerCount;
     }
 
-    public int getPendingAcquireMaxCount() {
-        return pendingAcquireMaxCount;
-    }
-
     @Override
     public String toString() {
         return "EMProperties{" +
@@ -210,7 +236,7 @@ public class EMProperties {
                 ", proxy=" + proxy +
                 ", httpConnectionPoolSize=" + httpConnectionPoolSize +
                 ", httpConnectionMaxIdleTime=" + httpConnectionMaxIdleTime +
-                ", pendingAcquireMaxCount=" + pendingAcquireMaxCount +
+                ", httpConnectionPendingAcquireMaxCount=" + httpConnectionPendingAcquireMaxCount +
                 ", serverTimezone='" + serverTimezone + '\'' +
                 ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
                 ", httpLogFormat=" + httpLogFormat +
@@ -240,10 +266,13 @@ public class EMProperties {
 
         private String baseUri;
         private EMProxy proxy;
-        private int httpConnectionPoolSize = 10;
+        private int httpConnectionPoolSize = 50;
         private int httpConnectionMaxIdleTime = 10 * 1000;
+        private int httpConnectionMaxLifeTime = 60 * 1000;
+        private int httpConnectionEvictInBackground = 120 * 1000;
         private int nettyWorkerCount = 16;
-        private int pendingAcquireMaxCount = 20;
+        private int httpConnectionPendingAcquireMaxCount = 20;
+        private int httpConnectionPendingAcquireTimeout = 60 * 1000;
         private String serverTimezone = "+8";
         private int agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
         private AdvancedByteBufFormat httpLogFormat = AdvancedByteBufFormat.SIMPLE;
@@ -355,6 +384,30 @@ public class EMProperties {
         }
 
         /**
+         * @param httpConnectionMaxIdleTime httpConnection最大空闲时间 单位：毫秒
+         * @return Builder
+         */
+        public Builder setHttpConnectionMaxIdleTime(int httpConnectionMaxIdleTime) {
+            if (httpConnectionMaxIdleTime <= 0) {
+                throw new EMInvalidArgumentException("httpConnectionMaxIdleTime must not be negative");
+            }
+            this.httpConnectionMaxIdleTime = httpConnectionMaxIdleTime;
+            return this;
+        }
+
+        /**
+         * @param httpConnectionMaxLifeTime httpConnection最大存活时间 单位：毫秒
+         * @return Builder
+         */
+        public Builder setHttpConnectionMaxLifeTime(int httpConnectionMaxLifeTime) {
+            if (httpConnectionMaxLifeTime <= 0) {
+                throw new EMInvalidArgumentException("httpConnectionMaxLifeTime must not be negative");
+            }
+            this.httpConnectionMaxLifeTime = httpConnectionMaxLifeTime;
+            return this;
+        }
+
+        /**
          * @param nettyWorkerCount netty最大工作线程数
          * @return Builder
          */
@@ -367,14 +420,26 @@ public class EMProperties {
         }
 
         /**
-         * @param pendingAcquireMaxCount pendingAcquire最大数量
+         * @param httpConnectionPendingAcquireMaxCount pendingAcquire最大数量
          * @return Builder
          */
-        public Builder setPendingAcquireMaxCount(int pendingAcquireMaxCount) {
-            if (pendingAcquireMaxCount <= 0) {
-                throw new EMInvalidArgumentException("pendingAcquireMaxCount must not be negative");
+        public Builder setHttpConnectionPendingAcquireMaxCount(int httpConnectionPendingAcquireMaxCount) {
+            if (httpConnectionPendingAcquireMaxCount <= 0) {
+                throw new EMInvalidArgumentException("httpConnectionPendingAcquireMaxCount must not be negative");
             }
-            this.pendingAcquireMaxCount = pendingAcquireMaxCount;
+            this.httpConnectionPendingAcquireMaxCount = httpConnectionPendingAcquireMaxCount;
+            return this;
+        }
+
+        /**
+         * @param httpConnectionPendingAcquireTimeout pendingAcquire超时时间
+         * @return Builder
+         */
+        public Builder setHttpConnectionPendingAcquireTimeout(int httpConnectionPendingAcquireTimeout) {
+            if (httpConnectionPendingAcquireTimeout <= 0) {
+                throw new EMInvalidArgumentException("httpConnectionPendingAcquireTimeout must not be negative");
+            }
+            this.httpConnectionPendingAcquireTimeout = httpConnectionPendingAcquireTimeout;
             return this;
         }
 
@@ -398,9 +463,12 @@ public class EMProperties {
                 Credentials credentials =
                         new EasemobAppCredentials(this.clientId, this.clientSecret);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
-                        this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
-                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName, this.httpConnectionMaxIdleTime,
-                        nettyWorkerCount, this.pendingAcquireMaxCount);
+                        this.proxy, this.httpConnectionPoolSize, this.httpConnectionMaxIdleTime,
+                        this.httpConnectionMaxLifeTime, this.httpConnectionEvictInBackground,
+                        this.httpConnectionPendingAcquireMaxCount,
+                        this.httpConnectionPendingAcquireTimeout,
+                        this.nettyWorkerCount, this.serverTimezone,
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
                 if (this.appId == null) {
                     throw new EMInvalidStateException("appId not set");
@@ -413,9 +481,12 @@ public class EMProperties {
                 }
                 Credentials credentials = new AgoraAppCredentials(this.appId, this.appCert);
                 return new EMProperties(this.realm, this.appKey, credentials, this.baseUri,
-                        this.proxy, this.httpConnectionPoolSize, this.serverTimezone,
-                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName, this.httpConnectionMaxIdleTime,
-                        nettyWorkerCount, this.pendingAcquireMaxCount);
+                        this.proxy, this.httpConnectionPoolSize, this.httpConnectionMaxIdleTime,
+                        this.httpConnectionMaxLifeTime, this.httpConnectionEvictInBackground,
+                        this.httpConnectionPendingAcquireMaxCount,
+                        this.httpConnectionPendingAcquireTimeout,
+                        this.nettyWorkerCount, this.serverTimezone,
+                        this.agoraTokenExpireInSeconds, this.httpLogFormat, this.validateUserName);
             } else {
                 throw new EMInvalidStateException(
                         String.format("invalid realm type %s", this.realm.toString()));
@@ -436,7 +507,7 @@ public class EMProperties {
                     ", httpConnectionPoolSize=" + httpConnectionPoolSize +
                     ", httpConnectionMaxIdleTime=" + httpConnectionMaxIdleTime +
                     ", nettyWorkerCount=" + nettyWorkerCount +
-                    ", pendingAcquireMaxCount=" + pendingAcquireMaxCount +
+                    ", httpConnectionPendingAcquireMaxCount=" + httpConnectionPendingAcquireMaxCount +
                     ", serverTimezone='" + serverTimezone + '\'' +
                     ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
                     ", httpLogFormat=" + httpLogFormat +
