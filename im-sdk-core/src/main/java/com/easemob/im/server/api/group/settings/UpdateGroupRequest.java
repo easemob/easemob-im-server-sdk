@@ -31,6 +31,9 @@ public class UpdateGroupRequest {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean needVerify;
 
+    @JsonProperty("public")
+    private Boolean isPublic;
+
     public UpdateGroupRequest() {
         this.name = null;
         this.description = null;
@@ -105,6 +108,27 @@ public class UpdateGroupRequest {
         this.needVerify = needVerify;
     }
 
+    @JsonCreator
+    public UpdateGroupRequest(@JsonProperty("name") String name,
+            @JsonProperty("description") String description,
+            @JsonProperty("allowinvites") Boolean canMemberInviteOthers,
+            @JsonProperty("invite_need_confirm") Boolean needInviteConfirm,
+            @JsonProperty("membersonly") Boolean needApproveToJoin,
+            @JsonProperty("maxusers") Integer maxMembers,
+            @JsonProperty("custom") String custom,
+            @JsonProperty("need_verify")  Boolean needVerify,
+            @JsonProperty("public") Boolean isPublic) {
+        this.name = name;
+        this.description = description;
+        this.canMemberInviteOthers = canMemberInviteOthers;
+        this.needInviteConfirm = needInviteConfirm;
+        this.needApproveToJoin = needApproveToJoin;
+        this.maxMembers = maxMembers;
+        this.custom = custom;
+        this.needVerify = needVerify;
+        this.isPublic= isPublic;
+    }
+
     public String getName() {
         return name;
     }
@@ -177,4 +201,12 @@ public class UpdateGroupRequest {
         return needVerify;
     }
 
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public UpdateGroupRequest setPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
+        return this;
+    }
 }
