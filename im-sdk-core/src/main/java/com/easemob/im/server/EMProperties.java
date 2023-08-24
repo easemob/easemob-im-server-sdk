@@ -372,7 +372,7 @@ public class EMProperties {
         }
 
         /**
-         * @param httpConnectionMaxIdleTime httpConnection最大空闲时间 单位：毫秒
+         * @param httpConnectionMaxIdleTime httpConnection最大空闲时间，单位：毫秒
          * @return Builder
          */
         public Builder httpConnectionMaxIdleTime(int httpConnectionMaxIdleTime) {
@@ -384,7 +384,7 @@ public class EMProperties {
         }
 
         /**
-         * @param httpConnectionMaxIdleTime httpConnection最大空闲时间 单位：毫秒
+         * @param httpConnectionMaxIdleTime httpConnection最大空闲时间，单位：毫秒
          * @return Builder
          */
         public Builder setHttpConnectionMaxIdleTime(int httpConnectionMaxIdleTime) {
@@ -396,7 +396,7 @@ public class EMProperties {
         }
 
         /**
-         * @param httpConnectionMaxLifeTime httpConnection最大存活时间 单位：毫秒
+         * @param httpConnectionMaxLifeTime httpConnection最大存活时间，单位：毫秒
          * @return Builder
          */
         public Builder setHttpConnectionMaxLifeTime(int httpConnectionMaxLifeTime) {
@@ -432,7 +432,7 @@ public class EMProperties {
         }
 
         /**
-         * @param httpConnectionPendingAcquireTimeout pendingAcquire超时时间
+         * @param httpConnectionPendingAcquireTimeout pendingAcquire超时时间，单位：毫秒
          * @return Builder
          */
         public Builder setHttpConnectionPendingAcquireTimeout(int httpConnectionPendingAcquireTimeout) {
@@ -440,6 +440,18 @@ public class EMProperties {
                 throw new EMInvalidArgumentException("httpConnectionPendingAcquireTimeout must not be negative");
             }
             this.httpConnectionPendingAcquireTimeout = httpConnectionPendingAcquireTimeout;
+            return this;
+        }
+
+        /**
+         * @param httpConnectionEvictInBackground 后台检查连接池中适用于删除连接的时间间隔，单位：毫秒
+         * @return Builder
+         */
+        public Builder setHttpConnectionEvictInBackground(int httpConnectionEvictInBackground) {
+            if (httpConnectionEvictInBackground <= 0) {
+                throw new EMInvalidArgumentException("httpConnectionEvictInBackground must not be negative");
+            }
+            this.httpConnectionEvictInBackground = httpConnectionEvictInBackground;
             return this;
         }
 
@@ -506,8 +518,11 @@ public class EMProperties {
                     ", proxy=" + proxy +
                     ", httpConnectionPoolSize=" + httpConnectionPoolSize +
                     ", httpConnectionMaxIdleTime=" + httpConnectionMaxIdleTime +
+                    ", httpConnectionMaxLifeTime=" + httpConnectionMaxLifeTime +
+                    ", httpConnectionEvictInBackground=" + httpConnectionEvictInBackground +
                     ", nettyWorkerCount=" + nettyWorkerCount +
                     ", httpConnectionPendingAcquireMaxCount=" + httpConnectionPendingAcquireMaxCount +
+                    ", httpConnectionPendingAcquireTimeout=" + httpConnectionPendingAcquireTimeout +
                     ", serverTimezone='" + serverTimezone + '\'' +
                     ", agoraTokenExpireInSeconds=" + agoraTokenExpireInSeconds +
                     ", httpLogFormat=" + httpLogFormat +
