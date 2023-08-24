@@ -15,10 +15,10 @@
 -docencoding
 'UTF-8'
 -doctitle
-'im-sdk-core 0.7.3 API'
+'im-sdk-core 0.7.5 API'
 -linkoffline
 'https://docs.oracle.com/javase/8/docs/api' '/Users/easemob-dn0164/Desktop/IMServer/easemob-im-server-sdk/im-sdk-core/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle
-'im-sdk-core 0.7.3 API'
+'im-sdk-core 0.7.5 API'
