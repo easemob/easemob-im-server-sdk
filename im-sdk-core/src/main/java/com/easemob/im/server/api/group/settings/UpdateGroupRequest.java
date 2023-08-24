@@ -31,6 +31,9 @@ public class UpdateGroupRequest {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean needVerify;
 
+    @JsonProperty("public")
+    private Boolean isPublic;
+
     public UpdateGroupRequest() {
         this.name = null;
         this.description = null;
@@ -39,6 +42,7 @@ public class UpdateGroupRequest {
         this.needApproveToJoin = null;
         this.maxMembers = null;
         this.custom = null;
+        this.isPublic = null;
     }
 
     @JsonCreator
@@ -177,4 +181,12 @@ public class UpdateGroupRequest {
         return needVerify;
     }
 
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public UpdateGroupRequest setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+        return this;
+    }
 }

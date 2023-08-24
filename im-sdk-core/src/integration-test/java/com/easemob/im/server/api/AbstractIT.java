@@ -40,7 +40,11 @@ public class AbstractIT {
                     .setAppkey(appkey)
                     .setClientId(clientId)
                     .setClientSecret(clientSecret)
-                    .setHttpConnectionPoolSize(10)
+                    .setHttpConnectionPoolSize(100)
+                    .setHttpConnectionMaxIdleTime(10000)
+                    .setHttpConnectionMaxLifeTime(30000)
+                    .setHttpConnectionPendingAcquireMaxCount(100)
+                    .setHttpConnectionPendingAcquireTimeout(10000)
                     .setServerTimezone("+8")
                     .build();
         }

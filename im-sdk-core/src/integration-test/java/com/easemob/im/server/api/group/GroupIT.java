@@ -181,7 +181,7 @@ public class GroupIT extends AbstractIT {
     }
 
     @Test
-    void testGroupDestroy() {
+    void testGroupDestroy() throws InterruptedException {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
 
@@ -197,6 +197,7 @@ public class GroupIT extends AbstractIT {
                         true).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        Thread.sleep(3000);
         assertThrows(EMNotFoundException.class,
                 () -> this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
@@ -503,12 +504,15 @@ public class GroupIT extends AbstractIT {
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
                         true).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.group()
-                .updateGroup(groupId, settings -> settings.setMaxMembers(maxMembers).setNeedInviteConfirm(true).setCustom("group custom"))
+                .updateGroup(groupId, settings -> settings.setMaxMembers(maxMembers).setPublic(true).setCustom("group custom"))
                 .block(Utilities.IT_TIMEOUT));
         EMGroup group = assertDoesNotThrow(
                 () -> this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT));
         if (group.getMaxMembers() != maxMembers) {
             throw new RuntimeException(String.format("%s group max member update fail", groupId));
+        }
+        if (!group.getIsPublic()) {
+            throw new RuntimeException(String.format("%s group public update fail", groupId));
         }
         assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
