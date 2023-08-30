@@ -19,6 +19,7 @@ import com.easemob.im.server.api.room.superadmin.list.ListRoomSuperAdmins;
 import com.easemob.im.server.api.room.superadmin.promote.PromoteRoomSuperAdmin;
 import com.easemob.im.server.api.room.update.UpdateRoom;
 import com.easemob.im.server.api.room.update.UpdateRoomRequest;
+import com.easemob.im.server.model.EMGroup;
 import com.easemob.im.server.model.EMPage;
 import com.easemob.im.server.model.EMRoom;
 import reactor.core.publisher.Flux;
@@ -199,6 +200,32 @@ public class RoomApi {
      */
     public Mono<EMRoom> getRoom(String id) {
         return this.getRoomDetail.byId(id);
+    }
+
+    /**
+     * 获取多个聊天室详情。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     List<String> roomIdList = new ArrayList<>();
+     *     roomIdList.add("193100825821185");
+     *     roomIdList.add("193100825821186");
+     *
+     *     List<EMRoom> roomList = service.group().getRoomList(roomIdList).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param roomIdList 聊天室id列表
+     * @return 聊天室情或错误
+     * @see <a href="http://docs-im-beta.easemob.com/document/server-side/chatroom.html#%E6%9F%A5%E8%AF%A2%E8%81%8A%E5%A4%A9%E5%AE%A4%E8%AF%A6%E6%83%85">获取聊天室详情</a>
+     */
+    public Mono<List<EMRoom>> getRoomList(List<String> roomIdList) {
+        return this.getRoomDetail.byIds(roomIdList);
     }
 
     /**
