@@ -3,10 +3,10 @@ package com.easemob.im.server.api;
 import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.EMProxy;
 import com.easemob.im.server.EMVersion;
+import io.github.resilience4j.core.StringUtils;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.util.internal.StringUtil;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.ProxyProvider;
@@ -49,7 +49,7 @@ public class EMHttpClientFactory {
             final String ip = proxyInfo.getIp();
             final int port = proxyInfo.getPort();
 
-            if (StringUtil.isNullOrEmpty(username) && StringUtil.isNullOrEmpty(password)) {
+            if (StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)) {
                 return httpClient.proxy(
                         proxy -> proxy.type(ProxyProvider.Proxy.HTTP)
                                 .address(new InetSocketAddress(ip, port))
