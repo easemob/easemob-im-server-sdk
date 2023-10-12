@@ -36,4 +36,5 @@ jobs:
           java-version: 1.8
       - name: Maven
         run: mvn -pl im-sdk-core --batch-mode -Pci clean test -D test="*IT" -D failIfNoTests=false
+#        run: mvn --batch-mode -Pci clean verify
 
