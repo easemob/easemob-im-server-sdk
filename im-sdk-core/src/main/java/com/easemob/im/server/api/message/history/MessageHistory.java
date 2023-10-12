@@ -5,8 +5,8 @@ import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.util.FileSystem;
 import com.easemob.im.server.exception.EMUnknownException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -58,24 +58,25 @@ public class MessageHistory {
                 .flatMap(uri -> {
                     Path local = FileSystem.choosePath(dir, finalFilename);
                     return Mono.<OutputStream>create(sink -> sink.success(FileSystem.open(local)))
-                            .flatMap(out -> this.context.getHttpClient()
-                                    .flatMap(httpClient -> httpClient.get()
-                                            .uri(uri)
-                                            .responseSingle((rsp, buf) -> {
-                                                return buf.switchIfEmpty(
-                                                                Mono.error(new EMUnknownException("response is null")))
-                                                        .flatMap(byteBuf -> {
-                                                            ErrorMapper mapper = new DefaultErrorMapper();
-                                                            mapper.statusCode(rsp);
-                                                            mapper.checkError(byteBuf);
-                                                            return Mono.just(byteBuf);
-                                                        });
-                                            }))
-                                    .map(b -> FileSystem.append(out, b))
-                                    .doOnSuccess(suc -> {
-                                        FileSystem.close(out);
-                                    })
-                                    .then())
+                            .flatMap(out -> {
+                                return HttpClient.create().get()
+                                        .uri(uri)
+                                        .responseSingle((rsp, buf) -> {
+                                            return buf.switchIfEmpty(
+                                                            Mono.error(new EMUnknownException(
+                                                                    "response is null")))
+                                                    .flatMap(byteBuf -> {
+                                                        ErrorMapper mapper =
+                                                                new DefaultErrorMapper();
+                                                        mapper.statusCode(rsp);
+                                                        mapper.checkError(byteBuf);
+                                                        return Mono.just(byteBuf);
+                                                    });
+                                        })
+                                        .map(b -> FileSystem.append(out, b))
+                                        .doOnSuccess(suc -> FileSystem.close(out))
+                                        .then();
+                            })
                             .thenReturn(local);
                 });
     }
