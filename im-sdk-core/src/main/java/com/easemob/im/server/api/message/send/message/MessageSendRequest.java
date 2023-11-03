@@ -25,6 +25,9 @@ public class MessageSendRequest {
     @JsonProperty("to")
     private Set<String> tos;
 
+    @JsonProperty("users")
+    private Set<String> toGroupUsers;
+
     @JsonProperty("body")
     private MessageSendRequest.Message body;
 
@@ -168,6 +171,23 @@ public class MessageSendRequest {
         this.chatroomMsgLevel = chatroomMsgLevel.getLevel();
     }
 
+    @JsonCreator
+    public MessageSendRequest(@JsonProperty("from") String from,
+            @JsonProperty("to") Set<String> toSet,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("users") Set<String> toGroupUsers,
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("sync_device") Boolean syncDevice) {
+        this.from = from;
+        this.tos = toSet;
+        this.toGroupUsers = toGroupUsers;
+        Message send = Message.of(message);
+        this.msgType = send.type;
+        this.body = send;
+        this.extensions = extensions;
+        this.syncDevice = syncDevice;
+    }
+
     public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {
         if (extensions == null || extensions.isEmpty()) {
             return null;
@@ -237,6 +257,10 @@ public class MessageSendRequest {
 
     public String getChatroomMsgLevel() {
         return chatroomMsgLevel;
+    }
+
+    public Set<String> getToGroupUsers() {
+        return toGroupUsers;
     }
 
     @SuppressWarnings("unchecked")
