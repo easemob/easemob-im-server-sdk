@@ -922,4 +922,67 @@ public class MessageIT extends AbstractIT {
                 () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
     }
 
+    @Test
+    void testGroupMessageSendMsgTextSyncDevice() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomFromUsername);
+        members.add(randomToUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPublicGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageIds messageIds = this.service.message().sendMsg()
+                    .fromUser(randomFromUsername)
+                    .toGroup(groupId)
+                    .text(msg -> msg.text("hello"))
+                    .toGroupUsers(new HashSet<String>() {
+                        {
+                            add(randomToUsername);
+                        }
+                    })
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .syncDevice(true)
+                    .send()
+                    .block(Utilities.IT_TIMEOUT);
+
+            System.out.println("id :" + messageIds.getMessageIdsByEntityId().get(groupId));
+
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(groupId));
+        });
+        assertDoesNotThrow(() -> {
+            Set<String> tos = new HashSet<>();
+            tos.add(groupId);
+
+            Set<String> toGroupUsers = new HashSet<>();
+            toGroupUsers.add(randomToUsername);
+
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+
+            EMSentMessageIds messageIds = this.service.message()
+                    .sendMsg(randomFromUsername, tos, new EMTextMessage().text("你好"), toGroupUsers,
+                            exts, true).block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(groupId));
+        });
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+    }
+
 }

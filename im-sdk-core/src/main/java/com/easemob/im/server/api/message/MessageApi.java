@@ -556,6 +556,52 @@ public class MessageApi {
     }
 
     /**
+     * 指定群组用户发送消息，你可以向群组中指定的一个或多个成员发送消息，但单次仅支持指定一个群组。
+     * 对于定向消息，只有作为接收方的指定成员才能看到消息，其他群成员则看不到该消息。
+     *
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，向指定群组用户发送一条带有扩展字段的文本消息
+     * Set<String> toGroups = new HashSet<>();
+     * toGroups.add("toGroupId");
+     *
+     * Set<String> toGroupUsers = new HashSet<>();
+     * toGroupUsers.add("toUserName");
+     *
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().sendMsg("fromUserName", toGroups, textMessage, toGroupUsers, exts, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from         发送者用户名
+     * @param toGroups          消息接收方所属的群组 ID。目前每次只能传 1 个群组。
+     * @param message      要发送的消息
+     * @param toGroupUsers 接收消息的群成员的用户 ID 数组。每次最多可传 20 个用户 ID。
+     * @param extensions   要发送的扩展，可以为空
+     * @param syncDevice   消息发送成功后，是否将消息同步到发送方，true：是同步给发送方，false：是不同给发送方
+     * @return 发消息响应或错误
+     * @see <a href="https://docs-im-beta.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E5%AE%9A%E5%90%91%E6%B6%88%E6%81%AF">发送定向消息</a>
+     */
+    public Mono<EMSentMessageIds> sendMsg(String from, Set<String> toGroups,
+            EMMessage message, Set<String> toGroupUsers, Set<EMKeyValue> extensions,
+            Boolean syncDevice) {
+        return this.messageSend.send(from, checkTos(toGroups), message, checkTos(toGroupUsers), extensions,
+                syncDevice);
+    }
+
+    /**
      * 发送消息（只投递在线消息），不返回消息 ID。将在后续版本中移除。
      * <p>
      * API使用示例：
