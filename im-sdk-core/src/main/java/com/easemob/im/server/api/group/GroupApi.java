@@ -8,6 +8,7 @@ import com.easemob.im.server.api.group.announcement.GroupAnnouncement;
 import com.easemob.im.server.api.group.create.CreateGroup;
 import com.easemob.im.server.api.group.delete.DeleteGroup;
 import com.easemob.im.server.api.group.get.GetGroup;
+import com.easemob.im.server.api.group.membershipcheck.GroupMembershipCheck;
 import com.easemob.im.server.api.group.list.*;
 import com.easemob.im.server.api.group.member.add.GroupMemberAdd;
 import com.easemob.im.server.api.group.member.list.GroupMemberList;
@@ -38,6 +39,7 @@ public class GroupApi {
     private GetGroup getGroup;
     private UpdateGroup updateGroup;
     private AssignGroup assignGroup;
+    private GroupMembershipCheck groupMembershipCheck;
 
     private GroupAnnouncement groupAnnouncement;
     private GroupMemberList groupMemberList;
@@ -56,6 +58,7 @@ public class GroupApi {
         this.getGroup = new GetGroup(context);
         this.updateGroup = new UpdateGroup(context);
         this.assignGroup = new AssignGroup(context);
+        this.groupMembershipCheck = new GroupMembershipCheck(context);
 
         this.groupAnnouncement = new GroupAnnouncement(context);
 
@@ -1185,6 +1188,29 @@ public class GroupApi {
      */
     public Mono<Void> assignGroup(String groupId, String newOwner){
         return this.assignGroup.execute(groupId, newOwner);
+    }
+
+    /**
+     * 查看指定用户是否已加入群组
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     Boolean result = service.group().userIsJoined("groupId", "username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId  群组id
+     * @param username 需要查看的用户名
+     * @return 是否已加入群组
+     * @see <a href="http://docs-im-beta.easemob.com/document/server-side/group.html#%E6%9F%A5%E7%9C%8B%E6%8C%87%E5%AE%9A%E7%94%A8%E6%88%B7%E6%98%AF%E5%90%A6%E5%B7%B2%E5%8A%A0%E5%85%A5%E7%BE%A4%E7%BB%84">查看指定用户是否已加入群组</a>
+     */
+    public Mono<Boolean> userIsJoined(String groupId, String username) {
+        return this.groupMembershipCheck.execute(groupId, username);
     }
 
 }

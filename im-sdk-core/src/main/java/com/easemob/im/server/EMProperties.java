@@ -269,9 +269,9 @@ public class EMProperties {
         private int httpConnectionPoolSize = 50;
         private int httpConnectionMaxIdleTime = 10 * 1000;
         private int httpConnectionMaxLifeTime = 60 * 1000;
-        private int httpConnectionEvictInBackground = 120 * 1000;
-        private int nettyWorkerCount = 16;
-        private int httpConnectionPendingAcquireMaxCount = 20;
+        private int httpConnectionEvictInBackground = 60 * 1000;
+        private int nettyWorkerCount = 0;
+        private int httpConnectionPendingAcquireMaxCount = 100;
         private int httpConnectionPendingAcquireTimeout = 60 * 1000;
         private String serverTimezone = "+8";
         private int agoraTokenExpireInSeconds = Utilities.DEFAULT_AGORA_TOKEN_EXPIRE_IN_SECONDS;
