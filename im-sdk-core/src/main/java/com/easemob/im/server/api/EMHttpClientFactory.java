@@ -30,7 +30,9 @@ public class EMHttpClientFactory {
                 .lifo()
                 .build();
 
-        System.setProperty(IO_WORKER_COUNT, String.valueOf(properties.getNettyWorkerCount()));
+        if (properties.getNettyWorkerCount() > 0) {
+            System.setProperty(IO_WORKER_COUNT, String.valueOf(properties.getNettyWorkerCount()));
+        }
 
         HttpClient httpClient = HttpClient.create(connectionProvider)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 60000)
