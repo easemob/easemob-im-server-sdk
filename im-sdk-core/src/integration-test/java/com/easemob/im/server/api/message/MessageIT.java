@@ -985,4 +985,79 @@ public class MessageIT extends AbstractIT {
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
     }
 
+    @Test
+    void testDirectionalChatroomMessageSendText() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+
+        List<String> members = new ArrayList<>();
+        members.add(randomToUsername);
+        String roomId = assertDoesNotThrow(() -> this.service.room()
+                .createRoom("chat room", "room description", randomFromUsername, members, 200)
+                .block(Utilities.IT_TIMEOUT));
+
+        Set<String> roomIds = new HashSet<>();
+        roomIds.add(roomId);
+
+        assertDoesNotThrow(() -> {
+            EMSentMessageIds sentMessageIds = this.service.message().sendMsg()
+                    .fromUser(randomFromUsername)
+                    .toRooms(roomIds)
+                    .text(msg -> msg.text("hello"))
+                    .toRoomUsers(new HashSet<String>() {
+                        {
+                            add(randomToUsername);
+                        }
+                    })
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .chatroomMsgLevel(ChatroomMsgLevel.NORMAL)
+                    .syncDevice(true)
+                    .send()
+                    .block(Utilities.IT_TIMEOUT);
+
+            assertEquals(roomId, sentMessageIds.getMessageIdsByEntityId().keySet().iterator().next());
+        });
+
+        assertDoesNotThrow(() -> {
+            Set<String> toChatRooms = new HashSet<>();
+            toChatRooms.add(roomId);
+
+            Set<String> toRoomUsers = new HashSet<>();
+            toRoomUsers.add(randomToUsername);
+
+            EMImageMessage imageMessage =
+                    new EMImageMessage().uri(URI.create("http://example/image.png"))
+                            .secret("secret")
+                            .displayName("image.png");
+
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+            exts.add(EMKeyValue.of("key1", 10));
+            exts.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+                {
+                    put("mkey1", "mvalue1");
+                    put("mkey2", "mvalue2");
+                }
+            }));
+
+            EMSentMessageIds messageIds = service.message()
+                    .sendMsg(randomFromUsername, toChatRooms, imageMessage, toRoomUsers, exts, true,
+                            ChatroomMsgLevel.HIGH).block();
+            assertEquals(roomId, messageIds.getMessageIdsByEntityId().keySet().iterator().next());
+        });
+
+        assertDoesNotThrow(
+                () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
 }
