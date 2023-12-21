@@ -271,6 +271,34 @@ public class MessageSend {
                 });
     }
 
+    public Mono<EMSentMessageIds> send(String from, Set<String> tos, EMMessage message, Set<String> toRoomUsers,
+            Set<EMKeyValue> extensions, Boolean syncDevice, ChatroomMsgLevel chatroomMsgLevel) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/messages/chatrooms/users")
+                        .send(Mono.create(sink -> {
+                            sink.success(context.getCodec()
+                                    .encode(new MessageSendRequest(from, tos, message, toRoomUsers,
+                                            MessageSendRequest.parseExtensions(extensions),
+                                            syncDevice, chatroomMsgLevel)));
+                        }))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(byteBuf -> {
+                    SendMessageResponse sendMessageResponse = context.getCodec()
+                            .decode(byteBuf, SendMessageResponse.class);
+                    return sendMessageResponse.toEMSentMessages();
+                });
+    }
+
     public class RouteSpec {
 
         private String from;
@@ -389,6 +417,8 @@ public class MessageSend {
 
         private Set<String> toGroupUsers;
 
+        private Set<String> toRoomUsers;
+
         private Set<EMKeyValue> extensions;
 
         private String routeType;
@@ -452,6 +482,17 @@ public class MessageSend {
             this.syncDevice = syncDevice;
         }
 
+        SendSpec(String from, String toType, Set<String> tos, EMMessage message, Set<String> toRoomUsers,
+                Boolean syncDevice, ChatroomMsgLevel chatroomMsgLevel) {
+            this.from = from;
+            this.toType = toType;
+            this.tos = tos;
+            this.message = message;
+            this.toRoomUsers = toRoomUsers;
+            this.syncDevice = syncDevice;
+            this.chatroomMsgLevel = chatroomMsgLevel;
+        }
+
         public MessageSend.SendSpec extension(Consumer<Set<EMKeyValue>> customizer) {
             if (this.extensions == null) {
                 this.extensions = new HashSet<>();
@@ -480,6 +521,11 @@ public class MessageSend {
             return this;
         }
 
+        public MessageSend.SendSpec toRoomUsers(Set<String> toRoomUsers) {
+            this.toRoomUsers = toRoomUsers;
+            return this;
+        }
+
         public Mono<EMSentMessageIds> send() {
             if (CHAT_ROOMS.equalsIgnoreCase(this.toType)) {
                 if (StringUtils.isNotEmpty(routeType) && syncDevice != null) {
@@ -491,6 +537,10 @@ public class MessageSend {
                             .send(this.from, this.toType, this.tos, this.message, this.extensions,
                                     this.routeType, this.chatroomMsgLevel);
                 } else if (syncDevice != null) {
+                    if (toRoomUsers != null) {
+                        return MessageSend.this.send(this.from, this.tos, this.message,
+                                this.toRoomUsers, this.extensions, this.syncDevice, this.chatroomMsgLevel);
+                    }
                     return MessageSend.this
                             .send(this.from, this.toType, this.tos, this.message, this.extensions,
                                     this.syncDevice, this.chatroomMsgLevel);

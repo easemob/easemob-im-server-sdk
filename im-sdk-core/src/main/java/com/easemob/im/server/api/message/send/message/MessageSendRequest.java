@@ -188,6 +188,25 @@ public class MessageSendRequest {
         this.syncDevice = syncDevice;
     }
 
+    @JsonCreator
+    public MessageSendRequest(@JsonProperty("from") String from,
+            @JsonProperty("to") Set<String> toSet,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("users") Set<String> toRoomUsers,
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("sync_device") Boolean syncDevice,
+            @JsonProperty("chatroom_msg_level") ChatroomMsgLevel chatroomMsgLevel) {
+        this.from = from;
+        this.tos = toSet;
+        this.toGroupUsers = toRoomUsers;
+        Message send = Message.of(message);
+        this.msgType = send.type;
+        this.body = send;
+        this.extensions = extensions;
+        this.syncDevice = syncDevice;
+        this.chatroomMsgLevel = chatroomMsgLevel.getLevel();
+    }
+
     public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {
         if (extensions == null || extensions.isEmpty()) {
             return null;
