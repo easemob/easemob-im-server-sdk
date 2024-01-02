@@ -10,10 +10,7 @@ import com.easemob.im.server.model.EMPage;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -171,6 +168,140 @@ public class GroupIT extends AbstractIT {
         if (groupMembers.size() != members.size()) {
             throw new RuntimeException(
                     String.format("incorrect number of group %s members", groupId));
+        }
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testLargeGroupCreatePublic() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createLargePublicGroup(randomOwnerUsername, "politics", "group description", members, 5000,
+                        true, "custom", true).block(Utilities.IT_TIMEOUT));
+        EMGroup group = assertDoesNotThrow(
+                () -> this.service.group().getGroup(groupId)
+                        .block(Utilities.IT_TIMEOUT));
+        if (5000 != group.getMaxMembers()) {
+            throw new RuntimeException(
+                    String.format("%s is not a large group", groupId));
+        }
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testLargeGroupCreatePublicWithCustomGroupId() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+
+        Random random = new Random();
+        String customGroupId = String.valueOf(10000000 + random.nextInt(80000000));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createLargePublicGroup(customGroupId, randomOwnerUsername, "politics", "group description", members, 5000,
+                        true, "custom", true).block(Utilities.IT_TIMEOUT));
+        EMGroup group = assertDoesNotThrow(
+                () -> this.service.group().getGroup(groupId)
+                        .block(Utilities.IT_TIMEOUT));
+        if (!customGroupId.equals(groupId)) {
+            throw new RuntimeException(
+                    String.format("%s and %s are different", customGroupId, groupId));
+        }
+        if (5000 != group.getMaxMembers()) {
+            throw new RuntimeException(
+                    String.format("%s is not a large group", groupId));
+        }
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testLargeGroupCreatePrivate() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createLargePrivateGroup(randomOwnerUsername, "group", "group description", members, 5000,
+                        true, true, true, "custom", false).block(Utilities.IT_TIMEOUT));
+        EMGroup group = assertDoesNotThrow(
+                () -> this.service.group().getGroup(groupId)
+                        .block(Utilities.IT_TIMEOUT));
+        if (5000 != group.getMaxMembers()) {
+            throw new RuntimeException(
+                    String.format("%s is not a large group", groupId));
+        }
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testLargeGroupCreatePrivateWithCustomGroupId() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+
+        Random random = new Random();
+        String customGroupId = String.valueOf(10000000 + random.nextInt(80000000));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createLargePrivateGroup(customGroupId, randomOwnerUsername, "group", "group description", members, 5000,
+                        true, true, true, "custom", false).block(Utilities.IT_TIMEOUT));
+        EMGroup group = assertDoesNotThrow(
+                () -> this.service.group().getGroup(groupId)
+                        .block(Utilities.IT_TIMEOUT));
+        if (!customGroupId.equals(groupId)) {
+            throw new RuntimeException(
+                    String.format("%s and %s are different", customGroupId, groupId));
+        }
+        if (5000 != group.getMaxMembers()) {
+            throw new RuntimeException(
+                    String.format("%s is not a large group", groupId));
         }
         assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));

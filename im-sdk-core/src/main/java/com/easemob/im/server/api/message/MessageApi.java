@@ -396,38 +396,6 @@ public class MessageApi {
     }
 
     /**
-     * 向大型聊天室发送消息
-     *
-     * @param from       发送者用户名
-     * @param tos        目标聊天室id列表
-     * @param message    要发送的消息，EMTextMessage文本消息，EMImageMessage图片消息，EMVoiceMessage语音消息，
-     *                   EMVideoMessage视频消息，EMFileMessage文件消息，EMCommandMessage透传消息，EMCustomMessage自定义类型消息，
-     *                   各种类型消息需要自己构造
-     * @param extensions 要发送的扩展，可以为空
-     * @return 发消息响应或错误
-     */
-    public Mono<EMSentMessageIds> sendMessageToLargeChatroom(String from, Set<String> tos,
-            EMMessage message, Set<EMKeyValue> extensions) {
-        return this.sendMessage.sendMessageToLargeChatroom(from, checkTos(tos), message, extensions);
-    }
-
-    /**
-     * 向小型聊天室发送消息
-     *
-     * @param from       发送者用户名
-     * @param tos        目标聊天室id列表
-     * @param message    要发送的消息，EMTextMessage文本消息，EMImageMessage图片消息，EMVoiceMessage语音消息，
-     *                   EMVideoMessage视频消息，EMFileMessage文件消息，EMCommandMessage透传消息，EMCustomMessage自定义类型消息，
-     *                   各种类型消息需要自己构造
-     * @param extensions 要发送的扩展，可以为空
-     * @return 发消息响应或错误
-     */
-    public Mono<EMSentMessageIds> sendMessageToSmallChatroom(String from, Set<String> tos,
-            EMMessage message, Set<EMKeyValue> extensions) {
-        return this.sendMessage.sendMessageToSmallChatroom(from, checkTos(tos), message, extensions);
-    }
-
-    /**
      * 发送消息（只投递在线消息）。将在后续版本中移除，请使用sendMsg方法。
      * <p>
      * API使用示例：

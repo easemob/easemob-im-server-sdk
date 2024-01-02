@@ -231,63 +231,6 @@ public class SendMessage {
                 });
     }
 
-    public Mono<EMSentMessageIds> sendMessageToLargeChatroom(String from, Set<String> tos,
-            EMMessage message, Set<EMKeyValue> extensions) {
-        return this.context.getHttpClient()
-                .flatMap(httpClient -> httpClient.post()
-                        .uri(String.format(
-                                String.format("/chatroom/%s/messages?isLarge=true&useMsgId=true",
-                                        tos.toArray()[0])))
-                        .send(Mono.create(sink -> sink.success(context.getCodec()
-                                .encode(new SendChatroomMessageRequest(from, "chatrooms", tos,
-                                        message,
-                                        SendMessageRequest.parseExtensions(extensions),
-                                        UUID.randomUUID().toString())))))
-                        .responseSingle((rsp, buf) -> {
-                            return buf.switchIfEmpty(
-                                            Mono.error(new EMUnknownException("response is null")))
-                                    .flatMap(byteBuf -> {
-                                        ErrorMapper mapper = new DefaultErrorMapper();
-                                        mapper.statusCode(rsp);
-                                        mapper.checkError(byteBuf);
-                                        return Mono.just(byteBuf);
-                                    });
-                        }))
-                .map(byteBuf -> {
-                    SendMessageResponse sendMessageResponse = context.getCodec()
-                            .decode(byteBuf, SendMessageResponse.class);
-                    return sendMessageResponse.toEMSentMessages();
-                });
-    }
-
-    public Mono<EMSentMessageIds> sendMessageToSmallChatroom(String from, Set<String> tos,
-            EMMessage message, Set<EMKeyValue> extensions) {
-        return this.context.getHttpClient()
-                .flatMap(httpClient -> httpClient.post()
-                        .uri(String.format("/chatroom/%s/messages?isLarge=false&useMsgId=true",
-                                tos.toArray()[0]))
-                        .send(Mono.create(sink -> sink.success(context.getCodec()
-                                .encode(new SendChatroomMessageRequest(from, "chatrooms", tos,
-                                        message,
-                                        SendMessageRequest.parseExtensions(extensions),
-                                        UUID.randomUUID().toString())))))
-                        .responseSingle((rsp, buf) -> {
-                            return buf.switchIfEmpty(
-                                            Mono.error(new EMUnknownException("response is null")))
-                                    .flatMap(byteBuf -> {
-                                        ErrorMapper mapper = new DefaultErrorMapper();
-                                        mapper.statusCode(rsp);
-                                        mapper.checkError(byteBuf);
-                                        return Mono.just(byteBuf);
-                                    });
-                        }))
-                .map(byteBuf -> {
-                    SendMessageResponse sendMessageResponse = context.getCodec()
-                            .decode(byteBuf, SendMessageResponse.class);
-                    return sendMessageResponse.toEMSentMessages();
-                });
-    }
-
     public class RouteSpec {
 
         private String from;

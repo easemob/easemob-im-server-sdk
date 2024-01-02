@@ -99,6 +99,36 @@ public class CreateGroup {
                 });
     }
 
+    public Mono<String> largePublicGroup(String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean needApproveToJoin, String custom,
+            boolean needVerify) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/chatgroups")
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new CreateGroupRequest(groupName, description, true,
+                                        "large", owner, members, maxMembers, false,
+                                        needApproveToJoin, custom, needVerify)))))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .handle((rsp, sink) -> {
+                    String groupId = rsp.getGroupId();
+                    if (groupId == null) {
+                        sink.error(new EMUnknownException("groupId is null"));
+                    }
+                    sink.next(groupId);
+                });
+    }
+
     public Mono<String> publicGroup(String groupId, String owner, String groupName, String description,
             List<String> members, int maxMembers, boolean needApproveToJoin, String custom, boolean needVerify) {
         return this.context.getHttpClient()
@@ -107,6 +137,37 @@ public class CreateGroup {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new CreateGroupRequest(groupId, groupName, description, true, owner,
                                         members, maxMembers, false, needApproveToJoin, custom, needVerify)))))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .handle((rsp, sink) -> {
+                    String id = rsp.getGroupId();
+                    if (id == null) {
+                        sink.error(new EMUnknownException("groupId is null"));
+                    }
+                    sink.next(id);
+                });
+    }
+
+    public Mono<String> largePublicGroup(String groupId, String owner, String groupName,
+            String description,
+            List<String> members, int maxMembers, boolean needApproveToJoin, String custom,
+            boolean needVerify) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/chatgroups")
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new CreateGroupRequest(groupId, groupName, description,
+                                        true, "large", owner, members, maxMembers, false,
+                                        needApproveToJoin, custom, needVerify)))))
                         .responseSingle((rsp, buf) -> {
                             return buf.switchIfEmpty(
                                             Mono.error(new EMUnknownException("response is null")))
@@ -240,6 +301,37 @@ public class CreateGroup {
                 });
     }
 
+    public Mono<String> largePrivateGroup(String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean canMemberInvite, boolean needInviteConfirm,
+            boolean needApproveToJoin, String custom, boolean needVerify) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/chatgroups")
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new CreateGroupRequest(groupName, description, false,
+                                        "large", owner, members, maxMembers, canMemberInvite,
+                                        needInviteConfirm, needApproveToJoin, custom,
+                                        needVerify)))))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .handle((rsp, sink) -> {
+                    String groupId = rsp.getGroupId();
+                    if (groupId == null) {
+                        sink.error(new EMUnknownException("groupId is null"));
+                    }
+                    sink.next(groupId);
+                });
+    }
+
     public Mono<String> privateGroup(String groupId, String owner, String groupName, String description,
             List<String> members, int maxMembers, boolean canMemberInvite, boolean needInviteConfirm,
             boolean needApproveToJoin, String custom, boolean needVerify) {
@@ -249,6 +341,37 @@ public class CreateGroup {
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
                                 .encode(new CreateGroupRequest(groupId, groupName, description, false, owner,
                                         members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom, needVerify)))))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .handle((rsp, sink) -> {
+                    String id = rsp.getGroupId();
+                    if (id == null) {
+                        sink.error(new EMUnknownException("groupId is null"));
+                    }
+                    sink.next(id);
+                });
+    }
+
+    public Mono<String> largePrivateGroup(String groupId, String owner, String groupName, String description,
+            List<String> members, int maxMembers, boolean canMemberInvite, boolean needInviteConfirm,
+            boolean needApproveToJoin, String custom, boolean needVerify) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/chatgroups")
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new CreateGroupRequest(groupId, groupName, description,
+                                        false, "large", owner, members, maxMembers, canMemberInvite,
+                                        needInviteConfirm, needApproveToJoin, custom,
+                                        needVerify)))))
                         .responseSingle((rsp, buf) -> {
                             return buf.switchIfEmpty(
                                             Mono.error(new EMUnknownException("response is null")))

@@ -59,20 +59,22 @@ public class TokenApi {
     }
 
     /**
-     * 获取 User Token
+     * 获取 User Token，expireInSeconds 仅对生成 Agora userToken 生效
      * <p>
-     * 可获取 Easemob userToken 或 Agora userToken. 如您初始化 service 时使用的是 Agora App Credentials,
-     * 则两种 userToken 都可以获取. 如您初始化 service 时使用的是 Easemob App Credentials, 则只能获取 Easemob userToken.
-     * 其中 Agora userToken 的结构请参考 {@link AccessToken2}
+     * 可获取 Easemob userToken 或 Agora userToken.
      * <p>
-     * Agora userToken 中除了 AgoraChat 权限以外, 还可以自定义添加其他 Agora 服务(比如RTC)的权限,
-     * 对每个服务的权限可以单独设置不同的过期时间.
-     * <p>
+     * 如果您在初始化 EMProperties 时使用的是 ClientId 与 ClientSecret，那么无需关注 Agora userToken，直接使用以下示例获取 Easemob userToken 即可。
      * 为用户 Cat 获取 Easemob userToken
      * <pre>{@code
      * EMUser cathy = new EMUser("cathy", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
      * String cathyEasemobToken = service.token().getUserToken(cathy, null, null, "passwordOfUserCat");
      * }</pre>
+     * <p>
+     * 如果您在初始化 EMProperties 时使用的是 AppId 与 AppCert，那么需要关注 Agora userToken。
+     * 其中 Agora userToken 的结构请参考 {@link AccessToken2}
+     * <p>
+     * Agora userToken 中除了 AgoraChat 权限以外, 还可以自定义添加其他 Agora 服务(比如RTC)的权限,
+     * 对每个服务的权限可以单独设置不同的过期时间.
      * <p>
      * 为用户 Alice 生成仅含 AgoraChat 权限的 Agora userToken, 有效期为3600秒:
      * <pre>{@code
@@ -92,7 +94,7 @@ public class TokenApi {
      * }</pre>
      *
      * @param user            用户
-     * @param expireInSeconds token 过期时间 TTL in seconds
+     * @param expireInSeconds token 过期时间 TTL in seconds，该参数仅对 Agora userToken 生效
      * @param tokenConfigurer 用来自定义添加其他 Agora 服务的 lambda function
      * @param password        用户密码
      * @return Easemob userToken 或 Agora userToken
@@ -144,32 +146,34 @@ public class TokenApi {
     }
 
     /**
-     * 获取 User Token，expireInSeconds 对生成 Easemob userToken 也会生效
+     * 获取 User Token，expireInSeconds 对生成 Easemob userToken 和 Agora userToken 都会生效
      * <p>
-     * 可获取 Easemob userToken 或 Agora userToken. 如您初始化 service 时使用的是 Agora App Credentials,
-     * 则两种 userToken 都可以获取. 如您初始化 service 时使用的是 Easemob App Credentials, 则只能获取 Easemob userToken.
+     * 可获取 Easemob userToken 或 Agora userToken.
+     * <p>
+     * 如果您在初始化 EMProperties 时使用的是 ClientId 与 ClientSecret，那么无需关注 Agora userToken，直接使用以下示例获取 Easemob userToken 即可。
+     * 为用户 Cat 获取 Easemob userToken
+     * <pre>{@code
+     * EMUser cathy = new EMUser("cathy", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
+     * String cathyEasemobToken = service.token().getUserTokenWithTtl(cathy, 86400, null, "passwordOfUserCat");
+     * }</pre>
+     * <p>
+     * 如果您在初始化 EMProperties 时使用的是 AppId 与 AppCert，那么需要关注 Agora userToken。
      * 其中 Agora userToken 的结构请参考 {@link AccessToken2}
      * <p>
      * Agora userToken 中除了 AgoraChat 权限以外, 还可以自定义添加其他 Agora 服务(比如RTC)的权限,
      * 对每个服务的权限可以单独设置不同的过期时间.
      * <p>
-     * 为用户 Cat 获取 Easemob userToken
-     * <pre>{@code
-     * EMUser cathy = new EMUser("cathy", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
-     * String cathyEasemobToken = service.token().getUserToken(cathy, null, null, "passwordOfUserCat");
-     * }</pre>
-     * <p>
      * 为用户 Alice 生成仅含 AgoraChat 权限的 Agora userToken, 有效期为3600秒:
      * <pre>{@code
      * EMUser alice = new EMUser("alice", "da920000-ecf9-11eb-9af3-296ff79acb67", true);
-     * String aliceAgoraChatToken = service.token().getUserToken(alice, 3600, null, null);
+     * String aliceAgoraChatToken = service.token().getUserTokenWithTtl(alice, 3600, null, null);
      * }</pre>
      * <p>
      * 为用户 Bob 生成包含 AgoraChat 权限和 AgoraRTC (JOIN_CHANNEL) 权限的 Agora userToken, 有效期为600秒:
      * <pre>{@code
      *
      * EMUser bob = new EMUser("bob", "da921111-ecf9-11eb-9af3-296ff79acb67", true);
-     * String bobAgoraChatRtcToken = service.token().getUserToken(bob, 600, token -> {
+     * String bobAgoraChatRtcToken = service.token().getUserTokenWithTtl(bob, 600, token -> {
      *     AccessToken2.ServiceRtc serviceRtc = new AccessToken2.ServiceRtc("dummyRtcChannelName", "dummyUid");
      *     serviceRtc.addPrivilegeRtc(AccessToken2.PrivilegeRtc.PRIVILEGE_JOIN_CHANNEL, 600);
      *     token.addService(serviceRtc);
