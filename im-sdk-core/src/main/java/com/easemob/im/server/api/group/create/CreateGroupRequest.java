@@ -15,6 +15,9 @@ public class CreateGroupRequest {
     @JsonProperty("desc")
     private String description;
 
+    @JsonProperty("scale")
+    private String scale;
+
     @JsonProperty("public")
     private boolean isPublic;
 
@@ -90,13 +93,48 @@ public class CreateGroupRequest {
         this.needVerify = needVerify;
     }
 
-    public CreateGroupRequest(String groupId, String groupName, String description, boolean isPublic, String owner,
+    public CreateGroupRequest(String groupName, String description, boolean isPublic, String scale, String owner,
+            List<String> members, int maxMembers, boolean memberCanInviteOthers,
+            boolean needApproveToJoin, String custom, boolean needVerify) {
+        this.groupName = groupName;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.scale = scale;
+        this.owner = owner;
+        this.members = members;
+        this.maxMembers = maxMembers;
+        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.needApproveToJoin = needApproveToJoin;
+        this.custom = custom;
+        this.needVerify = needVerify;
+    }
+
+    public CreateGroupRequest(String groupId, String groupName, String description,
+            boolean isPublic, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
             boolean needApproveToJoin, String custom, boolean needVerify) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.description = description;
         this.isPublic = isPublic;
+        this.owner = owner;
+        this.members = members;
+        this.maxMembers = maxMembers;
+        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.needApproveToJoin = needApproveToJoin;
+        this.custom = custom;
+        this.needVerify = needVerify;
+    }
+
+    public CreateGroupRequest(String groupId, String groupName, String description,
+            boolean isPublic, String scale, String owner, List<String> members, int maxMembers,
+            boolean memberCanInviteOthers, boolean needApproveToJoin, String custom,
+            boolean needVerify) {
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.scale = scale;
         this.owner = owner;
         this.members = members;
         this.maxMembers = maxMembers;
@@ -141,6 +179,25 @@ public class CreateGroupRequest {
     }
 
     @SuppressWarnings("java:S107")
+    public CreateGroupRequest(String groupName, String description, boolean isPublic, String scale,
+            String owner, List<String> members, int maxMembers, boolean memberCanInviteOthers,
+            boolean needInviteConfirm, boolean needApproveToJoin, String custom,
+            boolean needVerify) {
+        this.groupName = groupName;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.scale = scale;
+        this.owner = owner;
+        this.members = members;
+        this.maxMembers = maxMembers;
+        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.needInviteConfirm = needInviteConfirm;
+        this.needApproveToJoin = needApproveToJoin;
+        this.custom = custom;
+        this.needVerify = needVerify;
+    }
+
+    @SuppressWarnings("java:S107")
     public CreateGroupRequest(String groupId, String groupName, String description, boolean isPublic, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
             boolean needInviteConfirm, boolean needApproveToJoin, String custom,
@@ -149,6 +206,25 @@ public class CreateGroupRequest {
         this.groupName = groupName;
         this.description = description;
         this.isPublic = isPublic;
+        this.owner = owner;
+        this.members = members;
+        this.maxMembers = maxMembers;
+        this.memberCanInviteOthers = memberCanInviteOthers;
+        this.needInviteConfirm = needInviteConfirm;
+        this.needApproveToJoin = needApproveToJoin;
+        this.custom = custom;
+        this.needVerify = needVerify;
+    }
+
+    public CreateGroupRequest(String groupId, String groupName, String description,
+            boolean isPublic, String scale, String owner, List<String> members, int maxMembers,
+            boolean memberCanInviteOthers, boolean needInviteConfirm, boolean needApproveToJoin,
+            String custom, boolean needVerify) {
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.scale = scale;
         this.owner = owner;
         this.members = members;
         this.maxMembers = maxMembers;
