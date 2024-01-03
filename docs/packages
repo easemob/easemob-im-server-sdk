@@ -110,6 +110,8 @@ com.easemob.im.server.api.group.settings
 com.easemob.im.server.api.group.settings
 com.easemob.im.server.api.group.settings
 com.easemob.im.server.api.group.settings
+com.easemob.im.server.api.group.membershipcheck
+com.easemob.im.server.api.group.membershipcheck
 com.easemob.im.server.api.group.delete
 com.easemob.im.server.api.group.member.remove
 com.easemob.im.server.api.group.member.remove

@@ -26,6 +26,7 @@ com.easemob.im.server.api.group.list
 com.easemob.im.server.api.group.member.add
 com.easemob.im.server.api.group.member.list
 com.easemob.im.server.api.group.member.remove
+com.easemob.im.server.api.group.membershipcheck
 com.easemob.im.server.api.group.settings
 com.easemob.im.server.api.loadbalance
 com.easemob.im.server.api.message
