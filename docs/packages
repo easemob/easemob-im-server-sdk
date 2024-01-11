@@ -125,6 +125,10 @@ com.easemob.im.server.api.group.admin
 com.easemob.im.server.api.group.admin
 com.easemob.im.server.api.group.admin
 com.easemob.im.server.api.group.admin
+com.easemob.im.server.api.group.management
+com.easemob.im.server.api.group.management
+com.easemob.im.server.api.group.management
+com.easemob.im.server.api.group.management
 com.easemob.im.server.api.group.get
 com.easemob.im.server.api.group.get
 com.easemob.im.server.api.group.assign

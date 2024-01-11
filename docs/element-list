@@ -23,6 +23,7 @@ com.easemob.im.server.api.group.create
 com.easemob.im.server.api.group.delete
 com.easemob.im.server.api.group.get
 com.easemob.im.server.api.group.list
+com.easemob.im.server.api.group.management
 com.easemob.im.server.api.group.member.add
 com.easemob.im.server.api.group.member.list
 com.easemob.im.server.api.group.member.remove
