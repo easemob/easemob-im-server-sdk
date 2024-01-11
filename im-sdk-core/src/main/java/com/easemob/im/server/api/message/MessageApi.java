@@ -1057,6 +1057,43 @@ public class MessageApi {
     }
 
     /**
+     * 发送聊天室全局广播消息。
+     * 可通过该接口向 app 下的所有活跃聊天室（聊天室至少存在一个成员，而且曾经至少发送过一条消息）发送广播消息，支持所有消息类型。
+     * 发送频率：每分钟最多可发 10 次，而且每天最多可发 100 次广播消息。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * 例如，发送一条带有扩展字段的文本消息
+     * EMTextMessage textMessage = new EMTextMessage().text("hello");
+     *
+     * Set<EMKeyValue> exts = new HashSet<>();
+     * exts.add(EMKeyValue.of("key", "value"));
+     *
+     * try {
+     *     EMSentMessageIds messageIds = service.message().sendRoomBroadcastMsg("fromUserName", textMessage, exts, true, ChatroomMsgLevel.NORMAL).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     *
+     * }</pre>
+     *
+     * @param from             发送者用户名
+     * @param message          要发送的消息
+     * @param extensions       要发送的扩展，可以为空
+     * @param syncDevice       消息发送成功后，是否将消息同步到发送方，true：是同步给发送方，false：是不同给发送方
+     * @param chatroomMsgLevel 聊天室消息优先级: LOW-低优先级，NORMAL-普通优先级，HIGH-高优先级
+     * @return 发消息响应或错误
+     * @see <a href="https://docs-im-beta.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%A8%E5%B1%80%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF">发送聊天室全局广播消息</a>
+     */
+    public Mono<EMSentMessageIds> sendRoomBroadcastMsg(String from, EMMessage message,
+            Set<EMKeyValue> extensions, Boolean syncDevice, ChatroomMsgLevel chatroomMsgLevel) {
+        return this.messageSend.sendRoomBroadcast(from, message, extensions, syncDevice, chatroomMsgLevel);
+    }
+
+    /**
      * 发送消息，不返回消息 ID。将在后续版本中移除。
      * <p>
      * API使用示例：
