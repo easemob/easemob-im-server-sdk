@@ -299,6 +299,33 @@ public class MessageSend {
                 });
     }
 
+    public Mono<EMSentMessageIds> sendRoomBroadcast(String from,
+            EMMessage message, Set<EMKeyValue> extensions, Boolean syncDevice, ChatroomMsgLevel level) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/messages/chatrooms/broadcast")
+                        .send(Mono.create(sink -> {
+                            sink.success(context.getCodec()
+                                    .encode(new SendMessageRequest(from, message,
+                                            MessageSendRequest.parseExtensions(extensions), syncDevice, level)));
+                        }))
+                        .responseSingle((rsp, buf) -> {
+                            return buf.switchIfEmpty(
+                                            Mono.error(new EMUnknownException("response is null")))
+                                    .flatMap(byteBuf -> {
+                                        ErrorMapper mapper = new DefaultErrorMapper();
+                                        mapper.statusCode(rsp);
+                                        mapper.checkError(byteBuf);
+                                        return Mono.just(byteBuf);
+                                    });
+                        }))
+                .map(byteBuf -> {
+                    SendMessageResponse sendMessageResponse = context.getCodec()
+                            .decode(byteBuf, SendMessageResponse.class);
+                    return sendMessageResponse.toEMSentMessages();
+                });
+    }
+
     public class RouteSpec {
 
         private String from;

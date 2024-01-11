@@ -8,6 +8,8 @@ import com.easemob.im.server.api.group.announcement.GroupAnnouncement;
 import com.easemob.im.server.api.group.create.CreateGroup;
 import com.easemob.im.server.api.group.delete.DeleteGroup;
 import com.easemob.im.server.api.group.get.GetGroup;
+import com.easemob.im.server.api.group.management.GroupDisable;
+import com.easemob.im.server.api.group.management.GroupEnable;
 import com.easemob.im.server.api.group.membershipcheck.GroupMembershipCheck;
 import com.easemob.im.server.api.group.list.*;
 import com.easemob.im.server.api.group.member.add.GroupMemberAdd;
@@ -49,6 +51,9 @@ public class GroupApi {
     private GroupAdminAdd groupAdminAdd;
     private GroupAdminRemove groupAdminRemove;
 
+    private GroupDisable groupDisable;
+    private GroupEnable groupEnable;
+
     public GroupApi(Context context) {
         this.groupList = new GroupList(context);
         this.createGroup = new CreateGroup(context);
@@ -68,6 +73,9 @@ public class GroupApi {
         this.groupAdminList = new GroupAdminList(context);
         this.groupAdminAdd = new GroupAdminAdd(context);
         this.groupAdminRemove = new GroupAdminRemove(context);
+
+        this.groupDisable = new GroupDisable(context);
+        this.groupEnable = new GroupEnable(context);
     }
 
     /**
@@ -1378,5 +1386,55 @@ public class GroupApi {
     public Mono<Boolean> userIsJoined(String groupId, String username) {
         return this.groupMembershipCheck.execute(groupId, username);
     }
+
+    /**
+     * 封禁群组
+     * <p>
+     * 封禁指定的群组。例如，群成员经常在群中发送违规消息，可以调用该 API 对该群进行封禁。
+     * 群组被封禁后，群中任何成员均无法在群组以及该群组下的子区中发送和接收消息，也无法进行群组和子区管理操作。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     Boolean result = service.group().disableGroup("groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId  群组id
+     * @return 封禁群组结果
+     * @see <a href="https://docs-im-beta.easemob.com/document/server-side/group.html#%E5%B0%81%E7%A6%81%E7%BE%A4%E7%BB%84">封禁群组</a>
+     */
+    public Mono<Boolean> disableGroup(String groupId) {
+        return this.groupDisable.execute(groupId);
+    }
+
+    /**
+     * 解禁群组
+     * <p>
+     * 解除对指定群组的封禁。群组解禁后，群成员可以在该群组以及该群组下的子区中发送和接收消息并进行群组和子区管理相关操作。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     Boolean result = service.group().enableGroup("groupId").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param groupId  群组id
+     * @return 解禁群组结果
+     * @see <a href="https://docs-im-beta.easemob.com/document/server-side/group.html#%E8%A7%A3%E7%A6%81%E7%BE%A4%E7%BB%84">解禁群组</a>
+     */
+    public Mono<Boolean> enableGroup(String groupId) {
+        return this.groupEnable.execute(groupId);
+    }
+
 
 }

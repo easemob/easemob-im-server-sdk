@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.message.send;
 
+import com.easemob.im.server.api.message.ChatroomMsgLevel;
 import com.easemob.im.server.model.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -33,6 +34,9 @@ public class SendMessageRequest {
 
     @JsonProperty("sync_device")
     private Boolean syncDevice;
+
+    @JsonProperty("chatroom_msg_level")
+    private String chatroomMsgLevel;
 
     @JsonCreator
     public SendMessageRequest(@JsonProperty("from") String from,
@@ -92,6 +96,19 @@ public class SendMessageRequest {
         this.extensions = extensions;
         this.routeType = routeType;
         this.syncDevice = syncDevice;
+    }
+
+    @JsonCreator
+    public SendMessageRequest(@JsonProperty("from") String from,
+            @JsonProperty("msg") EMMessage message,
+            @JsonProperty("ext") Map<String, Object> extensions,
+            @JsonProperty("sync_device") Boolean syncDevice,
+            @JsonProperty("chatroom_msg_level") ChatroomMsgLevel chatroomMsgLevel) {
+        this.from = from;
+        this.message = Message.of(message);
+        this.extensions = extensions;
+        this.syncDevice = syncDevice;
+        this.chatroomMsgLevel = chatroomMsgLevel.getLevel();
     }
 
     public static Map<String, Object> parseExtensions(Set<EMKeyValue> extensions) {
@@ -159,6 +176,10 @@ public class SendMessageRequest {
 
     public Boolean getSyncDevice() {
         return syncDevice;
+    }
+
+    public String getChatroomMsgLevel() {
+        return chatroomMsgLevel;
     }
 
     @SuppressWarnings("unchecked")

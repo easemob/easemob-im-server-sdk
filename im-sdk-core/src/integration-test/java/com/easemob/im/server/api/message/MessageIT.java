@@ -1060,4 +1060,47 @@ public class MessageIT extends AbstractIT {
                 () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
     }
 
+    @Test
+    void testRoomBroadcastMessageSendText() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+
+        List<String> members = new ArrayList<>();
+        members.add(randomToUsername);
+        members.add("u1");
+        String roomId = assertDoesNotThrow(() -> this.service.room()
+                .createRoom("chat room", "room description", randomFromUsername, members, 200)
+                .block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(() -> {
+            Set<EMKeyValue> exts = new HashSet<>();
+            exts.add(EMKeyValue.of("key", "value"));
+            exts.add(EMKeyValue.of("key1", 10));
+            exts.add(EMKeyValue.of("key2", new HashMap<String, String>() {
+                {
+                    put("mkey1", "mvalue1");
+                    put("mkey2", "mvalue2");
+                }
+            }));
+
+            EMSentMessageIds messageIds = service.message()
+                    .sendRoomBroadcastMsg(randomFromUsername, new EMTextMessage().text("123456"), exts, true,
+                            ChatroomMsgLevel.NORMAL).block();
+            assertEquals("id", messageIds.getMessageIdsByEntityId().keySet().iterator().next());
+        });
+
+        assertDoesNotThrow(
+                () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
 }

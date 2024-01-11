@@ -1529,4 +1529,65 @@ public class GroupIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
     }
 
+    @Test
+    void testGroupDisable(){
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPublicGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.group().disableGroup(groupId).block(Utilities.IT_TIMEOUT));
+
+        EMGroup group = assertDoesNotThrow(
+                () -> this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertEquals(true, group.getIsDisabled());
+
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testGroupEnable(){
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomMemberUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomMemberUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomMemberUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPublicGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.group().enableGroup(groupId).block(Utilities.IT_TIMEOUT));
+        EMGroup group = assertDoesNotThrow(
+                () -> this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertEquals(false, group.getIsDisabled());
+
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomMemberUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
 }
