@@ -1,12 +1,17 @@
 name: Build
 on:
   push:
-    branches: [ master ]
+    branches: [ master_java_2.0 ]
   pull_request:
-    branches: [ master ]
+    branches: [ master_java_2.0 ]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      IM_BASE_URI: ${{ env.IM_BASE_URI }}
+      IM_APPKEY: ${{ env.IM_APPKEY }}
+      IM_CLIENT_ID: ${{ env.IM_CLIENT_ID }}
+      IM_CLIENT_SECRET: ${{ env.IM_CLIENT_SECRET }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -16,25 +21,6 @@ jobs:
           java-version: 1.8
       - name: Maven
         run: mvn --batch-mode -Pci clean package
-      - name: CodeCov
-        uses: codecov/codecov-action@v1
-  integration:
-    needs: build
-    runs-on: ubuntu-latest
-    env:
-      IM_REALM: ${{ secrets.IM_REALM }}
-      IM_BASE_URI: ${{ secrets.IM_BASE_URI }}
-      IM_APPKEY: ${{ secrets.IM_APPKEY }}
-      IM_CLIENT_ID: ${{ secrets.IM_CLIENT_ID }}
-      IM_CLIENT_SECRET: ${{ secrets.IM_CLIENT_SECRET }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Maven
-        run: mvn -pl im-sdk-core --batch-mode -Pci clean test -D test="*IT" -D failIfNoTests=false
-#        run: mvn --batch-mode -Pci clean verify
+      - name: Maven Test
+        run: mvn test
 
