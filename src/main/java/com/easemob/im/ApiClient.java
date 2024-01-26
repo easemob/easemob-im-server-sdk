@@ -146,6 +146,7 @@ public class ApiClient {
      * Basic constructor with custom OkHttpClient
      *
      * @param client a {@link okhttp3.OkHttpClient} object
+     * @throws ApiException if fails to initialize {@link ApiClient}
      */
     public ApiClient(OkHttpClient client) throws ApiException {
         init();

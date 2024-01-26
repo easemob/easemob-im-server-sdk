@@ -110,7 +110,7 @@ public class ContactApiTest extends AbstractTest {
         assertNotNull(addContactResult.getEntities().get(0));
         assertEquals(username2, addContactResult.getEntities().get(0).getUsername());
 
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         EMGetContactListResult getContactListResult = assertDoesNotThrow(() -> api.getContactList(username1, 1, null, true));
         assertNotNull(getContactListResult);
@@ -199,7 +199,7 @@ public class ContactApiTest extends AbstractTest {
         assertNotNull(addContactResult.getEntities().get(0));
         assertEquals(username2, addContactResult.getEntities().get(0).getUsername());
 
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         EMSetContactNote contactNote = new EMSetContactNote();
         contactNote.setRemark("tom");
