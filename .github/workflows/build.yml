@@ -8,10 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      IM_BASE_URI: ${{ env.IM_BASE_URI }}
-      IM_APPKEY: ${{ env.IM_APPKEY }}
-      IM_CLIENT_ID: ${{ env.IM_CLIENT_ID }}
-      IM_CLIENT_SECRET: ${{ env.IM_CLIENT_SECRET }}
+      IM_BASE_URI: ${{ secrets.IM_BASE_URI }}
+      IM_APPKEY: ${{ secrets.IM_APPKEY }}
+      IM_CLIENT_ID: ${{ secrets.IM_CLIENT_ID }}
+      IM_CLIENT_SECRET: ${{ secrets.IM_CLIENT_SECRET }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2

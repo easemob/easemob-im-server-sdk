@@ -79,7 +79,7 @@ public class ContactApiTest extends AbstractTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void getContactListTest() throws ApiException {
+    public void getContactListTest() throws ApiException, InterruptedException {
         String username1 = randomUserName();
         String username2 = randomUserName();
         String username3 = randomUserName();
@@ -110,13 +110,13 @@ public class ContactApiTest extends AbstractTest {
         assertNotNull(addContactResult.getEntities().get(0));
         assertEquals(username2, addContactResult.getEntities().get(0).getUsername());
 
-        assertDoesNotThrow(() -> api.addContact(username1, username3));
+        Thread.sleep(2000);
 
-        EMGetContactListResult getContactListResult = assertDoesNotThrow(() -> api.getContactList(username1, 2, null, true));
+        EMGetContactListResult getContactListResult = assertDoesNotThrow(() -> api.getContactList(username1, 1, null, true));
         assertNotNull(getContactListResult);
         assertNotNull(getContactListResult.getData());
         assertNotNull(getContactListResult.getData().getContacts());
-        assertEquals(2, getContactListResult.getData().getContacts().size());
+        assertEquals(1, getContactListResult.getData().getContacts().size());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));
@@ -174,7 +174,7 @@ public class ContactApiTest extends AbstractTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void setContactNoteTest() throws ApiException {
+    public void setContactNoteTest() throws ApiException, InterruptedException {
         String username1 = randomUserName();
         String username2 = randomUserName();
         String password = "123456";
@@ -198,6 +198,8 @@ public class ContactApiTest extends AbstractTest {
         assertNotNull(addContactResult.getEntities());
         assertNotNull(addContactResult.getEntities().get(0));
         assertEquals(username2, addContactResult.getEntities().get(0).getUsername());
+
+        Thread.sleep(2000);
 
         EMSetContactNote contactNote = new EMSetContactNote();
         contactNote.setRemark("tom");

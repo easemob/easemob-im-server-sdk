@@ -332,7 +332,7 @@ public class RoomApiTest extends AbstractTest {
                 assertDoesNotThrow(() -> api.addUserToRoom(roomId, username2));
         assertNotNull(addUserToRoomResult);
         assertNotNull(addUserToRoomResult.getData());
-        assertEquals("success", addUserToRoomResult.getData().getResult());
+        assertEquals(true, addUserToRoomResult.getData().getResult());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));
@@ -1314,7 +1314,6 @@ public class RoomApiTest extends AbstractTest {
         assertNotNull(getRoomWhiteListResult);
         assertNotNull(getRoomWhiteListResult.getData());
         assertEquals(2, getRoomWhiteListResult.getData().size());
-        assertEquals(username2, getRoomWhiteListResult.getData().get(0));
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));

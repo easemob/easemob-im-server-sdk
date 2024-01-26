@@ -125,9 +125,6 @@ public class UserApiTest extends AbstractTest {
         Integer limit = 1;
         EMDeleteUsersResult result = assertDoesNotThrow(() -> api.deleteUsers(limit, null));
         assertDoesNotThrow(() -> api.deleteUsers(limit, result.getCursor()));
-        assertDoesNotThrow(() -> api.deleteUser(username1));
-        assertDoesNotThrow(() -> api.deleteUser(username2));
-
     }
 
     /**
