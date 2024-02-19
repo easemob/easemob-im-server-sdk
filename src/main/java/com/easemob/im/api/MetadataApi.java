@@ -74,7 +74,7 @@ public class MetadataApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -153,7 +153,7 @@ public class MetadataApi {
      * @param emCustomGroupMemberAttribute  (optional)
      * @return EMCustomGroupMemberAttributeResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -174,7 +174,7 @@ public class MetadataApi {
      * @param emCustomGroupMemberAttribute  (optional)
      * @return ApiResponse&lt;EMCustomGroupMemberAttributeResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -197,7 +197,7 @@ public class MetadataApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -218,7 +218,7 @@ public class MetadataApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -288,7 +288,7 @@ public class MetadataApi {
      * @param username  (required)
      * @return EMDeleteUserMetadataResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -307,7 +307,7 @@ public class MetadataApi {
      * @param username  (required)
      * @return ApiResponse&lt;EMDeleteUserMetadataResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -328,7 +328,7 @@ public class MetadataApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -350,7 +350,7 @@ public class MetadataApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -427,7 +427,7 @@ public class MetadataApi {
      * @param username  (required)
      * @return EMGetGroupMemberAllCustomAttributeResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -447,7 +447,7 @@ public class MetadataApi {
      * @param username  (required)
      * @return ApiResponse&lt;EMGetGroupMemberAllCustomAttributeResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -469,7 +469,7 @@ public class MetadataApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -491,7 +491,7 @@ public class MetadataApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -563,7 +563,7 @@ public class MetadataApi {
      * @param emGetMultipleGroupMembersAttributes  (optional)
      * @return EMGetMultipleGroupMembersAttributes
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -583,7 +583,7 @@ public class MetadataApi {
      * @param emGetMultipleGroupMembersAttributes  (optional)
      * @return ApiResponse&lt;EMGetMultipleGroupMembersAttributesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -605,7 +605,7 @@ public class MetadataApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -626,7 +626,7 @@ public class MetadataApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -696,7 +696,7 @@ public class MetadataApi {
      * @param username  (required)
      * @return EMGetUserMetadataResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -715,7 +715,7 @@ public class MetadataApi {
      * @param username  (required)
      * @return ApiResponse&lt;EMGetUserMetadataResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -736,7 +736,7 @@ public class MetadataApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -756,7 +756,7 @@ public class MetadataApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -819,7 +819,7 @@ public class MetadataApi {
      * 取该 app 下所有用户的属性数据大小，单位为字节。文档介绍：https://docs-im-beta.easemob.com/document/server-side/userprofile.html#%E8%8E%B7%E5%8F%96-app-%E4%B8%8B%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E5%A4%A7%E5%B0%8F
      * @return EMGetUserMetadataCapacityResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -837,7 +837,7 @@ public class MetadataApi {
      * 取该 app 下所有用户的属性数据大小，单位为字节。文档介绍：https://docs-im-beta.easemob.com/document/server-side/userprofile.html#%E8%8E%B7%E5%8F%96-app-%E4%B8%8B%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E5%A4%A7%E5%B0%8F
      * @return ApiResponse&lt;EMGetUserMetadataCapacityResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -857,7 +857,7 @@ public class MetadataApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -879,7 +879,7 @@ public class MetadataApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -955,7 +955,7 @@ public class MetadataApi {
      * @param metadata  (required)
      * @return EMSetUserMetadataResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -972,9 +972,10 @@ public class MetadataApi {
      * 设置用户属性
      * 用户属性的内容为一个或多个纯文本键值对，默认单个用户的属性总长度不能超过 2 KB，默认单个 app 下所有用户的属性总长度不能超过 10 GB。利用该 API，每次只能设置一个用户的用户属性。文档介绍：https://docs-im-beta.easemob.com/document/server-side/userprofile.html#%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7
      * @param username  (required)
+     * @param metadata  (required)
      * @return ApiResponse&lt;EMSetUserMetadataResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -996,7 +997,7 @@ public class MetadataApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
