@@ -20,5 +20,5 @@ jobs:
         with:
           java-version: 1.8
       - name: Maven
-        run: mvn --batch-mode -Pci clean package
+        run: mvn --batch-mode -Pci clean package -DskipJavadoc
 
