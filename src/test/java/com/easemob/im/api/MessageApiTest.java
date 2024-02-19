@@ -313,8 +313,6 @@ public class MessageApiTest extends AbstractTest {
 
         EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
         assertNotNull(response.getData());
-        Map<String, Object> data = (Map<String, Object>) response.getData();
-        System.out.println("messageId : " + data.get(groupId));
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));
@@ -376,8 +374,6 @@ public class MessageApiTest extends AbstractTest {
 
         EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
         assertNotNull(response.getData());
-        Map<String, Object> data = (Map<String, Object>) response.getData();
-        System.out.println("messageId : " + data.get(roomId));
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));
@@ -424,8 +420,6 @@ public class MessageApiTest extends AbstractTest {
 
         EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
         assertNotNull(response.getData());
-        Map<String, Object> data = (Map<String, Object>)response.getData();
-        System.out.println("messageId : " + data.get(username2));
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));
