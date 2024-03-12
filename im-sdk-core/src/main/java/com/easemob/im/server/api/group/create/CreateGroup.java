@@ -33,7 +33,12 @@ public class CreateGroup {
                                                 return Mono.just(byteBuf);
                                             });
                                 }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -61,7 +66,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -89,7 +99,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -119,7 +134,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -147,7 +167,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String id = rsp.getGroupId();
                     if (id == null) {
@@ -178,7 +203,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String id = rsp.getGroupId();
                     if (id == null) {
@@ -206,7 +236,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -234,7 +269,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -262,7 +302,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -291,7 +336,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -322,7 +372,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String groupId = rsp.getGroupId();
                     if (groupId == null) {
@@ -351,7 +406,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String id = rsp.getGroupId();
                     if (id == null) {
@@ -382,7 +442,12 @@ public class CreateGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, CreateGroupResponse.class))
+                .map(buf -> {
+                    CreateGroupResponse response =
+                            this.context.getCodec().decode(buf, CreateGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     String id = rsp.getGroupId();
                     if (id == null) {

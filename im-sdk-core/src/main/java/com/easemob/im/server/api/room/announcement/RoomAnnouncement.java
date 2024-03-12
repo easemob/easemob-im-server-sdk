@@ -5,6 +5,7 @@ import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMUnknownException;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Mono;
 
 public class RoomAnnouncement {
@@ -29,7 +30,12 @@ public class RoomAnnouncement {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, RoomAnnouncementGetResponse.class))
+                .map(buf -> {
+                    RoomAnnouncementGetResponse response =
+                            this.context.getCodec().decode(buf, RoomAnnouncementGetResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(RoomAnnouncementGetResponse::getAnnouncement);
     }
 
@@ -53,6 +59,7 @@ public class RoomAnnouncement {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 }

@@ -30,7 +30,12 @@ public class PromoteRoomAdmin {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, PromoteRoomAdminResponse.class))
+                .map(buf -> {
+                    PromoteRoomAdminResponse response =
+                            this.context.getCodec().decode(buf, PromoteRoomAdminResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));

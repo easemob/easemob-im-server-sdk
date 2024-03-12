@@ -45,7 +45,12 @@ public class ListRooms {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
+                .map(buf -> {
+                    ListRoomsResponse response =
+                            this.context.getCodec().decode(buf, ListRoomsResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(ListRoomsResponse::toEMPage);
     }
 
@@ -63,7 +68,12 @@ public class ListRooms {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ListRoomsResponse.class))
+                .map(buf -> {
+                    ListRoomsResponse response =
+                            this.context.getCodec().decode(buf, ListRoomsResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(ListRoomsResponse::getRoomIds);
     }
 }

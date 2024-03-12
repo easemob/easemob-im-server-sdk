@@ -40,6 +40,7 @@ public class CreateRoom {
                     CreateRoomResponse
                             createRoomResponse = this.context.getCodec()
                             .decode(byteBuf, CreateRoomResponse.class);
+                    byteBuf.release();
                     return createRoomResponse.getRoomId();
                 });
     }
@@ -67,6 +68,7 @@ public class CreateRoom {
                     CreateRoomResponse
                             createRoomResponse = this.context.getCodec()
                             .decode(byteBuf, CreateRoomResponse.class);
+                    byteBuf.release();
                     return createRoomResponse.getRoomId();
                 });
     }
@@ -94,6 +96,7 @@ public class CreateRoom {
                     CreateRoomResponse
                             createRoomResponse = this.context.getCodec()
                             .decode(byteBuf, CreateRoomResponse.class);
+                    byteBuf.release();
                     return createRoomResponse.getRoomId();
                 });
     }

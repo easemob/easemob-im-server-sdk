@@ -46,7 +46,11 @@ public class TokenApi {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> context.getCodec().decode(buf, TokenResponse.class))
+                .map(buf -> {
+                    TokenResponse response = context.getCodec().decode(buf, TokenResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(TokenResponse::asToken);
     }
 

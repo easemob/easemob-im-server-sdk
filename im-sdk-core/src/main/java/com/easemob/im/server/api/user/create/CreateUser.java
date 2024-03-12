@@ -39,6 +39,7 @@ public class CreateUser {
                 .map(byteBuf -> {
                     UserGetResponse userGetResponse =
                             this.context.getCodec().decode(byteBuf, UserGetResponse.class);
+                    byteBuf.release();
                     return userGetResponse.getEMUser(username.toLowerCase());
                 });
     }
@@ -63,6 +64,7 @@ public class CreateUser {
                 .map(byteBuf -> {
                     BatchCreateUserResponse batchCreateUserResponse =
                             this.context.getCodec().decode(byteBuf, BatchCreateUserResponse.class);
+                    byteBuf.release();
                     return batchCreateUserResponse.toEMUsers();
                 });
     }

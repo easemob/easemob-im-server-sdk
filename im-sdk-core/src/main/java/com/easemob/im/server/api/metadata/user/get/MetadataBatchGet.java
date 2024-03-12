@@ -33,7 +33,12 @@ public class MetadataBatchGet {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, MetadataBatchGetResponse.class))
+                .map(buf -> {
+                    MetadataBatchGetResponse response =
+                            this.context.getCodec().decode(buf, MetadataBatchGetResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(MetadataBatchGetResponse::toMetadataBatch);
     }
 }

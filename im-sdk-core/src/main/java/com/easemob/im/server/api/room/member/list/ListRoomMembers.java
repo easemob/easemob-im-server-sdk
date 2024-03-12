@@ -52,7 +52,12 @@ public class ListRoomMembers {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ListRoomMembersResponse.class))
+                .map(buf -> {
+                    ListRoomMembersResponse response =
+                            this.context.getCodec().decode(buf, ListRoomMembersResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(ListRoomMembersResponse::toEMPage);
     }
 
@@ -86,6 +91,11 @@ public class ListRoomMembers {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ListRoomMembersResponseV1.class));
+                .map(buf -> {
+                    ListRoomMembersResponseV1 response =
+                            this.context.getCodec().decode(buf, ListRoomMembersResponseV1.class);
+                    buf.release();
+                    return response;
+                });
     }
 }

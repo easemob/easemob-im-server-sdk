@@ -7,6 +7,7 @@ import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.user.list.UserListResponse;
 import com.easemob.im.server.exception.EMUnknownException;
 import io.netty.handler.codec.http.QueryStringEncoder;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientResponse;
@@ -34,6 +35,7 @@ public class DeleteUser {
                                                 return Mono.just(byteBuf);
                                             });
                                 }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 
@@ -70,6 +72,7 @@ public class DeleteUser {
                 .map(byteBuf -> {
                     UserUnregisterResponse userUnregisterResponse =
                             this.context.getCodec().decode(byteBuf, UserUnregisterResponse.class);
+                    byteBuf.release();
                     return userUnregisterResponse;
                 });
     }

@@ -34,8 +34,12 @@ public class GetRoomDetail {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GetRoomDetailResponse.class)
-                        .toRoomDetails().get(0));
+                .map(buf -> {
+                    GetRoomDetailResponse response =
+                            this.context.getCodec().decode(buf, GetRoomDetailResponse.class);
+                    buf.release();
+                    return response.toRoomDetails().get(0);
+                });
     }
 
     public Mono<List<EMRoom>> byIds(List<String> roomIdList) {
@@ -52,7 +56,12 @@ public class GetRoomDetail {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GetRoomDetailResponse.class))
+                .map(buf -> {
+                    GetRoomDetailResponse response =
+                            this.context.getCodec().decode(buf, GetRoomDetailResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GetRoomDetailResponse::toRoomDetails);
     }
 

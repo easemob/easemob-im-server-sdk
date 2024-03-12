@@ -28,7 +28,12 @@ public class DemoteRoomAdmin {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, DemoteRoomAdminResponse.class))
+                .map(buf -> {
+                    DemoteRoomAdminResponse response =
+                            this.context.getCodec().decode(buf, DemoteRoomAdminResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));

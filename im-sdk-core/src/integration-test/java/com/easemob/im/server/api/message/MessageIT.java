@@ -1073,7 +1073,6 @@ public class MessageIT extends AbstractIT {
 
         List<String> members = new ArrayList<>();
         members.add(randomToUsername);
-        members.add("u1");
         String roomId = assertDoesNotThrow(() -> this.service.room()
                 .createRoom("chat room", "room description", randomFromUsername, members, 200)
                 .block(Utilities.IT_TIMEOUT));

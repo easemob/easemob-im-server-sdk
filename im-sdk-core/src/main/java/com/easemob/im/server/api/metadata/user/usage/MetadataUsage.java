@@ -28,7 +28,12 @@ public class MetadataUsage {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, MetadataUsageResponse.class))
+                .map(buf -> {
+                    MetadataUsageResponse response =
+                            this.context.getCodec().decode(buf, MetadataUsageResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(MetadataUsageResponse::getBytesUsed)
                 .map(EMMetadataUsage::new);
     }

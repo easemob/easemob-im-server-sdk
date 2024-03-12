@@ -29,7 +29,12 @@ public class ListRoomAdmins {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ListRoomAdminsResponse.class))
+                .map(buf -> {
+                    ListRoomAdminsResponse response =
+                            this.context.getCodec().decode(buf, ListRoomAdminsResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(ListRoomAdminsResponse::getAdmins);
     }
 }

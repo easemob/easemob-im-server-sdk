@@ -51,6 +51,7 @@ public class ListUsers {
                 .map(byteBuf -> {
                     UserListResponse userListResponse =
                             this.context.getCodec().decode(byteBuf, UserListResponse.class);
+                    byteBuf.release();
                     return userListResponse.toEMPage();
                 });
     }

@@ -49,6 +49,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse =
                             context.getCodec().decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -74,6 +75,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse =
                             context.getCodec().decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -100,6 +102,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -126,6 +129,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -152,6 +156,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -178,6 +183,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -204,6 +210,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -239,6 +246,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -267,6 +275,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -295,6 +304,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -322,6 +332,7 @@ public class MessageSend {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }

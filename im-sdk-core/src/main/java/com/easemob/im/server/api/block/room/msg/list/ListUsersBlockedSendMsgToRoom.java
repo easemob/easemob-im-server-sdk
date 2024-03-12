@@ -30,8 +30,12 @@ public class ListUsersBlockedSendMsgToRoom {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec()
-                        .decode(buf, ListUsersBlockedSendMsgToRoomResponse.class))
+                .map(buf -> {
+                    ListUsersBlockedSendMsgToRoomResponse response = this.context.getCodec()
+                            .decode(buf, ListUsersBlockedSendMsgToRoomResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(ListUsersBlockedSendMsgToRoomResponse::getEMBlocks);
     }
 

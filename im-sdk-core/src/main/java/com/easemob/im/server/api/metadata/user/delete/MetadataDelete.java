@@ -27,7 +27,12 @@ public class MetadataDelete {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, MetadataDeleteResponse.class))
+                .map(buf -> {
+                    MetadataDeleteResponse response =
+                            this.context.getCodec().decode(buf, MetadataDeleteResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(MetadataDeleteResponse::getSuccess);
     }
 

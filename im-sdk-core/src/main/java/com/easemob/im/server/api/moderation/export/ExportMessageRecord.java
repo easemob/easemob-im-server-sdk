@@ -37,7 +37,11 @@ public class ExportMessageRecord {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ExportMessageRecordResponse.class)
-                        .getFileUuid());
+                .map(buf -> {
+                    ExportMessageRecordResponse response =
+                            this.context.getCodec().decode(buf, ExportMessageRecordResponse.class);
+                    buf.release();
+                    return response.getFileUuid();
+                });
     }
 }

@@ -43,6 +43,7 @@ public class SendMessage {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse =
                             context.getCodec().decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -68,6 +69,7 @@ public class SendMessage {
                 .map(byteBuf -> {
                     SendMessageResultResponse sendMessageResultResponse =
                             context.getCodec().decode(byteBuf, SendMessageResultResponse.class);
+                    byteBuf.release();
                     return sendMessageResultResponse.toEMSentMessages();
                 });
     }
@@ -94,6 +96,7 @@ public class SendMessage {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -121,6 +124,7 @@ public class SendMessage {
                     SendMessageResultResponse sendMessageResultResponse =
                             context.getCodec()
                                     .decode(byteBuf, SendMessageResultResponse.class);
+                    byteBuf.release();
                     return sendMessageResultResponse.toEMSentMessages();
                 });
     }
@@ -147,6 +151,7 @@ public class SendMessage {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -174,6 +179,7 @@ public class SendMessage {
                     SendMessageResultResponse sendMessageResultResponse =
                             context.getCodec()
                                     .decode(byteBuf, SendMessageResultResponse.class);
+                    byteBuf.release();
                     return sendMessageResultResponse.toEMSentMessages();
                 });
     }
@@ -200,6 +206,7 @@ public class SendMessage {
                 .map(byteBuf -> {
                     SendMessageResponse sendMessageResponse = context.getCodec()
                             .decode(byteBuf, SendMessageResponse.class);
+                    byteBuf.release();
                     return sendMessageResponse.toEMSentMessages();
                 });
     }
@@ -227,6 +234,7 @@ public class SendMessage {
                     SendMessageResultResponse sendMessageResultResponse =
                             context.getCodec()
                                     .decode(byteBuf, SendMessageResultResponse.class);
+                    byteBuf.release();
                     return sendMessageResultResponse.toEMSentMessages();
                 });
     }

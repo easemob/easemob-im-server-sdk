@@ -269,7 +269,7 @@ public class EMProperties {
         private int httpConnectionPoolSize = 50;
         private int httpConnectionMaxIdleTime = 10 * 1000;
         private int httpConnectionMaxLifeTime = 60 * 1000;
-        private int httpConnectionEvictInBackground = 60 * 1000;
+        private int httpConnectionEvictInBackground = 120 * 1000;
         private int nettyWorkerCount = 0;
         private int httpConnectionPendingAcquireMaxCount = 100;
         private int httpConnectionPendingAcquireTimeout = 60 * 1000;

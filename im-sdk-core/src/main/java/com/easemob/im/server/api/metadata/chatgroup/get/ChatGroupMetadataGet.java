@@ -30,7 +30,12 @@ public class ChatGroupMetadataGet {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ChatGroupMetadataGetResponse.class))
+                .map(buf -> {
+                    ChatGroupMetadataGetResponse response =
+                            this.context.getCodec().decode(buf, ChatGroupMetadataGetResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(ChatGroupMetadataGetResponse::toMetadata);
     }
 }

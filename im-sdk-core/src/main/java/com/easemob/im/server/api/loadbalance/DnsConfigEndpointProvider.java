@@ -42,7 +42,12 @@ public class DnsConfigEndpointProvider implements EndpointProvider {
                                 return Mono.just(byteBuf);
                             });
                 })
-                .map(buf -> this.codec.decode(buf, GetDnsConfigResponse.class))
+                .map(buf -> {
+                    GetDnsConfigResponse response =
+                            this.codec.decode(buf, GetDnsConfigResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GetDnsConfigResponse::toEndpoints);
     }
 }

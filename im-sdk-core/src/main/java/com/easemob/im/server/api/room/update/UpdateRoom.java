@@ -37,7 +37,12 @@ public class UpdateRoom {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, UpdateRoomResponse.class))
+                .map(buf -> {
+                    UpdateRoomResponse response =
+                            this.context.getCodec().decode(buf, UpdateRoomResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     List<String> notUpdated = new ArrayList<>();
                     if (request.hasName() && !rsp.nameUpdated()) {

@@ -5,6 +5,7 @@ import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.user.create.CreateUserRequest;
 import com.easemob.im.server.exception.EMUnknownException;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class GroupMemberAdd {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 
@@ -50,6 +52,7 @@ public class GroupMemberAdd {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 

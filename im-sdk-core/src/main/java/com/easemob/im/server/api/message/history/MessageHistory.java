@@ -39,7 +39,12 @@ public class MessageHistory {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, MessageHistoryResponse.class))
+                .map(buf -> {
+                    MessageHistoryResponse response =
+                            this.context.getCodec().decode(buf, MessageHistoryResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(MessageHistoryResponse::getUrl);
     }
 
@@ -73,8 +78,12 @@ public class MessageHistory {
                                                         return Mono.just(byteBuf);
                                                     });
                                         })
-                                        .map(b -> FileSystem.append(out, b))
-                                        .doOnSuccess(suc -> FileSystem.close(out))
+                                        .map(b -> {
+                                            OutputStream append = FileSystem.append(out, b);
+                                            b.release();
+                                            return append;
+                                        })
+                                        .doFinally(suc -> FileSystem.close(out))
                                         .then();
                             })
                             .thenReturn(local);

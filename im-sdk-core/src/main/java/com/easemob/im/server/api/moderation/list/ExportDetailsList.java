@@ -28,6 +28,11 @@ public class ExportDetailsList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ExportDetailsListResponse.class));
+                .map(buf -> {
+                    ExportDetailsListResponse response =
+                            this.context.getCodec().decode(buf, ExportDetailsListResponse.class);
+                    buf.release();
+                    return response;
+                });
     }
 }

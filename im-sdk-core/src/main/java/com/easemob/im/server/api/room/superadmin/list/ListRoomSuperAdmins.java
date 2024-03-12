@@ -36,7 +36,12 @@ public class ListRoomSuperAdmins {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ListRoomSuperAdminsResponse.class));
+                .map(buf -> {
+                    ListRoomSuperAdminsResponse response =
+                            this.context.getCodec().decode(buf, ListRoomSuperAdminsResponse.class);
+                    buf.release();
+                    return response;
+                });
     }
 
     public Flux<String> all(int pageSize) {

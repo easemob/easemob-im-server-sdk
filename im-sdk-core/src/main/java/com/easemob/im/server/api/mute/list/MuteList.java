@@ -22,7 +22,6 @@ public class MuteList {
     }
 
     public Mono<GetMuteListResponse> execute() {
-        log.debug("mute list -------------");
         return this.context.getHttpClient()
                 .flatMap(httpClient -> httpClient.get()
                         .uri("/mutes")
@@ -36,6 +35,11 @@ public class MuteList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GetMuteListResponse.class));
+                .map(buf -> {
+                    GetMuteListResponse response =
+                            this.context.getCodec().decode(buf, GetMuteListResponse.class);
+                    buf.release();
+                    return response;
+                });
     }
 }

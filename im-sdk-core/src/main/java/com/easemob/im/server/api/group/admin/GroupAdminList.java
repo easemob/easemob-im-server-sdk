@@ -29,7 +29,12 @@ public class GroupAdminList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GroupAdminListResponse.class))
+                .map(buf -> {
+                    GroupAdminListResponse response =
+                            this.context.getCodec().decode(buf, GroupAdminListResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(GroupAdminListResponse::getAdmins);
     }
 

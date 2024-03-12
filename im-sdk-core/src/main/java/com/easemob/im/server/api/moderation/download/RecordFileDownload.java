@@ -37,7 +37,11 @@ public class RecordFileDownload {
                                                 return Mono.just(byteBuf);
                                             });
                                 })
-                                .doOnNext(buf -> FileSystem.append(out, buf))
+                                .map(buf -> {
+                                    OutputStream append = FileSystem.append(out, buf);
+                                    buf.release();
+                                    return append;
+                                })
                                 .doFinally(sig -> FileSystem.close(out))
                                 .then()))
                 .thenReturn(local);

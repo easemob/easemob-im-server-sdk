@@ -47,7 +47,12 @@ public class GroupList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
+                .map(buf -> {
+                    GroupListResponse response =
+                            this.context.getCodec().decode(buf, GroupListResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GroupListResponse::toEMPage);
     }
 
@@ -65,7 +70,12 @@ public class GroupList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, JoinGroupListResponse.class))
+                .map(buf -> {
+                    JoinGroupListResponse response =
+                            this.context.getCodec().decode(buf, JoinGroupListResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(JoinGroupListResponse::getGroupIds);
     }
 
@@ -97,7 +107,12 @@ public class GroupList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GroupListResponse.class))
+                .map(buf -> {
+                    GroupListResponse response =
+                            this.context.getCodec().decode(buf, GroupListResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GroupListResponse::toEMPageWithInfo);
     }
 
@@ -115,7 +130,12 @@ public class GroupList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, JoinGroupListResponse.class))
+                .map(buf -> {
+                    JoinGroupListResponse response =
+                            this.context.getCodec().decode(buf, JoinGroupListResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(JoinGroupListResponse::getGroups);
     }
 
@@ -138,7 +158,12 @@ public class GroupList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, JoinGroupListResponse.class))
+                .map(buf -> {
+                    JoinGroupListResponse response =
+                            this.context.getCodec().decode(buf, JoinGroupListResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(JoinGroupListResponse::getGroups);
     }
 }
