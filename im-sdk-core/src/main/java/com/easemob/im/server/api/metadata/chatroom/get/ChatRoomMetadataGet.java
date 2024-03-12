@@ -38,8 +38,10 @@ public class ChatRoomMetadataGet {
                                     });
                         }))
                 .map(byteBuf -> {
-                    return this.context.getCodec()
+                    ChatRoomMetadataGetResponse response = this.context.getCodec()
                             .decode(byteBuf, ChatRoomMetadataGetResponse.class);
+                    byteBuf.release();
+                    return response;
                 });
     }
 
@@ -59,8 +61,10 @@ public class ChatRoomMetadataGet {
                                     });
                         }))
                 .map(byteBuf -> {
-                    return this.context.getCodec()
-                    .decode(byteBuf, ChatRoomMetadataGetResponse.class);
+                    ChatRoomMetadataGetResponse response = this.context.getCodec()
+                            .decode(byteBuf, ChatRoomMetadataGetResponse.class);
+                    byteBuf.release();
+                    return response;
                 });
     }
 }

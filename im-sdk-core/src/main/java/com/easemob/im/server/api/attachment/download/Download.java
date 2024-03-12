@@ -35,8 +35,9 @@ public class Download {
                                                 return Mono.just(byteBuf);
                                             });
                                 }))
-                        .doOnSuccess(suc -> {
+                        .doOnSuccess(byteBuf -> {
                             FileSystem.close(out);
+                            byteBuf.release();
                         })
                         .then())
                 .thenReturn(local);

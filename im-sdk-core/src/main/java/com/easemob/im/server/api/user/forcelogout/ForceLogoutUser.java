@@ -46,6 +46,7 @@ public class ForceLogoutUser {
                     if (!userForceLogoutResponse.isSuccessful()) {
                         return Mono.error(new EMInternalServerErrorException("unknown"));
                     }
+                    byteBuf.release();
                     return Mono.just(userForceLogoutResponse);
                 })
                 .then();

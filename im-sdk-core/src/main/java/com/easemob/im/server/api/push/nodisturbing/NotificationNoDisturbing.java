@@ -6,6 +6,7 @@ import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.api.push.nodisturbing.close.CloseNotificationNoDisturbingRequest;
 import com.easemob.im.server.api.push.nodisturbing.open.OpenNotificationNoDisturbingRequest;
 import com.easemob.im.server.exception.EMUnknownException;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Mono;
 
 public class NotificationNoDisturbing {
@@ -31,6 +32,7 @@ public class NotificationNoDisturbing {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 
@@ -50,6 +52,7 @@ public class NotificationNoDisturbing {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 }

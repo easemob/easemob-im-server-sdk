@@ -6,6 +6,7 @@ import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.EMConversationType;
 import com.easemob.im.server.model.EMNotificationType;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Mono;
 
 public class Setting {
@@ -35,6 +36,7 @@ public class Setting {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 }

@@ -28,7 +28,12 @@ public class DeleteRoom {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, DeleteRoomResponse.class))
+                .map(buf -> {
+                    DeleteRoomResponse response =
+                            this.context.getCodec().decode(buf, DeleteRoomResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess()) {
                         sink.error(new EMUnknownException("unknown"));

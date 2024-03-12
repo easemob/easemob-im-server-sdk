@@ -201,7 +201,12 @@ public class ImportMessage {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> context.getCodec().decode(buf, ImportMessageResponse.class))
+                .map(buf -> {
+                    ImportMessageResponse response =
+                            context.getCodec().decode(buf, ImportMessageResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(ImportMessageResponse::getMessageId);
     }
 }

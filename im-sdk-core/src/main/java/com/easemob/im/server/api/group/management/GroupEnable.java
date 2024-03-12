@@ -27,7 +27,12 @@ public class GroupEnable {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GroupEnableResponse.class))
+                .map(buf -> {
+                    GroupEnableResponse response =
+                            this.context.getCodec().decode(buf, GroupEnableResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(groupEnableResponse -> groupEnableResponse.getResource().getDisabled());
     }
 }

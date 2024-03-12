@@ -36,7 +36,11 @@ public class Upload {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, UploadFileResponse.class))
+                .map(buf -> {
+                    UploadFileResponse response = this.context.getCodec().decode(buf, UploadFileResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (rsp.getFiles().isEmpty()) {
                         sink.error(new EMUnknownException("unknown"));

@@ -33,6 +33,7 @@ public class UserGet {
                 .map(byteBuf -> {
                     UserGetResponse userGetResponse = this.context.getCodec()
                             .decode(byteBuf, UserGetResponse.class);
+                    byteBuf.release();
                     return userGetResponse.getEMUser(username.toLowerCase());
                 });
     }

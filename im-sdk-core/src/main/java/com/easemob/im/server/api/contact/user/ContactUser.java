@@ -4,6 +4,7 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMUnknownException;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +30,7 @@ public class ContactUser {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 
@@ -46,6 +48,7 @@ public class ContactUser {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 
@@ -63,8 +66,12 @@ public class ContactUser {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec()
-                        .decode(buf, ContactUserListResponse.class))
+                .map(buf -> {
+                    ContactUserListResponse response = this.context.getCodec()
+                            .decode(buf, ContactUserListResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(ContactUserListResponse::getUsernames);
     }
 

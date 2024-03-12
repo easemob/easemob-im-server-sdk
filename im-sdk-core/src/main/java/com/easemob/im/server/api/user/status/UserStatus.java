@@ -34,6 +34,7 @@ public class UserStatus {
                 .map(byteBuf -> {
                     UserStatusResponse userStatusResponse =
                             this.context.getCodec().decode(byteBuf, UserStatusResponse.class);
+                    byteBuf.release();
                     return userStatusResponse.isUserOnline(username);
                 });
     }
@@ -58,6 +59,7 @@ public class UserStatus {
                     UserStatusBatchQueryResponse userStatusBatchQueryResponse =
                             this.context.getCodec()
                                     .decode(byteBuf, UserStatusBatchQueryResponse.class);
+                    byteBuf.release();
                     return userStatusBatchQueryResponse.getUsersOnline();
                 });
     }

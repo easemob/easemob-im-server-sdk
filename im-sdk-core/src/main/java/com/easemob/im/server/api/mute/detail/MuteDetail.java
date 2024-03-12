@@ -29,7 +29,12 @@ public class MuteDetail {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GetMuteDetailResponse.class))
+                .map(buf -> {
+                    GetMuteDetailResponse response =
+                            this.context.getCodec().decode(buf, GetMuteDetailResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GetMuteDetailResponse::toEMMute);
     }
 

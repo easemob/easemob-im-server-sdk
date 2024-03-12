@@ -6,6 +6,7 @@ import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.EMRemoveMember;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
@@ -33,6 +34,7 @@ public class GroupMemberRemove {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty())
                 .then();
     }
@@ -51,7 +53,12 @@ public class GroupMemberRemove {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GroupMemberRemoveResponse.class))
+                .map(buf -> {
+                    GroupMemberRemoveResponse response =
+                            this.context.getCodec().decode(buf, GroupMemberRemoveResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GroupMemberRemoveResponse::getMembers);
     }
 

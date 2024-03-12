@@ -54,7 +54,12 @@ public class GroupMemberList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GroupMemberListResponse.class))
+                .map(buf -> {
+                    GroupMemberListResponse response =
+                            this.context.getCodec().decode(buf, GroupMemberListResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GroupMemberListResponse::toEMPage);
     }
 
@@ -91,6 +96,11 @@ public class GroupMemberList {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, ListGroupMembersResponse.class));
+                .map(buf -> {
+                    ListGroupMembersResponse response =
+                            this.context.getCodec().decode(buf, ListGroupMembersResponse.class);
+                    buf.release();
+                    return response;
+                });
     }
 }

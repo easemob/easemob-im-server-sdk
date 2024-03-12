@@ -30,7 +30,12 @@ public class BlockUserJoinRoom {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GetBlockedUsersResponse.class))
+                .map(buf -> {
+                    GetBlockedUsersResponse response =
+                            this.context.getCodec().decode(buf, GetBlockedUsersResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(GetBlockedUsersResponse::getUsernames)
                 .map(username -> new EMBlock(username, null));
     }
@@ -49,7 +54,12 @@ public class BlockUserJoinRoom {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, BlockUserJoinRoomResponse.class))
+                .map(buf -> {
+                    BlockUserJoinRoomResponse response =
+                            this.context.getCodec().decode(buf, BlockUserJoinRoomResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));
@@ -73,7 +83,12 @@ public class BlockUserJoinRoom {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, UnblockUserJoinRoomResponse.class))
+                .map(buf -> {
+                    UnblockUserJoinRoomResponse response =
+                            this.context.getCodec().decode(buf, UnblockUserJoinRoomResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess()) {
                         sink.error(new EMUnknownException("unknown"));

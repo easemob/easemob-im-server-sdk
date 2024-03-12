@@ -6,6 +6,7 @@ import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.exception.EMUnknownException;
 import com.easemob.im.server.model.EMBlock;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,8 +33,12 @@ public class SendMsgToUser {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec()
-                        .decode(buf, GetUsersBlockedSendMsgToUserResponse.class))
+                .map(buf -> {
+                    GetUsersBlockedSendMsgToUserResponse response = this.context.getCodec()
+                            .decode(buf, GetUsersBlockedSendMsgToUserResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(GetUsersBlockedSendMsgToUserResponse::getUsernames)
                 .map(blockedUsername -> new EMBlock(blockedUsername, null));
     }
@@ -58,6 +63,7 @@ public class SendMsgToUser {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 
@@ -75,6 +81,7 @@ public class SendMsgToUser {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 

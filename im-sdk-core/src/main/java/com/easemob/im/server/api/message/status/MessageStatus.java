@@ -28,7 +28,12 @@ public class MessageStatus {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, MessageStatusResponse.class))
+                .map(buf -> {
+                    MessageStatusResponse response =
+                            this.context.getCodec().decode(buf, MessageStatusResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(rsp -> rsp.isMessageDelivered(messageId));
     }
 }

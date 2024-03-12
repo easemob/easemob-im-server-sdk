@@ -28,7 +28,12 @@ public class MessageMissed {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, MessageMissedCountResponse.class))
+                .map(buf -> {
+                    MessageMissedCountResponse response =
+                            this.context.getCodec().decode(buf, MessageMissedCountResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .flatMapIterable(MessageMissedCountResponse::getMissedMessageCounts);
     }
 }

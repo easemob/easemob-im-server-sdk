@@ -4,6 +4,7 @@ import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMUnknownException;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Mono;
 
 public class UpdateUserNickname {
@@ -30,6 +31,7 @@ public class UpdateUserNickname {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .then();
     }
 

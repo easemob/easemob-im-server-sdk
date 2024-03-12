@@ -32,8 +32,12 @@ public class UnblockUserSendMsgToRoom {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec()
-                        .decode(buf, UnblockUserSendMsgToRoomResponse.class))
+                .map(buf -> {
+                    UnblockUserSendMsgToRoomResponse response = this.context.getCodec()
+                            .decode(buf, UnblockUserSendMsgToRoomResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (!rsp.isSuccess(username)) {
                         sink.error(new EMUnknownException("unknown"));
@@ -57,8 +61,12 @@ public class UnblockUserSendMsgToRoom {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec()
-                        .decode(buf, UnblockUserSendMsgToRoomResponse.class))
+                .map(buf -> {
+                    UnblockUserSendMsgToRoomResponse response = this.context.getCodec()
+                            .decode(buf, UnblockUserSendMsgToRoomResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .then();
     }
 

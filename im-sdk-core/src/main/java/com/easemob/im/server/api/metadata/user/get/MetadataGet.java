@@ -28,7 +28,12 @@ public class MetadataGet {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, MetadataGetUserResponse.class))
+                .map(buf -> {
+                    MetadataGetUserResponse response =
+                            this.context.getCodec().decode(buf, MetadataGetUserResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(MetadataGetUserResponse::toMetadata);
     }
 }

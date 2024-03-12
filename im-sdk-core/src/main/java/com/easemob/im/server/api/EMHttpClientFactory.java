@@ -25,8 +25,10 @@ public class EMHttpClientFactory {
                 .maxIdleTime(Duration.ofMillis(properties.getHttpConnectionMaxIdleTime()))
                 .maxLifeTime(Duration.ofMillis(properties.getHttpConnectionMaxLifeTime()))
                 .pendingAcquireMaxCount(properties.getHttpConnectionPendingAcquireMaxCount())
-                .pendingAcquireTimeout(Duration.ofMillis(properties.getHttpConnectionPendingAcquireTimeout()))
-                .evictInBackground(Duration.ofMillis(properties.getHttpConnectionEvictInBackground()))
+                .pendingAcquireTimeout(
+                        Duration.ofMillis(properties.getHttpConnectionPendingAcquireTimeout()))
+                .evictInBackground(
+                        Duration.ofMillis(properties.getHttpConnectionEvictInBackground()))
                 .lifo()
                 .build();
 

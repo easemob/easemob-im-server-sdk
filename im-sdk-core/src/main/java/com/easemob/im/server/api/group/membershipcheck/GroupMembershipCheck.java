@@ -28,7 +28,12 @@ public class GroupMembershipCheck {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GroupMembershipCheckResponse.class))
+                .map(buf -> {
+                    GroupMembershipCheckResponse response =
+                            this.context.getCodec().decode(buf, GroupMembershipCheckResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GroupMembershipCheckResponse::getData);
     }
 }

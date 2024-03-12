@@ -33,8 +33,12 @@ public class BlockUserSendMsgToGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(rsp -> this.context.getCodec()
-                        .decode(rsp, GetUsersBlockedSendMsgToGroupResponse.class))
+                .map(rsp -> {
+                    GetUsersBlockedSendMsgToGroupResponse response = this.context.getCodec()
+                            .decode(rsp, GetUsersBlockedSendMsgToGroupResponse.class);
+                    rsp.release();
+                    return response;
+                })
                 .flatMapIterable(GetUsersBlockedSendMsgToGroupResponse::getEMBlocks);
 
     }
@@ -55,8 +59,12 @@ public class BlockUserSendMsgToGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec()
-                        .decode(buf, BlockUserSendMsgToGroupResponse.class))
+                .map(buf -> {
+                    BlockUserSendMsgToGroupResponse response = this.context.getCodec()
+                            .decode(buf, BlockUserSendMsgToGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess(username)) {
                         sink.error(new EMUnknownException("unknown"));
@@ -82,8 +90,12 @@ public class BlockUserSendMsgToGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec()
-                        .decode(buf, BlockUserSendMsgToGroupResponse.class))
+                .map(buf -> {
+                    BlockUserSendMsgToGroupResponse response = this.context.getCodec()
+                            .decode(buf, BlockUserSendMsgToGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .then();
     }
 
@@ -101,8 +113,12 @@ public class BlockUserSendMsgToGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec()
-                        .decode(buf, UnblockUserSendMsgToGroupResponse.class))
+                .map(buf -> {
+                    UnblockUserSendMsgToGroupResponse response = this.context.getCodec()
+                            .decode(buf, UnblockUserSendMsgToGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .handle((rsp, sink) -> {
                     if (!rsp.getSuccess(username)) {
                         sink.error(new EMUnknownException("unknown"));

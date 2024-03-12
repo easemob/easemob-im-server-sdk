@@ -33,7 +33,12 @@ public class GetGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GetGroupResponse.class))
+                .map(buf -> {
+                    GetGroupResponse response =
+                            this.context.getCodec().decode(buf, GetGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(rsp -> {
                     EMGroup detail = rsp.toGroupDetail(groupId);
                     if (detail == null) {
@@ -57,7 +62,12 @@ public class GetGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
-                .map(buf -> this.context.getCodec().decode(buf, GetGroupResponse.class))
+                .map(buf -> {
+                    GetGroupResponse response =
+                            this.context.getCodec().decode(buf, GetGroupResponse.class);
+                    buf.release();
+                    return response;
+                })
                 .map(GetGroupResponse::toGroupDetails);
     }
 

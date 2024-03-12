@@ -5,6 +5,7 @@ import com.easemob.im.server.api.DefaultErrorMapper;
 import com.easemob.im.server.api.ErrorMapper;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.exception.EMUnknownException;
+import io.netty.util.ReferenceCounted;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class AssignGroup {
                                         return Mono.just(byteBuf);
                                     });
                         }))
+                .doOnSuccess(ReferenceCounted::release)
                 .onErrorResume(EMNotFoundException.class, errorIgnored -> Mono.empty())
                 .then();
     }
