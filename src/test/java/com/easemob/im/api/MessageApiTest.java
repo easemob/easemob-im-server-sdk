@@ -323,9 +323,72 @@ public class MessageApiTest extends AbstractTest {
     }
 
     /**
+     * 发送群聊定向消息
+     *
+     * 向群组中指定成员发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_group.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendMessagesToGroupDirectionalMemberTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(new ArrayList<String>(){{add(groupId);}});
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        emCreateMessage.setBody(messageContent);
+        emCreateMessage.setUsers(new ArrayList<String>(){{add(username2);}});
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
      * 发送聊天室消息
      *
-     * 向群组发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_chatroom.html
+     * 向聊天室发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_chatroom.html
      *
      * @throws ApiException if the Api call fails
      */
@@ -384,6 +447,68 @@ public class MessageApiTest extends AbstractTest {
     }
 
     /**
+     * 发送聊天室定向消息
+     *
+     * 向聊天室指定成员发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_chatroom.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendMessagesToRoomDirectionalMemberTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(new ArrayList<String>(){{add(roomId);}});
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        emCreateMessage.setBody(messageContent);
+        emCreateMessage.setUsers(new ArrayList<String>(){{add(username2);}});
+
+        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
      * 发送单聊消息
      *
      * 给用户发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_single.html
@@ -420,6 +545,223 @@ public class MessageApiTest extends AbstractTest {
 
         EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
         assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 修改文本或自定义消息
+     *
+     * 修改发送成功的文本消息或自定义消息。若使用该功能，需联系环信商务开通。文档介绍：https://doc.easemob.com/document/server-side/message_modify_text_custom.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void modifyTextOrCustomizeMessageTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        emCreateMessage.setBody(messageContent);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        String msgId = ((Map<String, String>) response.getData()).get(username2);
+        EMModifyTextOrCustomizeMessage emModifyTextOrCustomizeMessage = new EMModifyTextOrCustomizeMessage();
+        EMNewMessage newMessage = new EMNewMessage();
+        newMessage.setType("txt");
+        newMessage.setMsg("你好!");
+
+        emModifyTextOrCustomizeMessage.setUser(username1);
+        emModifyTextOrCustomizeMessage.setNewMsg(newMessage);
+        emModifyTextOrCustomizeMessage.setIsCombineExt(true);
+
+        EMModifyTextOrCustomizeMessageResult customizeMessageResult = messageApi.modifyTextOrCustomizeMessage(msgId, emModifyTextOrCustomizeMessage);
+        assertNotNull(customizeMessageResult.getData());
+        assertEquals("success", customizeMessageResult.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+
+    }
+
+    /**
+     * 单向清空指定群组或聊天室会话一段时间内的漫游消息
+     *
+     * 将传入时间戳之前的漫游消息清空，清空后，该用户无法从环信服务端拉取到这些漫游消息。若清除了该会话的全部漫游消息，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_roam_clear.html#%E5%8D%95%E5%90%91%E6%B8%85%E7%A9%BA%E6%8C%87%E5%AE%9A%E7%BE%A4%E7%BB%84%E6%88%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E4%BC%9A%E8%AF%9D%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%86%85%E7%9A%84%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void oneWayClearGroupOrRoomRoamingMessagesWithinPeriodTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(new ArrayList<String>(){{add(groupId);}});
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        emCreateMessage.setBody(messageContent);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        BigDecimal delTime = BigDecimal.valueOf(System.currentTimeMillis());
+        EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult result = messageApi.oneWayClearGroupOrRoomRoamingMessagesWithinPeriod(username1, groupId, delTime);
+        assertNotNull(result.getRequestStatusCode());
+        assertEquals("ok", result.getRequestStatusCode());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 单向清空指定用户的漫游消息
+     *
+     * 清空后，该用户无法从服务端拉取到漫游消息，而且该用户的所有会话也会被清除，也拉不到会话列表。不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_roam_clear.html#%E5%8D%95%E5%90%91%E6%B8%85%E7%A9%BA%E6%8C%87%E5%AE%9A%E7%94%A8%E6%88%B7%E7%9A%84%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void oneWayClearUserRoamingMessagesTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        emCreateMessage.setBody(messageContent);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        EMOneWayClearUserRoamingMessagesResult result = messageApi.oneWayClearUserRoamingMessages(username1);
+        assertNotNull(result.getRequestStatusCode());
+        assertEquals("ok", result.getRequestStatusCode());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 单向清空指定单聊会话一段时间内的漫游消息
+     *
+     * 将传入时间戳之前的漫游消息清空，清空后，该用户无法从环信服务端拉取到这些漫游消息。若清除了该会话的全部漫游消息，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_roam_clear.html#%E5%8D%95%E5%90%91%E6%B8%85%E7%A9%BA%E6%8C%87%E5%AE%9A%E5%8D%95%E8%81%8A%E4%BC%9A%E8%AF%9D%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%86%85%E7%9A%84%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void oneWayClearUserRoamingMessagesWithinPeriodTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        emCreateMessage.setBody(messageContent);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        BigDecimal delTime = BigDecimal.valueOf(System.currentTimeMillis());
+        EMOneWayClearUserRoamingMessagesWithinPeriodResult result = messageApi.oneWayClearUserRoamingMessagesWithinPeriod(username1, username2, delTime);
+        assertNotNull(result.getRequestStatusCode());
+        assertEquals("ok", result.getRequestStatusCode());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));

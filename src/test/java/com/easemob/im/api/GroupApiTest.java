@@ -1474,6 +1474,7 @@ public class GroupApiTest extends AbstractTest {
         assertNotNull(getUserJoinedGroupsResult);
         assertNotNull(getUserJoinedGroupsResult.getEntities());
         assertEquals(1, getUserJoinedGroupsResult.getEntities().size());
+        assertEquals(1, getUserJoinedGroupsResult.getTotal());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));

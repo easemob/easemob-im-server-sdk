@@ -202,7 +202,7 @@ public class EMModifyGroup {
   }
 
    /**
-   * 群组最大成员数（包括群主）。对于普通群，该参数的默认值为 200，大型群为 1000。不同套餐支持的人数上限不同，详见 产品价格
+   * 加入群组是否需要群主或者群管理员审批： - true：是； - false：否
    * @return membersonly
   **/
   @javax.annotation.Nullable

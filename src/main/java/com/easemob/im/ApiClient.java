@@ -78,7 +78,7 @@ public class ApiClient {
 
     private String appCert;
 
-    public static String version = "${project.version}";
+    public static String version = "1.0.3";
 
     public static Builder builder() {
         return new Builder().setRealm(Realm.EASEMOB_REALM);
