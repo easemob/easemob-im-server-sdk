@@ -971,7 +971,7 @@ public class MessageApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1043,7 +1043,7 @@ public class MessageApi {
      * @param emModifyTextOrCustomizeMessage  (optional)
      * @return EMModifyTextOrCustomizeMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1063,7 +1063,7 @@ public class MessageApi {
      * @param emModifyTextOrCustomizeMessage  (optional)
      * @return ApiResponse&lt;EMModifyTextOrCustomizeMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1085,7 +1085,7 @@ public class MessageApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1108,7 +1108,7 @@ public class MessageApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1198,7 +1198,7 @@ public class MessageApi {
      * @param delTime 要清空哪个时间点及之前的群组或聊天室的漫游消息。该时间为 Unix 时间戳，单位为毫秒 (required)
      * @return EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1219,7 +1219,7 @@ public class MessageApi {
      * @param delTime 要清空哪个时间点及之前的群组或聊天室的漫游消息。该时间为 Unix 时间戳，单位为毫秒 (required)
      * @return ApiResponse&lt;EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1242,7 +1242,7 @@ public class MessageApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1263,7 +1263,7 @@ public class MessageApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1333,7 +1333,7 @@ public class MessageApi {
      * @param username 用户 ID (required)
      * @return EMOneWayClearUserRoamingMessagesResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1352,7 +1352,7 @@ public class MessageApi {
      * @param username 用户 ID (required)
      * @return ApiResponse&lt;EMOneWayClearUserRoamingMessagesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1373,7 +1373,7 @@ public class MessageApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1396,7 +1396,7 @@ public class MessageApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1486,7 +1486,7 @@ public class MessageApi {
      * @param delTime 要清空哪个时间点及之前的单聊漫游消息。该时间为 Unix 时间戳，单位为毫秒 (required)
      * @return EMOneWayClearUserRoamingMessagesWithinPeriodResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1507,7 +1507,7 @@ public class MessageApi {
      * @param delTime 要清空哪个时间点及之前的单聊漫游消息。该时间为 Unix 时间戳，单位为毫秒 (required)
      * @return ApiResponse&lt;EMOneWayClearUserRoamingMessagesWithinPeriodResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
@@ -1530,7 +1530,7 @@ public class MessageApi {
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
