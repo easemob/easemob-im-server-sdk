@@ -75,12 +75,6 @@ public class MetadataApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call customGroupMemberAttributeCall(String groupId, String username, EMCustomGroupMemberAttribute emCustomGroupMemberAttribute, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -154,12 +148,6 @@ public class MetadataApi {
      * @return EMCustomGroupMemberAttributeResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMCustomGroupMemberAttributeResult customGroupMemberAttribute(String groupId, String username, EMCustomGroupMemberAttribute emCustomGroupMemberAttribute) throws ApiException {
         ApiResponse<EMCustomGroupMemberAttributeResult> localVarResp = customGroupMemberAttributeWithHttpInfo(groupId, username, emCustomGroupMemberAttribute);
@@ -175,12 +163,6 @@ public class MetadataApi {
      * @return ApiResponse&lt;EMCustomGroupMemberAttributeResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMCustomGroupMemberAttributeResult> customGroupMemberAttributeWithHttpInfo(String groupId, String username, EMCustomGroupMemberAttribute emCustomGroupMemberAttribute) throws ApiException {
         okhttp3.Call localVarCall = customGroupMemberAttributeValidateBeforeCall(groupId, username, emCustomGroupMemberAttribute, null);
@@ -198,12 +180,6 @@ public class MetadataApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call customGroupMemberAttributeAsync(String groupId, String username, EMCustomGroupMemberAttribute emCustomGroupMemberAttribute, final ApiCallback<EMCustomGroupMemberAttributeResult> _callback) throws ApiException {
 
@@ -219,12 +195,6 @@ public class MetadataApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call deleteUserMetadataCall(String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -289,12 +259,6 @@ public class MetadataApi {
      * @return EMDeleteUserMetadataResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMDeleteUserMetadataResult deleteUserMetadata(String username) throws ApiException {
         ApiResponse<EMDeleteUserMetadataResult> localVarResp = deleteUserMetadataWithHttpInfo(username);
@@ -308,12 +272,6 @@ public class MetadataApi {
      * @return ApiResponse&lt;EMDeleteUserMetadataResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMDeleteUserMetadataResult> deleteUserMetadataWithHttpInfo(String username) throws ApiException {
         okhttp3.Call localVarCall = deleteUserMetadataValidateBeforeCall(username, null);
@@ -329,12 +287,6 @@ public class MetadataApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call deleteUserMetadataAsync(String username, final ApiCallback<EMDeleteUserMetadataResult> _callback) throws ApiException {
 
@@ -351,12 +303,6 @@ public class MetadataApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call getGroupMemberAllCustomAttributeCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -428,12 +374,6 @@ public class MetadataApi {
      * @return EMGetGroupMemberAllCustomAttributeResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMGetGroupMemberAllCustomAttributeResult getGroupMemberAllCustomAttribute(String groupId, String username) throws ApiException {
         ApiResponse<EMGetGroupMemberAllCustomAttributeResult> localVarResp = getGroupMemberAllCustomAttributeWithHttpInfo(groupId, username);
@@ -448,12 +388,6 @@ public class MetadataApi {
      * @return ApiResponse&lt;EMGetGroupMemberAllCustomAttributeResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMGetGroupMemberAllCustomAttributeResult> getGroupMemberAllCustomAttributeWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = getGroupMemberAllCustomAttributeValidateBeforeCall(groupId, username, null);
@@ -470,12 +404,6 @@ public class MetadataApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call getGroupMemberAllCustomAttributeAsync(String groupId, String username, final ApiCallback<EMGetGroupMemberAllCustomAttributeResult> _callback) throws ApiException {
 
@@ -492,12 +420,6 @@ public class MetadataApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call getMultipleGroupMembersAttributesCall(String groupId, EMGetMultipleGroupMembersAttributes emGetMultipleGroupMembersAttributes, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -564,12 +486,6 @@ public class MetadataApi {
      * @return EMGetMultipleGroupMembersAttributes
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMGetMultipleGroupMembersAttributesResult getMultipleGroupMembersAttributes(String groupId, EMGetMultipleGroupMembersAttributes emGetMultipleGroupMembersAttributes) throws ApiException {
         ApiResponse<EMGetMultipleGroupMembersAttributesResult> localVarResp = getMultipleGroupMembersAttributesWithHttpInfo(groupId, emGetMultipleGroupMembersAttributes);
@@ -584,12 +500,6 @@ public class MetadataApi {
      * @return ApiResponse&lt;EMGetMultipleGroupMembersAttributesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMGetMultipleGroupMembersAttributesResult> getMultipleGroupMembersAttributesWithHttpInfo(String groupId, EMGetMultipleGroupMembersAttributes emGetMultipleGroupMembersAttributes) throws ApiException {
         okhttp3.Call localVarCall = getMultipleGroupMembersAttributesValidateBeforeCall(groupId, emGetMultipleGroupMembersAttributes, null);
@@ -606,12 +516,6 @@ public class MetadataApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call getMultipleGroupMembersAttributesAsync(String groupId, EMGetMultipleGroupMembersAttributes emGetMultipleGroupMembersAttributes, final ApiCallback<EMGetMultipleGroupMembersAttributes> _callback) throws ApiException {
 
@@ -627,12 +531,6 @@ public class MetadataApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call getUserMetadataCall(String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -697,12 +595,6 @@ public class MetadataApi {
      * @return EMGetUserMetadataResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMGetUserMetadataResult getUserMetadata(String username) throws ApiException {
         ApiResponse<EMGetUserMetadataResult> localVarResp = getUserMetadataWithHttpInfo(username);
@@ -716,12 +608,6 @@ public class MetadataApi {
      * @return ApiResponse&lt;EMGetUserMetadataResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMGetUserMetadataResult> getUserMetadataWithHttpInfo(String username) throws ApiException {
         okhttp3.Call localVarCall = getUserMetadataValidateBeforeCall(username, null);
@@ -737,12 +623,6 @@ public class MetadataApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call getUserMetadataAsync(String username, final ApiCallback<EMGetUserMetadataResult> _callback) throws ApiException {
 
@@ -757,12 +637,6 @@ public class MetadataApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call getUserMetadataCapacityCall(final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -820,12 +694,6 @@ public class MetadataApi {
      * @return EMGetUserMetadataCapacityResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMGetUserMetadataCapacityResult getUserMetadataCapacity() throws ApiException {
         ApiResponse<EMGetUserMetadataCapacityResult> localVarResp = getUserMetadataCapacityWithHttpInfo();
@@ -838,12 +706,6 @@ public class MetadataApi {
      * @return ApiResponse&lt;EMGetUserMetadataCapacityResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMGetUserMetadataCapacityResult> getUserMetadataCapacityWithHttpInfo() throws ApiException {
         okhttp3.Call localVarCall = getUserMetadataCapacityValidateBeforeCall(null);
@@ -858,12 +720,6 @@ public class MetadataApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call getUserMetadataCapacityAsync(final ApiCallback<EMGetUserMetadataCapacityResult> _callback) throws ApiException {
 
@@ -880,12 +736,6 @@ public class MetadataApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call setUserMetadataCall(String username, Map<String, String> metadata, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -956,12 +806,6 @@ public class MetadataApi {
      * @return EMSetUserMetadataResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMSetUserMetadataResult setUserMetadata(String username, Map<String, String> metadata) throws ApiException {
         ApiResponse<EMSetUserMetadataResult> localVarResp = setUserMetadataWithHttpInfo(username, metadata);
@@ -976,12 +820,6 @@ public class MetadataApi {
      * @return ApiResponse&lt;EMSetUserMetadataResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMSetUserMetadataResult> setUserMetadataWithHttpInfo(String username, Map<String, String> metadata) throws ApiException {
         okhttp3.Call localVarCall = setUserMetadataValidateBeforeCall(username, metadata, null);
@@ -998,12 +836,6 @@ public class MetadataApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call setUserMetadataAsync(String username, Map<String, String> metadata, final ApiCallback<EMSetUserMetadataResult> _callback) throws ApiException {
 

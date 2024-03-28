@@ -94,12 +94,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call createOfflinePushTemplateCall(EMCreateOfflinePushTemplate emCreateOfflinePushTemplate, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -159,12 +153,6 @@ public class PushApi {
      * @return EMCreateOfflinePushTemplateResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMCreateOfflinePushTemplateResult createOfflinePushTemplate(EMCreateOfflinePushTemplate emCreateOfflinePushTemplate) throws ApiException {
         ApiResponse<EMCreateOfflinePushTemplateResult> localVarResp = createOfflinePushTemplateWithHttpInfo(emCreateOfflinePushTemplate);
@@ -178,12 +166,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMCreateOfflinePushTemplateResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMCreateOfflinePushTemplateResult> createOfflinePushTemplateWithHttpInfo(EMCreateOfflinePushTemplate emCreateOfflinePushTemplate) throws ApiException {
         okhttp3.Call localVarCall = createOfflinePushTemplateValidateBeforeCall(emCreateOfflinePushTemplate, null);
@@ -199,12 +181,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call createOfflinePushTemplateAsync(EMCreateOfflinePushTemplate emCreateOfflinePushTemplate, final ApiCallback<EMCreateOfflinePushTemplateResult> _callback) throws ApiException {
 
@@ -220,12 +196,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteOfflinePushTemplateCall(String name, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -290,12 +260,6 @@ public class PushApi {
      * @return EMDeleteOfflinePushTemplateResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMDeleteOfflinePushTemplateResult deleteOfflinePushTemplate(String name) throws ApiException {
         ApiResponse<EMDeleteOfflinePushTemplateResult> localVarResp = deleteOfflinePushTemplateWithHttpInfo(name);
@@ -309,12 +273,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMDeleteOfflinePushTemplateResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMDeleteOfflinePushTemplateResult> deleteOfflinePushTemplateWithHttpInfo(String name) throws ApiException {
         okhttp3.Call localVarCall = deleteOfflinePushTemplateValidateBeforeCall(name, null);
@@ -330,12 +288,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteOfflinePushTemplateAsync(String name, final ApiCallback<EMDeleteOfflinePushTemplateResult> _callback) throws ApiException {
 
@@ -353,12 +305,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getOfflinePushCall(String username, String chattype, String key, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -437,12 +383,6 @@ public class PushApi {
      * @return EMGetOfflinePushResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetOfflinePushResult getOfflinePush(String username, String chattype, String key) throws ApiException {
         ApiResponse<EMGetOfflinePushResult> localVarResp = getOfflinePushWithHttpInfo(username, chattype, key);
@@ -458,12 +398,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMGetOfflinePushResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetOfflinePushResult> getOfflinePushWithHttpInfo(String username, String chattype, String key) throws ApiException {
         okhttp3.Call localVarCall = getOfflinePushValidateBeforeCall(username, chattype, key, null);
@@ -481,12 +415,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getOfflinePushAsync(String username, String chattype, String key, final ApiCallback<EMGetOfflinePushResult> _callback) throws ApiException {
 
@@ -502,12 +430,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getOfflinePushTemplateCall(String name, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -572,12 +494,6 @@ public class PushApi {
      * @return EMGetOfflinePushTemplateResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetOfflinePushTemplateResult getOfflinePushTemplate(String name) throws ApiException {
         ApiResponse<EMGetOfflinePushTemplateResult> localVarResp = getOfflinePushTemplateWithHttpInfo(name);
@@ -591,12 +507,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMGetOfflinePushTemplateResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetOfflinePushTemplateResult> getOfflinePushTemplateWithHttpInfo(String name) throws ApiException {
         okhttp3.Call localVarCall = getOfflinePushTemplateValidateBeforeCall(name, null);
@@ -612,12 +522,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getOfflinePushTemplateAsync(String name, final ApiCallback<EMGetOfflinePushTemplateResult> _callback) throws ApiException {
 
@@ -633,12 +537,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getPushBindingInfoCall(String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -703,12 +601,6 @@ public class PushApi {
      * @return EMGetPushBindingInfoResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetPushBindingInfoResult getPushBindingInfo(String username) throws ApiException {
         ApiResponse<EMGetPushBindingInfoResult> localVarResp = getPushBindingInfoWithHttpInfo(username);
@@ -722,12 +614,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMGetPushBindingInfoResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetPushBindingInfoResult> getPushBindingInfoWithHttpInfo(String username) throws ApiException {
         okhttp3.Call localVarCall = getPushBindingInfoValidateBeforeCall(username, null);
@@ -743,12 +629,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getPushBindingInfoAsync(String username, final ApiCallback<EMGetPushBindingInfoResult> _callback) throws ApiException {
 
@@ -764,12 +644,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getPushPreferredLanguageCall(String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -834,12 +708,6 @@ public class PushApi {
      * @return EMGetPushPreferredLanguageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetPushPreferredLanguageResult getPushPreferredLanguage(String username) throws ApiException {
         ApiResponse<EMGetPushPreferredLanguageResult> localVarResp = getPushPreferredLanguageWithHttpInfo(username);
@@ -853,12 +721,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMGetPushPreferredLanguageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetPushPreferredLanguageResult> getPushPreferredLanguageWithHttpInfo(String username) throws ApiException {
         okhttp3.Call localVarCall = getPushPreferredLanguageValidateBeforeCall(username, null);
@@ -874,12 +736,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getPushPreferredLanguageAsync(String username, final ApiCallback<EMGetPushPreferredLanguageResult> _callback) throws ApiException {
 
@@ -896,12 +752,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call receiverConfigurationTemplateNameCall(String username, EMReceiverConfigurationTemplateName emReceiverConfigurationTemplateName, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -968,12 +818,6 @@ public class PushApi {
      * @return EMReceiverConfigurationTemplateNameResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMReceiverConfigurationTemplateNameResult receiverConfigurationTemplateName(String username, EMReceiverConfigurationTemplateName emReceiverConfigurationTemplateName) throws ApiException {
         ApiResponse<EMReceiverConfigurationTemplateNameResult> localVarResp = receiverConfigurationTemplateNameWithHttpInfo(username, emReceiverConfigurationTemplateName);
@@ -988,12 +832,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMReceiverConfigurationTemplateNameResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMReceiverConfigurationTemplateNameResult> receiverConfigurationTemplateNameWithHttpInfo(String username, EMReceiverConfigurationTemplateName emReceiverConfigurationTemplateName) throws ApiException {
         okhttp3.Call localVarCall = receiverConfigurationTemplateNameValidateBeforeCall(username, emReceiverConfigurationTemplateName, null);
@@ -1010,12 +848,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call receiverConfigurationTemplateNameAsync(String username, EMReceiverConfigurationTemplateName emReceiverConfigurationTemplateName, final ApiCallback<EMReceiverConfigurationTemplateNameResult> _callback) throws ApiException {
 
@@ -1034,12 +866,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setOfflinePushNewCall(String username, String chattype, String key, EMSetOfflinePushNew emSetOfflinePushNew, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1120,12 +946,6 @@ public class PushApi {
      * @return EMSetOfflinePushNewResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSetOfflinePushNewResult setOfflinePushNew(String username, String chattype, String key, EMSetOfflinePushNew emSetOfflinePushNew) throws ApiException {
         ApiResponse<EMSetOfflinePushNewResult> localVarResp = setOfflinePushNewWithHttpInfo(username, chattype, key, emSetOfflinePushNew);
@@ -1142,12 +962,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMSetOfflinePushNewResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSetOfflinePushNewResult> setOfflinePushNewWithHttpInfo(String username, String chattype, String key, EMSetOfflinePushNew emSetOfflinePushNew) throws ApiException {
         okhttp3.Call localVarCall = setOfflinePushNewValidateBeforeCall(username, chattype, key, emSetOfflinePushNew, null);
@@ -1166,12 +980,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setOfflinePushNewAsync(String username, String chattype, String key, EMSetOfflinePushNew emSetOfflinePushNew, final ApiCallback<EMSetOfflinePushNewResult> _callback) throws ApiException {
 
@@ -1188,12 +996,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setOfflinePushOldCall(String username, EMSetOfflinePushOld emSetOfflinePushOld, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1258,12 +1060,6 @@ public class PushApi {
      * @param emSetOfflinePushOld  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public void setOfflinePushOld(String username, EMSetOfflinePushOld emSetOfflinePushOld) throws ApiException {
         setOfflinePushOldWithHttpInfo(username, emSetOfflinePushOld);
@@ -1277,12 +1073,6 @@ public class PushApi {
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<Void> setOfflinePushOldWithHttpInfo(String username, EMSetOfflinePushOld emSetOfflinePushOld) throws ApiException {
         okhttp3.Call localVarCall = setOfflinePushOldValidateBeforeCall(username, emSetOfflinePushOld, null);
@@ -1298,12 +1088,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setOfflinePushOldAsync(String username, EMSetOfflinePushOld emSetOfflinePushOld, final ApiCallback<Void> _callback) throws ApiException {
 
@@ -1319,12 +1103,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setPushBindingInfoCall(String username, EMSetPushBindingInfo emSetPushBindingInfo, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1391,12 +1169,6 @@ public class PushApi {
      * @return EMSetPushBindingInfoResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSetPushBindingInfoResult setPushBindingInfo(String username, EMSetPushBindingInfo emSetPushBindingInfo) throws ApiException {
         ApiResponse<EMSetPushBindingInfoResult> localVarResp = setPushBindingInfoWithHttpInfo(username, emSetPushBindingInfo);
@@ -1411,12 +1183,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMSetPushBindingInfoResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSetPushBindingInfoResult> setPushBindingInfoWithHttpInfo(String username, EMSetPushBindingInfo emSetPushBindingInfo) throws ApiException {
         okhttp3.Call localVarCall = setPushBindingInfoValidateBeforeCall(username, emSetPushBindingInfo, null);
@@ -1433,12 +1199,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setPushBindingInfoAsync(String username, EMSetPushBindingInfo emSetPushBindingInfo, final ApiCallback<EMSetPushBindingInfoResult> _callback) throws ApiException {
 
@@ -1455,12 +1215,6 @@ public class PushApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setPushPreferredLanguageCall(String username, EMSetPushPreferredLanguage emSetPushPreferredLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1527,12 +1281,6 @@ public class PushApi {
      * @return EMSetPushPreferredLanguageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSetPushPreferredLanguageResult setPushPreferredLanguage(String username, EMSetPushPreferredLanguage emSetPushPreferredLanguage) throws ApiException {
         ApiResponse<EMSetPushPreferredLanguageResult> localVarResp = setPushPreferredLanguageWithHttpInfo(username, emSetPushPreferredLanguage);
@@ -1547,12 +1295,6 @@ public class PushApi {
      * @return ApiResponse&lt;EMSetPushPreferredLanguageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSetPushPreferredLanguageResult> setPushPreferredLanguageWithHttpInfo(String username, EMSetPushPreferredLanguage emSetPushPreferredLanguage) throws ApiException {
         okhttp3.Call localVarCall = setPushPreferredLanguageValidateBeforeCall(username, emSetPushPreferredLanguage, null);
@@ -1569,12 +1311,6 @@ public class PushApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setPushPreferredLanguageAsync(String username, EMSetPushPreferredLanguage emSetPushPreferredLanguage, final ApiCallback<EMSetPushPreferredLanguageResult> _callback) throws ApiException {
 

@@ -121,12 +121,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addGroupAdminCall(String groupId, EMAddGroupAdmin emAddGroupAdmin, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -193,12 +187,6 @@ public class GroupApi {
      * @return EMAddGroupAdminResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddGroupAdminResult addGroupAdmin(String groupId, EMAddGroupAdmin emAddGroupAdmin) throws ApiException {
         ApiResponse<EMAddGroupAdminResult> localVarResp = addGroupAdminWithHttpInfo(groupId, emAddGroupAdmin);
@@ -213,12 +201,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMAddGroupAdminResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddGroupAdminResult> addGroupAdminWithHttpInfo(String groupId, EMAddGroupAdmin emAddGroupAdmin) throws ApiException {
         okhttp3.Call localVarCall = addGroupAdminValidateBeforeCall(groupId, emAddGroupAdmin, null);
@@ -235,12 +217,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addGroupAdminAsync(String groupId, EMAddGroupAdmin emAddGroupAdmin, final ApiCallback<EMAddGroupAdminResult> _callback) throws ApiException {
 
@@ -257,12 +233,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToGroupCall(String groupId, EMAddMultipleUserToGroup emAddMultipleUserToGroup, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -329,12 +299,6 @@ public class GroupApi {
      * @return EMAddMultipleUserToGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddMultipleUserToGroupResult addMultipleUserToGroup(String groupId, EMAddMultipleUserToGroup emAddMultipleUserToGroup) throws ApiException {
         ApiResponse<EMAddMultipleUserToGroupResult> localVarResp = addMultipleUserToGroupWithHttpInfo(groupId, emAddMultipleUserToGroup);
@@ -349,12 +313,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMAddMultipleUserToGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddMultipleUserToGroupResult> addMultipleUserToGroupWithHttpInfo(String groupId, EMAddMultipleUserToGroup emAddMultipleUserToGroup) throws ApiException {
         okhttp3.Call localVarCall = addMultipleUserToGroupValidateBeforeCall(groupId, emAddMultipleUserToGroup, null);
@@ -371,12 +329,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToGroupAsync(String groupId, EMAddMultipleUserToGroup emAddMultipleUserToGroup, final ApiCallback<EMAddMultipleUserToGroupResult> _callback) throws ApiException {
 
@@ -393,12 +345,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToGroupBlockListCall(String groupId, EMAddMultipleUserToGroupBlockList emAddMultipleUserToGroupBlockList, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -465,12 +411,6 @@ public class GroupApi {
      * @return EMAddMultipleUserToGroupBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddMultipleUserToGroupBlockListResult addMultipleUserToGroupBlockList(String groupId, EMAddMultipleUserToGroupBlockList emAddMultipleUserToGroupBlockList) throws ApiException {
         ApiResponse<EMAddMultipleUserToGroupBlockListResult> localVarResp = addMultipleUserToGroupBlockListWithHttpInfo(groupId, emAddMultipleUserToGroupBlockList);
@@ -485,12 +425,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMAddMultipleUserToGroupBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddMultipleUserToGroupBlockListResult> addMultipleUserToGroupBlockListWithHttpInfo(String groupId, EMAddMultipleUserToGroupBlockList emAddMultipleUserToGroupBlockList) throws ApiException {
         okhttp3.Call localVarCall = addMultipleUserToGroupBlockListValidateBeforeCall(groupId, emAddMultipleUserToGroupBlockList, null);
@@ -507,12 +441,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToGroupBlockListAsync(String groupId, EMAddMultipleUserToGroupBlockList emAddMultipleUserToGroupBlockList, final ApiCallback<EMAddMultipleUserToGroupBlockListResult> _callback) throws ApiException {
 
@@ -529,12 +457,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToGroupWhiteListCall(String groupId, EMAddMultipleUserToGroupWhiteList emAddMultipleUserToGroupWhiteList, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -601,12 +523,6 @@ public class GroupApi {
      * @return EMAddMultipleUserToGroupWhiteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddMultipleUserToGroupWhiteListResult addMultipleUserToGroupWhiteList(String groupId, EMAddMultipleUserToGroupWhiteList emAddMultipleUserToGroupWhiteList) throws ApiException {
         ApiResponse<EMAddMultipleUserToGroupWhiteListResult> localVarResp = addMultipleUserToGroupWhiteListWithHttpInfo(groupId, emAddMultipleUserToGroupWhiteList);
@@ -621,12 +537,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMAddMultipleUserToGroupWhiteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddMultipleUserToGroupWhiteListResult> addMultipleUserToGroupWhiteListWithHttpInfo(String groupId, EMAddMultipleUserToGroupWhiteList emAddMultipleUserToGroupWhiteList) throws ApiException {
         okhttp3.Call localVarCall = addMultipleUserToGroupWhiteListValidateBeforeCall(groupId, emAddMultipleUserToGroupWhiteList, null);
@@ -643,12 +553,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToGroupWhiteListAsync(String groupId, EMAddMultipleUserToGroupWhiteList emAddMultipleUserToGroupWhiteList, final ApiCallback<EMAddMultipleUserToGroupWhiteListResult> _callback) throws ApiException {
 
@@ -665,12 +569,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToGroupCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -742,12 +640,6 @@ public class GroupApi {
      * @return EMAddUserToGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddUserToGroupResult addUserToGroup(String groupId, String username) throws ApiException {
         ApiResponse<EMAddUserToGroupResult> localVarResp = addUserToGroupWithHttpInfo(groupId, username);
@@ -762,12 +654,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMAddUserToGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddUserToGroupResult> addUserToGroupWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = addUserToGroupValidateBeforeCall(groupId, username, null);
@@ -784,12 +670,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToGroupAsync(String groupId, String username, final ApiCallback<EMAddUserToGroupResult> _callback) throws ApiException {
 
@@ -806,12 +686,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToGroupBlockListCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -883,12 +757,6 @@ public class GroupApi {
      * @return EMAddUserToGroupBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddUserToGroupBlockListResult addUserToGroupBlockList(String groupId, String username) throws ApiException {
         ApiResponse<EMAddUserToGroupBlockListResult> localVarResp = addUserToGroupBlockListWithHttpInfo(groupId, username);
@@ -903,12 +771,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMAddUserToGroupBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddUserToGroupBlockListResult> addUserToGroupBlockListWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = addUserToGroupBlockListValidateBeforeCall(groupId, username, null);
@@ -925,12 +787,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToGroupBlockListAsync(String groupId, String username, final ApiCallback<EMAddUserToGroupBlockListResult> _callback) throws ApiException {
 
@@ -947,12 +803,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToGroupWhiteListCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1024,12 +874,6 @@ public class GroupApi {
      * @return EMAddUserToGroupWhiteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddUserToGroupWhiteListResult addUserToGroupWhiteList(String groupId, String username) throws ApiException {
         ApiResponse<EMAddUserToGroupWhiteListResult> localVarResp = addUserToGroupWhiteListWithHttpInfo(groupId, username);
@@ -1044,12 +888,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMAddUserToGroupWhiteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddUserToGroupWhiteListResult> addUserToGroupWhiteListWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = addUserToGroupWhiteListValidateBeforeCall(groupId, username, null);
@@ -1066,12 +904,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToGroupWhiteListAsync(String groupId, String username, final ApiCallback<EMAddUserToGroupWhiteListResult> _callback) throws ApiException {
 
@@ -1088,12 +920,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call checkUserJoinedGroupCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1165,12 +991,6 @@ public class GroupApi {
      * @return EMCheckUserJoinedGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMCheckUserJoinedGroupResult checkUserJoinedGroup(String groupId, String username) throws ApiException {
         ApiResponse<EMCheckUserJoinedGroupResult> localVarResp = checkUserJoinedGroupWithHttpInfo(groupId, username);
@@ -1185,12 +1005,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMCheckUserJoinedGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMCheckUserJoinedGroupResult> checkUserJoinedGroupWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = checkUserJoinedGroupValidateBeforeCall(groupId, username, null);
@@ -1207,12 +1021,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call checkUserJoinedGroupAsync(String groupId, String username, final ApiCallback<EMCheckUserJoinedGroupResult> _callback) throws ApiException {
 
@@ -1228,12 +1036,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call createGroupCall(EMCreateGroup emCreateGroup, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1293,12 +1095,6 @@ public class GroupApi {
      * @return EMCreateGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMCreateGroupResult createGroup(EMCreateGroup emCreateGroup) throws ApiException {
         ApiResponse<EMCreateGroupResult> localVarResp = createGroupWithHttpInfo(emCreateGroup);
@@ -1312,12 +1108,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMCreateGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMCreateGroupResult> createGroupWithHttpInfo(EMCreateGroup emCreateGroup) throws ApiException {
         okhttp3.Call localVarCall = createGroupValidateBeforeCall(emCreateGroup, null);
@@ -1333,12 +1123,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call createGroupAsync(EMCreateGroup emCreateGroup, final ApiCallback<EMCreateGroupResult> _callback) throws ApiException {
 
@@ -1354,12 +1138,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteGroupCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1424,12 +1202,6 @@ public class GroupApi {
      * @return EMDeleteGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMDeleteGroupResult deleteGroup(String groupId) throws ApiException {
         ApiResponse<EMDeleteGroupResult> localVarResp = deleteGroupWithHttpInfo(groupId);
@@ -1443,12 +1215,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMDeleteGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMDeleteGroupResult> deleteGroupWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = deleteGroupValidateBeforeCall(groupId, null);
@@ -1464,12 +1230,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteGroupAsync(String groupId, final ApiCallback<EMDeleteGroupResult> _callback) throws ApiException {
 
@@ -1486,12 +1246,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteGroupShareFileCall(String groupId, String fileId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1563,12 +1317,6 @@ public class GroupApi {
      * @return EMDeleteGroupShareFileResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMDeleteGroupShareFileResult deleteGroupShareFile(String groupId, String fileId) throws ApiException {
         ApiResponse<EMDeleteGroupShareFileResult> localVarResp = deleteGroupShareFileWithHttpInfo(groupId, fileId);
@@ -1583,12 +1331,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMDeleteGroupShareFileResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMDeleteGroupShareFileResult> deleteGroupShareFileWithHttpInfo(String groupId, String fileId) throws ApiException {
         okhttp3.Call localVarCall = deleteGroupShareFileValidateBeforeCall(groupId, fileId, null);
@@ -1605,12 +1347,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteGroupShareFileAsync(String groupId, String fileId, final ApiCallback<EMDeleteGroupShareFileResult> _callback) throws ApiException {
 
@@ -1626,12 +1362,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call disableGroupCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1696,12 +1426,6 @@ public class GroupApi {
      * @return EMDisableGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMDisableGroupResult disableGroup(String groupId) throws ApiException {
         ApiResponse<EMDisableGroupResult> localVarResp = disableGroupWithHttpInfo(groupId);
@@ -1715,12 +1439,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMDisableGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMDisableGroupResult> disableGroupWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = disableGroupValidateBeforeCall(groupId, null);
@@ -1736,12 +1454,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call disableGroupAsync(String groupId, final ApiCallback<EMDisableGroupResult> _callback) throws ApiException {
 
@@ -1758,12 +1470,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call downloadGroupShareFileCall(String groupId, String fileId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1835,12 +1541,6 @@ public class GroupApi {
      * @return File
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public File downloadGroupShareFile(String groupId, String fileId) throws ApiException {
         ApiResponse<File> localVarResp = downloadGroupShareFileWithHttpInfo(groupId, fileId);
@@ -1855,12 +1555,6 @@ public class GroupApi {
      * @return ApiResponse&lt;File&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<File> downloadGroupShareFileWithHttpInfo(String groupId, String fileId) throws ApiException {
         okhttp3.Call localVarCall = downloadGroupShareFileValidateBeforeCall(groupId, fileId, null);
@@ -1877,12 +1571,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call downloadGroupShareFileAsync(String groupId, String fileId, final ApiCallback<File> _callback) throws ApiException {
 
@@ -1898,12 +1586,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call enableGroupCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1968,12 +1650,6 @@ public class GroupApi {
      * @return EMEnableGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMEnableGroupResult enableGroup(String groupId) throws ApiException {
         ApiResponse<EMEnableGroupResult> localVarResp = enableGroupWithHttpInfo(groupId);
@@ -1987,12 +1663,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMEnableGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMEnableGroupResult> enableGroupWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = enableGroupValidateBeforeCall(groupId, null);
@@ -2008,12 +1678,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call enableGroupAsync(String groupId, final ApiCallback<EMEnableGroupResult> _callback) throws ApiException {
 
@@ -2030,12 +1694,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getAppGroupsCall(Integer limit, String cursor, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2103,12 +1761,6 @@ public class GroupApi {
      * @return EMGetAppGroupsResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetAppGroupsResult getAppGroups(Integer limit, String cursor) throws ApiException {
         ApiResponse<EMGetAppGroupsResult> localVarResp = getAppGroupsWithHttpInfo(limit, cursor);
@@ -2123,12 +1775,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetAppGroupsResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetAppGroupsResult> getAppGroupsWithHttpInfo(Integer limit, String cursor) throws ApiException {
         okhttp3.Call localVarCall = getAppGroupsValidateBeforeCall(limit, cursor, null);
@@ -2145,12 +1791,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getAppGroupsAsync(Integer limit, String cursor, final ApiCallback<EMGetAppGroupsResult> _callback) throws ApiException {
 
@@ -2166,12 +1806,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupAdminListCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2236,12 +1870,6 @@ public class GroupApi {
      * @return EMGetGroupAdminListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupAdminListResult getGroupAdminList(String groupId) throws ApiException {
         ApiResponse<EMGetGroupAdminListResult> localVarResp = getGroupAdminListWithHttpInfo(groupId);
@@ -2255,12 +1883,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetGroupAdminListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupAdminListResult> getGroupAdminListWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = getGroupAdminListValidateBeforeCall(groupId, null);
@@ -2276,12 +1898,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupAdminListAsync(String groupId, final ApiCallback<EMGetGroupAdminListResult> _callback) throws ApiException {
 
@@ -2297,12 +1913,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupAnnouncementCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2367,12 +1977,6 @@ public class GroupApi {
      * @return EMGetGroupAnnouncementResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupAnnouncementResult getGroupAnnouncement(String groupId) throws ApiException {
         ApiResponse<EMGetGroupAnnouncementResult> localVarResp = getGroupAnnouncementWithHttpInfo(groupId);
@@ -2386,12 +1990,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetGroupAnnouncementResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupAnnouncementResult> getGroupAnnouncementWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = getGroupAnnouncementValidateBeforeCall(groupId, null);
@@ -2407,12 +2005,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupAnnouncementAsync(String groupId, final ApiCallback<EMGetGroupAnnouncementResult> _callback) throws ApiException {
 
@@ -2428,12 +2020,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupBlockListCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2498,12 +2084,6 @@ public class GroupApi {
      * @return EMGetGroupBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupBlockListResult getGroupBlockList(String groupId) throws ApiException {
         ApiResponse<EMGetGroupBlockListResult> localVarResp = getGroupBlockListWithHttpInfo(groupId);
@@ -2517,12 +2097,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetGroupBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupBlockListResult> getGroupBlockListWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = getGroupBlockListValidateBeforeCall(groupId, null);
@@ -2538,12 +2112,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupBlockListAsync(String groupId, final ApiCallback<EMGetGroupBlockListResult> _callback) throws ApiException {
 
@@ -2559,12 +2127,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupInfoCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2629,12 +2191,6 @@ public class GroupApi {
      * @return EMGetGroupInfoResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupInfoResult getGroupInfo(String groupId) throws ApiException {
         ApiResponse<EMGetGroupInfoResult> localVarResp = getGroupInfoWithHttpInfo(groupId);
@@ -2648,12 +2204,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetGroupInfoResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupInfoResult> getGroupInfoWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = getGroupInfoValidateBeforeCall(groupId, null);
@@ -2669,12 +2219,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupInfoAsync(String groupId, final ApiCallback<EMGetGroupInfoResult> _callback) throws ApiException {
 
@@ -2692,12 +2236,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupMemberListCall(String groupId, Integer pagenum, Integer pagesize, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2772,12 +2310,6 @@ public class GroupApi {
      * @return EMGetGroupMemberListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupMemberListResult getGroupMemberList(String groupId, Integer pagenum, Integer pagesize) throws ApiException {
         ApiResponse<EMGetGroupMemberListResult> localVarResp = getGroupMemberListWithHttpInfo(groupId, pagenum, pagesize);
@@ -2793,12 +2325,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetGroupMemberListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupMemberListResult> getGroupMemberListWithHttpInfo(String groupId, Integer pagenum, Integer pagesize) throws ApiException {
         okhttp3.Call localVarCall = getGroupMemberListValidateBeforeCall(groupId, pagenum, pagesize, null);
@@ -2816,12 +2342,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupMemberListAsync(String groupId, Integer pagenum, Integer pagesize, final ApiCallback<EMGetGroupMemberListResult> _callback) throws ApiException {
 
@@ -2837,12 +2357,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupMuteListCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2907,12 +2421,6 @@ public class GroupApi {
      * @return EMGetGroupMuteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupMuteListResult getGroupMuteList(String groupId) throws ApiException {
         ApiResponse<EMGetGroupMuteListResult> localVarResp = getGroupMuteListWithHttpInfo(groupId);
@@ -2926,12 +2434,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetGroupMuteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupMuteListResult> getGroupMuteListWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = getGroupMuteListValidateBeforeCall(groupId, null);
@@ -2947,12 +2449,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupMuteListAsync(String groupId, final ApiCallback<EMGetGroupMuteListResult> _callback) throws ApiException {
 
@@ -2970,12 +2466,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupShareFileCall(String groupId, Integer pagenum, Integer pagesize, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3050,12 +2540,6 @@ public class GroupApi {
      * @return EMGetGroupShareFileResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupShareFileResult getGroupShareFile(String groupId, Integer pagenum, Integer pagesize) throws ApiException {
         ApiResponse<EMGetGroupShareFileResult> localVarResp = getGroupShareFileWithHttpInfo(groupId, pagenum, pagesize);
@@ -3071,12 +2555,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetGroupShareFileResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupShareFileResult> getGroupShareFileWithHttpInfo(String groupId, Integer pagenum, Integer pagesize) throws ApiException {
         okhttp3.Call localVarCall = getGroupShareFileValidateBeforeCall(groupId, pagenum, pagesize, null);
@@ -3094,12 +2572,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupShareFileAsync(String groupId, Integer pagenum, Integer pagesize, final ApiCallback<EMGetGroupShareFileResult> _callback) throws ApiException {
 
@@ -3115,12 +2587,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupWhiteListCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3185,12 +2651,6 @@ public class GroupApi {
      * @return EMGetGroupWhiteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupWhiteListResult getGroupWhiteList(String groupId) throws ApiException {
         ApiResponse<EMGetGroupWhiteListResult> localVarResp = getGroupWhiteListWithHttpInfo(groupId);
@@ -3204,12 +2664,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetGroupWhiteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupWhiteListResult> getGroupWhiteListWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = getGroupWhiteListValidateBeforeCall(groupId, null);
@@ -3225,12 +2679,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupWhiteListAsync(String groupId, final ApiCallback<EMGetGroupWhiteListResult> _callback) throws ApiException {
 
@@ -3248,12 +2696,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserJoinedGroupsCall(String username, Integer pagenum, Integer pagesize, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3328,12 +2770,6 @@ public class GroupApi {
      * @return EMGetUserJoinedGroupsResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetUserJoinedGroupsResult getUserJoinedGroups(String username, Integer pagenum, Integer pagesize) throws ApiException {
         ApiResponse<EMGetUserJoinedGroupsResult> localVarResp = getUserJoinedGroupsWithHttpInfo(username, pagenum, pagesize);
@@ -3349,12 +2785,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMGetUserJoinedGroupsResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetUserJoinedGroupsResult> getUserJoinedGroupsWithHttpInfo(String username, Integer pagenum, Integer pagesize) throws ApiException {
         okhttp3.Call localVarCall = getUserJoinedGroupsValidateBeforeCall(username, pagenum, pagesize, null);
@@ -3372,12 +2802,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserJoinedGroupsAsync(String username, Integer pagenum, Integer pagesize, final ApiCallback<EMGetUserJoinedGroupsResult> _callback) throws ApiException {
 
@@ -3394,12 +2818,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyGroupCall(String groupId, EMModifyGroup emModifyGroup, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3466,12 +2884,6 @@ public class GroupApi {
      * @return EMModifyGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMModifyGroupResult modifyGroup(String groupId, EMModifyGroup emModifyGroup) throws ApiException {
         ApiResponse<EMModifyGroupResult> localVarResp = modifyGroupWithHttpInfo(groupId, emModifyGroup);
@@ -3486,12 +2898,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMModifyGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMModifyGroupResult> modifyGroupWithHttpInfo(String groupId, EMModifyGroup emModifyGroup) throws ApiException {
         okhttp3.Call localVarCall = modifyGroupValidateBeforeCall(groupId, emModifyGroup, null);
@@ -3508,12 +2914,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyGroupAsync(String groupId, EMModifyGroup emModifyGroup, final ApiCallback<EMModifyGroupResult> _callback) throws ApiException {
 
@@ -3530,12 +2930,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyGroupAnnouncementCall(String groupId, EMModifyGroupAnnouncement emModifyGroupAnnouncement, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3602,12 +2996,6 @@ public class GroupApi {
      * @return EMModifyGroupAnnouncementResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMModifyGroupAnnouncementResult modifyGroupAnnouncement(String groupId, EMModifyGroupAnnouncement emModifyGroupAnnouncement) throws ApiException {
         ApiResponse<EMModifyGroupAnnouncementResult> localVarResp = modifyGroupAnnouncementWithHttpInfo(groupId, emModifyGroupAnnouncement);
@@ -3622,12 +3010,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMModifyGroupAnnouncementResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMModifyGroupAnnouncementResult> modifyGroupAnnouncementWithHttpInfo(String groupId, EMModifyGroupAnnouncement emModifyGroupAnnouncement) throws ApiException {
         okhttp3.Call localVarCall = modifyGroupAnnouncementValidateBeforeCall(groupId, emModifyGroupAnnouncement, null);
@@ -3644,12 +3026,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyGroupAnnouncementAsync(String groupId, EMModifyGroupAnnouncement emModifyGroupAnnouncement, final ApiCallback<EMModifyGroupAnnouncementResult> _callback) throws ApiException {
 
@@ -3665,12 +3041,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call muteAllGroupMembersCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3735,12 +3105,6 @@ public class GroupApi {
      * @return EMMuteAllGroupMembersResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMMuteAllGroupMembersResult muteAllGroupMembers(String groupId) throws ApiException {
         ApiResponse<EMMuteAllGroupMembersResult> localVarResp = muteAllGroupMembersWithHttpInfo(groupId);
@@ -3754,12 +3118,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMMuteAllGroupMembersResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMMuteAllGroupMembersResult> muteAllGroupMembersWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = muteAllGroupMembersValidateBeforeCall(groupId, null);
@@ -3775,12 +3133,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call muteAllGroupMembersAsync(String groupId, final ApiCallback<EMMuteAllGroupMembersResult> _callback) throws ApiException {
 
@@ -3797,12 +3149,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call muteGroupMemberCall(String groupId, EMMuteGroupMember emMuteGroupMember, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3869,12 +3215,6 @@ public class GroupApi {
      * @return EMMuteGroupMemberResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMMuteGroupMemberResult muteGroupMember(String groupId, EMMuteGroupMember emMuteGroupMember) throws ApiException {
         ApiResponse<EMMuteGroupMemberResult> localVarResp = muteGroupMemberWithHttpInfo(groupId, emMuteGroupMember);
@@ -3889,12 +3229,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMMuteGroupMemberResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMMuteGroupMemberResult> muteGroupMemberWithHttpInfo(String groupId, EMMuteGroupMember emMuteGroupMember) throws ApiException {
         okhttp3.Call localVarCall = muteGroupMemberValidateBeforeCall(groupId, emMuteGroupMember, null);
@@ -3911,12 +3245,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call muteGroupMemberAsync(String groupId, EMMuteGroupMember emMuteGroupMember, final ApiCallback<EMMuteGroupMemberResult> _callback) throws ApiException {
 
@@ -3933,12 +3261,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeGroupAdminCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4010,12 +3332,6 @@ public class GroupApi {
      * @return EMRemoveGroupAdminResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveGroupAdminResult removeGroupAdmin(String groupId, String username) throws ApiException {
         ApiResponse<EMRemoveGroupAdminResult> localVarResp = removeGroupAdminWithHttpInfo(groupId, username);
@@ -4030,12 +3346,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMRemoveGroupAdminResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveGroupAdminResult> removeGroupAdminWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = removeGroupAdminValidateBeforeCall(groupId, username, null);
@@ -4052,12 +3362,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeGroupAdminAsync(String groupId, String username, final ApiCallback<EMRemoveGroupAdminResult> _callback) throws ApiException {
 
@@ -4074,12 +3378,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromGroupBlockListCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4151,12 +3449,6 @@ public class GroupApi {
      * @return EMRemoveUserFromGroupBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveUserFromGroupBlockListResult removeUserFromGroupBlockList(String groupId, String username) throws ApiException {
         ApiResponse<EMRemoveUserFromGroupBlockListResult> localVarResp = removeUserFromGroupBlockListWithHttpInfo(groupId, username);
@@ -4171,12 +3463,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMRemoveUserFromGroupBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveUserFromGroupBlockListResult> removeUserFromGroupBlockListWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = removeUserFromGroupBlockListValidateBeforeCall(groupId, username, null);
@@ -4193,12 +3479,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromGroupBlockListAsync(String groupId, String username, final ApiCallback<EMRemoveUserFromGroupBlockListResult> _callback) throws ApiException {
 
@@ -4215,12 +3495,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromGroupWhiteListCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4292,12 +3566,6 @@ public class GroupApi {
      * @return EMRemoveUserFromGroupWhiteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveUserFromGroupWhiteListResult removeUserFromGroupWhiteList(String groupId, String username) throws ApiException {
         ApiResponse<EMRemoveUserFromGroupWhiteListResult> localVarResp = removeUserFromGroupWhiteListWithHttpInfo(groupId, username);
@@ -4312,12 +3580,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMRemoveUserFromGroupWhiteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveUserFromGroupWhiteListResult> removeUserFromGroupWhiteListWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = removeUserFromGroupWhiteListValidateBeforeCall(groupId, username, null);
@@ -4334,12 +3596,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromGroupWhiteListAsync(String groupId, String username, final ApiCallback<EMRemoveUserFromGroupWhiteListResult> _callback) throws ApiException {
 
@@ -4356,12 +3612,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserToGroupCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4433,12 +3683,6 @@ public class GroupApi {
      * @return EMRemoveUserToGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveUserToGroupResult removeUserToGroup(String groupId, String username) throws ApiException {
         ApiResponse<EMRemoveUserToGroupResult> localVarResp = removeUserToGroupWithHttpInfo(groupId, username);
@@ -4453,12 +3697,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMRemoveUserToGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveUserToGroupResult> removeUserToGroupWithHttpInfo(String groupId, String username) throws ApiException {
         okhttp3.Call localVarCall = removeUserToGroupValidateBeforeCall(groupId, username, null);
@@ -4475,12 +3713,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserToGroupAsync(String groupId, String username, final ApiCallback<EMRemoveUserToGroupResult> _callback) throws ApiException {
 
@@ -4496,12 +3728,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call unmuteAllGroupMembersCall(String groupId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4566,12 +3792,6 @@ public class GroupApi {
      * @return EMUnmuteAllGroupMembersResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMUnmuteAllGroupMembersResult unmuteAllGroupMembers(String groupId) throws ApiException {
         ApiResponse<EMUnmuteAllGroupMembersResult> localVarResp = unmuteAllGroupMembersWithHttpInfo(groupId);
@@ -4585,12 +3805,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMUnmuteAllGroupMembersResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMUnmuteAllGroupMembersResult> unmuteAllGroupMembersWithHttpInfo(String groupId) throws ApiException {
         okhttp3.Call localVarCall = unmuteAllGroupMembersValidateBeforeCall(groupId, null);
@@ -4606,12 +3820,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call unmuteAllGroupMembersAsync(String groupId, final ApiCallback<EMUnmuteAllGroupMembersResult> _callback) throws ApiException {
 
@@ -4628,12 +3836,6 @@ public class GroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call uploadGroupShareFileCall(String groupId, File _file, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4709,12 +3911,6 @@ public class GroupApi {
      * @return EMUploadGroupShareFileResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMUploadGroupShareFileResult uploadGroupShareFile(String groupId, File _file) throws ApiException {
         ApiResponse<EMUploadGroupShareFileResult> localVarResp = uploadGroupShareFileWithHttpInfo(groupId, _file);
@@ -4729,12 +3925,6 @@ public class GroupApi {
      * @return ApiResponse&lt;EMUploadGroupShareFileResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMUploadGroupShareFileResult> uploadGroupShareFileWithHttpInfo(String groupId, File _file) throws ApiException {
         okhttp3.Call localVarCall = uploadGroupShareFileValidateBeforeCall(groupId, _file, null);
@@ -4751,12 +3941,6 @@ public class GroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call uploadGroupShareFileAsync(String groupId, File _file, final ApiCallback<EMUploadGroupShareFileResult> _callback) throws ApiException {
 

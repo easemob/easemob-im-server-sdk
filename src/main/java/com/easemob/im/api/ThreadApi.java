@@ -92,12 +92,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUsersToThreadCall(String threadId, EMAddMultipleUsersToThread emAddMultipleUsersToThread, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -164,12 +158,6 @@ public class ThreadApi {
      * @return EMAddMultipleUsersToThreadResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddMultipleUsersToThreadResult addMultipleUsersToThread(String threadId, EMAddMultipleUsersToThread emAddMultipleUsersToThread) throws ApiException {
         ApiResponse<EMAddMultipleUsersToThreadResult> localVarResp = addMultipleUsersToThreadWithHttpInfo(threadId, emAddMultipleUsersToThread);
@@ -184,12 +172,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMAddMultipleUsersToThreadResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddMultipleUsersToThreadResult> addMultipleUsersToThreadWithHttpInfo(String threadId, EMAddMultipleUsersToThread emAddMultipleUsersToThread) throws ApiException {
         okhttp3.Call localVarCall = addMultipleUsersToThreadValidateBeforeCall(threadId, emAddMultipleUsersToThread, null);
@@ -206,12 +188,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUsersToThreadAsync(String threadId, EMAddMultipleUsersToThread emAddMultipleUsersToThread, final ApiCallback<EMAddMultipleUsersToThreadResult> _callback) throws ApiException {
 
@@ -227,12 +203,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call createThreadCall(EMCreateThread emCreateThread, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -292,12 +262,6 @@ public class ThreadApi {
      * @return EMCreateThreadResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMCreateThreadResult createThread(EMCreateThread emCreateThread) throws ApiException {
         ApiResponse<EMCreateThreadResult> localVarResp = createThreadWithHttpInfo(emCreateThread);
@@ -311,12 +275,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMCreateThreadResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMCreateThreadResult> createThreadWithHttpInfo(EMCreateThread emCreateThread) throws ApiException {
         okhttp3.Call localVarCall = createThreadValidateBeforeCall(emCreateThread, null);
@@ -332,12 +290,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call createThreadAsync(EMCreateThread emCreateThread, final ApiCallback<EMCreateThreadResult> _callback) throws ApiException {
 
@@ -353,12 +305,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteThreadCall(String threadId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -423,12 +369,6 @@ public class ThreadApi {
      * @return EMDeleteThreadResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMDeleteThreadResult deleteThread(String threadId) throws ApiException {
         ApiResponse<EMDeleteThreadResult> localVarResp = deleteThreadWithHttpInfo(threadId);
@@ -442,12 +382,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMDeleteThreadResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMDeleteThreadResult> deleteThreadWithHttpInfo(String threadId) throws ApiException {
         okhttp3.Call localVarCall = deleteThreadValidateBeforeCall(threadId, null);
@@ -463,12 +397,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteThreadAsync(String threadId, final ApiCallback<EMDeleteThreadResult> _callback) throws ApiException {
 
@@ -486,12 +414,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getThreadMemberListCall(String threadId, Integer limit, String cursor, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -566,12 +488,6 @@ public class ThreadApi {
      * @return EMGetThreadMemberListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetThreadMemberListResult getThreadMemberList(String threadId, Integer limit, String cursor) throws ApiException {
         ApiResponse<EMGetThreadMemberListResult> localVarResp = getThreadMemberListWithHttpInfo(threadId, limit, cursor);
@@ -587,12 +503,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMGetThreadMemberListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetThreadMemberListResult> getThreadMemberListWithHttpInfo(String threadId, Integer limit, String cursor) throws ApiException {
         okhttp3.Call localVarCall = getThreadMemberListValidateBeforeCall(threadId, limit, cursor, null);
@@ -610,12 +520,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getThreadMemberListAsync(String threadId, Integer limit, String cursor, final ApiCallback<EMGetThreadMemberListResult> _callback) throws ApiException {
 
@@ -633,12 +537,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getThreadsUnderAppCall(Integer limit, String cursor, String sort, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -711,12 +609,6 @@ public class ThreadApi {
      * @return EMGetThreadsUnderAppResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetThreadsUnderAppResult getThreadsUnderApp(Integer limit, String cursor, String sort) throws ApiException {
         ApiResponse<EMGetThreadsUnderAppResult> localVarResp = getThreadsUnderAppWithHttpInfo(limit, cursor, sort);
@@ -732,12 +624,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMGetThreadsUnderAppResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetThreadsUnderAppResult> getThreadsUnderAppWithHttpInfo(Integer limit, String cursor, String sort) throws ApiException {
         okhttp3.Call localVarCall = getThreadsUnderAppValidateBeforeCall(limit, cursor, sort, null);
@@ -755,12 +641,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getThreadsUnderAppAsync(Integer limit, String cursor, String sort, final ApiCallback<EMGetThreadsUnderAppResult> _callback) throws ApiException {
 
@@ -779,12 +659,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserJoinedThreadsCall(String username, Integer limit, String cursor, String sort, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -864,12 +738,6 @@ public class ThreadApi {
      * @return EMGetUserJoinedThreadsResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetUserJoinedThreadsResult getUserJoinedThreads(String username, Integer limit, String cursor, String sort) throws ApiException {
         ApiResponse<EMGetUserJoinedThreadsResult> localVarResp = getUserJoinedThreadsWithHttpInfo(username, limit, cursor, sort);
@@ -886,12 +754,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMGetUserJoinedThreadsResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetUserJoinedThreadsResult> getUserJoinedThreadsWithHttpInfo(String username, Integer limit, String cursor, String sort) throws ApiException {
         okhttp3.Call localVarCall = getUserJoinedThreadsValidateBeforeCall(username, limit, cursor, sort, null);
@@ -910,12 +772,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserJoinedThreadsAsync(String username, Integer limit, String cursor, String sort, final ApiCallback<EMGetUserJoinedThreadsResult> _callback) throws ApiException {
 
@@ -935,12 +791,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserJoinedThreadsUnderGroupCall(String groupId, String username, Integer limit, String cursor, String sort, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1027,12 +877,6 @@ public class ThreadApi {
      * @return EMGetUserJoinedThreadsUnderGroupResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetUserJoinedThreadsUnderGroupResult getUserJoinedThreadsUnderGroup(String groupId, String username, Integer limit, String cursor, String sort) throws ApiException {
         ApiResponse<EMGetUserJoinedThreadsUnderGroupResult> localVarResp = getUserJoinedThreadsUnderGroupWithHttpInfo(groupId, username, limit, cursor, sort);
@@ -1050,12 +894,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMGetUserJoinedThreadsUnderGroupResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetUserJoinedThreadsUnderGroupResult> getUserJoinedThreadsUnderGroupWithHttpInfo(String groupId, String username, Integer limit, String cursor, String sort) throws ApiException {
         okhttp3.Call localVarCall = getUserJoinedThreadsUnderGroupValidateBeforeCall(groupId, username, limit, cursor, sort, null);
@@ -1075,12 +913,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserJoinedThreadsUnderGroupAsync(String groupId, String username, Integer limit, String cursor, String sort, final ApiCallback<EMGetUserJoinedThreadsUnderGroupResult> _callback) throws ApiException {
 
@@ -1097,12 +929,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyThreadCall(String threadId, EMModifyThread emModifyThread, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1169,12 +995,6 @@ public class ThreadApi {
      * @return EMModifyThreadResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMModifyThreadResult modifyThread(String threadId, EMModifyThread emModifyThread) throws ApiException {
         ApiResponse<EMModifyThreadResult> localVarResp = modifyThreadWithHttpInfo(threadId, emModifyThread);
@@ -1189,12 +1009,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMModifyThreadResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMModifyThreadResult> modifyThreadWithHttpInfo(String threadId, EMModifyThread emModifyThread) throws ApiException {
         okhttp3.Call localVarCall = modifyThreadValidateBeforeCall(threadId, emModifyThread, null);
@@ -1211,12 +1025,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyThreadAsync(String threadId, EMModifyThread emModifyThread, final ApiCallback<EMModifyThreadResult> _callback) throws ApiException {
 
@@ -1233,12 +1041,6 @@ public class ThreadApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeMultipleUsersFromThreadCall(String threadId, EMRemoveMultipleUsersFromThread emRemoveMultipleUsersFromThread, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1305,12 +1107,6 @@ public class ThreadApi {
      * @return EMRemoveMultipleUsersFromThreadResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveMultipleUsersFromThreadResult removeMultipleUsersFromThread(String threadId, EMRemoveMultipleUsersFromThread emRemoveMultipleUsersFromThread) throws ApiException {
         ApiResponse<EMRemoveMultipleUsersFromThreadResult> localVarResp = removeMultipleUsersFromThreadWithHttpInfo(threadId, emRemoveMultipleUsersFromThread);
@@ -1325,12 +1121,6 @@ public class ThreadApi {
      * @return ApiResponse&lt;EMRemoveMultipleUsersFromThreadResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveMultipleUsersFromThreadResult> removeMultipleUsersFromThreadWithHttpInfo(String threadId, EMRemoveMultipleUsersFromThread emRemoveMultipleUsersFromThread) throws ApiException {
         okhttp3.Call localVarCall = removeMultipleUsersFromThreadValidateBeforeCall(threadId, emRemoveMultipleUsersFromThread, null);
@@ -1347,12 +1137,6 @@ public class ThreadApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeMultipleUsersFromThreadAsync(String threadId, EMRemoveMultipleUsersFromThread emRemoveMultipleUsersFromThread, final ApiCallback<EMRemoveMultipleUsersFromThreadResult> _callback) throws ApiException {
 

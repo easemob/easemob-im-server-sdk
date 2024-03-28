@@ -83,12 +83,6 @@ public class ChatFileApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call downloadChatFileCall(String fileUuid, String shareSecret, Boolean thumbnail, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -163,12 +157,6 @@ public class ChatFileApi {
      * @return File
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public File downloadChatFile(String fileUuid, String shareSecret, Boolean thumbnail) throws ApiException {
         ApiResponse<File> localVarResp = downloadChatFileWithHttpInfo(fileUuid, shareSecret, thumbnail);
@@ -184,12 +172,6 @@ public class ChatFileApi {
      * @return ApiResponse&lt;File&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<File> downloadChatFileWithHttpInfo(String fileUuid, String shareSecret, Boolean thumbnail) throws ApiException {
         okhttp3.Call localVarCall = downloadChatFileValidateBeforeCall(fileUuid, shareSecret, thumbnail, null);
@@ -207,12 +189,6 @@ public class ChatFileApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call downloadChatFileAsync(String fileUuid, String shareSecret, Boolean thumbnail, final ApiCallback<File> _callback) throws ApiException {
 
@@ -229,12 +205,6 @@ public class ChatFileApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call uploadChatFileCall(Boolean restrictAccess, File _file, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -303,12 +273,6 @@ public class ChatFileApi {
      * @return EMUploadChatFileResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMUploadChatFileResult uploadChatFile(Boolean restrictAccess, File _file) throws ApiException {
         ApiResponse<EMUploadChatFileResult> localVarResp = uploadChatFileWithHttpInfo(restrictAccess, _file);
@@ -323,12 +287,6 @@ public class ChatFileApi {
      * @return ApiResponse&lt;EMUploadChatFileResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMUploadChatFileResult> uploadChatFileWithHttpInfo(Boolean restrictAccess, File _file) throws ApiException {
         okhttp3.Call localVarCall = uploadChatFileValidateBeforeCall(restrictAccess, _file, null);
@@ -345,12 +303,6 @@ public class ChatFileApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call uploadChatFileAsync(Boolean restrictAccess, File _file, final ApiCallback<EMUploadChatFileResult> _callback) throws ApiException {
 

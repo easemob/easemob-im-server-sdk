@@ -79,12 +79,6 @@ public class HistoryMessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call historyMessageCall(String time, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -149,12 +143,6 @@ public class HistoryMessageApi {
      * @return EMGetHistoryMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetHistoryMessageResult historyMessage(String time) throws ApiException {
         ApiResponse<EMGetHistoryMessageResult> localVarResp = historyMessageWithHttpInfo(time);
@@ -168,12 +156,6 @@ public class HistoryMessageApi {
      * @return ApiResponse&lt;EMGetHistoryMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetHistoryMessageResult> historyMessageWithHttpInfo(String time) throws ApiException {
         okhttp3.Call localVarCall = historyMessageValidateBeforeCall(time, null);
@@ -189,12 +171,6 @@ public class HistoryMessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call historyMessageAsync(String time, final ApiCallback<EMGetHistoryMessageResult> _callback) throws ApiException {
 

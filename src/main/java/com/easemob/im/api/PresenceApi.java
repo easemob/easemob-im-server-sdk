@@ -88,12 +88,6 @@ public class PresenceApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupOnlineMemberCountCall(String groupId, Integer queryType, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -165,12 +159,6 @@ public class PresenceApi {
      * @return EMGetGroupOnlineMemberCountResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetGroupOnlineMemberCountResult getGroupOnlineMemberCount(String groupId, Integer queryType) throws ApiException {
         ApiResponse<EMGetGroupOnlineMemberCountResult> localVarResp = getGroupOnlineMemberCountWithHttpInfo(groupId, queryType);
@@ -185,12 +173,6 @@ public class PresenceApi {
      * @return ApiResponse&lt;EMGetGroupOnlineMemberCountResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetGroupOnlineMemberCountResult> getGroupOnlineMemberCountWithHttpInfo(String groupId, Integer queryType) throws ApiException {
         okhttp3.Call localVarCall = getGroupOnlineMemberCountValidateBeforeCall(groupId, queryType, null);
@@ -207,12 +189,6 @@ public class PresenceApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getGroupOnlineMemberCountAsync(String groupId, Integer queryType, final ApiCallback<EMGetGroupOnlineMemberCountResult> _callback) throws ApiException {
 
@@ -229,12 +205,6 @@ public class PresenceApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getMultipleUserPresenceStatusCall(String username, EMGetMultipleUsersPresenceStatus emGetMultipleUsersPresenceStatus, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -301,12 +271,6 @@ public class PresenceApi {
      * @return EMGetMultipleUsersPresenceStatusResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetMultipleUsersPresenceStatusResult getMultipleUserPresenceStatus(String username, EMGetMultipleUsersPresenceStatus emGetMultipleUsersPresenceStatus) throws ApiException {
         ApiResponse<EMGetMultipleUsersPresenceStatusResult> localVarResp = getMultipleUserPresenceStatusWithHttpInfo(username, emGetMultipleUsersPresenceStatus);
@@ -321,12 +285,6 @@ public class PresenceApi {
      * @return ApiResponse&lt;EMGetMultipleUsersPresenceStatusResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetMultipleUsersPresenceStatusResult> getMultipleUserPresenceStatusWithHttpInfo(String username, EMGetMultipleUsersPresenceStatus emGetMultipleUsersPresenceStatus) throws ApiException {
         okhttp3.Call localVarCall = getMultipleUserPresenceStatusValidateBeforeCall(username, emGetMultipleUsersPresenceStatus, null);
@@ -343,12 +301,6 @@ public class PresenceApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getMultipleUserPresenceStatusAsync(String username, EMGetMultipleUsersPresenceStatus emGetMultipleUsersPresenceStatus, final ApiCallback<EMGetMultipleUsersPresenceStatusResult> _callback) throws ApiException {
 
@@ -366,12 +318,6 @@ public class PresenceApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserSubscriptionListCall(String username, Integer pageNum, Integer pageSize, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -446,12 +392,6 @@ public class PresenceApi {
      * @return EMGetUserSubscriptionListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetUserSubscriptionListResult getUserSubscriptionList(String username, Integer pageNum, Integer pageSize) throws ApiException {
         ApiResponse<EMGetUserSubscriptionListResult> localVarResp = getUserSubscriptionListWithHttpInfo(username, pageNum, pageSize);
@@ -467,12 +407,6 @@ public class PresenceApi {
      * @return ApiResponse&lt;EMGetUserSubscriptionListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetUserSubscriptionListResult> getUserSubscriptionListWithHttpInfo(String username, Integer pageNum, Integer pageSize) throws ApiException {
         okhttp3.Call localVarCall = getUserSubscriptionListValidateBeforeCall(username, pageNum, pageSize, null);
@@ -490,12 +424,6 @@ public class PresenceApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserSubscriptionListAsync(String username, Integer pageNum, Integer pageSize, final ApiCallback<EMGetUserSubscriptionListResult> _callback) throws ApiException {
 
@@ -514,12 +442,6 @@ public class PresenceApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setUserPresenceStatusCall(String username, String resource, String status, EMSetUserPresenceStatus emSetUserPresenceStatus, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -600,12 +522,6 @@ public class PresenceApi {
      * @return EMSetUserPresenceStatusResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSetUserPresenceStatusResult setUserPresenceStatus(String username, String resource, String status, EMSetUserPresenceStatus emSetUserPresenceStatus) throws ApiException {
         ApiResponse<EMSetUserPresenceStatusResult> localVarResp = setUserPresenceStatusWithHttpInfo(username, resource, status, emSetUserPresenceStatus);
@@ -622,12 +538,6 @@ public class PresenceApi {
      * @return ApiResponse&lt;EMSetUserPresenceStatusResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSetUserPresenceStatusResult> setUserPresenceStatusWithHttpInfo(String username, String resource, String status, EMSetUserPresenceStatus emSetUserPresenceStatus) throws ApiException {
         okhttp3.Call localVarCall = setUserPresenceStatusValidateBeforeCall(username, resource, status, emSetUserPresenceStatus, null);
@@ -646,12 +556,6 @@ public class PresenceApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setUserPresenceStatusAsync(String username, String resource, String status, EMSetUserPresenceStatus emSetUserPresenceStatus, final ApiCallback<EMSetUserPresenceStatusResult> _callback) throws ApiException {
 
@@ -669,12 +573,6 @@ public class PresenceApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call subscribeMultipleUsersPresenceStatusCall(String username, String expiry, EMSubscribeMultipleUsersPresenceStatus emSubscribeMultipleUsersPresenceStatus, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -748,12 +646,6 @@ public class PresenceApi {
      * @return EMSubscribeMultipleUsersPresenceStatusResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSubscribeMultipleUsersPresenceStatusResult subscribeMultipleUsersPresenceStatus(String username, String expiry, EMSubscribeMultipleUsersPresenceStatus emSubscribeMultipleUsersPresenceStatus) throws ApiException {
         ApiResponse<EMSubscribeMultipleUsersPresenceStatusResult> localVarResp = subscribeMultipleUsersPresenceStatusWithHttpInfo(username, expiry, emSubscribeMultipleUsersPresenceStatus);
@@ -769,12 +661,6 @@ public class PresenceApi {
      * @return ApiResponse&lt;EMSubscribeMultipleUsersPresenceStatusResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSubscribeMultipleUsersPresenceStatusResult> subscribeMultipleUsersPresenceStatusWithHttpInfo(String username, String expiry, EMSubscribeMultipleUsersPresenceStatus emSubscribeMultipleUsersPresenceStatus) throws ApiException {
         okhttp3.Call localVarCall = subscribeMultipleUsersPresenceStatusValidateBeforeCall(username, expiry, emSubscribeMultipleUsersPresenceStatus, null);
@@ -792,12 +678,6 @@ public class PresenceApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call subscribeMultipleUsersPresenceStatusAsync(String username, String expiry, EMSubscribeMultipleUsersPresenceStatus emSubscribeMultipleUsersPresenceStatus, final ApiCallback<EMSubscribeMultipleUsersPresenceStatusResult> _callback) throws ApiException {
 
@@ -814,12 +694,6 @@ public class PresenceApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call unsubscribeMultipleUsersPresenceStatusCall(String username, List<String> requestBody, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -886,12 +760,6 @@ public class PresenceApi {
      * @return EMUnsubscribeMultipleUsersPresenceStatusResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMUnsubscribeMultipleUsersPresenceStatusResult unsubscribeMultipleUsersPresenceStatus(String username, List<String> requestBody) throws ApiException {
         ApiResponse<EMUnsubscribeMultipleUsersPresenceStatusResult> localVarResp = unsubscribeMultipleUsersPresenceStatusWithHttpInfo(username, requestBody);
@@ -906,12 +774,6 @@ public class PresenceApi {
      * @return ApiResponse&lt;EMUnsubscribeMultipleUsersPresenceStatusResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMUnsubscribeMultipleUsersPresenceStatusResult> unsubscribeMultipleUsersPresenceStatusWithHttpInfo(String username, List<String> requestBody) throws ApiException {
         okhttp3.Call localVarCall = unsubscribeMultipleUsersPresenceStatusValidateBeforeCall(username, requestBody, null);
@@ -928,12 +790,6 @@ public class PresenceApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call unsubscribeMultipleUsersPresenceStatusAsync(String username, List<String> requestBody, final ApiCallback<EMUnsubscribeMultipleUsersPresenceStatusResult> _callback) throws ApiException {
 

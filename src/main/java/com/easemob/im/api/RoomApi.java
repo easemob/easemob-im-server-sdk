@@ -128,12 +128,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToRoomCall(String chatroomId, EMAddMultipleUserToRoom emAddMultipleUserToRoom, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -198,12 +192,6 @@ public class RoomApi {
      * @param emAddMultipleUserToRoom  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public void addMultipleUserToRoom(String chatroomId, EMAddMultipleUserToRoom emAddMultipleUserToRoom) throws ApiException {
         addMultipleUserToRoomWithHttpInfo(chatroomId, emAddMultipleUserToRoom);
@@ -217,12 +205,6 @@ public class RoomApi {
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<Void> addMultipleUserToRoomWithHttpInfo(String chatroomId, EMAddMultipleUserToRoom emAddMultipleUserToRoom) throws ApiException {
         okhttp3.Call localVarCall = addMultipleUserToRoomValidateBeforeCall(chatroomId, emAddMultipleUserToRoom, null);
@@ -238,12 +220,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToRoomAsync(String chatroomId, EMAddMultipleUserToRoom emAddMultipleUserToRoom, final ApiCallback<Void> _callback) throws ApiException {
 
@@ -259,12 +235,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToRoomBlockListCall(String chatroomId, EMAddMultipleUserToRoomBlockList emAddMultipleUserToRoomBlockList, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -331,12 +301,6 @@ public class RoomApi {
      * @return EMAddMultipleUserToRoomBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddMultipleUserToRoomBlockListResult addMultipleUserToRoomBlockList(String chatroomId, EMAddMultipleUserToRoomBlockList emAddMultipleUserToRoomBlockList) throws ApiException {
         ApiResponse<EMAddMultipleUserToRoomBlockListResult> localVarResp = addMultipleUserToRoomBlockListWithHttpInfo(chatroomId, emAddMultipleUserToRoomBlockList);
@@ -351,12 +315,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMAddMultipleUserToRoomBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddMultipleUserToRoomBlockListResult> addMultipleUserToRoomBlockListWithHttpInfo(String chatroomId, EMAddMultipleUserToRoomBlockList emAddMultipleUserToRoomBlockList) throws ApiException {
         okhttp3.Call localVarCall = addMultipleUserToRoomBlockListValidateBeforeCall(chatroomId, emAddMultipleUserToRoomBlockList, null);
@@ -373,12 +331,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToRoomBlockListAsync(String chatroomId, EMAddMultipleUserToRoomBlockList emAddMultipleUserToRoomBlockList, final ApiCallback<EMAddMultipleUserToRoomBlockListResult> _callback) throws ApiException {
 
@@ -395,12 +347,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToRoomWhiteListCall(String chatroomId, EMAddMultipleUserToRoomWhiteList emAddMultipleUserToRoomWhiteList, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -467,12 +413,6 @@ public class RoomApi {
      * @return EMAddMultipleUserToRoomWhiteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddMultipleUserToRoomWhiteListResult addMultipleUserToRoomWhiteList(String chatroomId, EMAddMultipleUserToRoomWhiteList emAddMultipleUserToRoomWhiteList) throws ApiException {
         ApiResponse<EMAddMultipleUserToRoomWhiteListResult> localVarResp = addMultipleUserToRoomWhiteListWithHttpInfo(chatroomId, emAddMultipleUserToRoomWhiteList);
@@ -487,12 +427,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMAddMultipleUserToRoomWhiteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddMultipleUserToRoomWhiteListResult> addMultipleUserToRoomWhiteListWithHttpInfo(String chatroomId, EMAddMultipleUserToRoomWhiteList emAddMultipleUserToRoomWhiteList) throws ApiException {
         okhttp3.Call localVarCall = addMultipleUserToRoomWhiteListValidateBeforeCall(chatroomId, emAddMultipleUserToRoomWhiteList, null);
@@ -509,12 +443,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addMultipleUserToRoomWhiteListAsync(String chatroomId, EMAddMultipleUserToRoomWhiteList emAddMultipleUserToRoomWhiteList, final ApiCallback<EMAddMultipleUserToRoomWhiteListResult> _callback) throws ApiException {
 
@@ -531,12 +459,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addRoomAdminCall(String chatroomId, EMAddRoomAdmin emAddRoomAdmin, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -603,12 +525,6 @@ public class RoomApi {
      * @return EMAddRoomAdminResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddRoomAdminResult addRoomAdmin(String chatroomId, EMAddRoomAdmin emAddRoomAdmin) throws ApiException {
         ApiResponse<EMAddRoomAdminResult> localVarResp = addRoomAdminWithHttpInfo(chatroomId, emAddRoomAdmin);
@@ -623,12 +539,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMAddRoomAdminResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddRoomAdminResult> addRoomAdminWithHttpInfo(String chatroomId, EMAddRoomAdmin emAddRoomAdmin) throws ApiException {
         okhttp3.Call localVarCall = addRoomAdminValidateBeforeCall(chatroomId, emAddRoomAdmin, null);
@@ -645,12 +555,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addRoomAdminAsync(String chatroomId, EMAddRoomAdmin emAddRoomAdmin, final ApiCallback<EMAddRoomAdminResult> _callback) throws ApiException {
 
@@ -666,12 +570,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addRoomSuperAdminCall(EMAddRoomSuperAdmin emAddRoomSuperAdmin, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -731,12 +629,6 @@ public class RoomApi {
      * @return EMAddRoomSuperAdminResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddRoomSuperAdminResult addRoomSuperAdmin(EMAddRoomSuperAdmin emAddRoomSuperAdmin) throws ApiException {
         ApiResponse<EMAddRoomSuperAdminResult> localVarResp = addRoomSuperAdminWithHttpInfo(emAddRoomSuperAdmin);
@@ -750,12 +642,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMAddRoomSuperAdminResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddRoomSuperAdminResult> addRoomSuperAdminWithHttpInfo(EMAddRoomSuperAdmin emAddRoomSuperAdmin) throws ApiException {
         okhttp3.Call localVarCall = addRoomSuperAdminValidateBeforeCall(emAddRoomSuperAdmin, null);
@@ -771,12 +657,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addRoomSuperAdminAsync(EMAddRoomSuperAdmin emAddRoomSuperAdmin, final ApiCallback<EMAddRoomSuperAdminResult> _callback) throws ApiException {
 
@@ -793,12 +673,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToRoomCall(String chatroomId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -870,12 +744,6 @@ public class RoomApi {
      * @return EMAddUserToRoomResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddUserToRoomResult addUserToRoom(String chatroomId, String username) throws ApiException {
         ApiResponse<EMAddUserToRoomResult> localVarResp = addUserToRoomWithHttpInfo(chatroomId, username);
@@ -890,12 +758,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMAddUserToRoomResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddUserToRoomResult> addUserToRoomWithHttpInfo(String chatroomId, String username) throws ApiException {
         okhttp3.Call localVarCall = addUserToRoomValidateBeforeCall(chatroomId, username, null);
@@ -912,12 +774,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToRoomAsync(String chatroomId, String username, final ApiCallback<EMAddUserToRoomResult> _callback) throws ApiException {
 
@@ -934,12 +790,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToRoomBlockListCall(String chatroomId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1011,12 +861,6 @@ public class RoomApi {
      * @return EMAddUserToRoomBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddUserToRoomBlockListResult addUserToRoomBlockList(String chatroomId, String username) throws ApiException {
         ApiResponse<EMAddUserToRoomBlockListResult> localVarResp = addUserToRoomBlockListWithHttpInfo(chatroomId, username);
@@ -1031,12 +875,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMAddUserToRoomBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddUserToRoomBlockListResult> addUserToRoomBlockListWithHttpInfo(String chatroomId, String username) throws ApiException {
         okhttp3.Call localVarCall = addUserToRoomBlockListValidateBeforeCall(chatroomId, username, null);
@@ -1053,12 +891,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToRoomBlockListAsync(String chatroomId, String username, final ApiCallback<EMAddUserToRoomBlockListResult> _callback) throws ApiException {
 
@@ -1075,12 +907,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToRoomWhiteListCall(String chatroomId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1152,12 +978,6 @@ public class RoomApi {
      * @return EMAddUserToRoomWhiteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddUserToRoomWhiteListResult addUserToRoomWhiteList(String chatroomId, String username) throws ApiException {
         ApiResponse<EMAddUserToRoomWhiteListResult> localVarResp = addUserToRoomWhiteListWithHttpInfo(chatroomId, username);
@@ -1172,12 +992,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMAddUserToRoomWhiteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddUserToRoomWhiteListResult> addUserToRoomWhiteListWithHttpInfo(String chatroomId, String username) throws ApiException {
         okhttp3.Call localVarCall = addUserToRoomWhiteListValidateBeforeCall(chatroomId, username, null);
@@ -1194,12 +1008,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToRoomWhiteListAsync(String chatroomId, String username, final ApiCallback<EMAddUserToRoomWhiteListResult> _callback) throws ApiException {
 
@@ -1215,12 +1023,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call createRoomCall(EMCreateRoom emCreateRoom, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1280,12 +1082,6 @@ public class RoomApi {
      * @return EMCreateRoomResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMCreateRoomResult createRoom(EMCreateRoom emCreateRoom) throws ApiException {
         ApiResponse<EMCreateRoomResult> localVarResp = createRoomWithHttpInfo(emCreateRoom);
@@ -1299,12 +1095,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMCreateRoomResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMCreateRoomResult> createRoomWithHttpInfo(EMCreateRoom emCreateRoom) throws ApiException {
         okhttp3.Call localVarCall = createRoomValidateBeforeCall(emCreateRoom, null);
@@ -1320,12 +1110,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call createRoomAsync(EMCreateRoom emCreateRoom, final ApiCallback<EMCreateRoomResult> _callback) throws ApiException {
 
@@ -1341,12 +1125,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteRoomCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1411,12 +1189,6 @@ public class RoomApi {
      * @return EMDeleteRoomResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMDeleteRoomResult deleteRoom(String chatroomId) throws ApiException {
         ApiResponse<EMDeleteRoomResult> localVarResp = deleteRoomWithHttpInfo(chatroomId);
@@ -1430,12 +1202,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMDeleteRoomResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMDeleteRoomResult> deleteRoomWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = deleteRoomValidateBeforeCall(chatroomId, null);
@@ -1451,12 +1217,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteRoomAsync(String chatroomId, final ApiCallback<EMDeleteRoomResult> _callback) throws ApiException {
 
@@ -1474,12 +1234,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteRoomCustomAttributesCall(String chatroomId, String username, EMDeleteRoomCustomAttributes emDeleteRoomCustomAttributes, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1553,12 +1307,6 @@ public class RoomApi {
      * @return EMDeleteRoomCustomAttributesResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMDeleteRoomCustomAttributesResult deleteRoomCustomAttributes(String chatroomId, String username, EMDeleteRoomCustomAttributes emDeleteRoomCustomAttributes) throws ApiException {
         ApiResponse<EMDeleteRoomCustomAttributesResult> localVarResp = deleteRoomCustomAttributesWithHttpInfo(chatroomId, username, emDeleteRoomCustomAttributes);
@@ -1574,12 +1322,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMDeleteRoomCustomAttributesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMDeleteRoomCustomAttributesResult> deleteRoomCustomAttributesWithHttpInfo(String chatroomId, String username, EMDeleteRoomCustomAttributes emDeleteRoomCustomAttributes) throws ApiException {
         okhttp3.Call localVarCall = deleteRoomCustomAttributesValidateBeforeCall(chatroomId, username, emDeleteRoomCustomAttributes, null);
@@ -1597,12 +1339,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call deleteRoomCustomAttributesAsync(String chatroomId, String username, EMDeleteRoomCustomAttributes emDeleteRoomCustomAttributes, final ApiCallback<EMDeleteRoomCustomAttributesResult> _callback) throws ApiException {
 
@@ -1620,12 +1356,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call forceDeleteRoomCustomAttributesCall(String chatroomId, String username, EMForceDeleteRoomCustomAttributes emForceDeleteRoomCustomAttributes, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1699,12 +1429,6 @@ public class RoomApi {
      * @return EMForceDeleteRoomCustomAttributesResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMForceDeleteRoomCustomAttributesResult forceDeleteRoomCustomAttributes(String chatroomId, String username, EMForceDeleteRoomCustomAttributes emForceDeleteRoomCustomAttributes) throws ApiException {
         ApiResponse<EMForceDeleteRoomCustomAttributesResult> localVarResp = forceDeleteRoomCustomAttributesWithHttpInfo(chatroomId, username, emForceDeleteRoomCustomAttributes);
@@ -1720,12 +1444,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMForceDeleteRoomCustomAttributesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMForceDeleteRoomCustomAttributesResult> forceDeleteRoomCustomAttributesWithHttpInfo(String chatroomId, String username, EMForceDeleteRoomCustomAttributes emForceDeleteRoomCustomAttributes) throws ApiException {
         okhttp3.Call localVarCall = forceDeleteRoomCustomAttributesValidateBeforeCall(chatroomId, username, emForceDeleteRoomCustomAttributes, null);
@@ -1743,12 +1461,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call forceDeleteRoomCustomAttributesAsync(String chatroomId, String username, EMForceDeleteRoomCustomAttributes emForceDeleteRoomCustomAttributes, final ApiCallback<EMForceDeleteRoomCustomAttributesResult> _callback) throws ApiException {
 
@@ -1766,12 +1478,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call forceSetRoomCustomAttributesCall(String chatroomId, String username, EMForceSetRoomCustomAttributes emForceSetRoomCustomAttributes, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1845,12 +1551,6 @@ public class RoomApi {
      * @return EMForceSetRoomCustomAttributesResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMForceSetRoomCustomAttributesResult forceSetRoomCustomAttributes(String chatroomId, String username, EMForceSetRoomCustomAttributes emForceSetRoomCustomAttributes) throws ApiException {
         ApiResponse<EMForceSetRoomCustomAttributesResult> localVarResp = forceSetRoomCustomAttributesWithHttpInfo(chatroomId, username, emForceSetRoomCustomAttributes);
@@ -1866,12 +1566,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMForceSetRoomCustomAttributesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMForceSetRoomCustomAttributesResult> forceSetRoomCustomAttributesWithHttpInfo(String chatroomId, String username, EMForceSetRoomCustomAttributes emForceSetRoomCustomAttributes) throws ApiException {
         okhttp3.Call localVarCall = forceSetRoomCustomAttributesValidateBeforeCall(chatroomId, username, emForceSetRoomCustomAttributes, null);
@@ -1889,12 +1583,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call forceSetRoomCustomAttributesAsync(String chatroomId, String username, EMForceSetRoomCustomAttributes emForceSetRoomCustomAttributes, final ApiCallback<EMForceSetRoomCustomAttributesResult> _callback) throws ApiException {
 
@@ -1910,12 +1598,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getMuteRoomMemberListCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1980,12 +1662,6 @@ public class RoomApi {
      * @return EMGetMuteRoomMemberListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetMuteRoomMemberListResult getMuteRoomMemberList(String chatroomId) throws ApiException {
         ApiResponse<EMGetMuteRoomMemberListResult> localVarResp = getMuteRoomMemberListWithHttpInfo(chatroomId);
@@ -1999,12 +1675,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetMuteRoomMemberListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetMuteRoomMemberListResult> getMuteRoomMemberListWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = getMuteRoomMemberListValidateBeforeCall(chatroomId, null);
@@ -2020,12 +1690,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getMuteRoomMemberListAsync(String chatroomId, final ApiCallback<EMGetMuteRoomMemberListResult> _callback) throws ApiException {
 
@@ -2041,12 +1705,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomAdminListCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2111,12 +1769,6 @@ public class RoomApi {
      * @return EMGetRoomAdminListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomAdminListResult getRoomAdminList(String chatroomId) throws ApiException {
         ApiResponse<EMGetRoomAdminListResult> localVarResp = getRoomAdminListWithHttpInfo(chatroomId);
@@ -2130,12 +1782,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomAdminListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomAdminListResult> getRoomAdminListWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = getRoomAdminListValidateBeforeCall(chatroomId, null);
@@ -2151,12 +1797,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomAdminListAsync(String chatroomId, final ApiCallback<EMGetRoomAdminListResult> _callback) throws ApiException {
 
@@ -2172,12 +1812,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomAnnouncementCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2242,12 +1876,6 @@ public class RoomApi {
      * @return EMGetRoomAnnouncementResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomAnnouncementResult getRoomAnnouncement(String chatroomId) throws ApiException {
         ApiResponse<EMGetRoomAnnouncementResult> localVarResp = getRoomAnnouncementWithHttpInfo(chatroomId);
@@ -2261,12 +1889,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomAnnouncementResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomAnnouncementResult> getRoomAnnouncementWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = getRoomAnnouncementValidateBeforeCall(chatroomId, null);
@@ -2282,12 +1904,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomAnnouncementAsync(String chatroomId, final ApiCallback<EMGetRoomAnnouncementResult> _callback) throws ApiException {
 
@@ -2303,12 +1919,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomBlockListCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2373,12 +1983,6 @@ public class RoomApi {
      * @return EMGetRoomBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomBlockListResult getRoomBlockList(String chatroomId) throws ApiException {
         ApiResponse<EMGetRoomBlockListResult> localVarResp = getRoomBlockListWithHttpInfo(chatroomId);
@@ -2392,12 +1996,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomBlockListResult> getRoomBlockListWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = getRoomBlockListValidateBeforeCall(chatroomId, null);
@@ -2413,12 +2011,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomBlockListAsync(String chatroomId, final ApiCallback<EMGetRoomBlockListResult> _callback) throws ApiException {
 
@@ -2435,12 +2027,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomCustomAttributesCall(String chatroomId, EMGetRoomCustomAttributes emGetRoomCustomAttributes, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2507,12 +2093,6 @@ public class RoomApi {
      * @return EMGetRoomCustomAttributesResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomCustomAttributesResult getRoomCustomAttributes(String chatroomId, EMGetRoomCustomAttributes emGetRoomCustomAttributes) throws ApiException {
         ApiResponse<EMGetRoomCustomAttributesResult> localVarResp = getRoomCustomAttributesWithHttpInfo(chatroomId, emGetRoomCustomAttributes);
@@ -2527,12 +2107,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomCustomAttributesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomCustomAttributesResult> getRoomCustomAttributesWithHttpInfo(String chatroomId, EMGetRoomCustomAttributes emGetRoomCustomAttributes) throws ApiException {
         okhttp3.Call localVarCall = getRoomCustomAttributesValidateBeforeCall(chatroomId, emGetRoomCustomAttributes, null);
@@ -2549,12 +2123,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomCustomAttributesAsync(String chatroomId, EMGetRoomCustomAttributes emGetRoomCustomAttributes, final ApiCallback<EMGetRoomCustomAttributesResult> _callback) throws ApiException {
 
@@ -2570,12 +2138,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomInfoCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2640,12 +2202,6 @@ public class RoomApi {
      * @return EMGetRoomInfoResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomInfoResult getRoomInfo(String chatroomId) throws ApiException {
         ApiResponse<EMGetRoomInfoResult> localVarResp = getRoomInfoWithHttpInfo(chatroomId);
@@ -2659,12 +2215,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomInfoResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomInfoResult> getRoomInfoWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = getRoomInfoValidateBeforeCall(chatroomId, null);
@@ -2680,12 +2230,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomInfoAsync(String chatroomId, final ApiCallback<EMGetRoomInfoResult> _callback) throws ApiException {
 
@@ -2702,12 +2246,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomListCall(Integer limit, String cursor, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2775,12 +2313,6 @@ public class RoomApi {
      * @return EMGetRoomListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomListResult getRoomList(Integer limit, String cursor) throws ApiException {
         ApiResponse<EMGetRoomListResult> localVarResp = getRoomListWithHttpInfo(limit, cursor);
@@ -2795,12 +2327,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomListResult> getRoomListWithHttpInfo(Integer limit, String cursor) throws ApiException {
         okhttp3.Call localVarCall = getRoomListValidateBeforeCall(limit, cursor, null);
@@ -2817,12 +2343,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomListAsync(Integer limit, String cursor, final ApiCallback<EMGetRoomListResult> _callback) throws ApiException {
 
@@ -2840,12 +2360,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomMemberListCall(String chatroomId, Integer pagenum, Integer pagesize, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -2920,12 +2434,6 @@ public class RoomApi {
      * @return EMGetRoomMemberListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomMemberListResult getRoomMemberList(String chatroomId, Integer pagenum, Integer pagesize) throws ApiException {
         ApiResponse<EMGetRoomMemberListResult> localVarResp = getRoomMemberListWithHttpInfo(chatroomId, pagenum, pagesize);
@@ -2941,12 +2449,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomMemberListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomMemberListResult> getRoomMemberListWithHttpInfo(String chatroomId, Integer pagenum, Integer pagesize) throws ApiException {
         okhttp3.Call localVarCall = getRoomMemberListValidateBeforeCall(chatroomId, pagenum, pagesize, null);
@@ -2964,12 +2466,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomMemberListAsync(String chatroomId, Integer pagenum, Integer pagesize, final ApiCallback<EMGetRoomMemberListResult> _callback) throws ApiException {
 
@@ -2986,12 +2482,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomSuperAdminListCall(Integer pagenum, Integer pagesize, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3059,12 +2549,6 @@ public class RoomApi {
      * @return EMGetRoomSuperAdminListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomSuperAdminListResult getRoomSuperAdminList(Integer pagenum, Integer pagesize) throws ApiException {
         ApiResponse<EMGetRoomSuperAdminListResult> localVarResp = getRoomSuperAdminListWithHttpInfo(pagenum, pagesize);
@@ -3079,12 +2563,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomSuperAdminListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomSuperAdminListResult> getRoomSuperAdminListWithHttpInfo(Integer pagenum, Integer pagesize) throws ApiException {
         okhttp3.Call localVarCall = getRoomSuperAdminListValidateBeforeCall(pagenum, pagesize, null);
@@ -3101,12 +2579,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomSuperAdminListAsync(Integer pagenum, Integer pagesize, final ApiCallback<EMGetRoomSuperAdminListResult> _callback) throws ApiException {
 
@@ -3122,12 +2594,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomWhiteListCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3192,12 +2658,6 @@ public class RoomApi {
      * @return EMGetRoomWhiteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetRoomWhiteListResult getRoomWhiteList(String chatroomId) throws ApiException {
         ApiResponse<EMGetRoomWhiteListResult> localVarResp = getRoomWhiteListWithHttpInfo(chatroomId);
@@ -3211,12 +2671,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetRoomWhiteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetRoomWhiteListResult> getRoomWhiteListWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = getRoomWhiteListValidateBeforeCall(chatroomId, null);
@@ -3232,12 +2686,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getRoomWhiteListAsync(String chatroomId, final ApiCallback<EMGetRoomWhiteListResult> _callback) throws ApiException {
 
@@ -3255,12 +2703,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserJoinedRoomListCall(String username, Integer pagenum, Integer pagesize, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3335,12 +2777,6 @@ public class RoomApi {
      * @return EMGetUserJoinedRoomListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetUserJoinedRoomListResult getUserJoinedRoomList(String username, Integer pagenum, Integer pagesize) throws ApiException {
         ApiResponse<EMGetUserJoinedRoomListResult> localVarResp = getUserJoinedRoomListWithHttpInfo(username, pagenum, pagesize);
@@ -3356,12 +2792,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMGetUserJoinedRoomListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetUserJoinedRoomListResult> getUserJoinedRoomListWithHttpInfo(String username, Integer pagenum, Integer pagesize) throws ApiException {
         okhttp3.Call localVarCall = getUserJoinedRoomListValidateBeforeCall(username, pagenum, pagesize, null);
@@ -3379,12 +2809,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getUserJoinedRoomListAsync(String username, Integer pagenum, Integer pagesize, final ApiCallback<EMGetUserJoinedRoomListResult> _callback) throws ApiException {
 
@@ -3401,12 +2825,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyRoomCall(String chatroomId, EMModifyRoom emModifyRoom, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3473,12 +2891,6 @@ public class RoomApi {
      * @return EMModifyRoomResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMModifyRoomResult modifyRoom(String chatroomId, EMModifyRoom emModifyRoom) throws ApiException {
         ApiResponse<EMModifyRoomResult> localVarResp = modifyRoomWithHttpInfo(chatroomId, emModifyRoom);
@@ -3493,12 +2905,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMModifyRoomResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMModifyRoomResult> modifyRoomWithHttpInfo(String chatroomId, EMModifyRoom emModifyRoom) throws ApiException {
         okhttp3.Call localVarCall = modifyRoomValidateBeforeCall(chatroomId, emModifyRoom, null);
@@ -3515,12 +2921,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyRoomAsync(String chatroomId, EMModifyRoom emModifyRoom, final ApiCallback<EMModifyRoomResult> _callback) throws ApiException {
 
@@ -3537,12 +2937,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyRoomAnnouncementCall(String chatroomId, EMModifyRoomAnnouncement emModifyRoomAnnouncement, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3609,12 +3003,6 @@ public class RoomApi {
      * @return EMModifyRoomAnnouncementResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMModifyRoomAnnouncementResult modifyRoomAnnouncement(String chatroomId, EMModifyRoomAnnouncement emModifyRoomAnnouncement) throws ApiException {
         ApiResponse<EMModifyRoomAnnouncementResult> localVarResp = modifyRoomAnnouncementWithHttpInfo(chatroomId, emModifyRoomAnnouncement);
@@ -3629,12 +3017,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMModifyRoomAnnouncementResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMModifyRoomAnnouncementResult> modifyRoomAnnouncementWithHttpInfo(String chatroomId, EMModifyRoomAnnouncement emModifyRoomAnnouncement) throws ApiException {
         okhttp3.Call localVarCall = modifyRoomAnnouncementValidateBeforeCall(chatroomId, emModifyRoomAnnouncement, null);
@@ -3651,12 +3033,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call modifyRoomAnnouncementAsync(String chatroomId, EMModifyRoomAnnouncement emModifyRoomAnnouncement, final ApiCallback<EMModifyRoomAnnouncementResult> _callback) throws ApiException {
 
@@ -3672,12 +3048,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call muteAllRoomMemberCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3742,12 +3112,6 @@ public class RoomApi {
      * @return EMMuteAllRoomMemberResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMMuteAllRoomMemberResult muteAllRoomMember(String chatroomId) throws ApiException {
         ApiResponse<EMMuteAllRoomMemberResult> localVarResp = muteAllRoomMemberWithHttpInfo(chatroomId);
@@ -3761,12 +3125,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMMuteAllRoomMemberResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMMuteAllRoomMemberResult> muteAllRoomMemberWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = muteAllRoomMemberValidateBeforeCall(chatroomId, null);
@@ -3782,12 +3140,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call muteAllRoomMemberAsync(String chatroomId, final ApiCallback<EMMuteAllRoomMemberResult> _callback) throws ApiException {
 
@@ -3804,12 +3156,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call muteRoomMemberCall(String chatroomId, EMMuteRoomMember emMuteRoomMember, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -3876,12 +3222,6 @@ public class RoomApi {
      * @return EMMuteRoomMemberResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMMuteRoomMemberResult muteRoomMember(String chatroomId, EMMuteRoomMember emMuteRoomMember) throws ApiException {
         ApiResponse<EMMuteRoomMemberResult> localVarResp = muteRoomMemberWithHttpInfo(chatroomId, emMuteRoomMember);
@@ -3896,12 +3236,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMMuteRoomMemberResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMMuteRoomMemberResult> muteRoomMemberWithHttpInfo(String chatroomId, EMMuteRoomMember emMuteRoomMember) throws ApiException {
         okhttp3.Call localVarCall = muteRoomMemberValidateBeforeCall(chatroomId, emMuteRoomMember, null);
@@ -3918,12 +3252,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call muteRoomMemberAsync(String chatroomId, EMMuteRoomMember emMuteRoomMember, final ApiCallback<EMMuteRoomMemberResult> _callback) throws ApiException {
 
@@ -3940,12 +3268,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeRoomAdminCall(String chatroomId, String oldAdmin, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4017,12 +3339,6 @@ public class RoomApi {
      * @return EMRemoveRoomAdminResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveRoomAdminResult removeRoomAdmin(String chatroomId, String oldAdmin) throws ApiException {
         ApiResponse<EMRemoveRoomAdminResult> localVarResp = removeRoomAdminWithHttpInfo(chatroomId, oldAdmin);
@@ -4037,12 +3353,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMRemoveRoomAdminResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveRoomAdminResult> removeRoomAdminWithHttpInfo(String chatroomId, String oldAdmin) throws ApiException {
         okhttp3.Call localVarCall = removeRoomAdminValidateBeforeCall(chatroomId, oldAdmin, null);
@@ -4059,12 +3369,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeRoomAdminAsync(String chatroomId, String oldAdmin, final ApiCallback<EMRemoveRoomAdminResult> _callback) throws ApiException {
 
@@ -4080,12 +3384,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeRoomSuperAdminCall(String superAdmin, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4150,12 +3448,6 @@ public class RoomApi {
      * @return EMRemoveRoomSuperAdminResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveRoomSuperAdminResult removeRoomSuperAdmin(String superAdmin) throws ApiException {
         ApiResponse<EMRemoveRoomSuperAdminResult> localVarResp = removeRoomSuperAdminWithHttpInfo(superAdmin);
@@ -4169,12 +3461,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMRemoveRoomSuperAdminResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveRoomSuperAdminResult> removeRoomSuperAdminWithHttpInfo(String superAdmin) throws ApiException {
         okhttp3.Call localVarCall = removeRoomSuperAdminValidateBeforeCall(superAdmin, null);
@@ -4190,12 +3476,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeRoomSuperAdminAsync(String superAdmin, final ApiCallback<EMRemoveRoomSuperAdminResult> _callback) throws ApiException {
 
@@ -4212,12 +3492,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromRoomCall(String chatroomId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4289,12 +3563,6 @@ public class RoomApi {
      * @return EMRemoveUserFromRoomResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveUserFromRoomResult removeUserFromRoom(String chatroomId, String username) throws ApiException {
         ApiResponse<EMRemoveUserFromRoomResult> localVarResp = removeUserFromRoomWithHttpInfo(chatroomId, username);
@@ -4309,12 +3577,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMRemoveUserFromRoomResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveUserFromRoomResult> removeUserFromRoomWithHttpInfo(String chatroomId, String username) throws ApiException {
         okhttp3.Call localVarCall = removeUserFromRoomValidateBeforeCall(chatroomId, username, null);
@@ -4331,12 +3593,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromRoomAsync(String chatroomId, String username, final ApiCallback<EMRemoveUserFromRoomResult> _callback) throws ApiException {
 
@@ -4353,12 +3609,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromRoomBlockListCall(String chatroomId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4430,12 +3680,6 @@ public class RoomApi {
      * @return EMRemoveUserFromRoomBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveUserFromRoomBlockListResult removeUserFromRoomBlockList(String chatroomId, String username) throws ApiException {
         ApiResponse<EMRemoveUserFromRoomBlockListResult> localVarResp = removeUserFromRoomBlockListWithHttpInfo(chatroomId, username);
@@ -4450,12 +3694,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMRemoveUserFromRoomBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveUserFromRoomBlockListResult> removeUserFromRoomBlockListWithHttpInfo(String chatroomId, String username) throws ApiException {
         okhttp3.Call localVarCall = removeUserFromRoomBlockListValidateBeforeCall(chatroomId, username, null);
@@ -4472,12 +3710,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromRoomBlockListAsync(String chatroomId, String username, final ApiCallback<EMRemoveUserFromRoomBlockListResult> _callback) throws ApiException {
 
@@ -4494,12 +3726,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromRoomWhiteListCall(String chatroomId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4571,12 +3797,6 @@ public class RoomApi {
      * @return EMRemoveUserFromRoomWhiteListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveUserFromRoomWhiteListResult removeUserFromRoomWhiteList(String chatroomId, String username) throws ApiException {
         ApiResponse<EMRemoveUserFromRoomWhiteListResult> localVarResp = removeUserFromRoomWhiteListWithHttpInfo(chatroomId, username);
@@ -4591,12 +3811,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMRemoveUserFromRoomWhiteListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveUserFromRoomWhiteListResult> removeUserFromRoomWhiteListWithHttpInfo(String chatroomId, String username) throws ApiException {
         okhttp3.Call localVarCall = removeUserFromRoomWhiteListValidateBeforeCall(chatroomId, username, null);
@@ -4613,12 +3827,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromRoomWhiteListAsync(String chatroomId, String username, final ApiCallback<EMRemoveUserFromRoomWhiteListResult> _callback) throws ApiException {
 
@@ -4636,12 +3844,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setRoomCustomAttributesCall(String chatroomId, String username, EMSetRoomCustomAttributes emSetRoomCustomAttributes, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4715,12 +3917,6 @@ public class RoomApi {
      * @return EMSetRoomCustomAttributesResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSetRoomCustomAttributesResult setRoomCustomAttributes(String chatroomId, String username, EMSetRoomCustomAttributes emSetRoomCustomAttributes) throws ApiException {
         ApiResponse<EMSetRoomCustomAttributesResult> localVarResp = setRoomCustomAttributesWithHttpInfo(chatroomId, username, emSetRoomCustomAttributes);
@@ -4736,12 +3932,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMSetRoomCustomAttributesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSetRoomCustomAttributesResult> setRoomCustomAttributesWithHttpInfo(String chatroomId, String username, EMSetRoomCustomAttributes emSetRoomCustomAttributes) throws ApiException {
         okhttp3.Call localVarCall = setRoomCustomAttributesValidateBeforeCall(chatroomId, username, emSetRoomCustomAttributes, null);
@@ -4759,12 +3949,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call setRoomCustomAttributesAsync(String chatroomId, String username, EMSetRoomCustomAttributes emSetRoomCustomAttributes, final ApiCallback<EMSetRoomCustomAttributesResult> _callback) throws ApiException {
 
@@ -4780,12 +3964,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call unmuteAllRoomMemberCall(String chatroomId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4850,12 +4028,6 @@ public class RoomApi {
      * @return EMUnmuteAllRoomMemberResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMUnmuteAllRoomMemberResult unmuteAllRoomMember(String chatroomId) throws ApiException {
         ApiResponse<EMUnmuteAllRoomMemberResult> localVarResp = unmuteAllRoomMemberWithHttpInfo(chatroomId);
@@ -4869,12 +4041,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMUnmuteAllRoomMemberResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMUnmuteAllRoomMemberResult> unmuteAllRoomMemberWithHttpInfo(String chatroomId) throws ApiException {
         okhttp3.Call localVarCall = unmuteAllRoomMemberValidateBeforeCall(chatroomId, null);
@@ -4890,12 +4056,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call unmuteAllRoomMemberAsync(String chatroomId, final ApiCallback<EMUnmuteAllRoomMemberResult> _callback) throws ApiException {
 
@@ -4912,12 +4072,6 @@ public class RoomApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call unmuteRoomMemberCall(String chatroomId, String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -4989,12 +4143,6 @@ public class RoomApi {
      * @return EMUnmuteRoomMemberResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMUnmuteRoomMemberResult unmuteRoomMember(String chatroomId, String username) throws ApiException {
         ApiResponse<EMUnmuteRoomMemberResult> localVarResp = unmuteRoomMemberWithHttpInfo(chatroomId, username);
@@ -5009,12 +4157,6 @@ public class RoomApi {
      * @return ApiResponse&lt;EMUnmuteRoomMemberResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMUnmuteRoomMemberResult> unmuteRoomMemberWithHttpInfo(String chatroomId, String username) throws ApiException {
         okhttp3.Call localVarCall = unmuteRoomMemberValidateBeforeCall(chatroomId, username, null);
@@ -5031,12 +4173,6 @@ public class RoomApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call unmuteRoomMemberAsync(String chatroomId, String username, final ApiCallback<EMUnmuteRoomMemberResult> _callback) throws ApiException {
 

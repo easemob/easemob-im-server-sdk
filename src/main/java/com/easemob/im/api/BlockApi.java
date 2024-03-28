@@ -83,12 +83,6 @@ public class BlockApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToBlockListCall(String ownerUsername, EMAddUserToBlockList emAddUserToBlockList, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -155,12 +149,6 @@ public class BlockApi {
      * @return EMAddUserToBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMAddUserToBlockListResult addUserToBlockList(String ownerUsername, EMAddUserToBlockList emAddUserToBlockList) throws ApiException {
         ApiResponse<EMAddUserToBlockListResult> localVarResp = addUserToBlockListWithHttpInfo(ownerUsername, emAddUserToBlockList);
@@ -175,12 +163,6 @@ public class BlockApi {
      * @return ApiResponse&lt;EMAddUserToBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMAddUserToBlockListResult> addUserToBlockListWithHttpInfo(String ownerUsername, EMAddUserToBlockList emAddUserToBlockList) throws ApiException {
         okhttp3.Call localVarCall = addUserToBlockListValidateBeforeCall(ownerUsername, emAddUserToBlockList, null);
@@ -197,12 +179,6 @@ public class BlockApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call addUserToBlockListAsync(String ownerUsername, EMAddUserToBlockList emAddUserToBlockList, final ApiCallback<EMAddUserToBlockListResult> _callback) throws ApiException {
 
@@ -220,12 +196,6 @@ public class BlockApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getBlockListCall(String ownerUsername, Integer pageSize, String cursor, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -300,12 +270,6 @@ public class BlockApi {
      * @return EMGetBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMGetBlockListResult getBlockList(String ownerUsername, Integer pageSize, String cursor) throws ApiException {
         ApiResponse<EMGetBlockListResult> localVarResp = getBlockListWithHttpInfo(ownerUsername, pageSize, cursor);
@@ -321,12 +285,6 @@ public class BlockApi {
      * @return ApiResponse&lt;EMGetBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMGetBlockListResult> getBlockListWithHttpInfo(String ownerUsername, Integer pageSize, String cursor) throws ApiException {
         okhttp3.Call localVarCall = getBlockListValidateBeforeCall(ownerUsername, pageSize, cursor, null);
@@ -344,12 +302,6 @@ public class BlockApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call getBlockListAsync(String ownerUsername, Integer pageSize, String cursor, final ApiCallback<EMGetBlockListResult> _callback) throws ApiException {
 
@@ -366,12 +318,6 @@ public class BlockApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromBlockListCall(String ownerUsername, String blockedUsername, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -443,12 +389,6 @@ public class BlockApi {
      * @return EMRemoveUserFromBlockListResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRemoveUserFromBlockListResult removeUserFromBlockList(String ownerUsername, String blockedUsername) throws ApiException {
         ApiResponse<EMRemoveUserFromBlockListResult> localVarResp = removeUserFromBlockListWithHttpInfo(ownerUsername, blockedUsername);
@@ -463,12 +403,6 @@ public class BlockApi {
      * @return ApiResponse&lt;EMRemoveUserFromBlockListResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRemoveUserFromBlockListResult> removeUserFromBlockListWithHttpInfo(String ownerUsername, String blockedUsername) throws ApiException {
         okhttp3.Call localVarCall = removeUserFromBlockListValidateBeforeCall(ownerUsername, blockedUsername, null);
@@ -485,12 +419,6 @@ public class BlockApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call removeUserFromBlockListAsync(String ownerUsername, String blockedUsername, final ApiCallback<EMRemoveUserFromBlockListResult> _callback) throws ApiException {
 

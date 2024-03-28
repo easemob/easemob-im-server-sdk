@@ -78,12 +78,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call importChatGroupMessageCall(EMImportChatGroupMessage emImportChatGroupMessage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -143,12 +137,6 @@ public class MessageApi {
      * @return EMImportChatGroupMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMImportChatGroupMessageResult importChatGroupMessage(EMImportChatGroupMessage emImportChatGroupMessage) throws ApiException {
         ApiResponse<EMImportChatGroupMessageResult> localVarResp = importChatGroupMessageWithHttpInfo(emImportChatGroupMessage);
@@ -162,12 +150,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMImportChatGroupMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMImportChatGroupMessageResult> importChatGroupMessageWithHttpInfo(EMImportChatGroupMessage emImportChatGroupMessage) throws ApiException {
         okhttp3.Call localVarCall = importChatGroupMessageValidateBeforeCall(emImportChatGroupMessage, null);
@@ -183,12 +165,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call importChatGroupMessageAsync(EMImportChatGroupMessage emImportChatGroupMessage, final ApiCallback<EMImportChatGroupMessageResult> _callback) throws ApiException {
 
@@ -204,12 +180,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call importChatUserMessageCall(EMImportChatUserMessage emImportChatUserMessage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -269,12 +239,6 @@ public class MessageApi {
      * @return EMImportChatUserMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMImportChatUserMessageResult importChatUserMessage(EMImportChatUserMessage emImportChatUserMessage) throws ApiException {
         ApiResponse<EMImportChatUserMessageResult> localVarResp = importChatUserMessageWithHttpInfo(emImportChatUserMessage);
@@ -288,12 +252,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMImportChatUserMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMImportChatUserMessageResult> importChatUserMessageWithHttpInfo(EMImportChatUserMessage emImportChatUserMessage) throws ApiException {
         okhttp3.Call localVarCall = importChatUserMessageValidateBeforeCall(emImportChatUserMessage, null);
@@ -309,12 +267,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call importChatUserMessageAsync(EMImportChatUserMessage emImportChatUserMessage, final ApiCallback<EMImportChatUserMessageResult> _callback) throws ApiException {
 
@@ -331,12 +283,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call oneWayDeleteConversationCall(String username, EMOneWayDeleteConversation emOneWayDeleteConversation, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -403,12 +349,6 @@ public class MessageApi {
      * @return EMOneWayDeleteConversationResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMOneWayDeleteConversationResult oneWayDeleteConversation(String username, EMOneWayDeleteConversation emOneWayDeleteConversation) throws ApiException {
         ApiResponse<EMOneWayDeleteConversationResult> localVarResp = oneWayDeleteConversationWithHttpInfo(username, emOneWayDeleteConversation);
@@ -423,12 +363,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMOneWayDeleteConversationResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMOneWayDeleteConversationResult> oneWayDeleteConversationWithHttpInfo(String username, EMOneWayDeleteConversation emOneWayDeleteConversation) throws ApiException {
         okhttp3.Call localVarCall = oneWayDeleteConversationValidateBeforeCall(username, emOneWayDeleteConversation, null);
@@ -445,12 +379,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call oneWayDeleteConversationAsync(String username, EMOneWayDeleteConversation emOneWayDeleteConversation, final ApiCallback<EMOneWayDeleteConversationResult> _callback) throws ApiException {
 
@@ -466,12 +394,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call recallMessageCall(EMRecallMessage emRecallMessage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -531,12 +453,6 @@ public class MessageApi {
      * @return EMRecallMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMRecallMessageResult recallMessage(EMRecallMessage emRecallMessage) throws ApiException {
         ApiResponse<EMRecallMessageResult> localVarResp = recallMessageWithHttpInfo(emRecallMessage);
@@ -550,12 +466,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMRecallMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMRecallMessageResult> recallMessageWithHttpInfo(EMRecallMessage emRecallMessage) throws ApiException {
         okhttp3.Call localVarCall = recallMessageValidateBeforeCall(emRecallMessage, null);
@@ -571,12 +481,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call recallMessageAsync(EMRecallMessage emRecallMessage, final ApiCallback<EMRecallMessageResult> _callback) throws ApiException {
 
@@ -592,12 +496,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call sendMessagesToGroupCall(EMCreateMessage emCreateMessage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -657,12 +555,6 @@ public class MessageApi {
      * @return EMSendMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSendMessageResult sendMessagesToGroup(EMCreateMessage emCreateMessage) throws ApiException {
         ApiResponse<EMSendMessageResult> localVarResp = sendMessagesToGroupWithHttpInfo(emCreateMessage);
@@ -676,12 +568,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMSendMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSendMessageResult> sendMessagesToGroupWithHttpInfo(EMCreateMessage emCreateMessage) throws ApiException {
         okhttp3.Call localVarCall = sendMessagesToGroupValidateBeforeCall(emCreateMessage, null);
@@ -697,12 +583,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call sendMessagesToGroupAsync(EMCreateMessage emCreateMessage, final ApiCallback<EMSendMessageResult> _callback) throws ApiException {
 
@@ -718,12 +598,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call sendMessagesToRoomCall(EMCreateMessage emCreateMessage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -783,12 +657,6 @@ public class MessageApi {
      * @return EMSendMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSendMessageResult sendMessagesToRoom(EMCreateMessage emCreateMessage) throws ApiException {
         ApiResponse<EMSendMessageResult> localVarResp = sendMessagesToRoomWithHttpInfo(emCreateMessage);
@@ -802,12 +670,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMSendMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSendMessageResult> sendMessagesToRoomWithHttpInfo(EMCreateMessage emCreateMessage) throws ApiException {
         okhttp3.Call localVarCall = sendMessagesToRoomValidateBeforeCall(emCreateMessage, null);
@@ -823,12 +685,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call sendMessagesToRoomAsync(EMCreateMessage emCreateMessage, final ApiCallback<EMSendMessageResult> _callback) throws ApiException {
 
@@ -844,12 +700,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call sendMessagesToUserCall(EMCreateMessage emCreateMessage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -909,12 +759,6 @@ public class MessageApi {
      * @return EMSendMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public EMSendMessageResult sendMessagesToUser(EMCreateMessage emCreateMessage) throws ApiException {
         ApiResponse<EMSendMessageResult> localVarResp = sendMessagesToUserWithHttpInfo(emCreateMessage);
@@ -928,12 +772,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMSendMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public ApiResponse<EMSendMessageResult> sendMessagesToUserWithHttpInfo(EMCreateMessage emCreateMessage) throws ApiException {
         okhttp3.Call localVarCall = sendMessagesToUserValidateBeforeCall(emCreateMessage, null);
@@ -949,12 +787,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-     <table summary="Response Details" border="1">
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-        <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-     </table>
      */
     public okhttp3.Call sendMessagesToUserAsync(EMCreateMessage emCreateMessage, final ApiCallback<EMSendMessageResult> _callback) throws ApiException {
 
@@ -972,12 +804,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call modifyTextOrCustomizeMessageCall(String msgId, EMModifyTextOrCustomizeMessage emModifyTextOrCustomizeMessage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1044,12 +870,6 @@ public class MessageApi {
      * @return EMModifyTextOrCustomizeMessageResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMModifyTextOrCustomizeMessageResult modifyTextOrCustomizeMessage(String msgId, EMModifyTextOrCustomizeMessage emModifyTextOrCustomizeMessage) throws ApiException {
         ApiResponse<EMModifyTextOrCustomizeMessageResult> localVarResp = modifyTextOrCustomizeMessageWithHttpInfo(msgId, emModifyTextOrCustomizeMessage);
@@ -1064,12 +884,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMModifyTextOrCustomizeMessageResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMModifyTextOrCustomizeMessageResult> modifyTextOrCustomizeMessageWithHttpInfo(String msgId, EMModifyTextOrCustomizeMessage emModifyTextOrCustomizeMessage) throws ApiException {
         okhttp3.Call localVarCall = modifyTextOrCustomizeMessageValidateBeforeCall(msgId, emModifyTextOrCustomizeMessage, null);
@@ -1086,12 +900,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call modifyTextOrCustomizeMessageAsync(String msgId, EMModifyTextOrCustomizeMessage emModifyTextOrCustomizeMessage, final ApiCallback<EMModifyTextOrCustomizeMessageResult> _callback) throws ApiException {
 
@@ -1109,12 +917,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call oneWayClearGroupOrRoomRoamingMessagesWithinPeriodCall(String username, String groupId, BigDecimal delTime, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1199,12 +1001,6 @@ public class MessageApi {
      * @return EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult oneWayClearGroupOrRoomRoamingMessagesWithinPeriod(String username, String groupId, BigDecimal delTime) throws ApiException {
         ApiResponse<EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult> localVarResp = oneWayClearGroupOrRoomRoamingMessagesWithinPeriodWithHttpInfo(username, groupId, delTime);
@@ -1220,12 +1016,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult> oneWayClearGroupOrRoomRoamingMessagesWithinPeriodWithHttpInfo(String username, String groupId, BigDecimal delTime) throws ApiException {
         okhttp3.Call localVarCall = oneWayClearGroupOrRoomRoamingMessagesWithinPeriodValidateBeforeCall(username, groupId, delTime, null);
@@ -1243,12 +1033,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call oneWayClearGroupOrRoomRoamingMessagesWithinPeriodAsync(String username, String groupId, BigDecimal delTime, final ApiCallback<EMOneWayClearGroupOrRoomRoamingMessagesWithinPeriodResult> _callback) throws ApiException {
 
@@ -1264,12 +1048,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call oneWayClearUserRoamingMessagesCall(String username, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1334,12 +1112,6 @@ public class MessageApi {
      * @return EMOneWayClearUserRoamingMessagesResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMOneWayClearUserRoamingMessagesResult oneWayClearUserRoamingMessages(String username) throws ApiException {
         ApiResponse<EMOneWayClearUserRoamingMessagesResult> localVarResp = oneWayClearUserRoamingMessagesWithHttpInfo(username);
@@ -1353,12 +1125,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMOneWayClearUserRoamingMessagesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMOneWayClearUserRoamingMessagesResult> oneWayClearUserRoamingMessagesWithHttpInfo(String username) throws ApiException {
         okhttp3.Call localVarCall = oneWayClearUserRoamingMessagesValidateBeforeCall(username, null);
@@ -1374,12 +1140,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call oneWayClearUserRoamingMessagesAsync(String username, final ApiCallback<EMOneWayClearUserRoamingMessagesResult> _callback) throws ApiException {
 
@@ -1397,12 +1157,6 @@ public class MessageApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call oneWayClearUserRoamingMessagesWithinPeriodCall(String username, String userId, BigDecimal delTime, final ApiCallback _callback) throws ApiException {
         String basePath = null;
@@ -1487,12 +1241,6 @@ public class MessageApi {
      * @return EMOneWayClearUserRoamingMessagesWithinPeriodResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public EMOneWayClearUserRoamingMessagesWithinPeriodResult oneWayClearUserRoamingMessagesWithinPeriod(String username, String userId, BigDecimal delTime) throws ApiException {
         ApiResponse<EMOneWayClearUserRoamingMessagesWithinPeriodResult> localVarResp = oneWayClearUserRoamingMessagesWithinPeriodWithHttpInfo(username, userId, delTime);
@@ -1508,12 +1256,6 @@ public class MessageApi {
      * @return ApiResponse&lt;EMOneWayClearUserRoamingMessagesWithinPeriodResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<EMOneWayClearUserRoamingMessagesWithinPeriodResult> oneWayClearUserRoamingMessagesWithinPeriodWithHttpInfo(String username, String userId, BigDecimal delTime) throws ApiException {
         okhttp3.Call localVarCall = oneWayClearUserRoamingMessagesWithinPeriodValidateBeforeCall(username, userId, delTime, null);
@@ -1531,12 +1273,6 @@ public class MessageApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call oneWayClearUserRoamingMessagesWithinPeriodAsync(String username, String userId, BigDecimal delTime, final ApiCallback<EMOneWayClearUserRoamingMessagesWithinPeriodResult> _callback) throws ApiException {
 
