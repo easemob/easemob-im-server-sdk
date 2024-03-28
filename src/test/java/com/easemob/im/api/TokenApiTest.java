@@ -48,8 +48,8 @@ public class TokenApiTest extends AbstractTest {
     public void getTokenTest() throws ApiException {
         EMCreateToken emCreateAppToken = new EMCreateToken();
         emCreateAppToken.setGrantType("client_credentials");
-        emCreateAppToken.setClientId("YXA6a1jQXZnASMeiRB_z6Vo9wA");
-        emCreateAppToken.setClientSecret("YXA6LDJ_YHmppwgccxHNEZmyMnjWy1E");
+        emCreateAppToken.setClientId(System.getenv("IM_CLIENT_ID"));
+        emCreateAppToken.setClientSecret(System.getenv("IM_CLIENT_SECRET"));
         EMGetToken appToken = assertDoesNotThrow(() -> tokenApi.getToken(emCreateAppToken));
         assertNotNull(appToken.getAccessToken());
     }
