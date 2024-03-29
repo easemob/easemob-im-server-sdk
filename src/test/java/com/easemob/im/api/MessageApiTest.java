@@ -374,7 +374,7 @@ public class MessageApiTest extends AbstractTest {
         emCreateMessage.setBody(messageContent);
         emCreateMessage.setUsers(new ArrayList<String>(){{add(username2);}});
 
-        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        EMSendMessageResult response = messageApi.sendGroupDirectionalMessages(emCreateMessage);
         assertNotNull(response.getData());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
@@ -497,7 +497,7 @@ public class MessageApiTest extends AbstractTest {
         emCreateMessage.setBody(messageContent);
         emCreateMessage.setUsers(new ArrayList<String>(){{add(username2);}});
 
-        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        EMSendMessageResult response = messageApi.sendRoomDirectionalMessages(emCreateMessage);
         assertNotNull(response.getData());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));

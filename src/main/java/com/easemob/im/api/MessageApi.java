@@ -1281,4 +1281,222 @@ public class MessageApi {
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
+
+    /**
+     * Build call for sendGroupDirectionalMessages
+     * @param emCreateMessage  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table summary="Response Details" border="1">
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
+    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call sendGroupDirectionalMessagesCall(EMCreateMessage emCreateMessage, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emCreateMessage;
+
+        // create path and map variables
+        String localVarPath = "/messages/chatgroups/users";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call sendGroupDirectionalMessagesValidateBeforeCall(EMCreateMessage emCreateMessage, final ApiCallback _callback) throws ApiException {
+        return sendGroupDirectionalMessagesCall(emCreateMessage, _callback);
+
+    }
+
+    /**
+     * 发送群聊定向消息
+     * 你可以向群组中指定的一个或多个成员发送消息，但单次仅支持指定一个群组。对于定向消息，只有作为接收方的指定成员才能看到消息，其他群成员则看不到该消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E5%AE%9A%E5%90%91%E6%B6%88%E6%81%AF
+     * @param emCreateMessage  (optional)
+     * @return EMSendMessageResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMSendMessageResult sendGroupDirectionalMessages(EMCreateMessage emCreateMessage) throws ApiException {
+        ApiResponse<EMSendMessageResult> localVarResp = sendGroupDirectionalMessagesWithHttpInfo(emCreateMessage);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 发送群聊定向消息
+     * 你可以向群组中指定的一个或多个成员发送消息，但单次仅支持指定一个群组。对于定向消息，只有作为接收方的指定成员才能看到消息，其他群成员则看不到该消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E5%AE%9A%E5%90%91%E6%B6%88%E6%81%AF
+     * @param emCreateMessage  (optional)
+     * @return ApiResponse&lt;EMSendMessageResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMSendMessageResult> sendGroupDirectionalMessagesWithHttpInfo(EMCreateMessage emCreateMessage) throws ApiException {
+        okhttp3.Call localVarCall = sendGroupDirectionalMessagesValidateBeforeCall(emCreateMessage, null);
+        Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 发送群聊定向消息 (asynchronously)
+     * 你可以向群组中指定的一个或多个成员发送消息，但单次仅支持指定一个群组。对于定向消息，只有作为接收方的指定成员才能看到消息，其他群成员则看不到该消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E5%AE%9A%E5%90%91%E6%B6%88%E6%81%AF
+     * @param emCreateMessage  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call sendGroupDirectionalMessagesAsync(EMCreateMessage emCreateMessage, final ApiCallback<EMSendMessageResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = sendGroupDirectionalMessagesValidateBeforeCall(emCreateMessage, _callback);
+        Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for sendRoomDirectionalMessages
+     * @param emCreateMessage  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table summary="Response Details" border="1">
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+    <tr><td> 4xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
+    <tr><td> 5xx </td><td> 错误码：https://docs-im-beta.easemob.com/document/server-side/error.html </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call sendRoomDirectionalMessagesCall(EMCreateMessage emCreateMessage, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emCreateMessage;
+
+        // create path and map variables
+        String localVarPath = "/messages/chatrooms/users";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call sendRoomDirectionalMessagesValidateBeforeCall(EMCreateMessage emCreateMessage, final ApiCallback _callback) throws ApiException {
+        return sendRoomDirectionalMessagesCall(emCreateMessage, _callback);
+
+    }
+
+    /**
+     * 发送聊天室定向消息
+     * 你可以向聊天室中指定的一个或多个成员发送消息，但单次仅支持指定一个聊天室。对于定向消息，只有作为接收方的指定成员才能看到消息，其他聊天室成员则看不到该消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E5%AE%9A%E5%90%91%E6%B6%88%E6%81%AF
+     * @param emCreateMessage  (optional)
+     * @return EMSendMessageResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMSendMessageResult sendRoomDirectionalMessages(EMCreateMessage emCreateMessage) throws ApiException {
+        ApiResponse<EMSendMessageResult> localVarResp = sendRoomDirectionalMessagesWithHttpInfo(emCreateMessage);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 发送聊天室定向消息
+     * 你可以向聊天室中指定的一个或多个成员发送消息，但单次仅支持指定一个聊天室。对于定向消息，只有作为接收方的指定成员才能看到消息，其他聊天室成员则看不到该消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E5%AE%9A%E5%90%91%E6%B6%88%E6%81%AF
+     * @param emCreateMessage  (optional)
+     * @return ApiResponse&lt;EMSendMessageResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMSendMessageResult> sendRoomDirectionalMessagesWithHttpInfo(EMCreateMessage emCreateMessage) throws ApiException {
+        okhttp3.Call localVarCall = sendRoomDirectionalMessagesValidateBeforeCall(emCreateMessage, null);
+        Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 发送聊天室定向消息 (asynchronously)
+     * 你可以向聊天室中指定的一个或多个成员发送消息，但单次仅支持指定一个聊天室。对于定向消息，只有作为接收方的指定成员才能看到消息，其他聊天室成员则看不到该消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E5%AE%9A%E5%90%91%E6%B6%88%E6%81%AF
+     * @param emCreateMessage  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call sendRoomDirectionalMessagesAsync(EMCreateMessage emCreateMessage, final ApiCallback<EMSendMessageResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = sendRoomDirectionalMessagesValidateBeforeCall(emCreateMessage, _callback);
+        Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }
