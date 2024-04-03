@@ -244,10 +244,6 @@ public class ApiClient {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    </table>
      */
     public okhttp3.Call createAppTokenCall(EMCreateToken createAppToken, final ApiCallback _callback) throws ApiException {
         // Determine Base Path to Use
@@ -299,10 +295,6 @@ public class ApiClient {
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    </table>
      */
     public Object createAppToken(EMCreateToken createAppToken) throws ApiException {
         ApiResponse<Object> localVarResp = createAppTokenWithHttpInfo(createAppToken);
@@ -316,10 +308,6 @@ public class ApiClient {
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * http.response.details
-    <table summary="Response Details" border="1">
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-    </table>
      */
     public ApiResponse<Object> createAppTokenWithHttpInfo(EMCreateToken createAppToken) throws ApiException {
         okhttp3.Call localVarCall = createAppTokenValidateBeforeCall(createAppToken, null);
