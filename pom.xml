@@ -46,6 +46,45 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>shaded</shadedClassifierName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google.code.gson</pattern>
+                                    <shadedPattern>shaded.com.google.code.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.squareup.okhttp3</pattern>
+                                    <shadedPattern>shaded.com.squareup.okhttp3</shadedPattern>
+                                </relocation>
+                                <!-- Add more relocations if needed -->
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
@@ -318,7 +357,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <gson-fire-version>1.9.0</gson-fire-version>
-        <okhttp-version>3.13.0</okhttp-version>
+        <okhttp-version>4.11.0</okhttp-version>
         <gson-version>2.10.1</gson-version>
         <commons-lang3-version>3.5</commons-lang3-version>
         <jackson-databind-nullable-version>0.2.6</jackson-databind-nullable-version>
