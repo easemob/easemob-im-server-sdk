@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.user;
 
 import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.api.contact.ContactUserPageResource;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
@@ -12,8 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserIT extends AbstractIT {
 
@@ -170,6 +170,52 @@ class UserIT extends AbstractIT {
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().delete(randomContactUsername)
+                .block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testUserContactRemarkSet() {
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomContactUsername1 = Utilities.randomUserName();
+        String randomContactUsername2 = Utilities.randomUserName();
+        String randomContactPassword = randomPassword;
+
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().create(randomContactUsername1, randomContactPassword)
+                        .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().create(randomContactUsername2, randomContactPassword)
+                        .block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomContactUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.contact().add(randomUsername, randomContactUsername2)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.contact().setRemark(randomUsername, randomContactUsername1, "小明")
+                .block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.contact().list(randomUsername).blockLast(Utilities.IT_TIMEOUT));
+
+        List<ContactUserPageResource> contacts = assertDoesNotThrow(
+                () -> this.service.contact().list(randomUsername, 10, null).block(Utilities.IT_TIMEOUT));
+        assertEquals(2, contacts.size());
+        contacts.forEach(contact -> {
+            if (contact.getRemark() != null) {
+                assertEquals(randomContactUsername1, contact.getUsername());
+                assertEquals("小明", contact.getRemark());
+            }
+        });
+
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomContactUsername1)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().delete(randomContactUsername2)
                 .block(Utilities.IT_TIMEOUT));
     }
 
