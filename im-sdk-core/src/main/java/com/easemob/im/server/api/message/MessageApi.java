@@ -4,6 +4,11 @@ import com.easemob.im.server.EMProperties;
 import com.easemob.im.server.api.Context;
 import com.easemob.im.server.api.message.deletechannel.DeleteMessageChannel;
 import com.easemob.im.server.api.message.history.MessageHistory;
+import com.easemob.im.server.api.message.modify.ModifyTextOrCustom;
+import com.easemob.im.server.api.message.modify.NewMessage;
+import com.easemob.im.server.api.message.roaming.OneWayClearGroupOrRoomWithinPeriod;
+import com.easemob.im.server.api.message.roaming.OneWayClearUserAll;
+import com.easemob.im.server.api.message.roaming.OneWayClearUserWithinPeriod;
 import com.easemob.im.server.api.message.send.message.MessageSend;
 import com.easemob.im.server.api.message.missed.MessageMissed;
 import com.easemob.im.server.api.message.missed.MissedMessageCount;
@@ -25,6 +30,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,6 +54,14 @@ public class MessageApi {
 
     private ImportMessage importMessage;
 
+    private OneWayClearUserAll oneWayClearUserAll;
+
+    private OneWayClearUserWithinPeriod oneWayClearUserWithinPeriod;
+
+    private OneWayClearGroupOrRoomWithinPeriod oneWayClearGroupOrRoomWithinPeriod;
+
+    private ModifyTextOrCustom modifyTextOrCustom;
+
     public MessageApi(Context context) {
         EMProperties properties = context.getProperties();
         this.missed = new MessageMissed(context);
@@ -58,6 +72,10 @@ public class MessageApi {
         this.recallMessage = new RecallMessage(context);
         this.deleteMessageChannel = new DeleteMessageChannel(context);
         this.importMessage = new ImportMessage(context);
+        this.oneWayClearUserAll = new OneWayClearUserAll(context);
+        this.oneWayClearUserWithinPeriod = new OneWayClearUserWithinPeriod(context);
+        this.oneWayClearGroupOrRoomWithinPeriod = new OneWayClearGroupOrRoomWithinPeriod(context);
+        this.modifyTextOrCustom = new ModifyTextOrCustom(context);
     }
 
     /**
@@ -1420,6 +1438,129 @@ public class MessageApi {
             Long msgTimestamp, Boolean needDownload) {
         return this.importMessage.importChatGroupMessage(from, to, message, extensions, isAckRead,
                 msgTimestamp, needDownload);
+    }
+
+    /**
+     * 单向清空指定用户的漫游消息
+     * <p>
+     * 清空指定用户当前时间及之前的所有漫游消息。
+     * 清空后，该用户无法从服务端拉取到漫游消息，而且该用户的所有会话也会被清除，也拉不到会话列表。
+     * 不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。
+     *
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.message().oneWayClearUserAllRoamingMessage("username").block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param username 要清空哪个用户的漫游消息。需传入该用户的用户 ID。
+     * @return Void
+     * @see <a href="https://doc.easemob.com/document/server-side/message_roam_clear.html#%E5%8D%95%E5%90%91%E6%B8%85%E7%A9%BA%E6%8C%87%E5%AE%9A%E7%94%A8%E6%88%B7%E7%9A%84%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF">单向清空指定用户的漫游消息</a>
+     */
+    public Mono<Void> oneWayClearUserAllRoamingMessage(String username) {
+        return this.oneWayClearUserAll.execute(username);
+    }
+
+    /**
+     * 单向清空指定单聊会话一段时间内的漫游消息
+     * <p>
+     * 清空后，该用户无法从服务端拉取到漫游消息，而且该用户的所有会话也会被清除，也拉不到会话列表。
+     * 不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。
+     *
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.message().oneWayClearUserRoamingMessagesWithinPeriod("username", "clearUser", 1659014868000).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param username  调用该接口的用户的用户 ID
+     * @param clearUser 要清空与哪个用户的单聊会话的漫游消息。需传入该用户的用户 ID。
+     * @param time      要清空哪个时间点及之前的单聊漫游消息。该时间为 Unix 时间戳，单位为毫秒
+     * @return Void
+     * @see <a href="https://doc.easemob.com/document/server-side/message_roam_clear.html#%E5%8D%95%E5%90%91%E6%B8%85%E7%A9%BA%E6%8C%87%E5%AE%9A%E5%8D%95%E8%81%8A%E4%BC%9A%E8%AF%9D%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%86%85%E7%9A%84%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF">单向清空指定单聊会话一段时间内的漫游消息</a>
+     */
+    public Mono<Void> oneWayClearUserRoamingMessagesWithinPeriod(String username, String clearUser, long time) {
+        return this.oneWayClearUserWithinPeriod.execute(username, clearUser, time);
+    }
+
+    /**
+     * 单向清空指定群组或聊天室会话一段时间内的漫游消息
+     * <p>
+     * 清空后，该用户无法从环信服务端拉取到这些漫游消息。若清除了该会话的全部漫游消息，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。
+     * 不过，其他用户不受影响，仍然可以拉取这些漫游消息和会话。
+     *
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     service.message().oneWayClearGroupOrRoomRoamingMessagesWithinPeriod("username", "227918582185992", 1659014868000).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param username 调用该接口的用户的用户 ID
+     * @param id       要清空哪个群组或聊天室的漫游消息。你可以传入群组 ID 或聊天室 ID。
+     * @param time     要清空哪个时间点及之前的群组或聊天室的漫游消息。该时间为 Unix 时间戳，单位为毫秒。
+     * @return Void
+     * @see <a href="https://doc.easemob.com/document/server-side/message_roam_clear.html#%E5%8D%95%E5%90%91%E6%B8%85%E7%A9%BA%E6%8C%87%E5%AE%9A%E7%BE%A4%E7%BB%84%E6%88%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E4%BC%9A%E8%AF%9D%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%86%85%E7%9A%84%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF">单向清空指定群组或聊天室会话一段时间内的漫游消息</a>
+     */
+    public Mono<Void> oneWayClearGroupOrRoomRoamingMessagesWithinPeriod(String username, String id, long time) {
+        return this.oneWayClearGroupOrRoomWithinPeriod.execute(username, id, time);
+    }
+
+    /**
+     * 修改文本或自定义消息，若使用该功能，需联系环信商务开通。
+     *
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     * try {
+     *     NewMessage newMessage = NewMessage.builder()
+     *             .type("txt")
+     *             .msg("hello world")
+     *             .build();
+     *
+     *     Map<String, Object> newExt = new HashMap<>();
+     *     newExt.put("key", "value");
+     *
+     *     service.message().modifyTextOrCustomizeMessage("messageId", "username", newMessage, newExt, true).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param messageId    要修改的消息的 ID。
+     * @param username     修改消息的用户 ID。
+     * @param newMessage   修改后的消息。
+     * @param newExt       修改后的消息扩展信息。
+     * @param isCombineExt 修改后的消息扩展信息与原有扩展信息是合并还是替换。- （默认）true：合并；- false：替换。
+     * @return Void
+     * @see <a href="https://doc.easemob.com/document/server-side/message_modify_text_custom.html">修改文本或自定义消息</a>
+     */
+    public Mono<Void> modifyTextOrCustomMessage(String messageId, String username,
+            NewMessage newMessage, Map<String, Object> newExt, Boolean isCombineExt) {
+        if (isCombineExt == null) {
+            isCombineExt = true;
+        }
+
+        return this.modifyTextOrCustom.execute(messageId, username, newMessage, newExt, isCombineExt);
     }
 
     private Set<String> checkTos(Set<String> tos) {

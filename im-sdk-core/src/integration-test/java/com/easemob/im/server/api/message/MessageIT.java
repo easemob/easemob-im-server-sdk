@@ -2,6 +2,7 @@ package com.easemob.im.server.api.message;
 
 import com.easemob.im.server.EMException;
 import com.easemob.im.server.api.AbstractIT;
+import com.easemob.im.server.api.message.modify.NewMessage;
 import com.easemob.im.server.api.message.recall.RecallMessageSource;
 import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.model.*;
@@ -1096,6 +1097,202 @@ public class MessageIT extends AbstractIT {
 
         assertDoesNotThrow(
                 () -> this.service.room().destroyRoom(roomId).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testOneWayClearUserAllRoamingMessages() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageIds messageIds = this.service.message().sendMsg()
+                    .fromUser(randomFromUsername)
+                    .toUser(randomToUsername)
+                    .text(msg -> msg.text("hello"))
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .send()
+                    .block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+        });
+
+        assertDoesNotThrow(
+                () -> this.service.message().oneWayClearUserAllRoamingMessage(randomFromUsername).block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testOneWayClearUserRoamingMessagesWithinPeriod() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageIds messageIds = this.service.message().sendMsg()
+                    .fromUser(randomFromUsername)
+                    .toUser(randomToUsername)
+                    .text(msg -> msg.text("hello"))
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .send()
+                    .block(Utilities.IT_TIMEOUT);
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+        });
+
+        assertDoesNotThrow(() -> this.service.message()
+                .oneWayClearUserRoamingMessagesWithinPeriod(randomFromUsername, randomToUsername,
+                        System.currentTimeMillis()).block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testOneWayClearGroupOrRoomRoamingMessagesWithinPeriod() {
+        String randomOwnerUsername = Utilities.randomUserName();
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        List<String> members = new ArrayList<>();
+        members.add(randomFromUsername);
+        members.add(randomToUsername);
+        assertDoesNotThrow(() -> this.service.user().create(randomOwnerUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        String groupId = assertDoesNotThrow(() -> this.service.group()
+                .createPublicGroup(randomOwnerUsername, "group", "group description", members, 200,
+                        true).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> {
+            EMSentMessageIds messageIds = this.service.message().sendMsg()
+                    .fromUser(randomFromUsername)
+                    .toGroup(groupId)
+                    .text(msg -> msg.text("hello"))
+                    .toGroupUsers(new HashSet<String>() {
+                        {
+                            add(randomToUsername);
+                        }
+                    })
+                    .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                    .syncDevice(true)
+                    .send()
+                    .block(Utilities.IT_TIMEOUT);
+
+            System.out.println("id :" + messageIds.getMessageIdsByEntityId().get(groupId));
+
+            assertNotNull(messageIds.getMessageIdsByEntityId().get(groupId));
+        });
+
+        assertDoesNotThrow(() -> this.service.message()
+                .oneWayClearGroupOrRoomRoamingMessagesWithinPeriod(randomFromUsername, groupId,
+                        System.currentTimeMillis()).block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomOwnerUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testModifyTextMessage() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        EMSentMessageIds messageIds = assertDoesNotThrow(() -> this.service.message().sendMsg()
+               .fromUser(randomFromUsername)
+               .toUser(randomToUsername)
+               .text(msg -> msg.text("hello"))
+               .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+               .send()
+               .block(Utilities.IT_TIMEOUT));
+
+        assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+
+        String messageId = messageIds.getMessageIdsByEntityId().get(randomToUsername);
+
+        NewMessage newMessage = NewMessage.builder()
+                .type("txt")
+                .msg("hello world")
+                .build();
+
+        Map<String, Object> newExt = new HashMap<>();
+        newExt.put("key", "value");
+
+        assertDoesNotThrow(
+                () -> this.service.message().modifyTextOrCustomMessage(messageId, randomFromUsername, newMessage, newExt, true).block(Utilities.IT_TIMEOUT));
+
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomToUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testModifyCustomMessage() {
+        String randomFromUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+
+        String randomToUsername = Utilities.randomUserName();
+        assertDoesNotThrow(() -> this.service.user().create(randomFromUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomToUsername, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
+        EMSentMessageIds messageIds = assertDoesNotThrow(() -> this.service.message().sendMsg()
+                .fromUser(randomFromUsername)
+                .toUser(randomToUsername)
+                .custom(msg -> msg.customEvent("liked").customExtension("name", "forest"))
+                .extension(exts -> exts.add(EMKeyValue.of("timeout", 1)))
+                .send()
+                .block(Utilities.IT_TIMEOUT));;
+
+        assertNotNull(messageIds.getMessageIdsByEntityId().get(randomToUsername));
+
+        String messageId = messageIds.getMessageIdsByEntityId().get(randomToUsername);
+
+        Map<String, String> customExts = new HashMap<>();
+        customExts.put("customKey", "customValue");
+
+        NewMessage newMessage = NewMessage.builder()
+                .type("custom")
+                .customEvent("custom_event")
+                .customExts(customExts)
+                .build();
+
+        Map<String, Object> newExt = new HashMap<>();
+        newExt.put("key", "value");
+
+        assertDoesNotThrow(
+                () -> this.service.message().modifyTextOrCustomMessage(messageId, randomFromUsername, newMessage, newExt, true).block(Utilities.IT_TIMEOUT));
+
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomFromUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
