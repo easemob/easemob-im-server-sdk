@@ -50,24 +50,21 @@
                 <version>3.3.0</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+<!--                        <phase>package</phase>-->
                         <goals>
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createDependencyReducedPom>true</createDependencyReducedPom>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>shaded</shadedClassifierName>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.google.code.gson</include>
+                                    <include>com.squareup.okhttp3</include>
+                                    <include>com.squareup.okio</include>
+                                    <include>org.jetbrains.kotlin</include>
+                                    <include>org.apache.commons</include>
+                                    <include>com.google.guava</include>
+                                </includes>
+                            </artifactSet>
                             <relocations>
                                 <relocation>
                                     <pattern>com.google.code.gson</pattern>
@@ -76,6 +73,22 @@
                                 <relocation>
                                     <pattern>com.squareup.okhttp3</pattern>
                                     <shadedPattern>shaded.com.squareup.okhttp3</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.squareup.okio</pattern>
+                                    <shadedPattern>shaded.com.squareup.okio</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jetbrains.kotlin</pattern>
+                                    <shadedPattern>shaded.org.jetbrains.kotlin</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>shaded.org.apache.commons</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.guava</pattern>
+                                    <shadedPattern>shaded.com.google.guava</shadedPattern>
                                 </relocation>
                                 <!-- Add more relocations if needed -->
                             </relocations>
@@ -182,7 +195,7 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <configuration>
-                    <!--                    <skip>true</skip>-->
+<!--                    <skip>true</skip>-->
                     <gpgArguments>
                         <arg>--pinentry-mode</arg>
                         <arg>loopback</arg>
@@ -280,6 +293,38 @@
         </profile>
     </profiles>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp-bom</artifactId>
+                <version>${okhttp-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>logging-interceptor</artifactId>
+                <version>${okhttp-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${google-guava-version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- @Nullable annotation -->
         <dependency>
@@ -349,7 +394,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>30.0-jre</version>
+            <version>${google.guava.version}</version>
         </dependency>
     </dependencies>
     <properties>
@@ -368,5 +413,6 @@
         <jsr311-api-version>1.1.1</jsr311-api-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spotless.version>2.27.2</spotless.version>
+        <google.guava.version>30.0-jre</google.guava.version>
     </properties>
 </project>
