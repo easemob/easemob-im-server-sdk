@@ -19,62 +19,16 @@ import com.easemob.im.ApiException;
 import com.easemob.im.ApiResponse;
 import com.easemob.im.Configuration;
 import com.easemob.im.Pair;
-import com.easemob.im.ProgressRequestBody;
-import com.easemob.im.ProgressResponseBody;
 
+import com.easemob.im.api.model.*;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-
-
-import com.easemob.im.api.model.EMAddGroupAdmin;
-import com.easemob.im.api.model.EMAddGroupAdminResult;
-import com.easemob.im.api.model.EMAddMultipleUserToGroup;
-import com.easemob.im.api.model.EMAddMultipleUserToGroupBlockList;
-import com.easemob.im.api.model.EMAddMultipleUserToGroupBlockListResult;
-import com.easemob.im.api.model.EMAddMultipleUserToGroupResult;
-import com.easemob.im.api.model.EMAddMultipleUserToGroupWhiteList;
-import com.easemob.im.api.model.EMAddMultipleUserToGroupWhiteListResult;
-import com.easemob.im.api.model.EMAddUserToGroupBlockListResult;
-import com.easemob.im.api.model.EMAddUserToGroupResult;
-import com.easemob.im.api.model.EMAddUserToGroupWhiteListResult;
-import com.easemob.im.api.model.EMCheckUserJoinedGroupResult;
-import com.easemob.im.api.model.EMCreateGroup;
-import com.easemob.im.api.model.EMCreateGroupResult;
-import com.easemob.im.api.model.EMDeleteGroupResult;
-import com.easemob.im.api.model.EMDeleteGroupShareFileResult;
-import com.easemob.im.api.model.EMDisableGroupResult;
-import com.easemob.im.api.model.EMEnableGroupResult;
-import com.easemob.im.api.model.EMGetAppGroupsResult;
-import com.easemob.im.api.model.EMGetGroupAdminListResult;
-import com.easemob.im.api.model.EMGetGroupAnnouncementResult;
-import com.easemob.im.api.model.EMGetGroupBlockListResult;
-import com.easemob.im.api.model.EMGetGroupInfoResult;
-import com.easemob.im.api.model.EMGetGroupMemberListResult;
-import com.easemob.im.api.model.EMGetGroupMuteListResult;
-import com.easemob.im.api.model.EMGetGroupShareFileResult;
-import com.easemob.im.api.model.EMGetGroupWhiteListResult;
-import com.easemob.im.api.model.EMGetUserJoinedGroupsResult;
-import com.easemob.im.api.model.EMModifyGroup;
-import com.easemob.im.api.model.EMModifyGroupAnnouncement;
-import com.easemob.im.api.model.EMModifyGroupAnnouncementResult;
-import com.easemob.im.api.model.EMModifyGroupResult;
-import com.easemob.im.api.model.EMMuteAllGroupMembersResult;
-import com.easemob.im.api.model.EMMuteGroupMember;
-import com.easemob.im.api.model.EMMuteGroupMemberResult;
-import com.easemob.im.api.model.EMRemoveGroupAdminResult;
-import com.easemob.im.api.model.EMRemoveUserFromGroupBlockListResult;
-import com.easemob.im.api.model.EMRemoveUserFromGroupWhiteListResult;
-import com.easemob.im.api.model.EMRemoveUserToGroupResult;
-import com.easemob.im.api.model.EMUnmuteAllGroupMembersResult;
-import com.easemob.im.api.model.EMUploadGroupShareFileResult;
 import java.io.File;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GroupApi {
     private ApiClient localVarApiClient;
@@ -3687,6 +3641,69 @@ public class GroupApi {
     public EMRemoveUserToGroupResult removeUserToGroup(String groupId, String username) throws ApiException {
         ApiResponse<EMRemoveUserToGroupResult> localVarResp = removeUserToGroupWithHttpInfo(groupId, username);
         return localVarResp.getData();
+    }
+
+    /**
+     * 批量移除群组成员
+     * 一次移除多名群成员。如果所有被移除用户均不是群成员，将移除失败，并返回错误。移除后，这些成员也会被移除其在该群组中加入的子区。文档介绍：https://doc.easemob.com/document/server-side/group.html#%E6%89%B9%E9%87%8F%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98
+     * @param groupId  (required)
+     * @param usernames  (required)
+     * @return EMRemoveUserToGroupResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMRemoveUsersToGroupResult removeUsersToGroup(String groupId, List<String> usernames) throws ApiException {
+        if (usernames == null) {
+            throw new ApiException("Missing the required parameter 'usernames' when calling removeUsersToGroup");
+        }
+
+        StringBuilder usernamesStr = new StringBuilder();
+        if (usernames.size() > 0) {
+            for (String username : usernames) {
+                usernamesStr.append(username).append(",");
+            }
+            usernamesStr.deleteCharAt(usernamesStr.length() - 1);
+        }
+
+        ApiResponse<EMRemoveUsersToGroupResponse> localVarResp = removeUsersToGroupWithHttpInfo(groupId, usernamesStr.toString());
+
+        List<EMRemoveUserToGroupResource> removeUserToGroupResources = new ArrayList<>();
+        Gson gson = new Gson();
+        if (localVarResp.getData().getData() instanceof Map) {
+            Map<String, Object> data = (Map<String, Object>) localVarResp.getData().getData();
+            String json = gson.toJson(data);
+            EMRemoveUserToGroupResource removeUserToGroupResource = gson.fromJson(json, EMRemoveUserToGroupResource.class);
+            removeUserToGroupResources.add(removeUserToGroupResource);
+        } else {
+            List<Map<String, Object>> data = (List<Map<String, Object>>) localVarResp.getData().getData();
+            if (data != null && data.size() > 0) {
+                data.forEach(item -> {
+                    String json = gson.toJson(item);
+                    EMRemoveUserToGroupResource removeUserToGroupResource = gson.fromJson(json, EMRemoveUserToGroupResource.class);
+                    removeUserToGroupResources.add(removeUserToGroupResource);
+                });
+            }
+        }
+
+        EMRemoveUsersToGroupResult removeUsersToGroupResult = new EMRemoveUsersToGroupResult();
+        removeUsersToGroupResult.setData(removeUserToGroupResources);
+
+        return removeUsersToGroupResult;
+    }
+
+    /**
+     * 批量移除群组成员
+     * 一次移除多名群成员。如果所有被移除用户均不是群成员，将移除失败，并返回错误。移除后，这些成员也会被移除其在该群组中加入的子区。文档介绍：https://doc.easemob.com/document/server-side/group.html#%E6%89%B9%E9%87%8F%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98
+     * @param groupId  (required)
+     * @param usernames  (required)
+     * @return ApiResponse&lt;EMRemoveUsersToGroupResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMRemoveUsersToGroupResponse> removeUsersToGroupWithHttpInfo(String groupId, String usernames) throws ApiException {
+        okhttp3.Call localVarCall = removeUserToGroupValidateBeforeCall(groupId, usernames, null);
+        Type localVarReturnType = new TypeToken<EMRemoveUsersToGroupResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**

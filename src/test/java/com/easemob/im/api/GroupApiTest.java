@@ -1966,6 +1966,69 @@ public class GroupApiTest extends AbstractTest {
     }
 
     /**
+     * 批量移除群组成员
+     * <p>
+     * 一次移除多名群成员。如果所有被移除用户均不是群成员，将移除失败，并返回错误。移除后，这些成员也会被移除其在该群组中加入的子区。文档介绍：https://doc.easemob.com/document/server-side/group.html#%E6%89%B9%E9%87%8F%E7%A7%BB%E9%99%A4%E7%BE%A4%E7%BB%84%E6%88%90%E5%91%98
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void removeUsersToGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String username3 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        EMCreateUser createUser3 = new EMCreateUser();
+        createUser3.setUsername(username3);
+        createUser3.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+        emCreateUserList.add(createUser3);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2, username3));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> api.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMRemoveUsersToGroupResult removeUsersToGroupResult =
+                assertDoesNotThrow(() -> api.removeUsersToGroup(groupId, Arrays.asList(username2, username3)));
+        assertNotNull(removeUsersToGroupResult);
+        assertNotNull(removeUsersToGroupResult.getData());
+        assertEquals(2, removeUsersToGroupResult.getData().size());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            api.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
      * 解除全员禁言
      * <p>
      * 一键取消对群组全体成员的禁言。解除禁言后，群成员可以在群组和该群组下的子区中正常发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/group.html#%E8%A7%A3%E9%99%A4%E5%85%A8%E5%91%98%E7%A6%81%E8%A8%80
