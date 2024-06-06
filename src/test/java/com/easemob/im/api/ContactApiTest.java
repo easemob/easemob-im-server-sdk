@@ -72,6 +72,60 @@ public class ContactApiTest extends AbstractTest {
     }
 
     /**
+     * 一次性获取好友列表
+     *
+     * 一次性获取指定用户的好友列表。文档介绍：https://doc.easemob.com/document/server-side/user_relationship.html#%E4%B8%80%E6%AC%A1%E6%80%A7%E8%8E%B7%E5%8F%96%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getAllContactListTest() throws ApiException, InterruptedException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String username3 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        EMCreateUser createUser3 = new EMCreateUser();
+        createUser3.setUsername(username3);
+        createUser3.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+        emCreateUserList.add(createUser3);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMAddContactResult addContactResult = assertDoesNotThrow(() -> api.addContact(username1, username2));
+        assertNotNull(addContactResult);
+        assertNotNull(addContactResult.getEntities());
+        assertNotNull(addContactResult.getEntities().get(0));
+        assertEquals(username2, addContactResult.getEntities().get(0).getUsername());
+
+        assertDoesNotThrow(() -> api.addContact(username1, username3));
+
+        Thread.sleep(5000);
+
+        EMGetAllContactListResult getAllContactListResult = assertDoesNotThrow(() -> api.getAllContactList(username1));
+        assertNotNull(getAllContactListResult);
+        assertNotNull(getAllContactListResult.getData());
+        assertEquals(2, getAllContactListResult.getData().size());
+        assertEquals(2, getAllContactListResult.getCount());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        assertDoesNotThrow(() -> userApi.deleteUser(username3));
+    }
+
+    /**
      * 获取好友列表
      *
      * 获取指定用户的好友列表。文档介绍：https://docs-im-beta.easemob.com/document/server-side/user_relationship.html#%E8%8E%B7%E5%8F%96%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8

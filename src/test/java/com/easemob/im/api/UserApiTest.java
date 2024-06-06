@@ -46,19 +46,23 @@ public class UserApiTest extends AbstractTest {
         String username2 = randomUserName();
         String username3 = randomUserName();
         String password = "123456";
+        String pushNickname = "推送昵称";
 
         List<EMCreateUser> emCreateUserList = new ArrayList<>();
         EMCreateUser createUser1 = new EMCreateUser();
         createUser1.setUsername(username1);
         createUser1.setPassword(password);
+        createUser1.setNickname(pushNickname);
 
         EMCreateUser createUser2 = new EMCreateUser();
         createUser2.setUsername(username2);
         createUser2.setPassword(password);
+        createUser2.setNickname(pushNickname);
 
         EMCreateUser createUser3 = new EMCreateUser();
         createUser3.setUsername(username3);
         createUser3.setPassword(password);
+        createUser2.setNickname(pushNickname);
 
         emCreateUserList.add(createUser1);
         emCreateUserList.add(createUser2);
@@ -66,6 +70,8 @@ public class UserApiTest extends AbstractTest {
 
         EMCreateUsersResult result = assertDoesNotThrow(() -> api.createUsers(emCreateUserList));
         assertNotNull(result.getEntities());
+        assertNotNull(result.getEntities().get(0));
+        assertEquals(pushNickname, result.getEntities().get(0).getNickname());
         assertEquals(3, result.getEntities().size());
 
         assertDoesNotThrow(() -> api.deleteUser(username1));
@@ -249,11 +255,13 @@ public class UserApiTest extends AbstractTest {
     public void getUserTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
+        String pushNickname = "推送昵称";
 
         List<EMCreateUser> emCreateUserList = new ArrayList<>();
         EMCreateUser createUser = new EMCreateUser();
         createUser.setUsername(username);
         createUser.setPassword(password);
+        createUser.setNickname(pushNickname);
 
         emCreateUserList.add(createUser);
 
@@ -263,6 +271,7 @@ public class UserApiTest extends AbstractTest {
         assertNotNull(result.getEntities());
         assertEquals(username, result.getEntities().get(0).getUsername());
         assertEquals(true, result.getEntities().get(0).getActivated());
+        assertEquals(pushNickname, result.getEntities().get(0).getNickname());
 
         assertDoesNotThrow(() -> api.deleteUser(username));
     }

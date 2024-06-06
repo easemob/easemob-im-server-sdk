@@ -22,16 +22,10 @@ import com.easemob.im.Pair;
 import com.easemob.im.ProgressRequestBody;
 import com.easemob.im.ProgressResponseBody;
 
+import com.easemob.im.api.model.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-
-
-import com.easemob.im.api.model.EMAddContactResult;
-import com.easemob.im.api.model.EMGetContactListResult;
-import com.easemob.im.api.model.EMRemoveContactResult;
-import com.easemob.im.api.model.EMSetContactNote;
-import com.easemob.im.api.model.EMSetContactNoteResult;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -190,6 +184,113 @@ public class ContactApi {
 
         okhttp3.Call localVarCall = addContactValidateBeforeCall(ownerUsername, friendUsername, _callback);
         Type localVarReturnType = new TypeToken<EMAddContactResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for getAllContactList
+     * @param ownerUsername  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getAllContactListCall(String ownerUsername, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/users/{owner_username}/contacts/users"
+                .replace("{" + "owner_username" + "}", localVarApiClient.escapeString(ownerUsername.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getAllContactListValidateBeforeCall(String ownerUsername, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'ownerUsername' is set
+        if (ownerUsername == null) {
+            throw new ApiException("Missing the required parameter 'ownerUsername' when calling getAllContactList(Async)");
+        }
+
+        return getAllContactListCall(ownerUsername, _callback);
+
+    }
+
+    /**
+     * 一次性获取好友列表
+     * 一次性获取指定用户的好友列表。文档介绍：https://doc.easemob.com/document/server-side/user_relationship.html#%E4%B8%80%E6%AC%A1%E6%80%A7%E8%8E%B7%E5%8F%96%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8
+     * @param ownerUsername  (required)
+     * @return EMGetAllContactListResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMGetAllContactListResult getAllContactList(String ownerUsername) throws ApiException {
+        ApiResponse<EMGetAllContactListResult> localVarResp = getAllContactListWithHttpInfo(ownerUsername);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 一次性获取好友列表
+     * 一次性获取指定用户的好友列表。文档介绍：https://doc.easemob.com/document/server-side/user_relationship.html#%E4%B8%80%E6%AC%A1%E6%80%A7%E8%8E%B7%E5%8F%96%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8
+     * @param ownerUsername  (required)
+     * @return ApiResponse&lt;EMGetAllContactListResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMGetAllContactListResult> getAllContactListWithHttpInfo(String ownerUsername) throws ApiException {
+        okhttp3.Call localVarCall = getAllContactListValidateBeforeCall(ownerUsername, null);
+        Type localVarReturnType = new TypeToken<EMGetAllContactListResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 一次性获取好友列表 (asynchronously)
+     * 一次性获取指定用户的好友列表。文档介绍：https://doc.easemob.com/document/server-side/user_relationship.html#%E4%B8%80%E6%AC%A1%E6%80%A7%E8%8E%B7%E5%8F%96%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8
+     * @param ownerUsername  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getAllContactListAsync(String ownerUsername, final ApiCallback<EMGetAllContactListResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getAllContactListValidateBeforeCall(ownerUsername, _callback);
+        Type localVarReturnType = new TypeToken<EMGetAllContactListResult>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
