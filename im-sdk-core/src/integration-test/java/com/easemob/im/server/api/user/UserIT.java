@@ -6,6 +6,7 @@ import com.easemob.im.server.api.util.Utilities;
 import com.easemob.im.server.exception.EMNotFoundException;
 import com.easemob.im.server.model.EMBlock;
 import com.easemob.im.server.model.EMCreateUser;
+import com.easemob.im.server.model.EMUser;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -27,8 +28,28 @@ class UserIT extends AbstractIT {
         String randomPassword = Utilities.randomPassword();
         assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
-        assertDoesNotThrow(
+        EMUser getUser = assertDoesNotThrow(
                 () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertNull(getUser.getPushNickname());
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertThrows(EMNotFoundException.class,
+                () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testUserWithPushNicknameLifeCycles() {
+        String randomUsername = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+        String pushNickname = "推送昵称";
+        EMUser createUser = assertDoesNotThrow(() -> this.service.user().create(randomUsername, randomPassword, pushNickname)
+                .block(Utilities.IT_TIMEOUT));
+        assertEquals(pushNickname, createUser.getPushNickname());
+
+        EMUser getUser = assertDoesNotThrow(
+                () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertEquals(pushNickname, getUser.getPushNickname());
+
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertThrows(EMNotFoundException.class,
@@ -53,6 +74,41 @@ class UserIT extends AbstractIT {
                 () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(
                 () -> this.service.user().get(randomUsername1).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(
+                () -> this.service.user().delete(randomUsername1).block(Utilities.IT_TIMEOUT));
+        assertThrows(EMNotFoundException.class,
+                () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertThrows(EMNotFoundException.class,
+                () -> this.service.user().get(randomUsername1).block(Utilities.IT_TIMEOUT));
+    }
+
+    @Test
+    void testBatchCreateUserWithPushNickname() {
+        String randomUsername = Utilities.randomUserName();
+        String randomUsername1 = Utilities.randomUserName();
+        String randomPassword = Utilities.randomPassword();
+        String pushNickname = "推送昵称";
+
+        List<EMCreateUser> createUserList = new ArrayList<>();
+        EMCreateUser createUser = new EMCreateUser(randomUsername, randomPassword, pushNickname);
+        EMCreateUser createUser1 = new EMCreateUser(randomUsername1, randomPassword, pushNickname);
+        createUserList.add(createUser);
+        createUserList.add(createUser1);
+
+        List<EMUser> createUsers = assertDoesNotThrow(() -> this.service.user().create(createUserList)
+                .block(Utilities.IT_TIMEOUT));
+        createUsers.get(0).getPushNickname();
+
+        EMUser getUser = assertDoesNotThrow(
+                () -> this.service.user().get(randomUsername).block(Utilities.IT_TIMEOUT));
+        assertEquals(pushNickname, getUser.getPushNickname());
+
+        EMUser getUser1 = assertDoesNotThrow(
+                () -> this.service.user().get(randomUsername1).block(Utilities.IT_TIMEOUT));
+        assertEquals(pushNickname, getUser1.getPushNickname());
+
         assertDoesNotThrow(
                 () -> this.service.user().delete(randomUsername).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(

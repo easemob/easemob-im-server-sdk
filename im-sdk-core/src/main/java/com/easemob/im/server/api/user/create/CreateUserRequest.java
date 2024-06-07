@@ -10,11 +10,16 @@ public class CreateUserRequest {
     @JsonProperty("password")
     private String password;
 
+    @JsonProperty("nickname")
+    private String pushNickname;
+
     @JsonCreator
     public CreateUserRequest(@JsonProperty("username") String username,
-            @JsonProperty("password") String password) {
+            @JsonProperty("password") String password,
+            @JsonProperty("nickname") String pushNickname) {
         this.username = username;
         this.password = password;
+        this.pushNickname = pushNickname;
     }
 
     public String getUsername() {

@@ -11,6 +11,9 @@ public class UserResource {
     @JsonProperty("username")
     private String username;
 
+    @JsonProperty("nickname")
+    private String pushNickname;
+
     @JsonProperty("uuid")
     private String uuid;
 
@@ -23,10 +26,12 @@ public class UserResource {
     @JsonCreator
     public UserResource(
             @JsonProperty("username") String username,
+            @JsonProperty("nickname") String pushNickname,
             @JsonProperty("uuid") String uuid,
             @JsonProperty("activated") boolean activated,
             @JsonProperty("pushInfo") List<PushResource> pushResources) {
         this.username = username;
+        this.pushNickname = pushNickname;
         this.uuid = uuid;
         this.activated = activated;
         this.pushResources = pushResources;
@@ -40,6 +45,10 @@ public class UserResource {
         return username;
     }
 
+    public String getPushNickname() {
+        return pushNickname;
+    }
+
     public List<PushResource> getPushResources() {
         return pushResources;
     }
@@ -49,12 +58,13 @@ public class UserResource {
     }
 
     public EMUser toEMUser() {
-        return new EMUser(this.username, this.uuid, this.activated, this.pushResources);
+        return new EMUser(this.username, this.pushNickname, this.uuid, this.activated, this.pushResources);
     }
 
     @Override public String toString() {
         return "UserResource{" +
                 "username='" + username + '\'' +
+                ", pushNickname='" + pushNickname + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", activated=" + activated +
                 ", pushResources=" + pushResources +
