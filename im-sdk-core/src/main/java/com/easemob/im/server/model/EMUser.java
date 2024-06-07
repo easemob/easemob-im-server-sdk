@@ -16,6 +16,7 @@ public class EMUser extends EMEntity {
             Pattern.compile("^[a-zA-Z0-9~!@#$%^&*\\-_=+<>;:,./?]{1,32}$");
 
     private final String username;
+    private final String pushNickname;
     private final String uuid;
     private final Boolean canLogin;
     private final List<PushResource> pushResources;
@@ -27,7 +28,7 @@ public class EMUser extends EMEntity {
      */
     @Deprecated
     public EMUser(String username, Boolean canLogin) {
-        this(username, null, canLogin, null);
+        this(username, null, null, canLogin, null);
     }
 
     /**
@@ -36,7 +37,7 @@ public class EMUser extends EMEntity {
      * @param canLogin 是否可登录
      */
     public EMUser(String username, String uuid, Boolean canLogin) {
-        this(username, uuid, canLogin, null);
+        this(username, null, uuid, canLogin, null);
     }
 
     /**
@@ -45,13 +46,14 @@ public class EMUser extends EMEntity {
      * @param canLogin 是否可登录
      * @param pushResources 推送信息，例如 deviceId、deviceToken
      */
-    public EMUser(String username, String uuid, Boolean canLogin, List<PushResource> pushResources) {
+    public EMUser(String username, String pushNickname, String uuid, Boolean canLogin, List<PushResource> pushResources) {
         super(EntityType.USER);
         if (StringUtil.isNullOrEmpty(username)) {
             throw new EMInvalidArgumentException("username cannot be blank");
         }
         super.id(username);
         this.username = username;
+        this.pushNickname = pushNickname;
         this.uuid = uuid;
         this.canLogin = canLogin;
         this.pushResources = pushResources;
@@ -81,6 +83,10 @@ public class EMUser extends EMEntity {
 
     public String getUsername() {
         return this.username;
+    }
+
+    public String getPushNickname() {
+        return this.pushNickname;
     }
 
     public String getUuid() {
@@ -115,6 +121,7 @@ public class EMUser extends EMEntity {
     @Override public String toString() {
         return "EMUser{" +
                 "username='" + username + '\'' +
+                ", pushNickname='" + pushNickname + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", canLogin=" + canLogin +
                 ", pushResources=" + pushResources +

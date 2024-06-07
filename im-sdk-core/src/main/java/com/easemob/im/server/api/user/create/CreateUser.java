@@ -24,7 +24,32 @@ public class CreateUser {
                 .flatMap(httpClient -> httpClient.post()
                         .uri("/users")
                         .send(Mono.create(sink -> sink.success(this.context.getCodec()
-                                .encode(new CreateUserRequest(username, password)))))
+                                .encode(new CreateUserRequest(username, password, null)))))
+                        .responseSingle(
+                                (rsp, buf) -> {
+                                    return buf.switchIfEmpty(
+                                                    Mono.error(new EMUnknownException("response is null")))
+                                            .flatMap(byteBuf -> {
+                                                ErrorMapper mapper = new DefaultErrorMapper();
+                                                mapper.statusCode(rsp);
+                                                mapper.checkError(byteBuf);
+                                                return Mono.just(byteBuf);
+                                            });
+                                }))
+                .map(byteBuf -> {
+                    UserGetResponse userGetResponse =
+                            this.context.getCodec().decode(byteBuf, UserGetResponse.class);
+                    byteBuf.release();
+                    return userGetResponse.getEMUser(username.toLowerCase());
+                });
+    }
+
+    public Mono<EMUser> single(String username, String password, String pushNickname) {
+        return this.context.getHttpClient()
+                .flatMap(httpClient -> httpClient.post()
+                        .uri("/users")
+                        .send(Mono.create(sink -> sink.success(this.context.getCodec()
+                                .encode(new CreateUserRequest(username, password, pushNickname)))))
                         .responseSingle(
                                 (rsp, buf) -> {
                                     return buf.switchIfEmpty(

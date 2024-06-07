@@ -11,10 +11,22 @@ public class EMCreateUser {
     @JsonProperty("password")
     private String password;
 
+    @JsonProperty("nickname")
+    private String pushNickname;
+
     @JsonCreator
     public EMCreateUser(@JsonProperty("username") String username,
             @JsonProperty("password") String password) {
         this.username = username;
         this.password = password;
+    }
+
+    @JsonCreator
+    public EMCreateUser(@JsonProperty("username") String username,
+            @JsonProperty("password") String password,
+            @JsonProperty("nickname") String pushNickname) {
+        this.username = username;
+        this.password = password;
+        this.pushNickname = pushNickname;
     }
 }
