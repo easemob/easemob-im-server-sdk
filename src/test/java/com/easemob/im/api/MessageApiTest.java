@@ -16,12 +16,11 @@ package com.easemob.im.api;
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.ClassLoaderUtils;
 
+import java.io.File;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,6 +36,8 @@ public class MessageApiTest extends AbstractTest {
     private final GroupApi groupApi = new GroupApi();
 
     private final RoomApi roomApi = new RoomApi();
+
+    private final ChatFileApi chatFileApi = new ChatFileApi();
 
     public MessageApiTest() {
     }
@@ -139,6 +140,7 @@ public class MessageApiTest extends AbstractTest {
         emImportChatUserMessage.setMsgTimestamp(new BigDecimal(System.currentTimeMillis()));
         emImportChatUserMessage.needDownload(false);
         emImportChatUserMessage.body(new EMMessageContent().msg("test message1"));
+
         EMImportChatUserMessageResult response = messageApi.importChatUserMessage(emImportChatUserMessage);
         assertNotNull(response.getData());
         assertNotNull(response.getData().getMsgId());
@@ -176,7 +178,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
@@ -235,7 +237,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
@@ -261,14 +263,14 @@ public class MessageApiTest extends AbstractTest {
     }
 
     /**
-     * 发送群聊消息
+     * 发送群聊文本消息
      *
-     * 向群组发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_group.html
+     * 向群组发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E6%96%87%E6%9C%AC%E6%B6%88%E6%81%AF
      *
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void sendMessagesToGroupTest() throws ApiException {
+    public void sendTextMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
         String password = "123456";
@@ -305,17 +307,603 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(groupId);}});
+        emCreateMessage.setTo(Collections.singletonList(groupId));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
         emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
 
         EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
         assertNotNull(response.getData());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送群聊图片消息
+     *
+     * 向群组发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E5%9B%BE%E7%89%87%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendImageMessagesToGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        File imageFile = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/blue.png")).getPath());
+
+        EMUploadChatFileResult uploadImageChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, imageFile));
+        String imageChatFileUuid = uploadImageChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(groupId));
+        emCreateMessage.setType("img");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("img.png");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + imageChatFileUuid);
+        messageContent.setSize(new EMImageSize().height(192).width(170));
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送群聊语音消息
+     *
+     * 向群组发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E8%AF%AD%E9%9F%B3%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendVoiceMessagesToGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        File file = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/voice.amr")).getPath());
+        Boolean restrictAccess = false;
+
+        EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
+        String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(groupId));
+        emCreateMessage.setType("audio");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("voice.amr");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.length(3);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送群聊视频消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E8%A7%86%E9%A2%91%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendVideoMessagesToGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        File imageFile = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/blue.png")).getPath());
+
+        EMUploadChatFileResult uploadImageChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, imageFile));
+        String imageChatFileUuid = uploadImageChatFileResult.getEntities().get(0).getUuid();
+
+        File videoFile = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/video.mp4")).getPath());
+
+        EMUploadChatFileResult uploadVideoChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, videoFile));
+        String videoChatFileUuid = uploadVideoChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(groupId));
+        emCreateMessage.setType("video");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("video.mp4");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + videoChatFileUuid);
+        messageContent.setLength(3);
+        messageContent.setFileLength(264562);
+        messageContent.setThumb(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + imageChatFileUuid);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送群聊文件消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E6%96%87%E4%BB%B6%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendFileMessagesToGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        File file = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/file.txt")).getPath());
+
+        EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, file));
+        String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(groupId));
+        emCreateMessage.setType("file");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("file.txt");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送群聊位置消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E4%BD%8D%E7%BD%AE%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendLocationMessagesToGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(groupId));
+        emCreateMessage.setType("loc");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setLat("39.966");
+        messageContent.setLng("116.322");
+        messageContent.setAddr("中国北京市海淀区中关村");
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送群聊透传消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E9%80%8F%E4%BC%A0%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendCmdMessagesToGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(groupId));
+        emCreateMessage.setType("cmd");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setAction("action");
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送群聊自定义消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_group.html#%E5%8F%91%E9%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendCustomMessagesToGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(groupId));
+        emCreateMessage.setType("custom");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setCustomEvent("custom_event");
+        messageContent.setCustomExts(Collections.singletonMap("custom_key", "custom_value"));
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+
         try {
             groupApi.deleteGroup(groupId);
         } catch (ApiException ignored) {
@@ -367,12 +955,21 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(groupId);}});
+        emCreateMessage.setTo(Collections.singletonList(groupId));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
         emCreateMessage.setBody(messageContent);
-        emCreateMessage.setUsers(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setUsers(Collections.singletonList(username2));
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
 
         EMSendMessageResult response = messageApi.sendGroupDirectionalMessages(emCreateMessage);
         assertNotNull(response.getData());
@@ -386,14 +983,14 @@ public class MessageApiTest extends AbstractTest {
     }
 
     /**
-     * 发送聊天室消息
+     * 发送聊天室文本消息
      *
-     * 向聊天室发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_chatroom.html
+     * 向聊天室发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html
      *
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void sendMessagesToRoomTest() throws ApiException {
+    public void sendTextMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
         String password = "123456";
@@ -429,11 +1026,588 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(roomId);}});
+        emCreateMessage.setTo(Collections.singletonList(roomId));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
         emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送聊天室图片消息
+     *
+     * 向聊天室发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E5%9B%BE%E7%89%87%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendImageMessagesToRoomTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        File file = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/blue.png")).getPath());
+        Boolean restrictAccess = false;
+
+        EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
+        String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(roomId));
+        emCreateMessage.setType("img");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("img.png");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setSize(new EMImageSize().height(192).width(170));
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送聊天室语音消息
+     *
+     * 向聊天室发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%AF%AD%E9%9F%B3%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendVoiceMessagesToRoomTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        File file = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/voice.amr")).getPath());
+        Boolean restrictAccess = false;
+
+        EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
+        String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(roomId));
+        emCreateMessage.setType("audio");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("voice.amr");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setLength(3);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送聊天室视频消息
+     *
+     * 向聊天室发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%A7%86%E9%A2%91%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendVideoMessagesToRoomTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        File imageFile = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/blue.png")).getPath());
+
+        EMUploadChatFileResult uploadImageChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, imageFile));
+        String imageChatFileUuid = uploadImageChatFileResult.getEntities().get(0).getUuid();
+
+        File videoFile = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/video.mp4")).getPath());
+
+        EMUploadChatFileResult uploadVideoChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, videoFile));
+        String videoChatFileUuid = uploadVideoChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(roomId));
+        emCreateMessage.setType("video");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("video.mp4");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + videoChatFileUuid);
+        messageContent.setLength(3);
+        messageContent.setFileLength(264562);
+        messageContent.setThumb(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + imageChatFileUuid);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送聊天室文件消息
+     *
+     * 向聊天室发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E6%96%87%E4%BB%B6%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendFileMessagesToRoomTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        File file = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/file.txt")).getPath());
+
+        EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, file));
+        String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(roomId));
+        emCreateMessage.setType("file");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("file.txt");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送聊天室位置消息
+     *
+     * 向聊天室发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E4%BD%8D%E7%BD%AE%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendLocationMessagesToRoomTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(roomId));
+        emCreateMessage.setType("loc");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setLat("39.966");
+        messageContent.setLng("116.322");
+        messageContent.setAddr("中国北京市海淀区中关村");
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送聊天室透传消息
+     *
+     * 向聊天室发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E9%80%8F%E4%BC%A0%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendCmdMessagesToRoomTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(roomId));
+        emCreateMessage.setType("cmd");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setAction("action");
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
+     * 发送聊天室自定义消息
+     *
+     * 向聊天室发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendCustomMessagesToRoomTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(roomId));
+        emCreateMessage.setType("custom");
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setCustomEvent("custom_event");
+        messageContent.setCustomExts(Collections.singletonMap("custom_key", "custom_value"));
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
 
         EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
         assertNotNull(response.getData());
@@ -490,12 +1664,21 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(roomId);}});
+        emCreateMessage.setTo(Collections.singletonList(roomId));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
         emCreateMessage.setBody(messageContent);
-        emCreateMessage.setUsers(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setUsers(Collections.singletonList(username2));
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
 
         EMSendMessageResult response = messageApi.sendRoomDirectionalMessages(emCreateMessage);
         assertNotNull(response.getData());
@@ -509,14 +1692,14 @@ public class MessageApiTest extends AbstractTest {
     }
 
     /**
-     * 发送单聊消息
+     * 发送单聊文本消息
      *
-     * 给用户发送消息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_single.html
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E6%96%87%E6%9C%AC%E6%B6%88%E6%81%AF
      *
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void sendMessagesToUserTest() throws ApiException {
+    public void sendTextMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
         String password = "123456";
@@ -537,11 +1720,448 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
         emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 发送单聊图片消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E5%9B%BE%E7%89%87%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendImageMessagesToUserTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        File file = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/blue.png")).getPath());
+        Boolean restrictAccess = false;
+
+        EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
+        String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("img");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("img.png");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setSize(new EMImageSize().height(192).width(170));
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 发送单聊语音消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E8%AF%AD%E9%9F%B3%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendVoiceMessagesToUserTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        File file = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/voice.amr")).getPath());
+        Boolean restrictAccess = false;
+
+        EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
+        String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("audio");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("voice.amr");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setLength(3);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 发送单聊视频消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E8%A7%86%E9%A2%91%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendVideoMessagesToUserTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        File imageFile = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/blue.png")).getPath());
+
+        EMUploadChatFileResult uploadImageChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, imageFile));
+        String imageChatFileUuid = uploadImageChatFileResult.getEntities().get(0).getUuid();
+
+        File videoFile = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/video.mp4")).getPath());
+
+        EMUploadChatFileResult uploadVideoChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, videoFile));
+        String videoChatFileUuid = uploadVideoChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("video");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("video.mp4");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + videoChatFileUuid);
+        messageContent.setLength(3);
+        messageContent.setFileLength(264562);
+        messageContent.setThumb(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + imageChatFileUuid);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 发送单聊文件消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E6%96%87%E4%BB%B6%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendFileMessagesToUserTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        File file = new File(Objects.requireNonNull(
+                ClassLoaderUtils.getDefaultClassLoader().getResource("upload/file.txt")).getPath());
+
+        EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, file));
+        String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
+
+        String baseUri = System.getenv("IM_BASE_URI");
+        String appKey = System.getenv("IM_APPKEY");
+        String orgName = appKey.split("#")[0];
+        String appName = appKey.split("#")[1];
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("file");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setFilename("file.txt");
+        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 发送单聊位置消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E4%BD%8D%E7%BD%AE%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendLocationMessagesToUserTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("loc");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setLat("39.966");
+        messageContent.setLng("116.322");
+        messageContent.setAddr("中国北京市海淀区中关村");
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 发送单聊透传消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E9%80%8F%E4%BC%A0%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendCmdMessagesToUserTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("cmd");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setAction("action");
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 发送单聊自定义消息
+     *
+     * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendCustomMessagesToUserTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("custom");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setCustomEvent("custom_event");
+        messageContent.setCustomExts(Collections.singletonMap("custom_key", "custom_value"));
+
+        emCreateMessage.setBody(messageContent);
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        emCreateMessage.setExt(ext);
 
         EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
         assertNotNull(response.getData());
@@ -579,7 +2199,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
@@ -652,7 +2272,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(groupId);}});
+        emCreateMessage.setTo(Collections.singletonList(groupId));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
@@ -703,7 +2323,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
@@ -749,7 +2369,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");

@@ -19,33 +19,9 @@ import com.easemob.im.ApiException;
 import com.easemob.im.ApiResponse;
 import com.easemob.im.Configuration;
 import com.easemob.im.Pair;
-import com.easemob.im.ProgressRequestBody;
-import com.easemob.im.ProgressResponseBody;
 
+import com.easemob.im.api.model.*;
 import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
-
-import com.easemob.im.api.model.EMCreateUser;
-import com.easemob.im.api.model.EMCreateUsersResult;
-import com.easemob.im.api.model.EMDeleteUserResult;
-import com.easemob.im.api.model.EMDeleteUsersResult;
-import com.easemob.im.api.model.EMForceUserLogoutResult;
-import com.easemob.im.api.model.EMGetAllGloballyMutedUsersResult;
-import com.easemob.im.api.model.EMGetOfflineMessageStatusResult;
-import com.easemob.im.api.model.EMGetUserGlobalMuteResult;
-import com.easemob.im.api.model.EMGetUserOfflineMessageCountResult;
-import com.easemob.im.api.model.EMGetUserOnlineLoginDeviceListResult;
-import com.easemob.im.api.model.EMGetUserOnlineStateResult;
-import com.easemob.im.api.model.EMGetUserResult;
-import com.easemob.im.api.model.EMGetUsersOnlineState;
-import com.easemob.im.api.model.EMGetUsersOnlineStateResult;
-import com.easemob.im.api.model.EMGetUsersResult;
-import com.easemob.im.api.model.EMModifyUserPassword;
-import com.easemob.im.api.model.EMSetUserGlobalMute;
-import com.easemob.im.api.model.EMSetUserGlobalMuteResult;
-import com.easemob.im.api.model.EMUserDeactivateResult;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -1914,6 +1890,106 @@ public class UserApi {
 
         okhttp3.Call localVarCall = userDeactivateValidateBeforeCall(username, _callback);
         Type localVarReturnType = new TypeToken<EMUserDeactivateResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for modifyPushNicknames
+     * @param emModifyPushNickname  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call modifyPushNicknamesCall(List<EMModifyPushNickname> emModifyPushNickname, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emModifyPushNickname;
+
+        // create path and map variables
+        String localVarPath = "/push/nickname";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call modifyPushNicknamesValidateBeforeCall(List<EMModifyPushNickname> emModifyPushNickname, final ApiCallback _callback) throws ApiException {
+        return modifyPushNicknamesCall(emModifyPushNickname, _callback);
+
+    }
+
+    /**
+     * 批量修改用户推送昵称
+     * @param emModifyPushNickname  (optional)
+     * @return EMModifyPushNicknamesResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMModifyPushNicknamesResult modifyPushNicknames(List<EMModifyPushNickname> emModifyPushNickname) throws ApiException {
+        ApiResponse<EMModifyPushNicknamesResult> localVarResp = modifyPushNicknamesWithHttpInfo(emModifyPushNickname);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 批量修改用户推送昵称
+     * @param emModifyPushNickname  (optional)
+     * @return ApiResponse&lt;EMModifyPushNicknamesResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMModifyPushNicknamesResult> modifyPushNicknamesWithHttpInfo(List<EMModifyPushNickname> emModifyPushNickname) throws ApiException {
+        okhttp3.Call localVarCall = modifyPushNicknamesValidateBeforeCall(emModifyPushNickname, null);
+        Type localVarReturnType = new TypeToken<EMModifyPushNicknamesResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 批量修改用户推送昵称 (asynchronously)
+     * @param emModifyPushNickname  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call modifyPushNicknamesAsync(List<EMModifyPushNickname> emModifyPushNickname, final ApiCallback<EMModifyPushNicknamesResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = modifyPushNicknamesValidateBeforeCall(emModifyPushNickname, _callback);
+        Type localVarReturnType = new TypeToken<EMModifyPushNicknamesResult>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

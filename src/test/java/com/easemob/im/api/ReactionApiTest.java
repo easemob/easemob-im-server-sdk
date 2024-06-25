@@ -18,10 +18,7 @@ import com.easemob.im.api.model.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,7 +63,7 @@ public class ReactionApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
@@ -125,7 +122,7 @@ public class ReactionApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
@@ -195,7 +192,7 @@ public class ReactionApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
@@ -263,7 +260,7 @@ public class ReactionApiTest extends AbstractTest {
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
-        emCreateMessage.setTo(new ArrayList<String>(){{add(username2);}});
+        emCreateMessage.setTo(Collections.singletonList(username2));
         emCreateMessage.setType("txt");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");

@@ -74,9 +74,7 @@ public class PresenceApiTest extends AbstractTest {
         assertDoesNotThrow(() -> api.setUserPresenceStatus(username, resource, status, setUserPresenceStatus));
 
         EMGetMultipleUsersPresenceStatus emGetMultipleUsersPresenceStatus = new EMGetMultipleUsersPresenceStatus();
-        emGetMultipleUsersPresenceStatus.usernames(new ArrayList<String>() {{
-            add("jack");
-        }});
+        emGetMultipleUsersPresenceStatus.usernames(Collections.singletonList("jack"));
 
         EMGetMultipleUsersPresenceStatusResult result = assertDoesNotThrow(() -> api.getMultipleUserPresenceStatus(username, emGetMultipleUsersPresenceStatus));
         assertNotNull(result);
@@ -104,10 +102,7 @@ public class PresenceApiTest extends AbstractTest {
         Integer pageSize = 10;
 
         EMSubscribeMultipleUsersPresenceStatus subscribeMultipleUsersPresenceStatus = new EMSubscribeMultipleUsersPresenceStatus();
-        subscribeMultipleUsersPresenceStatus.setUsernames(new ArrayList<String>() {{
-            add(username2);
-            add(username3);
-        }});
+        subscribeMultipleUsersPresenceStatus.setUsernames(Arrays.asList(username2, username3));
 
         assertDoesNotThrow(() -> api.subscribeMultipleUsersPresenceStatus(username1, "36000", subscribeMultipleUsersPresenceStatus));
 
@@ -153,9 +148,8 @@ public class PresenceApiTest extends AbstractTest {
         String username2 = "jack";
         String expiry = "36000";
         EMSubscribeMultipleUsersPresenceStatus subscribeMultipleUsersPresenceStatus = new EMSubscribeMultipleUsersPresenceStatus();
-        subscribeMultipleUsersPresenceStatus.setUsernames(new ArrayList<String>() {{
-            add(username2);
-        }});
+        subscribeMultipleUsersPresenceStatus.setUsernames(Collections.singletonList(username2));
+
         EMSubscribeMultipleUsersPresenceStatusResult result = assertDoesNotThrow(() -> api.subscribeMultipleUsersPresenceStatus(username1, expiry, subscribeMultipleUsersPresenceStatus));
         assertNotNull(result);
         assertNotNull(result.getResult());
@@ -182,9 +176,8 @@ public class PresenceApiTest extends AbstractTest {
         String username2 = "jack3";
         String expiry = "36000";
         EMSubscribeMultipleUsersPresenceStatus subscribeMultipleUsersPresenceStatus = new EMSubscribeMultipleUsersPresenceStatus();
-        subscribeMultipleUsersPresenceStatus.setUsernames(new ArrayList<String>() {{
-            add(username2);
-        }});
+        subscribeMultipleUsersPresenceStatus.setUsernames(Collections.singletonList(username2));
+
         EMSubscribeMultipleUsersPresenceStatusResult result = assertDoesNotThrow(() -> api.subscribeMultipleUsersPresenceStatus(username1, expiry, subscribeMultipleUsersPresenceStatus));
         assertNotNull(result);
         assertNotNull(result.getResult());

@@ -598,4 +598,56 @@ public class UserApiTest extends AbstractTest {
         assertDoesNotThrow(() -> api.deleteUser(username));
     }
 
+    /**
+     * 批量修改用户推送昵称
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void modifyPushNicknamesTest() throws ApiException {
+        String username = randomUserName();
+        String username1 = randomUserName();
+        String password = "123456";
+        String pushNickname = "推送昵称";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser = new EMCreateUser();
+        createUser.setUsername(username);
+        createUser.setPassword(password);
+
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        emCreateUserList.add(createUser);
+        emCreateUserList.add(createUser1);
+
+        assertDoesNotThrow(() -> api.createUsers(emCreateUserList));
+
+        List<EMModifyPushNickname> modifyPushNicknames = new ArrayList<>();
+        EMModifyPushNickname modifyPushNickname = new EMModifyPushNickname();
+        modifyPushNickname.setUsername(username);
+        modifyPushNickname.setPushNickname(pushNickname);
+
+        EMModifyPushNickname modifyPushNickname1 = new EMModifyPushNickname();
+        modifyPushNickname1.setUsername(username1);
+        modifyPushNickname1.setPushNickname(pushNickname);
+
+        modifyPushNicknames.add(modifyPushNickname);
+        modifyPushNicknames.add(modifyPushNickname1);
+
+        EMModifyPushNicknamesResult result = assertDoesNotThrow(() -> api.modifyPushNicknames(modifyPushNicknames));
+        assertNotNull(result.getEntities());
+        assertEquals(2, result.getEntities().size());
+        assertEquals(pushNickname, result.getEntities().get(0).getPushNickname());
+        assertEquals(pushNickname, result.getEntities().get(1).getPushNickname());
+
+        EMGetUserResult getUserResult = assertDoesNotThrow(() -> api.getUser(username));
+        assertNotNull(getUserResult.getEntities());
+        assertEquals(pushNickname, getUserResult.getEntities().get(0).getNickname());
+
+        assertDoesNotThrow(() -> api.deleteUser(username));
+        assertDoesNotThrow(() -> api.deleteUser(username1));
+    }
+
 }
