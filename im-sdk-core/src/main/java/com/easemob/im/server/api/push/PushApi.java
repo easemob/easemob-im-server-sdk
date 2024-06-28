@@ -9,8 +9,11 @@ import com.easemob.im.server.api.push.offline.Setting;
 import com.easemob.im.server.exception.EMInvalidArgumentException;
 import com.easemob.im.server.model.EMConversationType;
 import com.easemob.im.server.model.EMNotificationType;
+import com.easemob.im.server.model.EMPushNickname;
 import com.easemob.im.server.model.EMUser;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * 推送API。
@@ -64,6 +67,32 @@ public class PushApi {
             return Mono.error(e);
         }
         return this.updateUserNickname.update(username, nickname);
+    }
+
+    /**
+     * 批量设置离线推送时显示的昵称。
+     * <p>
+     * API使用示例：
+     * <pre> {@code
+     * EMService service;
+     *
+     * try {
+     *     List<EMPushNickname> pushNicknames = new ArrayList<>();
+     *     pushNicknames.add(new EMPushNickname("user1", "推送昵称-1"));
+     *     pushNicknames.add(new EMPushNickname("user2", "推送昵称-2"));
+     *
+     *     service.push().updateUserNicknames(pushNicknames).block();
+     * } catch (EMException e) {
+     *     e.getErrorCode();
+     *     e.getMessage();
+     * }
+     * }</pre>
+     *
+     * @param pushNicknames 需要设置离线推送时显示的昵称列表，EMPushNickname 中包含用户名以及推送昵称，推送昵称长度不能超过 100 个字符。 支持以下字符集： \- 26 个小写英文字母 a-z； \- 26 个大写英文字母 A-Z； \- 10 个数字 0-9； \- 中文； \- 特殊字符。
+     * @return {@code Mono}
+     */
+    public Mono<Void> updateUserNicknames(List<EMPushNickname> pushNicknames) {
+        return this.updateUserNickname.update(pushNicknames);
     }
 
     /**

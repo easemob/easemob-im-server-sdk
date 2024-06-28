@@ -9,8 +9,7 @@ public class AbstractIT {
 
     public AbstractIT() {
         String realm = System.getenv("IM_REALM");
-//        String appkey = System.getenv("IM_APPKEY");
-        String appkey = "62242102#90";
+        String appkey = System.getenv("IM_APPKEY");
         String baseUri = System.getenv("IM_BASE_URI");
 
         EMProperties properties = null;
@@ -28,11 +27,8 @@ public class AbstractIT {
                     .build();
 
         } else {
-//            String clientId = System.getenv("IM_CLIENT_ID");
-//            String clientSecret = System.getenv("IM_CLIENT_SECRET");
-
-            String clientId = "YXA6a1jQXZnASMeiRB_z6Vo9wA";
-            String clientSecret = "YXA6LDJ_YHmppwgccxHNEZmyMnjWy1E";
+            String clientId = System.getenv("IM_CLIENT_ID");
+            String clientSecret = System.getenv("IM_CLIENT_SECRET");
 
             properties = EMProperties.builder()
                     .setRealm(EMProperties.Realm.EASEMOB_REALM)
