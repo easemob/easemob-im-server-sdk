@@ -72,6 +72,9 @@ public class GetGroupResponse {
         @JsonProperty("disabled")
         private boolean disabled;
 
+        @JsonProperty("avatar")
+        private String avatar;
+
         public EMGroup toEMGroup() {
             String[] groupMembers = Optional.ofNullable(affiliations).map(list -> list.stream()
                     .filter(affiliation -> StringUtil.isNullOrEmpty(affiliation.getOwner()))
@@ -81,7 +84,7 @@ public class GetGroupResponse {
             return new EMGroup(this.groupId, this.name, this.description, this.isPublic,
                     this.needApproveToJoin, this.memberCanInviteOthers,
                     this.owner, this.maxMembers, this.affiliationsCount, groupMembers, this.isMute,
-                    this.custom, this.disabled);
+                    this.custom, this.disabled, this.avatar);
         }
     }
 

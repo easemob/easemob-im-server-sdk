@@ -33,10 +33,12 @@ public class EMGroup extends EMEntity {
 
     private final boolean isDisabled;
 
+    private final String avatar;
+
     public EMGroup(String groupId, String name, String description, boolean isPublic,
             boolean needApproveToJoin, boolean canMemberInviteOthers,
             String owner, int maxMembers, int affiliationsCount, String[] groupMembers,
-            boolean isMute, String custom, boolean isDisabled) {
+            boolean isMute, String custom, boolean isDisabled, String avatar) {
         super(EntityType.GROUP);
         super.id(groupId);
         this.name = name;
@@ -51,6 +53,7 @@ public class EMGroup extends EMEntity {
         this.isMute = isMute;
         this.custom = custom;
         this.isDisabled = isDisabled;
+        this.avatar = avatar;
     }
 
     public static void validateGroupId(String groupId) {
@@ -133,5 +136,9 @@ public class EMGroup extends EMEntity {
 
     public boolean getIsDisabled() {
         return this.isDisabled;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 }

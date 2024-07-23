@@ -86,6 +86,7 @@ public class GroupIT extends AbstractIT {
     void testGroupCreatePrivateWithNeedVerify() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
+        String avatar = "http://localhost:8080/image.png";
 
         String randomMemberUsername = Utilities.randomUserName();
         List<String> members = new ArrayList<>();
@@ -96,10 +97,13 @@ public class GroupIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
-                        true, true, true, "custom", false).block(Utilities.IT_TIMEOUT));
+                        true, true, true, "custom", false, "http://localhost:8080/image.png").block(Utilities.IT_TIMEOUT));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
                 () -> this.service.group().listGroupMembers(groupId, 100, null)
                         .block(Utilities.IT_TIMEOUT));
+
+        EMGroup group = assertDoesNotThrow(() -> this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT));
+        assertEquals(avatar, group.getAvatar());
 
         List<String> groupMembers = groupMemberPage.getValues();
         if (groupMembers.size() != members.size()) {
@@ -160,7 +164,7 @@ public class GroupIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createPublicGroup(randomOwnerUsername, "politics", "group description", members, 200,
-                        true, "custom", true).block(Utilities.IT_TIMEOUT));
+                        true, "custom", true, "http://localhost:8080/image.png").block(Utilities.IT_TIMEOUT));
         EMPage<String> groupMemberPage = assertDoesNotThrow(
                 () -> this.service.group().listGroupMembers(groupId, 10, null)
                         .block(Utilities.IT_TIMEOUT));
@@ -191,7 +195,7 @@ public class GroupIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createLargePublicGroup(randomOwnerUsername, "politics", "group description", members, 5000,
-                        true, "custom", true).block(Utilities.IT_TIMEOUT));
+                        true, "custom", true, "http://localhost:8080/image.png").block(Utilities.IT_TIMEOUT));
         EMGroup group = assertDoesNotThrow(
                 () -> this.service.group().getGroup(groupId)
                         .block(Utilities.IT_TIMEOUT));
@@ -224,7 +228,7 @@ public class GroupIT extends AbstractIT {
         String customGroupId = String.valueOf(10000000 + random.nextInt(80000000));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createLargePublicGroup(customGroupId, randomOwnerUsername, "politics", "group description", members, 5000,
-                        true, "custom", true).block(Utilities.IT_TIMEOUT));
+                        true, "custom", true, "http://localhost:8080/image.png").block(Utilities.IT_TIMEOUT));
         EMGroup group = assertDoesNotThrow(
                 () -> this.service.group().getGroup(groupId)
                         .block(Utilities.IT_TIMEOUT));
@@ -258,7 +262,7 @@ public class GroupIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createLargePrivateGroup(randomOwnerUsername, "group", "group description", members, 5000,
-                        true, true, true, "custom", false).block(Utilities.IT_TIMEOUT));
+                        true, true, true, "custom", false, "http://localhost:8080/image.png").block(Utilities.IT_TIMEOUT));
         EMGroup group = assertDoesNotThrow(
                 () -> this.service.group().getGroup(groupId)
                         .block(Utilities.IT_TIMEOUT));
@@ -291,7 +295,7 @@ public class GroupIT extends AbstractIT {
         String customGroupId = String.valueOf(10000000 + random.nextInt(80000000));
         String groupId = assertDoesNotThrow(() -> this.service.group()
                 .createLargePrivateGroup(customGroupId, randomOwnerUsername, "group", "group description", members, 5000,
-                        true, true, true, "custom", false).block(Utilities.IT_TIMEOUT));
+                        true, true, true, "custom", false, "http://localhost:8080/image.png").block(Utilities.IT_TIMEOUT));
         EMGroup group = assertDoesNotThrow(
                 () -> this.service.group().getGroup(groupId)
                         .block(Utilities.IT_TIMEOUT));
@@ -622,6 +626,7 @@ public class GroupIT extends AbstractIT {
     void testGroupUpdate() {
         String randomOwnerUsername = Utilities.randomUserName();
         String randomPassword = Utilities.randomPassword();
+        String avatar = "http://localhost:8080/image.png";
 
         String randomMemberUsername = Utilities.randomUserName();
         List<String> members = new ArrayList<>();
@@ -635,7 +640,7 @@ public class GroupIT extends AbstractIT {
                 .createPrivateGroup(randomOwnerUsername, "group", "group description", members, 200,
                         true).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.group()
-                .updateGroup(groupId, settings -> settings.setMaxMembers(maxMembers).setPublic(true).setCustom("group custom"))
+                .updateGroup(groupId, settings -> settings.setMaxMembers(maxMembers).setPublic(true).setCustom("group custom").setAvatar(avatar))
                 .block(Utilities.IT_TIMEOUT));
         EMGroup group = assertDoesNotThrow(
                 () -> this.service.group().getGroup(groupId).block(Utilities.IT_TIMEOUT));
@@ -645,6 +650,8 @@ public class GroupIT extends AbstractIT {
         if (!group.getIsPublic()) {
             throw new RuntimeException(String.format("%s group public update fail", groupId));
         }
+        assertEquals(avatar, group.getAvatar());
+
         assertDoesNotThrow(
                 () -> this.service.group().destroyGroup(groupId).block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(

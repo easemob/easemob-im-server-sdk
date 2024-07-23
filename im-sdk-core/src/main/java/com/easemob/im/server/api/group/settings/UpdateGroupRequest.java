@@ -34,6 +34,9 @@ public class UpdateGroupRequest {
     @JsonProperty("public")
     private Boolean isPublic;
 
+    @JsonProperty("avatar")
+    private String avatar;
+
     public UpdateGroupRequest() {
         this.name = null;
         this.description = null;
@@ -107,6 +110,27 @@ public class UpdateGroupRequest {
         this.maxMembers = maxMembers;
         this.custom = custom;
         this.needVerify = needVerify;
+    }
+
+    @JsonCreator
+    public UpdateGroupRequest(@JsonProperty("name") String name,
+            @JsonProperty("description") String description,
+            @JsonProperty("allowinvites") Boolean canMemberInviteOthers,
+            @JsonProperty("invite_need_confirm") Boolean needInviteConfirm,
+            @JsonProperty("membersonly") Boolean needApproveToJoin,
+            @JsonProperty("maxusers") Integer maxMembers,
+            @JsonProperty("custom") String custom,
+            @JsonProperty("need_verify")  Boolean needVerify,
+            @JsonProperty("avatar")  String avatar) {
+        this.name = name;
+        this.description = description;
+        this.canMemberInviteOthers = canMemberInviteOthers;
+        this.needInviteConfirm = needInviteConfirm;
+        this.needApproveToJoin = needApproveToJoin;
+        this.maxMembers = maxMembers;
+        this.custom = custom;
+        this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     public String getName() {
@@ -188,5 +212,13 @@ public class UpdateGroupRequest {
     public UpdateGroupRequest setPublic(Boolean aPublic) {
         isPublic = aPublic;
         return this;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

@@ -167,7 +167,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().createPublicGroup("owner", "groupName", "description", members, 200, true, "custom", true).block();
+     *     String groupId = service.group().createPublicGroup("owner", "groupName", "description", members, 200, true, "custom", true, "http://localhost:8080/image.png").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -193,13 +193,15 @@ public class GroupApi {
      * @param needApproveToJoin 新成员加入需要管理员审批
      * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
      * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @param avatar 群组头像的 URL，最大长度为 1024 字符。
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createPublicGroup(String owner, String groupName, String description,
-            List<String> members, int maxMembers, boolean needApproveToJoin, String custom, boolean needVerify) {
-        return this.createGroup
-                .publicGroup(owner, groupName, description, members, maxMembers, needApproveToJoin, custom, needVerify);
+            List<String> members, int maxMembers, boolean needApproveToJoin, String custom,
+            boolean needVerify, String avatar) {
+        return this.createGroup.publicGroup(owner, groupName, description, members, maxMembers,
+                needApproveToJoin, custom, needVerify, avatar);
     }
 
     /**
@@ -215,7 +217,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().createLargePublicGroup("owner", "groupName", "description", , members, 200, true, "custom", true).block();
+     *     String groupId = service.group().createLargePublicGroup("owner", "groupName", "description", , members, 200, true, "custom", true, "http://localhost:8080/image.png").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -241,13 +243,15 @@ public class GroupApi {
      * @param needApproveToJoin 新成员加入需要管理员审批
      * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
      * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @param avatar 群组头像的 URL，最大长度为 1024 字符。
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createLargePublicGroup(String owner, String groupName, String description,
-            List<String> members, int maxMembers, boolean needApproveToJoin, String custom, boolean needVerify) {
-        return this.createGroup
-                .largePublicGroup(owner, groupName, description, members, maxMembers, needApproveToJoin, custom, needVerify);
+            List<String> members, int maxMembers, boolean needApproveToJoin, String custom,
+            boolean needVerify, String avatar) {
+        return this.createGroup.largePublicGroup(owner, groupName, description, members, maxMembers,
+                needApproveToJoin, custom, needVerify, avatar);
     }
 
     /**
@@ -262,7 +266,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().createPublicGroup("groupId", "owner", "groupName", "description", members, 200, true, "custom", true).block();
+     *     String groupId = service.group().createPublicGroup("groupId", "owner", "groupName", "description", members, 200, true, "custom", true, "http://localhost:8080/image.png").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -289,13 +293,14 @@ public class GroupApi {
      * @param needApproveToJoin 新成员加入需要管理员审批
      * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
      * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @param avatar 群组头像的 URL，最大长度为 1024 字符
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createPublicGroup(String groupId, String owner, String groupName, String description,
-            List<String> members, int maxMembers, boolean needApproveToJoin, String custom, boolean needVerify) {
+            List<String> members, int maxMembers, boolean needApproveToJoin, String custom, boolean needVerify, String avatar) {
         return this.createGroup.publicGroup(groupId, owner, groupName, description, members,
-                maxMembers, needApproveToJoin, custom, needVerify);
+                maxMembers, needApproveToJoin, custom, needVerify, avatar);
     }
 
     /**
@@ -312,7 +317,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().createLargePublicGroup("groupId", "owner", "groupName", "description", members, 200, true, "custom", true).block();
+     *     String groupId = service.group().createLargePublicGroup("groupId", "owner", "groupName", "description", members, 200, true, "custom", true, "http://localhost:8080/image.png").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -339,13 +344,14 @@ public class GroupApi {
      * @param needApproveToJoin 新成员加入需要管理员审批
      * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
      * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @param avatar 群组头像的 URL，最大长度为 1024 字符
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createLargePublicGroup(String groupId, String owner, String groupName, String description,
-            List<String> members, int maxMembers, boolean needApproveToJoin, String custom, boolean needVerify) {
+            List<String> members, int maxMembers, boolean needApproveToJoin, String custom, boolean needVerify, String avatar) {
         return this.createGroup.largePublicGroup(groupId, owner, groupName, description, members,
-                maxMembers, needApproveToJoin, custom, needVerify);
+                maxMembers, needApproveToJoin, custom, needVerify, avatar);
     }
 
     /**
@@ -454,7 +460,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().privateGroup("owner", "groupName", "description", members, 200, true, true, true, "custom", true).block();
+     *     String groupId = service.group().privateGroup("owner", "groupName", "description", members, 200, true, true, true, "custom", true, "http://localhost:8080/image.png").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -471,14 +477,15 @@ public class GroupApi {
      * @param needApproveToJoin 新成员加入是否需要管理员审批
      * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
      * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @param avatar 群组头像的 URL，最大长度为 1024 字符
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createPrivateGroup(String owner, String groupName, String description,
             List<String> members, int maxMembers, boolean canMemberInvite, boolean needApproveToJoin,
-            boolean needInviteConfirm, String custom, boolean needVerify) {
-        return this.createGroup
-                .privateGroup(owner, groupName, description, members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom, needVerify);
+            boolean needInviteConfirm, String custom, boolean needVerify, String avatar) {
+        return this.createGroup.privateGroup(owner, groupName, description, members, maxMembers,
+                canMemberInvite, needInviteConfirm, needApproveToJoin, custom, needVerify, avatar);
     }
 
     /**
@@ -492,7 +499,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().createLargePrivateGroup("owner", "groupName", "description", members, 200, true, true, true, "custom", true).block();
+     *     String groupId = service.group().createLargePrivateGroup("owner", "groupName", "description", members, 200, true, true, true, "custom", true, "http://localhost:8080/image.png").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -509,15 +516,16 @@ public class GroupApi {
      * @param needApproveToJoin 新成员加入是否需要管理员审批
      * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
      * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @param avatar 群组头像的 URL，最大长度为 1024 字符
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createLargePrivateGroup(String owner, String groupName, String description,
             List<String> members, int maxMembers, boolean canMemberInvite, boolean needApproveToJoin,
-            boolean needInviteConfirm, String custom, boolean needVerify) {
+            boolean needInviteConfirm, String custom, boolean needVerify, String avatar) {
         return this.createGroup.largePrivateGroup(owner, groupName, description, members,
                 maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom,
-                needVerify);
+                needVerify, avatar);
     }
 
     /**
@@ -530,7 +538,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().privateGroup("groupId", "owner", "groupName", "description", members, 200, true, true, true, "custom", true).block();
+     *     String groupId = service.group().privateGroup("groupId", "owner", "groupName", "description", members, 200, true, true, true, "custom", true, "http://localhost:8080/image.png").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -548,14 +556,16 @@ public class GroupApi {
      * @param needApproveToJoin 新成员加入是否需要管理员审批
      * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
      * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @param avatar 群组头像的 URL，最大长度为 1024 字符
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createPrivateGroup(String groupId, String owner, String groupName, String description,
             List<String> members, int maxMembers, boolean canMemberInvite, boolean needApproveToJoin,
-            boolean needInviteConfirm, String custom, boolean needVerify) {
-        return this.createGroup
-                .privateGroup(groupId, owner, groupName, description, members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom, needVerify);
+            boolean needInviteConfirm, String custom, boolean needVerify, String avatar) {
+        return this.createGroup.privateGroup(groupId, owner, groupName, description, members,
+                maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom,
+                needVerify, avatar);
     }
 
     /**
@@ -570,7 +580,7 @@ public class GroupApi {
      * List<String> members = new ArrayList<>();
      * members.add("userA");
      * try {
-     *     String groupId = service.group().createLargePrivateGroup("groupId", "owner", "groupName", "description", members, 200, true, true, true, "custom", true).block();
+     *     String groupId = service.group().createLargePrivateGroup("groupId", "owner", "groupName", "description", members, 200, true, true, true, "custom", true, "http://localhost:8080/image.png").block();
      * } catch (EMException e) {
      *     e.getErrorCode();
      *     e.getMessage();
@@ -588,14 +598,16 @@ public class GroupApi {
      * @param needApproveToJoin 新成员加入是否需要管理员审批
      * @param custom 群组扩展信息，例如可以给群组添加业务相关的标记，最大长度为 1024 字符
      * @param needVerify 是否审核群名称（付费功能，需联系商务开通）
+     * @param avatar 群组头像的 URL，最大长度为 1024 字符
      * @return 群id或错误
      * @see <a href="http://docs-im.easemob.com/im/server/basics/group#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BE%A4%E7%BB%84">创建群</a>
      */
     public Mono<String> createLargePrivateGroup(String groupId, String owner, String groupName, String description,
             List<String> members, int maxMembers, boolean canMemberInvite, boolean needApproveToJoin,
-            boolean needInviteConfirm, String custom, boolean needVerify) {
-        return this.createGroup
-                .largePrivateGroup(groupId, owner, groupName, description, members, maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom, needVerify);
+            boolean needInviteConfirm, String custom, boolean needVerify, String avatar) {
+        return this.createGroup.largePrivateGroup(groupId, owner, groupName, description, members,
+                maxMembers, canMemberInvite, needInviteConfirm, needApproveToJoin, custom,
+                needVerify, avatar);
     }
 
     /**

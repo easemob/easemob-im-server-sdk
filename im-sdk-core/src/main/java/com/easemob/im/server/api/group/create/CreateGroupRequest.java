@@ -49,6 +49,9 @@ public class CreateGroupRequest {
         this.needVerify = true;
     }
 
+    @JsonProperty("avatar")
+    private String avatar;
+
     @SuppressWarnings("java:S107")
     public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
@@ -80,7 +83,7 @@ public class CreateGroupRequest {
 
     public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
-            boolean needApproveToJoin, String custom, boolean needVerify) {
+            boolean needApproveToJoin, String custom, boolean needVerify, String avatar) {
         this.groupName = groupName;
         this.description = description;
         this.isPublic = isPublic;
@@ -91,11 +94,12 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     public CreateGroupRequest(String groupName, String description, boolean isPublic, String scale, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
-            boolean needApproveToJoin, String custom, boolean needVerify) {
+            boolean needApproveToJoin, String custom, boolean needVerify, String avatar) {
         this.groupName = groupName;
         this.description = description;
         this.isPublic = isPublic;
@@ -107,12 +111,13 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     public CreateGroupRequest(String groupId, String groupName, String description,
             boolean isPublic, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
-            boolean needApproveToJoin, String custom, boolean needVerify) {
+            boolean needApproveToJoin, String custom, boolean needVerify, String avatar) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.description = description;
@@ -124,12 +129,13 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     public CreateGroupRequest(String groupId, String groupName, String description,
             boolean isPublic, String scale, String owner, List<String> members, int maxMembers,
             boolean memberCanInviteOthers, boolean needApproveToJoin, String custom,
-            boolean needVerify) {
+            boolean needVerify, String avatar) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.description = description;
@@ -142,6 +148,7 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     @SuppressWarnings("java:S107")
@@ -164,7 +171,7 @@ public class CreateGroupRequest {
     public CreateGroupRequest(String groupName, String description, boolean isPublic, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
             boolean needInviteConfirm, boolean needApproveToJoin, String custom,
-            boolean needVerify) {
+            boolean needVerify, String avatar) {
         this.groupName = groupName;
         this.description = description;
         this.isPublic = isPublic;
@@ -176,13 +183,14 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     @SuppressWarnings("java:S107")
     public CreateGroupRequest(String groupName, String description, boolean isPublic, String scale,
             String owner, List<String> members, int maxMembers, boolean memberCanInviteOthers,
             boolean needInviteConfirm, boolean needApproveToJoin, String custom,
-            boolean needVerify) {
+            boolean needVerify, String avatar) {
         this.groupName = groupName;
         this.description = description;
         this.isPublic = isPublic;
@@ -195,13 +203,14 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     @SuppressWarnings("java:S107")
     public CreateGroupRequest(String groupId, String groupName, String description, boolean isPublic, String owner,
             List<String> members, int maxMembers, boolean memberCanInviteOthers,
             boolean needInviteConfirm, boolean needApproveToJoin, String custom,
-            boolean needVerify) {
+            boolean needVerify, String avatar) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.description = description;
@@ -214,12 +223,13 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     public CreateGroupRequest(String groupId, String groupName, String description,
             boolean isPublic, String scale, String owner, List<String> members, int maxMembers,
             boolean memberCanInviteOthers, boolean needInviteConfirm, boolean needApproveToJoin,
-            String custom, boolean needVerify) {
+            String custom, boolean needVerify, String avatar) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.description = description;
@@ -233,6 +243,7 @@ public class CreateGroupRequest {
         this.needApproveToJoin = needApproveToJoin;
         this.custom = custom;
         this.needVerify = needVerify;
+        this.avatar = avatar;
     }
 
     public String getGroupId() {
@@ -281,5 +292,9 @@ public class CreateGroupRequest {
 
     public String getCustom() {
         return custom;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 }
