@@ -18,6 +18,7 @@ import com.easemob.im.api.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -261,6 +262,51 @@ public class ContactApiTest extends AbstractTest {
         assertNotNull(setContactNoteResult);
         assertNotNull(setContactNoteResult.getStatus());
         assertEquals("ok", setContactNoteResult.getStatus());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 导入好友列表
+     *
+     * 你可以调用该接口导入好友列表。文档介绍：https://doc.easemob.com/document/server-side/user_relationship.html#%E5%AF%BC%E5%85%A5%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void importContactListTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMImportContactList emImportContactList = new EMImportContactList();
+        emImportContactList.setUsernames(Arrays.asList(username2));
+
+        EMImportContactListResult response = assertDoesNotThrow(() -> api.importContactList(username1, true, emImportContactList));
+        assertNotNull(response);
+        assertNotNull(response.getData());
+        assertNotNull(response.getData().getSuccess());
+        assertEquals(1, response.getData().getSuccess().size());
+
+        EMGetAllContactListResult allContactListResult = assertDoesNotThrow(() -> api.getAllContactList(username1));
+        assertNotNull(allContactListResult);
+        assertNotNull(allContactListResult.getData());
+        assertEquals(username2, allContactListResult.getData().get(0));
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));

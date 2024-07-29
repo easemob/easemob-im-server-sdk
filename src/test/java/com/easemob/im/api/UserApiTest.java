@@ -62,7 +62,7 @@ public class UserApiTest extends AbstractTest {
         EMCreateUser createUser3 = new EMCreateUser();
         createUser3.setUsername(username3);
         createUser3.setPassword(password);
-        createUser2.setNickname(pushNickname);
+        createUser3.setNickname(pushNickname);
 
         emCreateUserList.add(createUser1);
         emCreateUserList.add(createUser2);
@@ -156,6 +156,35 @@ public class UserApiTest extends AbstractTest {
         EMForceUserLogoutResult result = assertDoesNotThrow(() -> api.forceUserLogout(username));
         assertNotNull(result.getData());
         assertEquals(true, result.getData().getResult());
+        assertDoesNotThrow(() -> api.deleteUser(username));
+    }
+
+    /**
+     * 强制用户从单设备下线
+     *
+     * 如果用户在多个设备上登录，你可以调用该接口强制其在某一台设备上下线。若强制用户从所有设备下线，可以调用强制用户下线接口。文档介绍：https://doc.easemob.com/document/server-side/account_system.html#%E5%BC%BA%E5%88%B6%E7%94%A8%E6%88%B7%E4%BB%8E%E5%8D%95%E8%AE%BE%E5%A4%87%E4%B8%8B%E7%BA%BF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void forceUserLogoutFromSingleDeviceTest() throws ApiException {
+        String username = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser = new EMCreateUser();
+        createUser.setUsername(username);
+        createUser.setPassword(password);
+        emCreateUserList.add(createUser);
+
+        assertDoesNotThrow(() -> api.createUsers(emCreateUserList));
+
+        String resourceId = "ios_11_22";
+
+        EMForceUserLogoutFromSingleDeviceResult response = assertDoesNotThrow(() -> api.forceUserLogoutFromSingleDevice(username, resourceId));
+        assertNotNull(response.getData());
+        assertEquals(true, response.getData().getResult());
+
         assertDoesNotThrow(() -> api.deleteUser(username));
     }
 
@@ -599,7 +628,7 @@ public class UserApiTest extends AbstractTest {
     }
 
     /**
-     * 批量修改用户推送昵称
+     * 批量修改用户推送昵称。文档介绍：https://doc.easemob.com/document/server-side/push.html#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%A6%BB%E7%BA%BF%E6%8E%A8%E9%80%81%E6%97%B6%E6%98%BE%E7%A4%BA%E7%9A%84%E6%98%B5%E7%A7%B0
      *
      * @throws ApiException if the Api call fails
      */

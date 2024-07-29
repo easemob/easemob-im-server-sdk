@@ -525,6 +525,8 @@ public class GroupApiTest extends AbstractTest {
         String username1 = randomUserName();
         String username2 = randomUserName();
         String password = "123456";
+        String groupAvatar1 = "https://example.com/avatar1.png";
+        String groupAvatar2 = "https://example.com/avatar2.png";
 
         List<EMCreateUser> emCreateUserList = new ArrayList<>();
         EMCreateUser createUser1 = new EMCreateUser();
@@ -543,6 +545,7 @@ public class GroupApiTest extends AbstractTest {
         EMCreateGroup createGroup = new EMCreateGroup();
         createGroup.setOwner(username1);
         createGroup.setGroupname("test-group");
+        createGroup.setAvatar(groupAvatar1);
         createGroup.setDescription("元梦之星");
         createGroup.setMaxusers(200);
         createGroup.setMembers(Arrays.asList(username2));
@@ -555,6 +558,32 @@ public class GroupApiTest extends AbstractTest {
         assertNotNull(createGroupResult.getData().getGroupid());
 
         String groupId = createGroupResult.getData().getGroupid();
+
+        EMGetGroupInfoResult groupInfoResult1 =
+                assertDoesNotThrow(() -> api.getGroupInfo(groupId));
+        assertNotNull(groupInfoResult1);
+        assertNotNull(groupInfoResult1.getData());
+        assertNotNull(groupInfoResult1.getData().get(0));
+        assertEquals(groupAvatar1, groupInfoResult1.getData().get(0).getAvatar());
+
+        EMModifyGroup modifyGroup = new EMModifyGroup();
+        modifyGroup.setAvatar(groupAvatar2);
+
+        assertDoesNotThrow(() -> api.modifyGroup(groupId, modifyGroup));
+
+        EMGetGroupInfoResult groupInfoResult2 =
+                assertDoesNotThrow(() -> api.getGroupInfo(groupId));
+        assertNotNull(groupInfoResult2);
+        assertNotNull(groupInfoResult2.getData());
+        assertNotNull(groupInfoResult2.getData().get(0));
+        assertEquals(groupAvatar2, groupInfoResult2.getData().get(0).getAvatar());
+
+        EMGetUserJoinedGroupsResult getUserJoinedGroupsResult =
+                assertDoesNotThrow(() -> api.getUserJoinedGroups(username1, 0, 1));
+        assertNotNull(getUserJoinedGroupsResult);
+        assertNotNull(getUserJoinedGroupsResult.getEntities());
+        assertNotNull(getUserJoinedGroupsResult.getEntities().get(0));
+        assertEquals(groupAvatar2, getUserJoinedGroupsResult.getEntities().get(0).getAvatar());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
         assertDoesNotThrow(() -> userApi.deleteUser(username2));

@@ -664,4 +664,125 @@ public class ContactApi {
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
+
+    /**
+     * Build call for importContactList
+     * @param username  (required)
+     * @param isSendNotice 好友导入后是否向 SDK 发送通知：- true：是；-（默认）false：否 (optional)
+     * @param emImportContactList  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call importContactListCall(String username, Boolean isSendNotice, EMImportContactList emImportContactList, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emImportContactList;
+
+        // create path and map variables
+        String localVarPath = "/users/{username}/contacts/import"
+                .replace("{" + "username" + "}", localVarApiClient.escapeString(username.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (isSendNotice != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("isSendNotice", isSendNotice));
+        }
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call importContactListValidateBeforeCall(String username, Boolean isSendNotice, EMImportContactList emImportContactList, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'username' is set
+        if (username == null) {
+            throw new ApiException("Missing the required parameter 'username' when calling importContactList(Async)");
+        }
+
+        return importContactListCall(username, isSendNotice, emImportContactList, _callback);
+
+    }
+
+    /**
+     * 导入好友列表
+     * 你可以调用该接口导入好友列表。文档介绍：https://doc.easemob.com/document/server-side/user_relationship.html#%E5%AF%BC%E5%85%A5%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8
+     * @param username  (required)
+     * @param isSendNotice 好友导入后是否向 SDK 发送通知：- true：是；-（默认）false：否 (optional)
+     * @param emImportContactList  (optional)
+     * @return EMImportContactListResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMImportContactListResult importContactList(String username, Boolean isSendNotice, EMImportContactList emImportContactList) throws ApiException {
+        ApiResponse<EMImportContactListResult> localVarResp = importContactListWithHttpInfo(username, isSendNotice, emImportContactList);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 导入好友列表
+     * 你可以调用该接口导入好友列表。文档介绍：https://doc.easemob.com/document/server-side/user_relationship.html#%E5%AF%BC%E5%85%A5%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8
+     * @param username  (required)
+     * @param isSendNotice 好友导入后是否向 SDK 发送通知：- true：是；-（默认）false：否 (optional)
+     * @param emImportContactList  (optional)
+     * @return ApiResponse&lt;EMImportContactListResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMImportContactListResult> importContactListWithHttpInfo(String username, Boolean isSendNotice, EMImportContactList emImportContactList) throws ApiException {
+        okhttp3.Call localVarCall = importContactListValidateBeforeCall(username, isSendNotice, emImportContactList, null);
+        Type localVarReturnType = new TypeToken<EMImportContactListResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 导入好友列表 (asynchronously)
+     * 你可以调用该接口导入好友列表。文档介绍：https://doc.easemob.com/document/server-side/user_relationship.html#%E5%AF%BC%E5%85%A5%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8
+     * @param username  (required)
+     * @param isSendNotice 好友导入后是否向 SDK 发送通知：- true：是；-（默认）false：否 (optional)
+     * @param emImportContactList  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call importContactListAsync(String username, Boolean isSendNotice, EMImportContactList emImportContactList, final ApiCallback<EMImportContactListResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = importContactListValidateBeforeCall(username, isSendNotice, emImportContactList, _callback);
+        Type localVarReturnType = new TypeToken<EMImportContactListResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }

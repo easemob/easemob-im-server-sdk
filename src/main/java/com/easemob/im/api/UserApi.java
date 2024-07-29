@@ -1954,7 +1954,7 @@ public class UserApi {
     }
 
     /**
-     * 批量修改用户推送昵称
+     * 批量修改用户推送昵称。文档介绍：https://doc.easemob.com/document/server-side/push.html#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%A6%BB%E7%BA%BF%E6%8E%A8%E9%80%81%E6%97%B6%E6%98%BE%E7%A4%BA%E7%9A%84%E6%98%B5%E7%A7%B0
      * @param emModifyPushNickname  (optional)
      * @return EMModifyPushNicknamesResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -1966,7 +1966,7 @@ public class UserApi {
     }
 
     /**
-     * 批量修改用户推送昵称
+     * 批量修改用户推送昵称。 文档介绍：https://doc.easemob.com/document/server-side/push.html#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%A6%BB%E7%BA%BF%E6%8E%A8%E9%80%81%E6%97%B6%E6%98%BE%E7%A4%BA%E7%9A%84%E6%98%B5%E7%A7%B0
      * @param emModifyPushNickname  (optional)
      * @return ApiResponse&lt;EMModifyPushNicknamesResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -1979,7 +1979,7 @@ public class UserApi {
     }
 
     /**
-     * 批量修改用户推送昵称 (asynchronously)
+     * 批量修改用户推送昵称 (asynchronously)。 文档介绍：https://doc.easemob.com/document/server-side/push.html#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%A6%BB%E7%BA%BF%E6%8E%A8%E9%80%81%E6%97%B6%E6%98%BE%E7%A4%BA%E7%9A%84%E6%98%B5%E7%A7%B0
      * @param emModifyPushNickname  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -1990,6 +1990,124 @@ public class UserApi {
 
         okhttp3.Call localVarCall = modifyPushNicknamesValidateBeforeCall(emModifyPushNickname, _callback);
         Type localVarReturnType = new TypeToken<EMModifyPushNicknamesResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for forceUserLogoutFromSingleDevice
+     * @param username  (required)
+     * @param resourceId  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call forceUserLogoutFromSingleDeviceCall(String username, String resourceId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/users/{username}/disconnect/{resourceId}"
+                .replace("{" + "username" + "}", localVarApiClient.escapeString(username.toString()))
+                .replace("{" + "resourceId" + "}", localVarApiClient.escapeString(resourceId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call forceUserLogoutFromSingleDeviceValidateBeforeCall(String username, String resourceId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'username' is set
+        if (username == null) {
+            throw new ApiException("Missing the required parameter 'username' when calling forceUserLogoutFromSingleDevice(Async)");
+        }
+
+        // verify the required parameter 'resourceId' is set
+        if (resourceId == null) {
+            throw new ApiException("Missing the required parameter 'resourceId' when calling forceUserLogoutFromSingleDevice(Async)");
+        }
+
+        return forceUserLogoutFromSingleDeviceCall(username, resourceId, _callback);
+
+    }
+
+    /**
+     * 强制用户从单设备下线
+     * 如果用户在多个设备上登录，你可以调用该接口强制其在某一台设备上下线。若强制用户从所有设备下线，可以调用强制用户下线接口。文档介绍：https://doc.easemob.com/document/server-side/account_system.html#%E5%BC%BA%E5%88%B6%E7%94%A8%E6%88%B7%E4%BB%8E%E5%8D%95%E8%AE%BE%E5%A4%87%E4%B8%8B%E7%BA%BF
+     * @param username  (required)
+     * @param resourceId  (required)
+     * @return EMForceUserLogoutFromSingleDeviceResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMForceUserLogoutFromSingleDeviceResult forceUserLogoutFromSingleDevice(String username, String resourceId) throws ApiException {
+        ApiResponse<EMForceUserLogoutFromSingleDeviceResult> localVarResp = forceUserLogoutFromSingleDeviceWithHttpInfo(username, resourceId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 强制用户从单设备下线
+     * 如果用户在多个设备上登录，你可以调用该接口强制其在某一台设备上下线。若强制用户从所有设备下线，可以调用强制用户下线接口。文档介绍：https://doc.easemob.com/document/server-side/account_system.html#%E5%BC%BA%E5%88%B6%E7%94%A8%E6%88%B7%E4%BB%8E%E5%8D%95%E8%AE%BE%E5%A4%87%E4%B8%8B%E7%BA%BF
+     * @param username  (required)
+     * @param resourceId  (required)
+     * @return ApiResponse&lt;EMForceUserLogoutFromSingleDeviceResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMForceUserLogoutFromSingleDeviceResult> forceUserLogoutFromSingleDeviceWithHttpInfo(String username, String resourceId) throws ApiException {
+        okhttp3.Call localVarCall = forceUserLogoutFromSingleDeviceValidateBeforeCall(username, resourceId, null);
+        Type localVarReturnType = new TypeToken<EMForceUserLogoutFromSingleDeviceResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 强制用户从单设备下线 (asynchronously)
+     * 如果用户在多个设备上登录，你可以调用该接口强制其在某一台设备上下线。若强制用户从所有设备下线，可以调用强制用户下线接口。文档介绍：https://doc.easemob.com/document/server-side/account_system.html#%E5%BC%BA%E5%88%B6%E7%94%A8%E6%88%B7%E4%BB%8E%E5%8D%95%E8%AE%BE%E5%A4%87%E4%B8%8B%E7%BA%BF
+     * @param username  (required)
+     * @param resourceId  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call forceUserLogoutFromSingleDeviceAsync(String username, String resourceId, final ApiCallback<EMForceUserLogoutFromSingleDeviceResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = forceUserLogoutFromSingleDeviceValidateBeforeCall(username, resourceId, _callback);
+        Type localVarReturnType = new TypeToken<EMForceUserLogoutFromSingleDeviceResult>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
