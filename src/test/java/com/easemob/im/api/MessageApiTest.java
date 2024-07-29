@@ -1692,6 +1692,73 @@ public class MessageApiTest extends AbstractTest {
     }
 
     /**
+     * 发送聊天室全局广播消息
+     *
+     * 可通过该接口向 app 下的所有活跃聊天室（聊天室至少存在一个成员，而且曾经至少发送过一条消息）发送广播消息，支持所有消息类型。。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%A8%E5%B1%80%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendRoomBroadcastMessagesTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> roomApi.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+
+        EMCreateChatroomBroadcastMessage emCreateChatroomBroadcastMessage = new EMCreateChatroomBroadcastMessage();
+        emCreateChatroomBroadcastMessage.setFrom(username1);
+        emCreateChatroomBroadcastMessage.setChatroomMsgLevel("normal");
+        emCreateChatroomBroadcastMessage.setExt(ext);
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        messageContent.setType("txt");
+        emCreateChatroomBroadcastMessage.setMsg(messageContent);
+
+        EMSendMessageResult response = assertDoesNotThrow(() ->messageApi.sendRoomBroadcastMessages(emCreateChatroomBroadcastMessage));
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            roomApi.deleteRoom(roomId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
      * 发送单聊文本消息
      *
      * 给用户发送消息。文档介绍：https://doc.easemob.com/document/server-side/message_single.html#%E5%8F%91%E9%80%81%E6%96%87%E6%9C%AC%E6%B6%88%E6%81%AF

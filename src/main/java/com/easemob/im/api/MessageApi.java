@@ -1487,4 +1487,107 @@ public class MessageApi {
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
+
+    /**
+     * Build call for sendRoomBroadcastMessages
+     * @param emCreateChatroomBroadcastMessage  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call sendRoomBroadcastMessagesCall(EMCreateChatroomBroadcastMessage emCreateChatroomBroadcastMessage, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emCreateChatroomBroadcastMessage;
+
+        // create path and map variables
+        String localVarPath = "/messages/chatrooms/broadcast";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call sendRoomBroadcastMessagesValidateBeforeCall(EMCreateChatroomBroadcastMessage emCreateChatroomBroadcastMessage, final ApiCallback _callback) throws ApiException {
+        return sendRoomBroadcastMessagesCall(emCreateChatroomBroadcastMessage, _callback);
+
+    }
+
+    /**
+     * 发送聊天室全局广播消息
+     * 可通过该接口向 app 下的所有活跃聊天室（聊天室至少存在一个成员，而且曾经至少发送过一条消息）发送广播消息，支持所有消息类型。。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%A8%E5%B1%80%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF
+     * @param emCreateChatroomBroadcastMessage  (optional)
+     * @return EMSendMessageResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMSendMessageResult sendRoomBroadcastMessages(EMCreateChatroomBroadcastMessage emCreateChatroomBroadcastMessage) throws ApiException {
+        ApiResponse<EMSendMessageResult> localVarResp = sendRoomBroadcastMessagesWithHttpInfo(emCreateChatroomBroadcastMessage);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 发送聊天室全局广播消息
+     * 可通过该接口向 app 下的所有活跃聊天室（聊天室至少存在一个成员，而且曾经至少发送过一条消息）发送广播消息，支持所有消息类型。。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%A8%E5%B1%80%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF
+     * @param emCreateChatroomBroadcastMessage  (optional)
+     * @return ApiResponse&lt;EMSendMessageResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMSendMessageResult> sendRoomBroadcastMessagesWithHttpInfo(EMCreateChatroomBroadcastMessage emCreateChatroomBroadcastMessage) throws ApiException {
+        okhttp3.Call localVarCall = sendRoomBroadcastMessagesValidateBeforeCall(emCreateChatroomBroadcastMessage, null);
+        Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 发送聊天室全局广播消息 (asynchronously)
+     * 可通过该接口向 app 下的所有活跃聊天室（聊天室至少存在一个成员，而且曾经至少发送过一条消息）发送广播消息，支持所有消息类型。。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%A8%E5%B1%80%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF
+     * @param emCreateChatroomBroadcastMessage  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call sendRoomBroadcastMessagesAsync(EMCreateChatroomBroadcastMessage emCreateChatroomBroadcastMessage, final ApiCallback<EMSendMessageResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = sendRoomBroadcastMessagesValidateBeforeCall(emCreateChatroomBroadcastMessage, _callback);
+        Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }
