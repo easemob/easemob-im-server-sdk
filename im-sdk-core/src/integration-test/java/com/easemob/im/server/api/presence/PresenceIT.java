@@ -66,6 +66,8 @@ public class PresenceIT extends AbstractIT {
                 .block(Utilities.IT_TIMEOUT));
         assertDoesNotThrow(() -> this.service.user().create(randomUsername2, randomPassword)
                 .block(Utilities.IT_TIMEOUT));
+        assertDoesNotThrow(() -> this.service.user().create(randomUsername3, randomPassword)
+                .block(Utilities.IT_TIMEOUT));
 
         assertDoesNotThrow(() -> this.service.presence().setUserStatus(randomUsername1, resource, status, ext)
                 .block(Utilities.IT_TIMEOUT));
