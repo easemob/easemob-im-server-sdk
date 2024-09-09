@@ -8,6 +8,7 @@ import com.easemob.im.server.api.message.MessageApi;
 import com.easemob.im.server.api.metadata.MetadataApi;
 import com.easemob.im.server.api.moderation.ModerationApi;
 import com.easemob.im.server.api.mute.MuteApi;
+import com.easemob.im.server.api.presence.PresenceApi;
 import com.easemob.im.server.api.push.PushApi;
 import com.easemob.im.server.api.token.TokenApi;
 import com.easemob.im.server.api.room.RoomApi;
@@ -50,6 +51,8 @@ public class EMService {
 
     private final MuteApi  muteApi;
 
+    private final PresenceApi presenceApi;
+
     public EMService(EMProperties properties) {
         log.debug("EMService properties: {}", properties);
         this.context = new DefaultContext(properties);
@@ -66,6 +69,7 @@ public class EMService {
         this.pushApi = new PushApi(this.context);
         this.moderationApi = new ModerationApi(this.context);
         this.muteApi = new MuteApi(this.context);
+        this.presenceApi = new PresenceApi(this.context);
     }
 
     public Context getContext() {
@@ -264,5 +268,21 @@ public class EMService {
      */
     public MuteApi mute() {
         return this.muteApi;
+    }
+
+    /**
+     * Presence用户在线状态API.
+     * 支持：<br>
+     * - 设置用户在线状态信息<br>
+     * - 批量订阅在线状态<br>
+     * - 批量获取在线状态信息<br>
+     * - 查询单个群组的在线成员数量<br>
+     * - 取消订阅多个用户的在线状态<br>
+     * - 查询订阅列表<br>
+     *
+     * @return {@code MuteApi}
+     */
+    public PresenceApi presence() {
+        return this.presenceApi;
     }
 }
