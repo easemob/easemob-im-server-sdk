@@ -2295,6 +2295,122 @@ public class MessageApiTest extends AbstractTest {
     }
 
     /**
+     * 根据消息 ID 单向删除单聊漫游消息
+     *
+     * 根据消息 ID 单向删除指定用户的单聊会话的一条或多条漫游消息。调用该接口后，该用户的指定漫游消息会从服务器和本地删除，该用户无法从环信服务端拉取到这些消息。若该会话的全部漫游消息均被删除了，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_delete.html#%E6%A0%B9%E6%8D%AE%E6%B6%88%E6%81%AF-id-%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E5%8D%95%E8%81%8A%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void oneWayClearUserRoamingMessagesByMsgIdTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        emCreateMessage.setBody(messageContent);
+
+        EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(response.getData());
+        Map<String, String> data = (Map<String, String>) response.getData();
+        String messageId = data.get(username2);
+
+        EMOneWayClearUserRoamingMessagesByMsgIdResult result = messageApi.oneWayClearUserRoamingMessagesByMsgId(username1, username2, messageId, true);
+        assertNotNull(result.getRequestStatusCode());
+        assertEquals("ok", result.getRequestStatusCode());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 根据消息 ID 单向删除群聊漫游消息
+     *
+     * 根据消息 ID 单向删除指定用户的某个群聊会话的一条或多条漫游消息。调用该接口后，该用户的指定漫游消息会从服务器和本地删除，该用户无法从环信服务端拉取到这些消息。若删除了该群聊会话的全部漫游消息，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取这些漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_delete.html#%E6%A0%B9%E6%8D%AE%E6%B6%88%E6%81%AF-id-%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E7%BE%A4%E8%81%8A%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void oneWayClearGroupRoamingMessagesByMsgIdTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(groupId));
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        emCreateMessage.setBody(messageContent);
+
+        EMSendMessageResult response = messageApi.sendMessagesToGroup(emCreateMessage);
+        assertNotNull(response.getData());
+        Map<String, String> data = (Map<String, String>) response.getData();
+        String messageId = data.get(groupId);
+
+        EMOneWayClearGroupRoamingMessagesByMsgIdResult result = messageApi.oneWayClearGroupRoamingMessagesByMsgId(username1, groupId, messageId, true);
+        assertNotNull(result.getRequestStatusCode());
+        assertEquals("ok", result.getRequestStatusCode());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
      * 单向清空指定群组或聊天室会话一段时间内的漫游消息
      *
      * 将传入时间戳之前的漫游消息清空，清空后，该用户无法从环信服务端拉取到这些漫游消息。若清除了该会话的全部漫游消息，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_roam_clear.html#%E5%8D%95%E5%90%91%E6%B8%85%E7%A9%BA%E6%8C%87%E5%AE%9A%E7%BE%A4%E7%BB%84%E6%88%96%E8%81%8A%E5%A4%A9%E5%AE%A4%E4%BC%9A%E8%AF%9D%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%86%85%E7%9A%84%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF

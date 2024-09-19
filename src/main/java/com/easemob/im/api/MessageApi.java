@@ -342,6 +342,290 @@ public class MessageApi {
     }
 
     /**
+     * Build call for oneWayClearUserRoamingMessagesByMsgId
+     * @param username 用户 ID (required)
+     * @param userId 单聊会话中的对端用户 ID (required)
+     * @param msgIdList 要删除的消息的消息 ID。每次最多可传入 50 个消息 ID，消息 ID 之间以英文逗号分隔，例如 message ID 1,message ID 2 (required)
+     * @param isNotify 消息删除后，是否同步到消息所属用户的所有在线设备。- （默认）true：是 - false：否 (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call oneWayClearUserRoamingMessagesByMsgIdCall(String username, String userId, String msgIdList, Boolean isNotify, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/rest/message/roaming/chat/user/{username}"
+                .replace("{" + "username" + "}", localVarApiClient.escapeString(username.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (userId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("userId", userId));
+        }
+
+        if (msgIdList != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("msgIdList", msgIdList));
+        }
+
+        if (isNotify != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("isNotify", isNotify));
+        }
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call oneWayClearUserRoamingMessagesByMsgIdValidateBeforeCall(String username, String userId, String msgIdList, Boolean isNotify, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'username' is set
+        if (username == null) {
+            throw new ApiException("Missing the required parameter 'username' when calling oneWayClearUserRoamingMessagesByMsgId(Async)");
+        }
+
+        // verify the required parameter 'userId' is set
+        if (userId == null) {
+            throw new ApiException("Missing the required parameter 'userId' when calling oneWayClearUserRoamingMessagesByMsgId(Async)");
+        }
+
+        // verify the required parameter 'msgIdList' is set
+        if (msgIdList == null) {
+            throw new ApiException("Missing the required parameter 'msgIdList' when calling oneWayClearUserRoamingMessagesByMsgId(Async)");
+        }
+
+        return oneWayClearUserRoamingMessagesByMsgIdCall(username, userId, msgIdList, isNotify, _callback);
+
+    }
+
+    /**
+     * 根据消息 ID 单向删除单聊漫游消息
+     * 根据消息 ID 单向删除指定用户的单聊会话的一条或多条漫游消息。调用该接口后，该用户的指定漫游消息会从服务器和本地删除，该用户无法从环信服务端拉取到这些消息。若该会话的全部漫游消息均被删除了，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_delete.html#%E6%A0%B9%E6%8D%AE%E6%B6%88%E6%81%AF-id-%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E5%8D%95%E8%81%8A%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     * @param username 用户 ID (required)
+     * @param userId 单聊会话中的对端用户 ID (required)
+     * @param msgIdList 要删除的消息的消息 ID。每次最多可传入 50 个消息 ID，消息 ID 之间以英文逗号分隔，例如 message ID 1,message ID 2 (required)
+     * @param isNotify 消息删除后，是否同步到消息所属用户的所有在线设备。- （默认）true：是 - false：否 (optional)
+     * @return EMOneWayClearUserRoamingMessagesByMsgIdResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMOneWayClearUserRoamingMessagesByMsgIdResult oneWayClearUserRoamingMessagesByMsgId(String username, String userId, String msgIdList, Boolean isNotify) throws ApiException {
+        ApiResponse<EMOneWayClearUserRoamingMessagesByMsgIdResult> localVarResp = oneWayClearUserRoamingMessagesByMsgIdWithHttpInfo(username, userId, msgIdList, isNotify);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 根据消息 ID 单向删除单聊漫游消息
+     * 根据消息 ID 单向删除指定用户的单聊会话的一条或多条漫游消息。调用该接口后，该用户的指定漫游消息会从服务器和本地删除，该用户无法从环信服务端拉取到这些消息。若该会话的全部漫游消息均被删除了，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_delete.html#%E6%A0%B9%E6%8D%AE%E6%B6%88%E6%81%AF-id-%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E5%8D%95%E8%81%8A%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     * @param username 用户 ID (required)
+     * @param userId 单聊会话中的对端用户 ID (required)
+     * @param msgIdList 要删除的消息的消息 ID。每次最多可传入 50 个消息 ID，消息 ID 之间以英文逗号分隔，例如 message ID 1,message ID 2 (required)
+     * @param isNotify 消息删除后，是否同步到消息所属用户的所有在线设备。- （默认）true：是 - false：否 (optional)
+     * @return ApiResponse&lt;EMOneWayClearUserRoamingMessagesByMsgIdResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMOneWayClearUserRoamingMessagesByMsgIdResult> oneWayClearUserRoamingMessagesByMsgIdWithHttpInfo(String username, String userId, String msgIdList, Boolean isNotify) throws ApiException {
+        okhttp3.Call localVarCall = oneWayClearUserRoamingMessagesByMsgIdValidateBeforeCall(username, userId, msgIdList, isNotify, null);
+        Type localVarReturnType = new TypeToken<EMOneWayClearUserRoamingMessagesByMsgIdResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 根据消息 ID 单向删除单聊漫游消息 (asynchronously)
+     * 根据消息 ID 单向删除指定用户的单聊会话的一条或多条漫游消息。调用该接口后，该用户的指定漫游消息会从服务器和本地删除，该用户无法从环信服务端拉取到这些消息。若该会话的全部漫游消息均被删除了，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取与该用户的漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_delete.html#%E6%A0%B9%E6%8D%AE%E6%B6%88%E6%81%AF-id-%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E5%8D%95%E8%81%8A%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     * @param username 用户 ID (required)
+     * @param userId 单聊会话中的对端用户 ID (required)
+     * @param msgIdList 要删除的消息的消息 ID。每次最多可传入 50 个消息 ID，消息 ID 之间以英文逗号分隔，例如 message ID 1,message ID 2 (required)
+     * @param isNotify 消息删除后，是否同步到消息所属用户的所有在线设备。- （默认）true：是 - false：否 (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call oneWayClearUserRoamingMessagesByMsgIdAsync(String username, String userId, String msgIdList, Boolean isNotify, final ApiCallback<EMOneWayClearUserRoamingMessagesByMsgIdResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = oneWayClearUserRoamingMessagesByMsgIdValidateBeforeCall(username, userId, msgIdList, isNotify, _callback);
+        Type localVarReturnType = new TypeToken<EMOneWayClearUserRoamingMessagesByMsgIdResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for oneWayClearGroupRoamingMessagesByMsgId
+     * @param username 用户 ID (required)
+     * @param groupId 群组 ID (required)
+     * @param msgIdList 要删除的消息的消息 ID。每次最多可传入 50 个消息 ID，消息 ID 之间以英文逗号分隔，例如 message ID 1,message ID 2 (required)
+     * @param isNotify 消息删除后，是否同步到消息所属用户的所有在线设备。- （默认）true：是 - false：否 (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call oneWayClearGroupRoamingMessagesByMsgIdCall(String username, String groupId, String msgIdList, Boolean isNotify, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/rest/message/roaming/group/user/{username}"
+                .replace("{" + "username" + "}", localVarApiClient.escapeString(username.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (groupId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("groupId", groupId));
+        }
+
+        if (msgIdList != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("msgIdList", msgIdList));
+        }
+
+        if (isNotify != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("isNotify", isNotify));
+        }
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call oneWayClearGroupRoamingMessagesByMsgIdValidateBeforeCall(String username, String groupId, String msgIdList, Boolean isNotify, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'username' is set
+        if (username == null) {
+            throw new ApiException("Missing the required parameter 'username' when calling oneWayClearGroupRoamingMessagesByMsgId(Async)");
+        }
+
+        // verify the required parameter 'groupId' is set
+        if (groupId == null) {
+            throw new ApiException("Missing the required parameter 'groupId' when calling oneWayClearGroupRoamingMessagesByMsgId(Async)");
+        }
+
+        // verify the required parameter 'msgIdList' is set
+        if (msgIdList == null) {
+            throw new ApiException("Missing the required parameter 'msgIdList' when calling oneWayClearGroupRoamingMessagesByMsgId(Async)");
+        }
+
+        return oneWayClearGroupRoamingMessagesByMsgIdCall(username, groupId, msgIdList, isNotify, _callback);
+
+    }
+
+    /**
+     * 根据消息 ID 单向删除群聊漫游消息
+     * 根据消息 ID 单向删除指定用户的某个群聊会话的一条或多条漫游消息。调用该接口后，该用户的指定漫游消息会从服务器和本地删除，该用户无法从环信服务端拉取到这些消息。若删除了该群聊会话的全部漫游消息，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取这些漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_delete.html#%E6%A0%B9%E6%8D%AE%E6%B6%88%E6%81%AF-id-%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E7%BE%A4%E8%81%8A%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     * @param username 用户 ID (required)
+     * @param groupId 群组 ID (required)
+     * @param msgIdList 要删除的消息的消息 ID。每次最多可传入 50 个消息 ID，消息 ID 之间以英文逗号分隔，例如 message ID 1,message ID 2 (required)
+     * @param isNotify 消息删除后，是否同步到消息所属用户的所有在线设备。- （默认）true：是 - false：否 (optional)
+     * @return EMOneWayClearGroupRoamingMessagesByMsgIdResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMOneWayClearGroupRoamingMessagesByMsgIdResult oneWayClearGroupRoamingMessagesByMsgId(String username, String groupId, String msgIdList, Boolean isNotify) throws ApiException {
+        ApiResponse<EMOneWayClearGroupRoamingMessagesByMsgIdResult> localVarResp = oneWayClearGroupRoamingMessagesByMsgIdWithHttpInfo(username, groupId, msgIdList, isNotify);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 根据消息 ID 单向删除群聊漫游消息
+     * 根据消息 ID 单向删除指定用户的某个群聊会话的一条或多条漫游消息。调用该接口后，该用户的指定漫游消息会从服务器和本地删除，该用户无法从环信服务端拉取到这些消息。若删除了该群聊会话的全部漫游消息，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取这些漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_delete.html#%E6%A0%B9%E6%8D%AE%E6%B6%88%E6%81%AF-id-%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E7%BE%A4%E8%81%8A%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     * @param username 用户 ID (required)
+     * @param groupId 群组 ID (required)
+     * @param msgIdList 要删除的消息的消息 ID。每次最多可传入 50 个消息 ID，消息 ID 之间以英文逗号分隔，例如 message ID 1,message ID 2 (required)
+     * @param isNotify 消息删除后，是否同步到消息所属用户的所有在线设备。- （默认）true：是 - false：否 (optional)
+     * @return ApiResponse&lt;EMOneWayClearGroupRoamingMessagesByMsgIdResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMOneWayClearGroupRoamingMessagesByMsgIdResult> oneWayClearGroupRoamingMessagesByMsgIdWithHttpInfo(String username, String groupId, String msgIdList, Boolean isNotify) throws ApiException {
+        okhttp3.Call localVarCall = oneWayClearGroupRoamingMessagesByMsgIdValidateBeforeCall(username, groupId, msgIdList, isNotify, null);
+        Type localVarReturnType = new TypeToken<EMOneWayClearGroupRoamingMessagesByMsgIdResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 根据消息 ID 单向删除群聊漫游消息 (asynchronously)
+     * 根据消息 ID 单向删除指定用户的某个群聊会话的一条或多条漫游消息。调用该接口后，该用户的指定漫游消息会从服务器和本地删除，该用户无法从环信服务端拉取到这些消息。若删除了该群聊会话的全部漫游消息，该用户的这个会话在服务端也会被清除，拉取会话列表时拉不到该会话。不过，其他用户不受影响，仍然可以拉取这些漫游消息和会话。文档介绍：https://doc.easemob.com/document/server-side/message_delete.html#%E6%A0%B9%E6%8D%AE%E6%B6%88%E6%81%AF-id-%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E7%BE%A4%E8%81%8A%E6%BC%AB%E6%B8%B8%E6%B6%88%E6%81%AF
+     * @param username 用户 ID (required)
+     * @param groupId 群组 ID (required)
+     * @param msgIdList 要删除的消息的消息 ID。每次最多可传入 50 个消息 ID，消息 ID 之间以英文逗号分隔，例如 message ID 1,message ID 2 (required)
+     * @param isNotify 消息删除后，是否同步到消息所属用户的所有在线设备。- （默认）true：是 - false：否 (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call oneWayClearGroupRoamingMessagesByMsgIdAsync(String username, String groupId, String msgIdList, Boolean isNotify, final ApiCallback<EMOneWayClearGroupRoamingMessagesByMsgIdResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = oneWayClearGroupRoamingMessagesByMsgIdValidateBeforeCall(username, groupId, msgIdList, isNotify, _callback);
+        Type localVarReturnType = new TypeToken<EMOneWayClearGroupRoamingMessagesByMsgIdResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
      * 单向删除会话
      * 该方法使聊天用户能够从服务器中删除会话。删除会话后，该用户将从服务器获取不到该会话。该会话的其他参与聊天用户仍然可以从服务器获取会话内容。文档介绍：https://docs-im-beta.easemob.com/document/server-side/message_recall.html#%E5%8D%95%E5%90%91%E5%88%A0%E9%99%A4%E4%BC%9A%E8%AF%9D
      * @param username 要删除会话的用户的唯一标识符，即用户 ID (required)

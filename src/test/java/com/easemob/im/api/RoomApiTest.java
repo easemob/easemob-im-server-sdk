@@ -493,6 +493,56 @@ public class RoomApiTest extends AbstractTest {
     }
 
     /**
+     * 创建聊天室，自定义聊天室id
+     *
+     * 创建一个聊天室，需设置自定义聊天室id、聊天室名称、聊天室描述、聊天室成员最大人数（包括管理员）、聊天室管理员和普通成员以及聊天室扩展信息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/chatroom.html#%E5%88%9B%E5%BB%BA%E8%81%8A%E5%A4%A9%E5%AE%A4
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void customIdCreateRoomTest() {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+        String customRoomId = "125666999";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setGroupid(customRoomId);
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> api.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+        assertEquals(customRoomId, createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {api.deleteRoom(roomId);} catch (ApiException ignored) {}
+    }
+
+    /**
      * 删除聊天室
      *
      * 删除单个聊天室。如果要删除的聊天室不存在，会返回错误。文档介绍：https://docs-im-beta.easemob.com/document/server-side/chatroom.html#%E5%88%A0%E9%99%A4%E8%81%8A%E5%A4%A9%E5%AE%A4

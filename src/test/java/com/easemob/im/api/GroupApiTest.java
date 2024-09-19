@@ -594,6 +594,89 @@ public class GroupApiTest extends AbstractTest {
     }
 
     /**
+     * 创建群组，自定义群组id
+     * <p>
+     * 创建一个群组，并设置自定义群组id、群组名称、群组描述、公开群/私有群属性、群成员最大人数（包括群主）、加入公开群是否需要批准、群主、群成员和群组扩展信息。文档介绍：https://docs-im-beta.easemob.com/document/server-side/group.html#%E5%88%9B%E5%BB%BA%E7%BE%A4%E7%BB%84
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void customIdCreateGroupTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+        String customGroupId = "123456666";
+        String groupAvatar1 = "https://example.com/avatar1.png";
+        String groupAvatar2 = "https://example.com/avatar2.png";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setGroupid(customGroupId);
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setAvatar(groupAvatar1);
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> api.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+        assertEquals(customGroupId, createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMGetGroupInfoResult groupInfoResult1 =
+                assertDoesNotThrow(() -> api.getGroupInfo(groupId));
+        assertNotNull(groupInfoResult1);
+        assertNotNull(groupInfoResult1.getData());
+        assertNotNull(groupInfoResult1.getData().get(0));
+        assertEquals(groupAvatar1, groupInfoResult1.getData().get(0).getAvatar());
+
+        EMModifyGroup modifyGroup = new EMModifyGroup();
+        modifyGroup.setAvatar(groupAvatar2);
+
+        assertDoesNotThrow(() -> api.modifyGroup(groupId, modifyGroup));
+
+        EMGetGroupInfoResult groupInfoResult2 =
+                assertDoesNotThrow(() -> api.getGroupInfo(groupId));
+        assertNotNull(groupInfoResult2);
+        assertNotNull(groupInfoResult2.getData());
+        assertNotNull(groupInfoResult2.getData().get(0));
+        assertEquals(groupAvatar2, groupInfoResult2.getData().get(0).getAvatar());
+
+        EMGetUserJoinedGroupsResult getUserJoinedGroupsResult =
+                assertDoesNotThrow(() -> api.getUserJoinedGroups(username1, 0, 1));
+        assertNotNull(getUserJoinedGroupsResult);
+        assertNotNull(getUserJoinedGroupsResult.getEntities());
+        assertNotNull(getUserJoinedGroupsResult.getEntities().get(0));
+        assertEquals(groupAvatar2, getUserJoinedGroupsResult.getEntities().get(0).getAvatar());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            api.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
      * 删除群组
      * <p>
      * 删除指定的群组。删除群组时会同时删除群组下所有的子区（Thread）。文档介绍：https://docs-im-beta.easemob.com/document/server-side/group.html#%E5%88%A0%E9%99%A4%E7%BE%A4%E7%BB%84
