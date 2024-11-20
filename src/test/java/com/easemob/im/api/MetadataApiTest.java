@@ -36,6 +36,86 @@ public class MetadataApiTest extends AbstractTest {
     }
 
     /**
+     * 批量设置群成员自定义属性
+     * <p>
+     * 批量设置群成员的自定义属性（key-value），例如，在群组中的昵称和头像等。每次请求最多可为 20 个群成员设置多个属性，而且可对不同群成员设置不同属性。传入相同用户 ID 时，若其属性名称不同，则添加，相同则更新。文档介绍：https://doc.easemob.com/document/server-side/group_member.html#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%BE%A4%E6%88%90%E5%91%98%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void batchCustomGroupMemberAttributeTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String username3 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        EMCreateUser createUser3 = new EMCreateUser();
+        createUser3.setUsername(username3);
+        createUser3.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+        emCreateUserList.add(createUser3);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2, username3));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> groupApi.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("key1", "value1");
+        metadata.put("key2", "value2");
+
+        List<EMBatchCustomGroupMemberAttribute> batchCustomGroupMemberAttributes = new ArrayList<>();
+
+        EMBatchCustomGroupMemberAttribute batchCustomGroupMemberAttribute1 = new EMBatchCustomGroupMemberAttribute();
+        batchCustomGroupMemberAttribute1.setUsername(username2);
+        batchCustomGroupMemberAttribute1.setMetadata(metadata);
+
+        EMBatchCustomGroupMemberAttribute batchCustomGroupMemberAttribute2 = new EMBatchCustomGroupMemberAttribute();
+        batchCustomGroupMemberAttribute2.setUsername(username3);
+        batchCustomGroupMemberAttribute2.setMetadata(metadata);
+
+        batchCustomGroupMemberAttributes.add(batchCustomGroupMemberAttribute1);
+        batchCustomGroupMemberAttributes.add(batchCustomGroupMemberAttribute2);
+
+        EMBatchCustomGroupMemberAttributeResult batchCustomGroupMemberAttributeResult = assertDoesNotThrow(
+                () -> api.batchCustomGroupMemberAttribute(groupId, batchCustomGroupMemberAttributes));
+        assertNotNull(batchCustomGroupMemberAttributeResult);
+        assertNotNull(batchCustomGroupMemberAttributeResult.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        assertDoesNotThrow(() -> userApi.deleteUser(username3));
+        try {
+            groupApi.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
+    /**
      * 设置群成员自定义属性
      * <p>
      * 设置群成员自定义属性。群成员可设置自定义属性（key-value），例如在群组中的昵称和头像等。群主可修改所有群成员的自定义属性，其他群成员只能修改自己的自定义属性。文档介绍：https://docs-im-beta.easemob.com/document/server-side/group.html#%E8%AE%BE%E7%BD%AE%E7%BE%A4%E6%88%90%E5%91%98%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7

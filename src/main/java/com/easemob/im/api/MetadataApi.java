@@ -67,6 +67,119 @@ public class MetadataApi {
     }
 
     /**
+     * Build call for batchCustomGroupMemberAttribute
+     * @param groupId  (required)
+     * @param emBatchCustomGroupMemberAttribute  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call batchCustomGroupMemberAttributeCall(String groupId, List<EMBatchCustomGroupMemberAttribute> emBatchCustomGroupMemberAttribute, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emBatchCustomGroupMemberAttribute;
+
+        // create path and map variables
+        String localVarPath = "/metadata/chatgroup/{group_id}/users/batch"
+                .replace("{" + "group_id" + "}", localVarApiClient.escapeString(groupId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call batchCustomGroupMemberAttributeValidateBeforeCall(String groupId, List<EMBatchCustomGroupMemberAttribute> emBatchCustomGroupMemberAttribute, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'groupId' is set
+        if (groupId == null) {
+            throw new ApiException("Missing the required parameter 'groupId' when calling batchCustomGroupMemberAttribute(Async)");
+        }
+
+        return batchCustomGroupMemberAttributeCall(groupId, emBatchCustomGroupMemberAttribute, _callback);
+
+    }
+
+    /**
+     * 批量设置群成员自定义属性
+     * 批量设置群成员的自定义属性（key-value），例如，在群组中的昵称和头像等。每次请求最多可为 20 个群成员设置多个属性，而且可对不同群成员设置不同属性。传入相同用户 ID 时，若其属性名称不同，则添加，相同则更新。文档介绍：https://doc.easemob.com/document/server-side/group_member.html#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%BE%A4%E6%88%90%E5%91%98%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7
+     * @param groupId  (required)
+     * @param emBatchCustomGroupMemberAttribute  (optional)
+     * @return EMBatchCustomGroupMemberAttributeResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMBatchCustomGroupMemberAttributeResult batchCustomGroupMemberAttribute(String groupId, List<EMBatchCustomGroupMemberAttribute> emBatchCustomGroupMemberAttribute) throws ApiException {
+        ApiResponse<EMBatchCustomGroupMemberAttributeResult> localVarResp = batchCustomGroupMemberAttributeWithHttpInfo(groupId, emBatchCustomGroupMemberAttribute);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 批量设置群成员自定义属性
+     * 批量设置群成员的自定义属性（key-value），例如，在群组中的昵称和头像等。每次请求最多可为 20 个群成员设置多个属性，而且可对不同群成员设置不同属性。传入相同用户 ID 时，若其属性名称不同，则添加，相同则更新。文档介绍：https://doc.easemob.com/document/server-side/group_member.html#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%BE%A4%E6%88%90%E5%91%98%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7
+     * @param groupId  (required)
+     * @param emBatchCustomGroupMemberAttribute  (optional)
+     * @return ApiResponse&lt;EMBatchCustomGroupMemberAttributeResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMBatchCustomGroupMemberAttributeResult> batchCustomGroupMemberAttributeWithHttpInfo(String groupId, List<EMBatchCustomGroupMemberAttribute> emBatchCustomGroupMemberAttribute) throws ApiException {
+        okhttp3.Call localVarCall = batchCustomGroupMemberAttributeValidateBeforeCall(groupId, emBatchCustomGroupMemberAttribute, null);
+        Type localVarReturnType = new TypeToken<EMBatchCustomGroupMemberAttributeResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 批量设置群成员自定义属性 (asynchronously)
+     * 批量设置群成员的自定义属性（key-value），例如，在群组中的昵称和头像等。每次请求最多可为 20 个群成员设置多个属性，而且可对不同群成员设置不同属性。传入相同用户 ID 时，若其属性名称不同，则添加，相同则更新。文档介绍：https://doc.easemob.com/document/server-side/group_member.html#%E6%89%B9%E9%87%8F%E8%AE%BE%E7%BD%AE%E7%BE%A4%E6%88%90%E5%91%98%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7
+     * @param groupId  (required)
+     * @param emBatchCustomGroupMemberAttribute  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call batchCustomGroupMemberAttributeAsync(String groupId, List<EMBatchCustomGroupMemberAttribute> emBatchCustomGroupMemberAttribute, final ApiCallback<EMBatchCustomGroupMemberAttributeResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = batchCustomGroupMemberAttributeValidateBeforeCall(groupId, emBatchCustomGroupMemberAttribute, _callback);
+        Type localVarReturnType = new TypeToken<EMBatchCustomGroupMemberAttributeResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
      * Build call for customGroupMemberAttribute
      * @param groupId  (required)
      * @param username  (required)
