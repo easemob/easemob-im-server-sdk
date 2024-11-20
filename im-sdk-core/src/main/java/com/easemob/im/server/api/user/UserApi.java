@@ -73,7 +73,7 @@ public class UserApi {
      * }</pre>
      *
      * @param username 用户名，可以包含小写字母、数字、减号，有效长度1至32个字节
-     * @param password 密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;*-_=+&lt;&gt;;:,./?)，有效长度1至32字节
+     * @param password 密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;*-_=+&lt;&gt;;:,./?)，有效长度1至64字节
      * @return EMUser
      * @see <a href="http://docs-im.easemob.com/im/server/ready/user#%E6%B3%A8%E5%86%8C%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7_%E6%8E%88%E6%9D%83">注册用户</a>
      */
@@ -107,7 +107,7 @@ public class UserApi {
      * }</pre>
      *
      * @param username 用户名，可以包含小写字母、数字、减号，有效长度1至32个字节
-     * @param password 密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;*-_=+&lt;&gt;;:,./?)，有效长度1至32字节
+     * @param password 密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;*-_=+&lt;&gt;;:,./?)，有效长度1至64字节
      * @param pushNickname 推送昵称，离线推送时在接收方的客户端推送通知栏中显示的发送方的昵称。你可以自定义该昵称，长度不能超过 100 个字符。
      *                     提示:1. 若不设置昵称，推送时会显示发送方的用户 ID，而非昵称。
      *                         2. 该昵称可与用户属性中的昵称设置不同，不过我们建议这两种昵称的设置保持一致。因此，修改其中一个昵称时，也需调用相应方法对另一个进行更新，确保设置一致。更新用户属性中的昵称的方法，详见 设置用户属性。
@@ -150,7 +150,7 @@ public class UserApi {
      * }</pre>
      *
      * @param createUsers 需要创建用户的列表，EMCreateUser中包含用户名以及密码，用户名可以包含小写字母、数字、减号，有效长度1至32个字节
-     *                    密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;*-_=+&lt;&gt;;:,./?)，有效长度1至32字节
+     *                    密码，可以包含字母、数字、特殊符号(~!@#$%^&amp;*-_=+&lt;&gt;;:,./?)，有效长度1至64字节
      * @return EMUser
      * @see <a href="https://docs-im-beta.easemob.com/document/server-side/account_system.html#%E6%89%B9%E9%87%8F%E6%B3%A8%E5%86%8C%E7%94%A8%E6%88%B7">批量注册用户</a>
      */

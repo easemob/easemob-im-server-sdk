@@ -13,7 +13,7 @@ public class EMUser extends EMEntity {
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z][0-9a-z-]{1,32}$");
 
     private static final Pattern PASSWORD_PATTERN =
-            Pattern.compile("^[a-zA-Z0-9~!@#$%^&*\\-_=+<>;:,./?]{1,32}$");
+            Pattern.compile("^[a-zA-Z0-9~!@#$%^&*\\-_=+<>;:,./?]{1,64}$");
 
     private final String username;
     private final String pushNickname;
