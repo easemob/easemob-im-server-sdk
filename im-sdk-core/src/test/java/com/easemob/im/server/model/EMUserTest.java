@@ -23,7 +23,7 @@ public class EMUserTest {
         assertThrows(EMInvalidArgumentException.class, () -> EMUser.validatePassword(null)); // null
         assertThrows(EMInvalidArgumentException.class, () -> EMUser.validatePassword("")); // empty
         assertThrows(EMInvalidArgumentException.class, () -> EMUser
-                .validatePassword("000000000000000000000000000000000")); // too long, 32 bytes max
+                .validatePassword("000000000000000000000000000000000000000000000000000000000000000000")); // too long, 64 bytes max
         assertThrows(EMInvalidArgumentException.class,
                 () -> EMUser.validatePassword("\r\n")); // invalid character
         assertThrows(EMInvalidArgumentException.class,
