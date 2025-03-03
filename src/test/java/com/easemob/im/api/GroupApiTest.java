@@ -2200,6 +2200,80 @@ public class GroupApiTest extends AbstractTest {
     }
 
     /**
+     * 解除成员禁言
+     *
+     * 将一个群成员移出禁言列表。移除后，群成员可以在群组中正常发送消息，同时也可以在该群组下的子区中发送消息。。文档介绍：https://doc.easemob.com/document/server-side/group_member_mutelist.html#%E8%A7%A3%E9%99%A4%E6%88%90%E5%91%98%E7%A6%81%E8%A8%80
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void unmuteGroupMemberTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> api.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+        EMMuteGroupMember muteGroupMember = new EMMuteGroupMember();
+        muteGroupMember.setMuteDuration(new BigDecimal(1000));
+        muteGroupMember.setUsernames(Arrays.asList(username2));
+        EMMuteGroupMemberResult muteGroupMemberResult =
+                assertDoesNotThrow(() -> api.muteGroupMember(groupId, muteGroupMember));
+        assertNotNull(muteGroupMemberResult);
+        assertNotNull(muteGroupMemberResult.getData());
+        assertEquals(true, muteGroupMemberResult.getData().get(0).getResult());
+        assertEquals(username2, muteGroupMemberResult.getData().get(0).getUser());
+
+        EMUnmuteGroupMemberResult unmuteGroupMemberResult = api.unmuteGroupMember(groupId, username2);
+        assertNotNull(unmuteGroupMemberResult);
+        assertNotNull(unmuteGroupMemberResult.getData());
+        assertEquals(true, unmuteGroupMemberResult.getData().get(0).getResult());
+        assertEquals(username2, unmuteGroupMemberResult.getData().get(0).getUser());
+
+        EMGetGroupMuteListResult groupMuteListResult =
+                assertDoesNotThrow(() -> api.getGroupMuteList(groupId));
+        assertNotNull(groupMuteListResult);
+        assertNotNull(groupMuteListResult.getData());
+        assertEquals(0, groupMuteListResult.getData().size());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            api.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+
+
+    }
+
+    /**
      * 上传群组共享文件
      * <p>
      * 上传指定群组 ID 的群组共享文件。注意上传的文件大小不能超过 10 MB。分页获取指定群组 ID 的群组共享文件，然后可以根据响应中返回的文件 ID（file_id）调用 下载群组共享文件 接口下载该文件，或调用 删除群组共享文件 接口删除该文件。文档介绍：https://docs-im-beta.easemob.com/document/server-side/group.html#%E4%B8%8A%E4%BC%A0%E7%BE%A4%E7%BB%84%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6

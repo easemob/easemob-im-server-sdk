@@ -312,6 +312,7 @@ public class MessageApiTest extends AbstractTest {
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setMsg("test message");
         emCreateMessage.setBody(messageContent);
+        emCreateMessage.setRoamIgnoreUsers(Collections.singletonList(username1));
 
         Map<String, Object> ext = new HashMap<>();
         ext.put("key", "value");
@@ -1040,6 +1041,7 @@ public class MessageApiTest extends AbstractTest {
         ext.put("key4", Collections.singletonMap("name", "jack"));
 
         emCreateMessage.setExt(ext);
+        emCreateMessage.setRoamIgnoreUsers(Collections.singletonList(username1));
 
         EMSendMessageResult response = messageApi.sendMessagesToRoom(emCreateMessage);
         assertNotNull(response.getData());
@@ -1801,6 +1803,7 @@ public class MessageApiTest extends AbstractTest {
         ext.put("key4", Collections.singletonMap("name", "jack"));
 
         emCreateMessage.setExt(ext);
+        emCreateMessage.setRoamIgnoreUsers(Collections.singletonList(username2));
 
         EMSendMessageResult response = messageApi.sendMessagesToUser(emCreateMessage);
         assertNotNull(response.getData());

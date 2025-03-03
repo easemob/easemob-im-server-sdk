@@ -3846,6 +3846,123 @@ public class GroupApi {
         return localVarCall;
     }
     /**
+     * Build call for unmuteGroupMember
+     * @param groupId  (required)
+     * @param username  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call unmuteGroupMemberCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/chatgroups/{group_id}/mute/{username}"
+                .replace("{" + "group_id" + "}", localVarApiClient.escapeString(groupId.toString()))
+                .replace("{" + "username" + "}", localVarApiClient.escapeString(username.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call unmuteGroupMemberValidateBeforeCall(String groupId, String username, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'groupId' is set
+        if (groupId == null) {
+            throw new ApiException("Missing the required parameter 'groupId' when calling unmuteGroupMember(Async)");
+        }
+
+        // verify the required parameter 'username' is set
+        if (username == null) {
+            throw new ApiException("Missing the required parameter 'username' when calling unmuteGroupMember(Async)");
+        }
+
+        return unmuteGroupMemberCall(groupId, username, _callback);
+
+    }
+
+    /**
+     * 解除成员禁言
+     * 将一个群成员移出禁言列表。移除后，群成员可以在群组中正常发送消息，同时也可以在该群组下的子区中发送消息。。文档介绍：https://doc.easemob.com/document/server-side/group_member_mutelist.html#%E8%A7%A3%E9%99%A4%E6%88%90%E5%91%98%E7%A6%81%E8%A8%80
+     * @param groupId  (required)
+     * @param username  (required)
+     * @return EMUnmuteGroupMemberResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMUnmuteGroupMemberResult unmuteGroupMember(String groupId, String username) throws ApiException {
+        ApiResponse<EMUnmuteGroupMemberResult> localVarResp = unmuteGroupMemberWithHttpInfo(groupId, username);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 解除成员禁言
+     * 将一个群成员移出禁言列表。移除后，群成员可以在群组中正常发送消息，同时也可以在该群组下的子区中发送消息。。文档介绍：https://doc.easemob.com/document/server-side/group_member_mutelist.html#%E8%A7%A3%E9%99%A4%E6%88%90%E5%91%98%E7%A6%81%E8%A8%80
+     * @param groupId  (required)
+     * @param username  (required)
+     * @return ApiResponse&lt;EMUnmuteGroupMemberResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMUnmuteGroupMemberResult> unmuteGroupMemberWithHttpInfo(String groupId, String username) throws ApiException {
+        okhttp3.Call localVarCall = unmuteGroupMemberValidateBeforeCall(groupId, username, null);
+        Type localVarReturnType = new TypeToken<EMUnmuteGroupMemberResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 解除成员禁言 (asynchronously)
+     * 将一个群成员移出禁言列表。移除后，群成员可以在群组中正常发送消息，同时也可以在该群组下的子区中发送消息。。文档介绍：https://doc.easemob.com/document/server-side/group_member_mutelist.html#%E8%A7%A3%E9%99%A4%E6%88%90%E5%91%98%E7%A6%81%E8%A8%80
+     * @param groupId  (required)
+     * @param username  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call unmuteGroupMemberAsync(String groupId, String username, final ApiCallback<EMUnmuteGroupMemberResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = unmuteGroupMemberValidateBeforeCall(groupId, username, _callback);
+        Type localVarReturnType = new TypeToken<EMUnmuteGroupMemberResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
      * Build call for uploadGroupShareFile
      * @param groupId  (required)
      * @param _file 文件本地路径 (required)

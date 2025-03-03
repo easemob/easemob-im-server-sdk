@@ -52,7 +52,7 @@ import com.easemob.im.JSON;
 /**
  * EMCreateMessage
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-03-27T17:20:33.693628+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-03T21:15:46.103336+08:00[Asia/Shanghai]")
 public class EMCreateMessage {
   public static final String SERIALIZED_NAME_FROM = "from";
   @SerializedName(SERIALIZED_NAME_FROM)
@@ -85,6 +85,10 @@ public class EMCreateMessage {
   public static final String SERIALIZED_NAME_CHATROOM_MSG_LEVEL = "chatroom_msg_level";
   @SerializedName(SERIALIZED_NAME_CHATROOM_MSG_LEVEL)
   private String chatroomMsgLevel;
+
+  public static final String SERIALIZED_NAME_ROAM_IGNORE_USERS = "roam_ignore_users";
+  @SerializedName(SERIALIZED_NAME_ROAM_IGNORE_USERS)
+  private List<String> roamIgnoreUsers;
 
   public static final String SERIALIZED_NAME_USERS = "users";
   @SerializedName(SERIALIZED_NAME_USERS)
@@ -269,6 +273,35 @@ public class EMCreateMessage {
   }
 
 
+  public EMCreateMessage roamIgnoreUsers(List<String> roamIgnoreUsers) {
+
+    this.roamIgnoreUsers = roamIgnoreUsers;
+    return this;
+  }
+
+  public EMCreateMessage addRoamIgnoreUsersItem(String roamIgnoreUsersItem) {
+    if (this.roamIgnoreUsers == null) {
+      this.roamIgnoreUsers = new ArrayList<>();
+    }
+    this.roamIgnoreUsers.add(roamIgnoreUsersItem);
+    return this;
+  }
+
+  /**
+   * 设置哪些用户拉漫游消息时拉不到该消息
+   * @return roamIgnoreUsers
+   **/
+  @javax.annotation.Nullable
+  public List<String> getRoamIgnoreUsers() {
+    return roamIgnoreUsers;
+  }
+
+
+  public void setRoamIgnoreUsers(List<String> roamIgnoreUsers) {
+    this.roamIgnoreUsers = roamIgnoreUsers;
+  }
+
+
   public EMCreateMessage users(List<String> users) {
 
     this.users = users;
@@ -316,12 +349,13 @@ public class EMCreateMessage {
             Objects.equals(this.routetype, createMessage.routetype) &&
             Objects.equals(this.ext, createMessage.ext) &&
             Objects.equals(this.chatroomMsgLevel, createMessage.chatroomMsgLevel) &&
+            Objects.equals(this.roamIgnoreUsers, createMessage.roamIgnoreUsers) &&
             Objects.equals(this.users, createMessage.users);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(from, to, type, body, syncDevice, routetype, ext, chatroomMsgLevel, users);
+    return Objects.hash(from, to, type, body, syncDevice, routetype, ext, chatroomMsgLevel, roamIgnoreUsers, users);
   }
 
   @Override
@@ -336,6 +370,7 @@ public class EMCreateMessage {
     sb.append("    routetype: ").append(toIndentedString(routetype)).append("\n");
     sb.append("    ext: ").append(toIndentedString(ext)).append("\n");
     sb.append("    chatroomMsgLevel: ").append(toIndentedString(chatroomMsgLevel)).append("\n");
+    sb.append("    roamIgnoreUsers: ").append(toIndentedString(roamIgnoreUsers)).append("\n");
     sb.append("    users: ").append(toIndentedString(users)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -367,6 +402,7 @@ public class EMCreateMessage {
     openapiFields.add("routetype");
     openapiFields.add("ext");
     openapiFields.add("chatroom_msg_level");
+    openapiFields.add("roam_ignore_users");
     openapiFields.add("users");
 
     // a set of required properties/fields (JSON key names)
@@ -423,6 +459,10 @@ public class EMCreateMessage {
     }
     if ((jsonObj.get("chatroom_msg_level") != null && !jsonObj.get("chatroom_msg_level").isJsonNull()) && !jsonObj.get("chatroom_msg_level").isJsonPrimitive()) {
       throw new IllegalArgumentException(String.format("Expected the field `chatroom_msg_level` to be a primitive type in the JSON string but got `%s`", jsonObj.get("chatroom_msg_level").toString()));
+    }
+    // ensure the optional json data is an array if present
+    if (jsonObj.get("roam_ignore_users") != null && !jsonObj.get("roam_ignore_users").isJsonNull() && !jsonObj.get("roam_ignore_users").isJsonArray()) {
+      throw new IllegalArgumentException(String.format("Expected the field `roam_ignore_users` to be an array in the JSON string but got `%s`", jsonObj.get("roam_ignore_users").toString()));
     }
     // ensure the optional json data is an array if present
     if (jsonObj.get("users") != null && !jsonObj.get("users").isJsonNull() && !jsonObj.get("users").isJsonArray()) {
