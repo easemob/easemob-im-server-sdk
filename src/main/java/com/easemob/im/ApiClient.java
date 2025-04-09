@@ -168,7 +168,12 @@ public class ApiClient {
 
         builder.connectionPool(new ConnectionPool(maxIdleConnections, connectKeepAliveMilliSeconds,
                         TimeUnit.MILLISECONDS))
-                .connectTimeout(Duration.ofMillis(connectTimeoutMilliSeconds));
+                .connectTimeout(Duration.ofMillis(connectTimeoutMilliSeconds))
+                .connectionSpecs(Arrays.asList(
+                        ConnectionSpec.MODERN_TLS,  // 默认支持 TLS 1.2/1.3
+                        ConnectionSpec.COMPATIBLE_TLS,  // 兼容 TLS 1.0/1.1（不推荐）
+                        ConnectionSpec.CLEARTEXT
+                ));
 
         if (emProxy != null) {
             if (emProxy.getIp() != null && emProxy.getPort() != 0) {

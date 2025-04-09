@@ -11,7 +11,8 @@ public abstract class AbstractTest {
     static {
         try {
             Configuration.setDefaultApiClient(ApiClient.builder()
-                    .setBasePath(System.getenv("IM_BASE_URI"))
+//                    .setBasePath(System.getenv("IM_BASE_URI"))
+                    .setBasePath("http://a1.easemob.com")
                     .setAppKey(System.getenv("IM_APPKEY"))
                     .setClientId(System.getenv("IM_CLIENT_ID"))
                     .setClientSecret(System.getenv("IM_CLIENT_SECRET"))
