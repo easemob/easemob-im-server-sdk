@@ -1694,6 +1694,51 @@ public class MessageApiTest extends AbstractTest {
     }
 
     /**
+     * 向 app 在线用户发送广播消息
+     *
+     * 可通过该接口向 app 下的所有在线用户发送广播消息，支持所有消息类型。文档介绍：https://doc.easemob.com/document/server-side/message_broadcast.html#%E5%90%91-app-%E5%9C%A8%E7%BA%BF%E7%94%A8%E6%88%B7%E5%8F%91%E9%80%81%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void sendOnlineUserBroadcastMessagesTest() throws ApiException {
+        String username1 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("test message");
+        messageContent.setType("txt");
+
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("key", "value");
+        ext.put("key1", true);
+        ext.put("key2", 1);
+        ext.put("key3", Collections.singletonList("tom"));
+        ext.put("key4", Collections.singletonMap("name", "jack"));
+
+        EMCreateOnlineUserBroadcastMessage emCreateOnlineUserBroadcastMessage = new EMCreateOnlineUserBroadcastMessage();
+        emCreateOnlineUserBroadcastMessage.setFrom(username1);
+        emCreateOnlineUserBroadcastMessage.msg(messageContent);
+        emCreateOnlineUserBroadcastMessage.setExt(ext);
+
+
+        EMSendMessageResult response = messageApi.sendOnlineUserBroadcastMessages(emCreateOnlineUserBroadcastMessage);
+        assertNotNull(response.getData());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+
+    }
+
+    /**
      * 发送聊天室全局广播消息
      *
      * 可通过该接口向 app 下的所有活跃聊天室（聊天室至少存在一个成员，而且曾经至少发送过一条消息）发送广播消息，支持所有消息类型。。文档介绍：https://doc.easemob.com/document/server-side/message_chatroom.html#%E5%8F%91%E9%80%81%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%A8%E5%B1%80%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF

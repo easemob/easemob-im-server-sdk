@@ -1773,6 +1773,113 @@ public class MessageApi {
     }
 
     /**
+     * Build call for sendOnlineUserBroadcastMessages
+     * @param emCreateOnlineUserBroadcastMessage  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table summary="Response Details" border="1">
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call sendOnlineUserBroadcastMessagesCall(EMCreateOnlineUserBroadcastMessage emCreateOnlineUserBroadcastMessage, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emCreateOnlineUserBroadcastMessage;
+
+        // create path and map variables
+        String localVarPath = "/messages/users/broadcast";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call sendOnlineUserBroadcastMessagesValidateBeforeCall(EMCreateOnlineUserBroadcastMessage emCreateOnlineUserBroadcastMessage, final ApiCallback _callback) throws ApiException {
+        return sendOnlineUserBroadcastMessagesCall(emCreateOnlineUserBroadcastMessage, _callback);
+
+    }
+
+    /**
+     * 向 app 在线用户发送广播消息
+     * 可通过该接口向 app 下的所有在线用户发送广播消息，支持所有消息类型。文档介绍：https://doc.easemob.com/document/server-side/message_broadcast.html#%E5%90%91-app-%E5%9C%A8%E7%BA%BF%E7%94%A8%E6%88%B7%E5%8F%91%E9%80%81%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF
+     * @param emCreateOnlineUserBroadcastMessage  (optional)
+     * @return EMSendMessageResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMSendMessageResult sendOnlineUserBroadcastMessages(EMCreateOnlineUserBroadcastMessage emCreateOnlineUserBroadcastMessage) throws ApiException {
+        ApiResponse<EMSendMessageResult> localVarResp = sendOnlineUserBroadcastMessagesWithHttpInfo(emCreateOnlineUserBroadcastMessage);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 向 app 在线用户发送广播消息
+     * 可通过该接口向 app 下的所有在线用户发送广播消息，支持所有消息类型。文档介绍：https://doc.easemob.com/document/server-side/message_broadcast.html#%E5%90%91-app-%E5%9C%A8%E7%BA%BF%E7%94%A8%E6%88%B7%E5%8F%91%E9%80%81%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF
+     * @param emCreateOnlineUserBroadcastMessage  (optional)
+     * @return ApiResponse&lt;EMSendMessageResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMSendMessageResult> sendOnlineUserBroadcastMessagesWithHttpInfo(EMCreateOnlineUserBroadcastMessage emCreateOnlineUserBroadcastMessage) throws ApiException {
+        okhttp3.Call localVarCall = sendOnlineUserBroadcastMessagesValidateBeforeCall(emCreateOnlineUserBroadcastMessage, null);
+        Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 向 app 在线用户发送广播消息 (asynchronously)
+     * 可通过该接口向 app 下的所有在线用户发送广播消息，支持所有消息类型。文档介绍：https://doc.easemob.com/document/server-side/message_broadcast.html#%E5%90%91-app-%E5%9C%A8%E7%BA%BF%E7%94%A8%E6%88%B7%E5%8F%91%E9%80%81%E5%B9%BF%E6%92%AD%E6%B6%88%E6%81%AF
+     * @param emCreateOnlineUserBroadcastMessage  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call sendOnlineUserBroadcastMessagesAsync(EMCreateOnlineUserBroadcastMessage emCreateOnlineUserBroadcastMessage, final ApiCallback<EMSendMessageResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = sendOnlineUserBroadcastMessagesValidateBeforeCall(emCreateOnlineUserBroadcastMessage, _callback);
+        Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
      * Build call for sendRoomBroadcastMessages
      * @param emCreateChatroomBroadcastMessage  (optional)
      * @param _callback Callback for upload/download progress
