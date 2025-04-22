@@ -1778,7 +1778,7 @@ public class MessageApi {
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
+     * http.response.details
     <table summary="Response Details" border="1">
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
