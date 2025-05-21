@@ -91,6 +91,10 @@
                                     <pattern>org</pattern>
                                     <shadedPattern>shaded.org</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.google</pattern>
+                                    <shadedPattern>shaded.com.google</shadedPattern>
+                                </relocation>
                                 <!-- Add more relocations if needed -->
                             </relocations>
                         </configuration>

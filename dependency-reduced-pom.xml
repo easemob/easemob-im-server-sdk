@@ -4,7 +4,7 @@
   <groupId>com.easemob.im</groupId>
   <artifactId>im-sdk-core</artifactId>
   <name>im-sdk-core</name>
-  <version>1.0.13</version>
+  <version>1.0.14.1-SNAPSHOT</version>
   <description>OpenAPI Java</description>
   <url>https://github.com/openapitools/openapi-generator</url>
   <developers>
@@ -84,6 +84,10 @@
                 <relocation>
                   <pattern>org</pattern>
                   <shadedPattern>shaded.org</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google</pattern>
+                  <shadedPattern>shaded.com.google</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
