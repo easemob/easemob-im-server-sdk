@@ -15,6 +15,8 @@ public abstract class AbstractTest {
                     .setAppKey(System.getenv("IM_APPKEY"))
                     .setClientId(System.getenv("IM_CLIENT_ID"))
                     .setClientSecret(System.getenv("IM_CLIENT_SECRET"))
+                            .setDispatcherMaxRequests(300)
+                            .setDispatcherMaxRequestsPerHost(60)
                     .build());
         } catch (ApiException e) {
             throw new RuntimeException(e);

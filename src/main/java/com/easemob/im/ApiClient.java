@@ -115,7 +115,7 @@ public class ApiClient {
     }
 
     public ApiClient(String basePath, Realm realm, String appKey, String clientId, String clientSecret, String appId, String appCert, int maxIdleConnections, int connectKeepAliveMilliSeconds,
-            int connectTimeoutMilliSeconds, EMProxy proxy)
+            int connectTimeoutMilliSeconds, EMProxy proxy, int dispatcherMaxRequests, int dispatcherMaxRequestsPerHost)
             throws ApiException {
         this.basePath = basePath;
         this.realm = realm;
@@ -134,7 +134,8 @@ public class ApiClient {
         );
 
         initHttpClient(Collections.<Interceptor>emptyList(), maxIdleConnections,
-                connectKeepAliveMilliSeconds, connectTimeoutMilliSeconds, proxy);
+                connectKeepAliveMilliSeconds, connectTimeoutMilliSeconds, proxy,
+                dispatcherMaxRequests, dispatcherMaxRequestsPerHost);
         init();
 
         // Setup authentications (key: authentication name, value: authentication).
@@ -159,7 +160,8 @@ public class ApiClient {
     }
 
     private void initHttpClient(List<Interceptor> interceptors, int maxIdleConnections,
-            int connectKeepAliveMilliSeconds, int connectTimeoutMilliSeconds, EMProxy emProxy) {
+            int connectKeepAliveMilliSeconds, int connectTimeoutMilliSeconds, EMProxy emProxy,
+            int dispatcherMaxRequests, int dispatcherMaxRequestsPerHost) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addNetworkInterceptor(getProgressInterceptor());
         for (Interceptor interceptor: interceptors) {
@@ -192,6 +194,11 @@ public class ApiClient {
             }
         }
 
+        Dispatcher customDispatcher = new Dispatcher();
+        customDispatcher.setMaxRequests(dispatcherMaxRequests);
+        customDispatcher.setMaxRequestsPerHost(dispatcherMaxRequestsPerHost);
+
+        builder.dispatcher(customDispatcher);
         httpClient = builder.build();
     }
 
@@ -353,6 +360,10 @@ public class ApiClient {
 
         private int connectTimeoutMilliSeconds = 10000;
 
+        private int dispatcherMaxRequests = 200;
+
+        private int dispatcherMaxRequestsPerHost = 50;
+
         private EMProxy proxy;
 
         public Builder setRealm(Realm realm) {
@@ -442,6 +453,22 @@ public class ApiClient {
             return this;
         }
 
+        public Builder setDispatcherMaxRequests(int dispatcherMaxRequests) {
+            if (dispatcherMaxRequests < 0) {
+                throw new IllegalArgumentException("dispatcherMaxRequests must not be negative");
+            }
+            this.dispatcherMaxRequests = dispatcherMaxRequests;
+            return this;
+        }
+
+        public Builder setDispatcherMaxRequestsPerHost(int dispatcherMaxRequestsPerHost) {
+            if (dispatcherMaxRequestsPerHost < 0) {
+                throw new IllegalArgumentException("dispatcherMaxRequestsPerHost must not be negative");
+            }
+            this.dispatcherMaxRequestsPerHost = dispatcherMaxRequestsPerHost;
+            return this;
+        }
+
         public Builder setProxy(EMProxy proxy) {
             this.proxy = proxy;
             return this;
@@ -480,7 +507,7 @@ public class ApiClient {
                 return new ApiClient(this.basePath, this.realm, this.appKey, this.clientId,
                         this.clientSecret, null, null, this.maxIdleConnections,
                         this.connectKeepAliveMilliSeconds, this.connectTimeoutMilliSeconds,
-                        this.proxy);
+                        this.proxy, this.dispatcherMaxRequests, this.dispatcherMaxRequestsPerHost);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
                 if (this.appId == null) {
                     throw new IllegalArgumentException("appId not set");
@@ -494,7 +521,7 @@ public class ApiClient {
 
                 return new ApiClient(this.basePath, this.realm, this.appKey, null, null, this.appId,
                         this.appCert, this.maxIdleConnections, this.connectKeepAliveMilliSeconds,
-                        this.connectTimeoutMilliSeconds, this.proxy);
+                        this.connectTimeoutMilliSeconds, this.proxy, this.dispatcherMaxRequests, this.dispatcherMaxRequestsPerHost);
             } else {
                 throw new IllegalArgumentException(
                         String.format("invalid realm type %s", this.realm));
