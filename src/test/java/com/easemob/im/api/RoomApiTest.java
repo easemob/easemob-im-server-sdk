@@ -2100,4 +2100,56 @@ public class RoomApiTest extends AbstractTest {
         try {api.deleteRoom(roomId);} catch (ApiException ignored) {}
     }
 
+    /**
+     * 获取聊天室成员数量
+     *
+     * 获取聊天室成员数量。
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getRoomMemberCountTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> api.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        EMGetRoomMemberCountResult response = assertDoesNotThrow(() -> api.getRoomMemberCount(roomId));
+        assertNotNull(response);
+        assertNotNull(response.getData());
+        assertEquals(2, response.getData().intValue());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {api.deleteRoom(roomId);} catch (ApiException ignored) {}
+    }
+
 }

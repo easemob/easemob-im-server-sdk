@@ -4083,4 +4083,111 @@ public class GroupApi {
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
+    /**
+     * Build call for getGroupMemberCount
+     * @param groupId  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getGroupMemberCountCall(@javax.annotation.Nonnull String groupId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/chatgroups/{group_id}/count"
+                .replace("{" + "group_id" + "}", localVarApiClient.escapeString(groupId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getGroupMemberCountValidateBeforeCall(@javax.annotation.Nonnull String groupId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'groupId' is set
+        if (groupId == null) {
+            throw new ApiException("Missing the required parameter 'groupId' when calling getGroupMemberCount(Async)");
+        }
+
+        return getGroupMemberCountCall(groupId, _callback);
+
+    }
+
+    /**
+     * 获取群组成员数量
+     * 获取群组成员数量。
+     * @param groupId  (required)
+     * @return EMGetGroupMemberCountResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMGetGroupMemberCountResult getGroupMemberCount(@javax.annotation.Nonnull String groupId) throws ApiException {
+        ApiResponse<EMGetGroupMemberCountResult> localVarResp = getGroupMemberCountWithHttpInfo(groupId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 获取群组成员数量
+     * 获取群组成员数量。
+     * @param groupId  (required)
+     * @return ApiResponse&lt;EMGetGroupMemberCountResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMGetGroupMemberCountResult> getGroupMemberCountWithHttpInfo(@javax.annotation.Nonnull String groupId) throws ApiException {
+        okhttp3.Call localVarCall = getGroupMemberCountValidateBeforeCall(groupId, null);
+        Type localVarReturnType = new TypeToken<EMGetGroupMemberCountResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 获取群组成员数量 (asynchronously)
+     * 获取群组成员数量。
+     * @param groupId  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getGroupMemberCountAsync(@javax.annotation.Nonnull String groupId, final ApiCallback<EMGetGroupMemberCountResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getGroupMemberCountValidateBeforeCall(groupId, _callback);
+        Type localVarReturnType = new TypeToken<EMGetGroupMemberCountResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }

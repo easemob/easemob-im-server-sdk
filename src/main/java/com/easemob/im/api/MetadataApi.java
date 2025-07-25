@@ -957,4 +957,106 @@ public class MetadataApi {
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
+    /**
+     * Build call for getMultipleUserMetadata
+     * @param emGetMultipleUserMetadata  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getMultipleUserMetadataCall(@javax.annotation.Nullable EMGetMultipleUserMetadata emGetMultipleUserMetadata, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emGetMultipleUserMetadata;
+
+        // create path and map variables
+        String localVarPath = "/metadata/user/get";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getMultipleUserMetadataValidateBeforeCall(@javax.annotation.Nullable EMGetMultipleUserMetadata emGetMultipleUserMetadata, final ApiCallback _callback) throws ApiException {
+        return getMultipleUserMetadataCall(emGetMultipleUserMetadata, _callback);
+
+    }
+
+    /**
+     * 批量获取用户属性
+     * 根据指定的用户 ID 列表和属性列表，查询用户属性。如果指定的用户 ID 或用户属性不存在，返回空数据 {}。 每次最多可获取 100 个用户的属性。文档介绍：https://docs-im-beta.easemob.com/document/server-side/userprofile.html#%E8%8E%B7%E5%8F%96-app-%E4%B8%8B%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E5%A4%A7%E5%B0%8F
+     * @param emGetMultipleUserMetadata  (optional)
+     * @return EMGetMultipleUserMetadataResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMGetMultipleUserMetadataResult getMultipleUserMetadata(@javax.annotation.Nullable EMGetMultipleUserMetadata emGetMultipleUserMetadata) throws ApiException {
+        ApiResponse<EMGetMultipleUserMetadataResult> localVarResp = getMultipleUserMetadataWithHttpInfo(emGetMultipleUserMetadata);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 批量获取用户属性
+     * 根据指定的用户 ID 列表和属性列表，查询用户属性。如果指定的用户 ID 或用户属性不存在，返回空数据 {}。 每次最多可获取 100 个用户的属性。文档介绍：https://docs-im-beta.easemob.com/document/server-side/userprofile.html#%E8%8E%B7%E5%8F%96-app-%E4%B8%8B%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E5%A4%A7%E5%B0%8F
+     * @param emGetMultipleUserMetadata  (optional)
+     * @return ApiResponse&lt;EMGetMultipleUserMetadataResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMGetMultipleUserMetadataResult> getMultipleUserMetadataWithHttpInfo(@javax.annotation.Nullable EMGetMultipleUserMetadata emGetMultipleUserMetadata) throws ApiException {
+        okhttp3.Call localVarCall = getMultipleUserMetadataValidateBeforeCall(emGetMultipleUserMetadata, null);
+        Type localVarReturnType = new TypeToken<EMGetMultipleUserMetadataResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 批量获取用户属性 (asynchronously)
+     * 根据指定的用户 ID 列表和属性列表，查询用户属性。如果指定的用户 ID 或用户属性不存在，返回空数据 {}。 每次最多可获取 100 个用户的属性。文档介绍：https://docs-im-beta.easemob.com/document/server-side/userprofile.html#%E8%8E%B7%E5%8F%96-app-%E4%B8%8B%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E5%A4%A7%E5%B0%8F
+     * @param emGetMultipleUserMetadata  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getMultipleUserMetadataAsync(@javax.annotation.Nullable EMGetMultipleUserMetadata emGetMultipleUserMetadata, final ApiCallback<EMGetMultipleUserMetadataResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getMultipleUserMetadataValidateBeforeCall(emGetMultipleUserMetadata, _callback);
+        Type localVarReturnType = new TypeToken<EMGetMultipleUserMetadataResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }

@@ -22,60 +22,10 @@ import com.easemob.im.Pair;
 import com.easemob.im.ProgressRequestBody;
 import com.easemob.im.ProgressResponseBody;
 
+import com.easemob.im.api.model.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-
-
-import com.easemob.im.api.model.EMAddMultipleUserToRoom;
-import com.easemob.im.api.model.EMAddMultipleUserToRoomBlockList;
-import com.easemob.im.api.model.EMAddMultipleUserToRoomBlockListResult;
-import com.easemob.im.api.model.EMAddMultipleUserToRoomWhiteList;
-import com.easemob.im.api.model.EMAddMultipleUserToRoomWhiteListResult;
-import com.easemob.im.api.model.EMAddRoomAdmin;
-import com.easemob.im.api.model.EMAddRoomAdminResult;
-import com.easemob.im.api.model.EMAddRoomSuperAdmin;
-import com.easemob.im.api.model.EMAddRoomSuperAdminResult;
-import com.easemob.im.api.model.EMAddUserToRoomBlockListResult;
-import com.easemob.im.api.model.EMAddUserToRoomResult;
-import com.easemob.im.api.model.EMAddUserToRoomWhiteListResult;
-import com.easemob.im.api.model.EMCreateRoom;
-import com.easemob.im.api.model.EMCreateRoomResult;
-import com.easemob.im.api.model.EMDeleteRoomCustomAttributes;
-import com.easemob.im.api.model.EMDeleteRoomCustomAttributesResult;
-import com.easemob.im.api.model.EMDeleteRoomResult;
-import com.easemob.im.api.model.EMForceDeleteRoomCustomAttributes;
-import com.easemob.im.api.model.EMForceDeleteRoomCustomAttributesResult;
-import com.easemob.im.api.model.EMForceSetRoomCustomAttributes;
-import com.easemob.im.api.model.EMForceSetRoomCustomAttributesResult;
-import com.easemob.im.api.model.EMGetMuteRoomMemberListResult;
-import com.easemob.im.api.model.EMGetRoomAdminListResult;
-import com.easemob.im.api.model.EMGetRoomAnnouncementResult;
-import com.easemob.im.api.model.EMGetRoomBlockListResult;
-import com.easemob.im.api.model.EMGetRoomCustomAttributes;
-import com.easemob.im.api.model.EMGetRoomCustomAttributesResult;
-import com.easemob.im.api.model.EMGetRoomInfoResult;
-import com.easemob.im.api.model.EMGetRoomListResult;
-import com.easemob.im.api.model.EMGetRoomMemberListResult;
-import com.easemob.im.api.model.EMGetRoomSuperAdminListResult;
-import com.easemob.im.api.model.EMGetRoomWhiteListResult;
-import com.easemob.im.api.model.EMGetUserJoinedRoomListResult;
-import com.easemob.im.api.model.EMModifyRoom;
-import com.easemob.im.api.model.EMModifyRoomAnnouncement;
-import com.easemob.im.api.model.EMModifyRoomAnnouncementResult;
-import com.easemob.im.api.model.EMModifyRoomResult;
-import com.easemob.im.api.model.EMMuteAllRoomMemberResult;
-import com.easemob.im.api.model.EMMuteRoomMember;
-import com.easemob.im.api.model.EMMuteRoomMemberResult;
-import com.easemob.im.api.model.EMRemoveRoomAdminResult;
-import com.easemob.im.api.model.EMRemoveRoomSuperAdminResult;
-import com.easemob.im.api.model.EMRemoveUserFromRoomBlockListResult;
-import com.easemob.im.api.model.EMRemoveUserFromRoomResult;
-import com.easemob.im.api.model.EMRemoveUserFromRoomWhiteListResult;
-import com.easemob.im.api.model.EMSetRoomCustomAttributes;
-import com.easemob.im.api.model.EMSetRoomCustomAttributesResult;
-import com.easemob.im.api.model.EMUnmuteAllRoomMemberResult;
-import com.easemob.im.api.model.EMUnmuteRoomMemberResult;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -4178,6 +4128,113 @@ public class RoomApi {
 
         okhttp3.Call localVarCall = unmuteRoomMemberValidateBeforeCall(chatroomId, username, _callback);
         Type localVarReturnType = new TypeToken<EMUnmuteRoomMemberResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for getRoomMemberCount
+     * @param chatroomId  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getRoomMemberCountCall(@javax.annotation.Nonnull String chatroomId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/chatrooms/{chatroom_id}/count"
+                .replace("{" + "chatroom_id" + "}", localVarApiClient.escapeString(chatroomId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getRoomMemberCountValidateBeforeCall(@javax.annotation.Nonnull String chatroomId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'chatroomId' is set
+        if (chatroomId == null) {
+            throw new ApiException("Missing the required parameter 'chatroomId' when calling getRoomMemberCount(Async)");
+        }
+
+        return getRoomMemberCountCall(chatroomId, _callback);
+
+    }
+
+    /**
+     * 获取聊天室成员数量
+     * 获取聊天室成员数量。
+     * @param chatroomId  (required)
+     * @return EMGetRoomMemberCountResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMGetRoomMemberCountResult getRoomMemberCount(@javax.annotation.Nonnull String chatroomId) throws ApiException {
+        ApiResponse<EMGetRoomMemberCountResult> localVarResp = getRoomMemberCountWithHttpInfo(chatroomId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 获取聊天室成员数量
+     * 获取聊天室成员数量。
+     * @param chatroomId  (required)
+     * @return ApiResponse&lt;EMGetRoomMemberCountResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMGetRoomMemberCountResult> getRoomMemberCountWithHttpInfo(@javax.annotation.Nonnull String chatroomId) throws ApiException {
+        okhttp3.Call localVarCall = getRoomMemberCountValidateBeforeCall(chatroomId, null);
+        Type localVarReturnType = new TypeToken<EMGetRoomMemberCountResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 获取聊天室成员数量 (asynchronously)
+     * 获取聊天室成员数量。
+     * @param chatroomId  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getRoomMemberCountAsync(@javax.annotation.Nonnull String chatroomId, final ApiCallback<EMGetRoomMemberCountResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getRoomMemberCountValidateBeforeCall(chatroomId, _callback);
+        Type localVarReturnType = new TypeToken<EMGetRoomMemberCountResult>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

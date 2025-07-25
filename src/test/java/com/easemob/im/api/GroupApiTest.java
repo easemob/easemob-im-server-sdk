@@ -2337,4 +2337,60 @@ public class GroupApiTest extends AbstractTest {
         }
     }
 
+    /**
+     * 获取群组成员数量
+     *
+     * 获取群组成员数量。
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getGroupMemberCountTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateGroup createGroup = new EMCreateGroup();
+        createGroup.setOwner(username1);
+        createGroup.setGroupname("test-group");
+        createGroup.setDescription("元梦之星");
+        createGroup.setMaxusers(200);
+        createGroup.setMembers(Arrays.asList(username2));
+        createGroup.setPublic(true);
+
+        EMCreateGroupResult createGroupResult =
+                assertDoesNotThrow(() -> api.createGroup(createGroup));
+        assertNotNull(createGroupResult);
+        assertNotNull(createGroupResult.getData());
+        assertNotNull(createGroupResult.getData().getGroupid());
+
+        String groupId = createGroupResult.getData().getGroupid();
+
+        EMGetGroupMemberCountResult response = assertDoesNotThrow(() -> api.getGroupMemberCount(groupId));
+        assertNotNull(response);
+        assertNotNull(response.getData());
+        assertEquals(2, response.getData().intValue());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {
+            api.deleteGroup(groupId);
+        } catch (ApiException ignored) {
+        }
+    }
+
 }

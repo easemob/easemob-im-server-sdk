@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * API tests for MetadataApi
@@ -202,7 +203,7 @@ public class MetadataApiTest extends AbstractTest {
         assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
 
         Map<String, String> metadata = new HashMap<>();
-        metadata.put("nickname", "javk");
+        metadata.put("nickname", "jack");
         metadata.put("age", "20");
         EMSetUserMetadataResult setUserMetadataResult =
                 assertDoesNotThrow(() -> api.setUserMetadata(username, metadata));
@@ -442,7 +443,7 @@ public class MetadataApiTest extends AbstractTest {
         assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
 
         Map<String, String> metadata = new HashMap<>();
-        metadata.put("nickname", "javk");
+        metadata.put("nickname", "jack");
         metadata.put("age", "20");
         EMSetUserMetadataResult setUserMetadataResult =
                 assertDoesNotThrow(() -> api.setUserMetadata(username1, metadata));
@@ -450,6 +451,71 @@ public class MetadataApiTest extends AbstractTest {
         assertNotNull(setUserMetadataResult.getData());
 
         assertDoesNotThrow(() -> userApi.deleteUser(username1));
+    }
+
+    /**
+     * 批量获取用户属性
+     *
+     * 根据指定的用户 ID 列表和属性列表，查询用户属性。如果指定的用户 ID 或用户属性不存在，返回空数据 {}。 每次最多可获取 100 个用户的属性。文档介绍：https://docs-im-beta.easemob.com/document/server-side/userprofile.html#%E8%8E%B7%E5%8F%96-app-%E4%B8%8B%E7%94%A8%E6%88%B7%E5%B1%9E%E6%80%A7%E6%80%BB%E5%A4%A7%E5%B0%8F
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getMultipleUserMetadataTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        Map<String, String> metadata1 = new HashMap<>();
+        metadata1.put("nickname", "jack");
+        metadata1.put("age", "20");
+        EMSetUserMetadataResult setUserMetadataResult1 =
+                assertDoesNotThrow(() -> api.setUserMetadata(username1, metadata1));
+        assertNotNull(setUserMetadataResult1);
+        assertNotNull(setUserMetadataResult1.getData());
+
+
+        Map<String, String> metadata2 = new HashMap<>();
+        metadata2.put("nickname", "tom");
+        metadata2.put("age", "21");
+        EMSetUserMetadataResult setUserMetadataResult2 =
+                assertDoesNotThrow(() -> api.setUserMetadata(username2, metadata2));
+        assertNotNull(setUserMetadataResult2);
+        assertNotNull(setUserMetadataResult2.getData());
+
+        EMGetMultipleUserMetadata emGetMultipleUserMetadata = new EMGetMultipleUserMetadata();
+        emGetMultipleUserMetadata.setTargets(Arrays.asList(username1, username2));
+        emGetMultipleUserMetadata.setProperties(Arrays.asList("nickname", "age"));
+
+        EMGetMultipleUserMetadataResult getMultipleUserMetadataResult =
+                assertDoesNotThrow(() -> api.getMultipleUserMetadata(emGetMultipleUserMetadata));
+        assertNotNull(getMultipleUserMetadataResult);
+        Map<String, Map<String, String>> result = (Map<String, Map<String, String>>) getMultipleUserMetadataResult.getData();
+        assertNotNull(result);
+        assertNotNull(result.get(username1));
+        assertNotNull(result.get(username2));
+        assertEquals("jack", result.get(username1).get("nickname"));
+        assertEquals("20", result.get(username1).get("age"));
+        assertEquals("tom", result.get(username2).get("nickname"));
+        assertEquals("21", result.get(username2).get("age"));
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+
     }
 
 }
