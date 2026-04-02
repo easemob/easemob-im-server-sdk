@@ -1479,6 +1479,75 @@ public class RoomApiTest extends AbstractTest {
     }
 
     /**
+     * 转让聊天室所有者
+     *
+     * 修改聊天室所有者，将聊天室所有者转让给聊天室成员。文档介绍：https://docs-im-beta.easemob.com/document/server-side/chatroom.html#%E4%BF%AE%E6%94%B9%E8%81%8A%E5%A4%A9%E5%AE%A4%E4%BF%A1%E6%81%AF
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void transferRoomOwnerTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("test room for owner transfer");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult= assertDoesNotThrow(() -> api.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        // 验证初始所有者
+        EMGetRoomInfoResult getRoomInfoResultBefore = assertDoesNotThrow(() -> api.getRoomInfo(roomId));
+        assertNotNull(getRoomInfoResultBefore);
+        assertNotNull(getRoomInfoResultBefore.getData());
+        assertNotNull(getRoomInfoResultBefore.getData().get(0));
+        assertEquals(username1, getRoomInfoResultBefore.getData().get(0).getOwner());
+
+        // 转让所有者
+        EMModifyRoom modifyRoom = new EMModifyRoom();
+        modifyRoom.setNewowner(username2);
+
+        EMModifyRoomResult modifyRoomResult = assertDoesNotThrow(() -> api.modifyRoom(roomId, modifyRoom));
+        assertNotNull(modifyRoomResult);
+        assertNotNull(modifyRoomResult.getData());
+
+        // 验证所有者已变更
+        EMGetRoomInfoResult getRoomInfoResultAfter = assertDoesNotThrow(() -> api.getRoomInfo(roomId));
+        assertNotNull(getRoomInfoResultAfter);
+        assertNotNull(getRoomInfoResultAfter.getData());
+        assertNotNull(getRoomInfoResultAfter.getData().get(0));
+        assertEquals(username2, getRoomInfoResultAfter.getData().get(0).getOwner());
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        try {api.deleteRoom(roomId);} catch (ApiException ignored) {}
+    }
+
+    /**
      * 修改聊天室公告
      *
      * 修改指定聊天室 ID 的聊天室公告。聊天室公告内容不能超过 512 个字符。文档介绍：https://docs-im-beta.easemob.com/document/server-side/chatroom.html#%E4%BF%AE%E6%94%B9%E8%81%8A%E5%A4%A9%E5%AE%A4%E5%85%AC%E5%91%8A

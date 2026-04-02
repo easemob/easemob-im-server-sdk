@@ -254,6 +254,7 @@ public class MessageApiTest extends AbstractTest {
         emRecallMessage.setTo(username2);
         emRecallMessage.setChatType("chat");
         emRecallMessage.setForce(true);
+        emRecallMessage.setRecallMessageExtensionInfo("test extension info");
         EMRecallMessageResult response = messageApi.recallMessage(emRecallMessage);
         assertNotNull(response.getData());
         assertEquals("yes", response.getData().getRecalled());

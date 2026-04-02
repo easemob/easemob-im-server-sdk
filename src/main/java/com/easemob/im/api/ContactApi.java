@@ -785,4 +785,107 @@ public class ContactApi {
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
+
+    /**
+     * Build call for userContactCheck
+     * @param emUserContactCheck  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call userContactCheckCall(@javax.annotation.Nullable EMUserContactCheck emUserContactCheck, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emUserContactCheck;
+
+        // create path and map variables
+        String localVarPath = "/contacts/check";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call userContactCheckValidateBeforeCall(@javax.annotation.Nullable EMUserContactCheck emUserContactCheck, final ApiCallback _callback) throws ApiException {
+        return userContactCheckCall(emUserContactCheck, _callback);
+
+    }
+
+    /**
+     * 校验好友
+     * 批量检查用户是否在好友列表中。文档介绍：https://doc.easemob.com/document/server-side/user_friend_check.html
+     * @param emUserContactCheck  (optional)
+     * @return EMUserContactCheckResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMUserContactCheckResult userContactCheck(@javax.annotation.Nullable EMUserContactCheck emUserContactCheck) throws ApiException {
+        ApiResponse<EMUserContactCheckResult> localVarResp = userContactCheckWithHttpInfo(emUserContactCheck);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 校验好友
+     * 批量检查用户是否在好友列表中。文档介绍：https://doc.easemob.com/document/server-side/user_friend_check.html
+     * @param emUserContactCheck  (optional)
+     * @return ApiResponse&lt;EMUserContactCheckResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMUserContactCheckResult> userContactCheckWithHttpInfo(@javax.annotation.Nullable EMUserContactCheck emUserContactCheck) throws ApiException {
+        okhttp3.Call localVarCall = userContactCheckValidateBeforeCall(emUserContactCheck, null);
+        Type localVarReturnType = new TypeToken<EMUserContactCheckResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 校验好友 (asynchronously)
+     * 批量检查用户是否在好友列表中。文档介绍：https://doc.easemob.com/document/server-side/user_friend_check.html
+     * @param emUserContactCheck  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call userContactCheckAsync(@javax.annotation.Nullable EMUserContactCheck emUserContactCheck, final ApiCallback<EMUserContactCheckResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = userContactCheckValidateBeforeCall(emUserContactCheck, _callback);
+        Type localVarReturnType = new TypeToken<EMUserContactCheckResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }

@@ -312,4 +312,73 @@ public class ContactApiTest extends AbstractTest {
         assertDoesNotThrow(() -> userApi.deleteUser(username2));
     }
 
+    /**
+     * 校验好友
+     *
+     * 批量检查用户是否在好友列表中。文档介绍：https://doc.easemob.com/document/server-side/user_friend_check.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void userContactCheckTest() throws ApiException, InterruptedException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String username3 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        EMCreateUser createUser3 = new EMCreateUser();
+        createUser3.setUsername(username3);
+        createUser3.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+        emCreateUserList.add(createUser3);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMAddContactResult addContactResult = assertDoesNotThrow(() -> api.addContact(username1, username2));
+        assertNotNull(addContactResult);
+        assertNotNull(addContactResult.getEntities());
+        assertNotNull(addContactResult.getEntities().get(0));
+        assertEquals(username2, addContactResult.getEntities().get(0).getUsername());
+
+        Thread.sleep(5000);
+
+        EMUserContactCheck contactCheck = new EMUserContactCheck();
+        contactCheck.setUsername(username1);
+        contactCheck.setCheckList(Arrays.asList(username2, username3));
+
+        EMUserContactCheckResult checkResult = assertDoesNotThrow(() -> api.userContactCheck(contactCheck));
+        assertNotNull(checkResult);
+        assertNotNull(checkResult.getEntities());
+        assertEquals(2, checkResult.getEntities().size());
+
+        boolean foundFriend = false;
+        boolean foundNotFriend = false;
+        for (EMUserContactCheckResource resource : checkResult.getEntities()) {
+            if (username2.equals(resource.getUsername())) {
+                assertEquals("friend", resource.getRelation());
+                foundFriend = true;
+            } else if (username3.equals(resource.getUsername())) {
+                assertEquals("not_friend", resource.getRelation());
+                foundNotFriend = true;
+            }
+        }
+        assertTrue(foundFriend);
+        assertTrue(foundNotFriend);
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        assertDoesNotThrow(() -> userApi.deleteUser(username3));
+    }
+
 }

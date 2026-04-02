@@ -3907,6 +3907,7 @@ public class RoomApi {
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
+
     /**
      * Build call for unmuteAllRoomMember
      * @param chatroomId  (required)
