@@ -3552,6 +3552,123 @@ public class RoomApi {
         return localVarCall;
     }
     /**
+     * Build call for removeMultipleUsersFromRoom
+     * @param chatroomId  (required)
+     * @param usernames  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call removeMultipleUsersFromRoomCall(String chatroomId, List<String> usernames, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/chatrooms/{chatroom_id}/users/{usernames}"
+            .replace("{" + "chatroom_id" + "}", localVarApiClient.escapeString(chatroomId.toString()))
+            .replace("{" + "usernames" + "}", localVarApiClient.escapeString(String.join(",", usernames)));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call removeMultipleUsersFromRoomValidateBeforeCall(String chatroomId, List<String> usernames, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'chatroomId' is set
+        if (chatroomId == null) {
+            throw new ApiException("Missing the required parameter 'chatroomId' when calling removeMultipleUsersFromRoom(Async)");
+        }
+
+        // verify the required parameter 'usernames' is set
+        if (usernames == null) {
+            throw new ApiException("Missing the required parameter 'usernames' when calling removeMultipleUsersFromRoom(Async)");
+        }
+
+        return removeMultipleUsersFromRoomCall(chatroomId, usernames, _callback);
+
+    }
+
+    /**
+     * 批量移除聊天室成员
+     * 从聊天室批量移除成员。文档介绍：https://doc.easemob.com/document/server-side/chatroom_member_remove_batch.html
+     * @param chatroomId  (required)
+     * @param usernames  (required)
+     * @return EMRemoveUsersFromRoomResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMRemoveUsersFromRoomResult removeMultipleUsersFromRoom(String chatroomId, List<String> usernames) throws ApiException {
+        ApiResponse<EMRemoveUsersFromRoomResult> localVarResp = removeMultipleUsersFromRoomWithHttpInfo(chatroomId, usernames);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 批量移除聊天室成员
+     * 从聊天室批量移除成员。文档介绍：https://doc.easemob.com/document/server-side/chatroom_member_remove_batch.html
+     * @param chatroomId  (required)
+     * @param usernames  (required)
+     * @return ApiResponse&lt;EMRemoveUsersFromRoomResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMRemoveUsersFromRoomResult> removeMultipleUsersFromRoomWithHttpInfo(String chatroomId, List<String> usernames) throws ApiException {
+        okhttp3.Call localVarCall = removeMultipleUsersFromRoomValidateBeforeCall(chatroomId, usernames, null);
+        Type localVarReturnType = new TypeToken<EMRemoveUsersFromRoomResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 批量移除聊天室成员 (asynchronously)
+     * 从聊天室批量移除成员。文档介绍：https://doc.easemob.com/document/server-side/chatroom_member_remove_batch.html
+     * @param chatroomId  (required)
+     * @param usernames  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call removeMultipleUsersFromRoomAsync(String chatroomId, List<String> usernames, final ApiCallback<EMRemoveUsersFromRoomResult> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = removeMultipleUsersFromRoomValidateBeforeCall(chatroomId, usernames, _callback);
+        Type localVarReturnType = new TypeToken<EMRemoveUsersFromRoomResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
      * Build call for removeUserFromRoomBlockList
      * @param chatroomId  (required)
      * @param username  (required)

@@ -1880,6 +1880,67 @@ public class RoomApiTest extends AbstractTest {
     }
 
     /**
+     * 批量移除聊天室成员
+     *
+     * 从聊天室批量移除多个成员。文档介绍：https://doc.easemob.com/document/server-side/chatroom_member_remove_batch.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void removeMultipleUsersFromRoomTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String username3 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+
+        EMCreateUser createUser3 = new EMCreateUser();
+        createUser3.setUsername(username3);
+        createUser3.setPassword(password);
+
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+        emCreateUserList.add(createUser3);
+
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        EMCreateRoom createRoom = new EMCreateRoom();
+        createRoom.setOwner(username1);
+        createRoom.setName("test-room");
+        createRoom.setDescription("元梦之星");
+        createRoom.setMaxusers(200);
+        createRoom.setMembers(Arrays.asList(username2, username3));
+        createRoom.setCustom("custom");
+
+        EMCreateRoomResult createRoomResult = assertDoesNotThrow(() -> api.createRoom(createRoom));
+        assertNotNull(createRoomResult);
+        assertNotNull(createRoomResult.getData());
+        assertNotNull(createRoomResult.getData().getId());
+
+        String roomId = createRoomResult.getData().getId();
+
+        EMRemoveUsersFromRoomResult removeUsersFromRoomResult =
+                assertDoesNotThrow(() -> api.removeMultipleUsersFromRoom(roomId, Arrays.asList(username2, username3)));
+        assertNotNull(removeUsersFromRoomResult);
+        assertNotNull(removeUsersFromRoomResult.getData());
+        assertEquals(2, removeUsersFromRoomResult.getData().size());
+        assertTrue(removeUsersFromRoomResult.getData().stream().allMatch(item -> Boolean.TRUE.equals(item.getResult())));
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        assertDoesNotThrow(() -> userApi.deleteUser(username3));
+        try {api.deleteRoom(roomId);} catch (ApiException ignored) {}
+    }
+
+    /**
      * 从聊天室黑名单移出单个用户
      *
      * 将指定用户移出聊天室黑名单。对于聊天室黑名单中的用户，如果需要将其再次加入聊天室，需要先将其从聊天室黑名单中移除。文档介绍：https://docs-im-beta.easemob.com/document/server-side/chatroom.html#%E4%BB%8E%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%BB%91%E5%90%8D%E5%8D%95%E7%A7%BB%E5%87%BA%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7
