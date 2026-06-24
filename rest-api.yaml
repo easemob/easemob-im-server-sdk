@@ -5711,8 +5711,274 @@ paths:
                     type: string
                   data:
                     $ref: '#/components/schemas/ReactionResource'
+  '/users/{username}/collections':
+    parameters:
+      - schema:
+          type: string
+        name: username
+        in: path
+        required: true
+        description: 用户 ID
+    post:
+      tags:
+        - Collection
+      summary: 添加一条收藏
+      operationId: userCollectionAddSingle
+      description: '对单个用户添加一条收藏。文档介绍：https://doc.easemob.com/document/server-side/user_collection_add_single.html'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: UserCollectionAddSingle
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 收藏 ID，收藏的唯一标识。若不传，环信服务器会设置随机的 UUID
+                data:
+                  type: string
+                  description: 收藏内容，不能超过 20480 字符
+                type:
+                  type: integer
+                  description: 收藏类型
+                ext:
+                  type: string
+                  description: 收藏的扩展信息，不能超过 1024 字符
+              required:
+                - data
+                - type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: UserCollectionAddSingleResult
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/CollectionResource'
+    get:
+      tags:
+        - Collection
+      summary: 分页获取用户收藏
+      operationId: userCollectionGet
+      description: '获取指定用户的收藏，支持分页。文档介绍：https://doc.easemob.com/document/server-side/user_collection_get.html'
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: begin_time
+          description: 查询开始时间，UNIX 时间戳（毫秒），默认值为 0
+          required: false
+        - schema:
+            type: integer
+          in: query
+          name: end_time
+          description: 查询结束时间，UNIX 时间戳（毫秒），默认为系统当前时间
+          required: false
+        - schema:
+            type: string
+          in: query
+          name: direction
+          description: 查询方向：desc（降序，默认）或 asc（升序）
+          required: false
+        - schema:
+            type: integer
+          in: query
+          name: type
+          description: 收藏类型，不传则返回所有类型
+          required: false
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: 请求查询的收藏数量，取值范围 [1,200]，默认 100
+          required: false
+        - schema:
+            type: string
+          in: query
+          name: collection_id
+          description: 收藏 ID，从该收藏开始查询
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: UserCollectionGetResult
+                type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CollectionResource'
+    delete:
+      tags:
+        - Collection
+      summary: 删除用户收藏
+      operationId: userCollectionDelete
+      description: '删除单个用户的收藏，一次最多可删除 20 个。文档介绍：https://doc.easemob.com/document/server-side/user_collection_delete.html'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: UserCollectionDelete
+              type: object
+              properties:
+                collection_ids:
+                  type: array
+                  description: 收藏 ID 列表，最多可传入 20 个
+                  items:
+                    type: string
+              required:
+                - collection_ids
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: UserCollectionDeleteResult
+                type: object
+                properties:
+                  result:
+                    type: boolean
+                    description: 是否成功删除收藏
+  '/users/{username}/collections/{collectionId}':
+    parameters:
+      - schema:
+          type: string
+        name: username
+        in: path
+        required: true
+        description: 用户 ID
+      - schema:
+          type: string
+        name: collectionId
+        in: path
+        required: true
+        description: 收藏 ID
+    put:
+      tags:
+        - Collection
+      summary: 修改收藏扩展信息
+      operationId: userCollectionExtModify
+      description: '修改单个用户的一条收藏的扩展信息。文档介绍：https://doc.easemob.com/document/server-side/user_collection_ext_modify.html'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: UserCollectionExtModify
+              type: object
+              properties:
+                ext:
+                  type: string
+                  description: 收藏的扩展信息，设置为空则取消现有扩展字段
+              required:
+                - ext
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: UserCollectionExtModifyResult
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/CollectionResource'
+  '/collections':
+    post:
+      tags:
+        - Collection
+      summary: 批量添加用户收藏
+      operationId: userCollectionAddBatch
+      description: '对单个用户批量添加收藏，一次最多可添加 20 个。文档介绍：https://doc.easemob.com/document/server-side/user_collection_add_batch.html'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: UserCollectionAddBatch
+              type: object
+              properties:
+                collections:
+                  type: array
+                  description: 要添加的收藏详情，最多可添加 20 个
+                  items:
+                    $ref: '#/components/schemas/CollectionItem'
+                username:
+                  type: string
+                  description: 为该用户 ID 添加收藏
+              required:
+                - collections
+                - username
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: UserCollectionAddBatchResult
+                type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CollectionResource'
 components:
   schemas:
+    CollectionItem:
+      title: CollectionItem
+      type: object
+      properties:
+        id:
+          type: string
+          description: 收藏 ID
+        type:
+          type: integer
+          description: 收藏类型
+        data:
+          type: string
+          description: 收藏内容
+        ext:
+          type: string
+          description: 收藏的扩展信息
+        createdAt:
+          type: integer
+          format: int64
+          description: 收藏的添加时间
+      required:
+        - id
+        - data
+        - type
+        - ext
+        - createdAt
+    CollectionResource:
+      title: CollectionResource
+      type: object
+      properties:
+        id:
+          type: string
+          description: 收藏 ID
+        type:
+          type: integer
+          description: 收藏类型
+        data:
+          type: string
+          description: 收藏内容
+        ext:
+          type: string
+          description: 收藏的扩展信息
+        createdAt:
+          type: integer
+          format: int64
+          description: 收藏创建时间
+        updatedAt:
+          type: integer
+          format: int64
+          description: 收藏更新时间
     CreateToken:
       title: CreateToken
       type: object

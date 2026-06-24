@@ -4,7 +4,7 @@
   <groupId>com.easemob.im</groupId>
   <artifactId>im-sdk-core</artifactId>
   <name>im-sdk-core</name>
-  <version>1.0.18-SNAPSHOT</version>
+  <version>1.0.20-SNAPSHOT</version>
   <description>OpenAPI Java</description>
   <url>https://github.com/openapitools/openapi-generator</url>
   <developers>
