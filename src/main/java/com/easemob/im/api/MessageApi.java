@@ -774,6 +774,103 @@ public class MessageApi {
         return localVarCall;
     }
     /**
+     * Build call for batchRecallMessages
+     * @param emBatchRecallMessages  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call batchRecallMessagesCall(EMBatchRecallMessages emBatchRecallMessages, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        String[] localBasePaths = new String[] {  };
+
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emBatchRecallMessages;
+
+        String localVarPath = "/messages/batch_recall";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call batchRecallMessagesValidateBeforeCall(EMBatchRecallMessages emBatchRecallMessages, final ApiCallback _callback) throws ApiException {
+        return batchRecallMessagesCall(emBatchRecallMessages, _callback);
+    }
+
+    /**
+     * 批量撤回消息
+     * 一次可撤回发送成功的多条消息，每次最多可撤回 30 条。文档介绍：https://doc.easemob.com/document/server-side/message_recall_batch.html
+     * @param emBatchRecallMessages  (optional)
+     * @return EMBatchRecallMessagesResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMBatchRecallMessagesResult batchRecallMessages(EMBatchRecallMessages emBatchRecallMessages) throws ApiException {
+        ApiResponse<EMBatchRecallMessagesResult> localVarResp = batchRecallMessagesWithHttpInfo(emBatchRecallMessages);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 批量撤回消息
+     * 一次可撤回发送成功的多条消息，每次最多可撤回 30 条。文档介绍：https://doc.easemob.com/document/server-side/message_recall_batch.html
+     * @param emBatchRecallMessages  (optional)
+     * @return ApiResponse&lt;EMBatchRecallMessagesResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMBatchRecallMessagesResult> batchRecallMessagesWithHttpInfo(EMBatchRecallMessages emBatchRecallMessages) throws ApiException {
+        okhttp3.Call localVarCall = batchRecallMessagesValidateBeforeCall(emBatchRecallMessages, null);
+        Type localVarReturnType = new TypeToken<EMBatchRecallMessagesResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 批量撤回消息 (asynchronously)
+     * 一次可撤回发送成功的多条消息，每次最多可撤回 30 条。文档介绍：https://doc.easemob.com/document/server-side/message_recall_batch.html
+     * @param emBatchRecallMessages  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call batchRecallMessagesAsync(EMBatchRecallMessages emBatchRecallMessages, final ApiCallback<EMBatchRecallMessagesResult> _callback) throws ApiException {
+        okhttp3.Call localVarCall = batchRecallMessagesValidateBeforeCall(emBatchRecallMessages, _callback);
+        Type localVarReturnType = new TypeToken<EMBatchRecallMessagesResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
      * Build call for sendMessagesToGroup
      * @param emCreateMessage  (optional)
      * @param _callback Callback for upload/download progress
@@ -1978,6 +2075,288 @@ public class MessageApi {
 
         okhttp3.Call localVarCall = sendRoomBroadcastMessagesValidateBeforeCall(emCreateChatroomBroadcastMessage, _callback);
         Type localVarReturnType = new TypeToken<EMSendMessageResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for translateMessage
+     * @param emMessageTranslate  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call translateMessageCall(EMMessageTranslate emMessageTranslate, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emMessageTranslate;
+
+        // create path and map variables
+        String localVarPath = "/translate";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call translateMessageValidateBeforeCall(EMMessageTranslate emMessageTranslate, final ApiCallback _callback) throws ApiException {
+        return translateMessageCall(emMessageTranslate, _callback);
+    }
+
+    /**
+     * 翻译消息内容
+     * 翻译文本消息的内容，只支持文本消息。文档介绍：https://doc.easemob.com/document/server-side/message_translation_text.html
+     * @param emMessageTranslate  (optional)
+     * @return List&lt;EMMessageTranslateResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public List<EMMessageTranslateResult> translateMessage(EMMessageTranslate emMessageTranslate) throws ApiException {
+        ApiResponse<List<EMMessageTranslateResult>> localVarResp = translateMessageWithHttpInfo(emMessageTranslate);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 翻译消息内容
+     * 翻译文本消息的内容，只支持文本消息。文档介绍：https://doc.easemob.com/document/server-side/message_translation_text.html
+     * @param emMessageTranslate  (optional)
+     * @return ApiResponse&lt;List&lt;EMMessageTranslateResult&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<List<EMMessageTranslateResult>> translateMessageWithHttpInfo(EMMessageTranslate emMessageTranslate) throws ApiException {
+        okhttp3.Call localVarCall = translateMessageValidateBeforeCall(emMessageTranslate, null);
+        Type localVarReturnType = new TypeToken<List<EMMessageTranslateResult>>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 翻译消息内容 (asynchronously)
+     * 翻译文本消息的内容，只支持文本消息。文档介绍：https://doc.easemob.com/document/server-side/message_translation_text.html
+     * @param emMessageTranslate  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call translateMessageAsync(EMMessageTranslate emMessageTranslate, final ApiCallback<List<EMMessageTranslateResult>> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = translateMessageValidateBeforeCall(emMessageTranslate, _callback);
+        Type localVarReturnType = new TypeToken<List<EMMessageTranslateResult>>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for getTranslateSupportLanguages
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getTranslateSupportLanguagesCall(final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        String[] localBasePaths = new String[] {  };
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+        String localVarPath = "/translate/support/language";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = { "application/json" };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {  };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getTranslateSupportLanguagesValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+        return getTranslateSupportLanguagesCall(_callback);
+    }
+
+    /**
+     * 获取翻译语言列表
+     * 获取翻译语言列表。文档介绍：https://doc.easemob.com/document/server-side/message_translation_language_list.html
+     * @return List&lt;EMTranslateSupportLanguage&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public List<EMTranslateSupportLanguage> getTranslateSupportLanguages() throws ApiException {
+        ApiResponse<List<EMTranslateSupportLanguage>> localVarResp = getTranslateSupportLanguagesWithHttpInfo();
+        return localVarResp.getData();
+    }
+
+    /**
+     * 获取翻译语言列表
+     * 获取翻译语言列表。文档介绍：https://doc.easemob.com/document/server-side/message_translation_language_list.html
+     * @return ApiResponse&lt;List&lt;EMTranslateSupportLanguage&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<List<EMTranslateSupportLanguage>> getTranslateSupportLanguagesWithHttpInfo() throws ApiException {
+        okhttp3.Call localVarCall = getTranslateSupportLanguagesValidateBeforeCall(null);
+        Type localVarReturnType = new TypeToken<List<EMTranslateSupportLanguage>>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 获取翻译语言列表 (asynchronously)
+     * 获取翻译语言列表。文档介绍：https://doc.easemob.com/document/server-side/message_translation_language_list.html
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call getTranslateSupportLanguagesAsync(final ApiCallback<List<EMTranslateSupportLanguage>> _callback) throws ApiException {
+        okhttp3.Call localVarCall = getTranslateSupportLanguagesValidateBeforeCall(_callback);
+        Type localVarReturnType = new TypeToken<List<EMTranslateSupportLanguage>>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for detectTranslateLanguage
+     * @param emDetectTranslateLanguage  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call detectTranslateLanguageCall(EMDetectTranslateLanguage emDetectTranslateLanguage, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        String[] localBasePaths = new String[] {  };
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emDetectTranslateLanguage;
+        String localVarPath = "/translate/detect";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = { "application/json" };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = { "application/json" };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call detectTranslateLanguageValidateBeforeCall(EMDetectTranslateLanguage emDetectTranslateLanguage, final ApiCallback _callback) throws ApiException {
+        return detectTranslateLanguageCall(emDetectTranslateLanguage, _callback);
+    }
+
+    /**
+     * 检测文本的源语言
+     * 检测要翻译的文本的源语言。文档介绍：https://doc.easemob.com/document/server-side/message_translation_detect.html
+     * @param emDetectTranslateLanguage  (optional)
+     * @return EMDetectTranslateLanguageResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMDetectTranslateLanguageResult detectTranslateLanguage(EMDetectTranslateLanguage emDetectTranslateLanguage) throws ApiException {
+        ApiResponse<EMDetectTranslateLanguageResult> localVarResp = detectTranslateLanguageWithHttpInfo(emDetectTranslateLanguage);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 检测文本的源语言
+     * 检测要翻译的文本的源语言。文档介绍：https://doc.easemob.com/document/server-side/message_translation_detect.html
+     * @param emDetectTranslateLanguage  (optional)
+     * @return ApiResponse&lt;EMDetectTranslateLanguageResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMDetectTranslateLanguageResult> detectTranslateLanguageWithHttpInfo(EMDetectTranslateLanguage emDetectTranslateLanguage) throws ApiException {
+        okhttp3.Call localVarCall = detectTranslateLanguageValidateBeforeCall(emDetectTranslateLanguage, null);
+        Type localVarReturnType = new TypeToken<EMDetectTranslateLanguageResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 检测文本的源语言 (asynchronously)
+     * 检测要翻译的文本的源语言。文档介绍：https://doc.easemob.com/document/server-side/message_translation_detect.html
+     * @param emDetectTranslateLanguage  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call detectTranslateLanguageAsync(EMDetectTranslateLanguage emDetectTranslateLanguage, final ApiCallback<EMDetectTranslateLanguageResult> _callback) throws ApiException {
+        okhttp3.Call localVarCall = detectTranslateLanguageValidateBeforeCall(emDetectTranslateLanguage, _callback);
+        Type localVarReturnType = new TypeToken<EMDetectTranslateLanguageResult>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

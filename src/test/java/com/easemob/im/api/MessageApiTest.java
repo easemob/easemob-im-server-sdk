@@ -2619,4 +2619,129 @@ public class MessageApiTest extends AbstractTest {
         assertDoesNotThrow(() -> userApi.deleteUser(username2));
     }
 
+    /**
+     * 批量撤回消息
+     *
+     * 一次可撤回发送成功的多条消息，每次最多可撤回 30 条。文档介绍：https://doc.easemob.com/document/server-side/message_recall_batch.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void batchRecallMessagesTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> emCreateUserList = new ArrayList<>();
+        EMCreateUser createUser1 = new EMCreateUser();
+        createUser1.setUsername(username1);
+        createUser1.setPassword(password);
+        EMCreateUser createUser2 = new EMCreateUser();
+        createUser2.setUsername(username2);
+        createUser2.setPassword(password);
+        emCreateUserList.add(createUser1);
+        emCreateUserList.add(createUser2);
+        assertDoesNotThrow(() -> userApi.createUsers(emCreateUserList));
+
+        // 发送两条消息
+        EMCreateMessage emCreateMessage = new EMCreateMessage();
+        emCreateMessage.setFrom(username1);
+        emCreateMessage.setTo(Collections.singletonList(username2));
+        emCreateMessage.setType("txt");
+        EMMessageContent messageContent = new EMMessageContent();
+        messageContent.setMsg("batch recall test message 1");
+        emCreateMessage.setBody(messageContent);
+        EMSendMessageResult sendResult1 = messageApi.sendMessagesToUser(emCreateMessage);
+        assertNotNull(sendResult1.getData());
+        String msgId1 = ((Map<String, String>) sendResult1.getData()).get(username2);
+
+        EMCreateMessage emCreateMessage2 = new EMCreateMessage();
+        emCreateMessage2.setFrom(username1);
+        emCreateMessage2.setTo(Collections.singletonList(username2));
+        emCreateMessage2.setType("txt");
+        EMMessageContent messageContent2 = new EMMessageContent();
+        messageContent2.setMsg("batch recall test message 2");
+        emCreateMessage2.setBody(messageContent2);
+        EMSendMessageResult sendResult2 = messageApi.sendMessagesToUser(emCreateMessage2);
+        assertNotNull(sendResult2.getData());
+        String msgId2 = ((Map<String, String>) sendResult2.getData()).get(username2);
+
+        // 批量撤回两条消息
+        EMBatchRecallMessagesMsgsInner msg1 = new EMBatchRecallMessagesMsgsInner();
+        msg1.setMsgId(msgId1);
+        msg1.setTo(username2);
+        msg1.setFrom(username1);
+        msg1.setChatType("chat");
+        msg1.setForce(true);
+
+        EMBatchRecallMessagesMsgsInner msg2 = new EMBatchRecallMessagesMsgsInner();
+        msg2.setMsgId(msgId2);
+        msg2.setTo(username2);
+        msg2.setFrom(username1);
+        msg2.setChatType("chat");
+        msg2.setForce(true);
+
+        EMBatchRecallMessages emBatchRecallMessages = new EMBatchRecallMessages();
+        emBatchRecallMessages.setMsgs(Arrays.asList(msg1, msg2));
+
+        EMBatchRecallMessagesResult response = messageApi.batchRecallMessages(emBatchRecallMessages);
+        assertNotNull(response.getData());
+        assertEquals(2, response.getData().size());
+        response.getData().forEach(item -> assertEquals("yes", item.getRecalled()));
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+    }
+
+    /**
+     * 翻译消息内容
+     *
+     * https://doc.easemob.com/document/server-side/message_translation_text.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void translateMessageTest() throws ApiException {
+        EMMessageTranslate body = new EMMessageTranslate();
+        body.setText("学习");
+        body.setTo(Arrays.asList("en", "zh-Hant"));
+
+        List<EMMessageTranslateResult> response = messageApi.translateMessage(body);
+        assertNotNull(response);
+        assertFalse(response.isEmpty());
+        assertNotNull(response.get(0).getTranslations());
+    }
+
+    /**
+     * 获取翻译语言列表
+     *
+     * https://doc.easemob.com/document/server-side/message_translation_language_list.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getTranslateSupportLanguagesTest() throws ApiException {
+        List<EMTranslateSupportLanguage> response = messageApi.getTranslateSupportLanguages();
+        assertNotNull(response);
+        assertFalse(response.isEmpty());
+        assertNotNull(response.get(0).getCode());
+    }
+
+    /**
+     * 检测文本的源语言
+     *
+     * https://doc.easemob.com/document/server-side/message_translation_detect.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void detectTranslateLanguageTest() throws ApiException {
+        EMDetectTranslateLanguage body = new EMDetectTranslateLanguage();
+        body.setText("你好");
+
+        EMDetectTranslateLanguageResult response = messageApi.detectTranslateLanguage(body);
+        assertNotNull(response);
+        assertNotNull(response.getLanguage());
+    }
+
 }

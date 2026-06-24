@@ -202,4 +202,53 @@ public class BlockApiTest extends AbstractTest {
         assertDoesNotThrow(() -> userApi.deleteUser(username3));
     }
 
+    /**
+     * 校验黑名单
+     *
+     * 批量校验用户是否在黑名单中。文档介绍：https://doc.easemob.com/document/server-side/user_friend_blocklist_check.html
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void userBlockCheckTest() throws ApiException {
+        String username1 = randomUserName();
+        String username2 = randomUserName();
+        String username3 = randomUserName();
+        String password = "123456";
+
+        List<EMCreateUser> createUsers = Arrays.asList(
+                new EMCreateUser().username(username1).password(password),
+                new EMCreateUser().username(username2).password(password),
+                new EMCreateUser().username(username3).password(password)
+        );
+        assertDoesNotThrow(() -> userApi.createUsers(createUsers));
+
+        // 将 username2 加入 username1 的黑名单
+        EMAddUserToBlockList addReq = new EMAddUserToBlockList();
+        addReq.setUsernames(Arrays.asList(username2));
+        assertDoesNotThrow(() -> api.addUserToBlockList(username1, addReq));
+
+        // 校验黑名单：username2 在黑名单，username3 不在
+        EMUserBlockCheck checkReq = new EMUserBlockCheck();
+        checkReq.setUsername(username1);
+        checkReq.setCheckList(Arrays.asList(username2, username3));
+
+        EMUserBlockCheckResult result = api.userBlockCheck(checkReq);
+        assertNotNull(result);
+        assertNotNull(result.getEntities());
+        assertEquals(2, result.getEntities().size());
+
+        result.getEntities().forEach(item -> {
+            if (username2.equals(item.getUsername())) {
+                assertEquals("blacklist", item.getRelation());
+            } else if (username3.equals(item.getUsername())) {
+                assertEquals("not_blacklist", item.getRelation());
+            }
+        });
+
+        assertDoesNotThrow(() -> userApi.deleteUser(username1));
+        assertDoesNotThrow(() -> userApi.deleteUser(username2));
+        assertDoesNotThrow(() -> userApi.deleteUser(username3));
+    }
+
 }

@@ -31,6 +31,8 @@ import com.easemob.im.api.model.EMAddUserToBlockList;
 import com.easemob.im.api.model.EMAddUserToBlockListResult;
 import com.easemob.im.api.model.EMGetBlockListResult;
 import com.easemob.im.api.model.EMRemoveUserFromBlockListResult;
+import com.easemob.im.api.model.EMUserBlockCheck;
+import com.easemob.im.api.model.EMUserBlockCheckResult;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -424,6 +426,100 @@ public class BlockApi {
 
         okhttp3.Call localVarCall = removeUserFromBlockListValidateBeforeCall(ownerUsername, blockedUsername, _callback);
         Type localVarReturnType = new TypeToken<EMRemoveUserFromBlockListResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for userBlockCheck
+     * @param emUserBlockCheck  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * http.response.details
+     */
+    public okhttp3.Call userBlockCheckCall(EMUserBlockCheck emUserBlockCheck, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        String[] localBasePaths = new String[] {  };
+
+        if (localCustomBaseUrl != null) {
+            basePath = localCustomBaseUrl;
+        } else if (localBasePaths.length > 0) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = emUserBlockCheck;
+
+        String localVarPath = "/blocks/check";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = { "application/json" };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = { "application/json" };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call userBlockCheckValidateBeforeCall(EMUserBlockCheck emUserBlockCheck, final ApiCallback _callback) throws ApiException {
+        return userBlockCheckCall(emUserBlockCheck, _callback);
+    }
+
+    /**
+     * 校验黑名单
+     * 批量校验用户是否在黑名单中。文档介绍：https://doc.easemob.com/document/server-side/user_friend_blocklist_check.html
+     * @param emUserBlockCheck  (optional)
+     * @return EMUserBlockCheckResult
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public EMUserBlockCheckResult userBlockCheck(EMUserBlockCheck emUserBlockCheck) throws ApiException {
+        ApiResponse<EMUserBlockCheckResult> localVarResp = userBlockCheckWithHttpInfo(emUserBlockCheck);
+        return localVarResp.getData();
+    }
+
+    /**
+     * 校验黑名单
+     * 批量校验用户是否在黑名单中。文档介绍：https://doc.easemob.com/document/server-side/user_friend_blocklist_check.html
+     * @param emUserBlockCheck  (optional)
+     * @return ApiResponse&lt;EMUserBlockCheckResult&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * http.response.details
+     */
+    public ApiResponse<EMUserBlockCheckResult> userBlockCheckWithHttpInfo(EMUserBlockCheck emUserBlockCheck) throws ApiException {
+        okhttp3.Call localVarCall = userBlockCheckValidateBeforeCall(emUserBlockCheck, null);
+        Type localVarReturnType = new TypeToken<EMUserBlockCheckResult>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * 校验黑名单 (asynchronously)
+     * 批量校验用户是否在黑名单中。文档介绍：https://doc.easemob.com/document/server-side/user_friend_blocklist_check.html
+     * @param emUserBlockCheck  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * http.response.details
+     */
+    public okhttp3.Call userBlockCheckAsync(EMUserBlockCheck emUserBlockCheck, final ApiCallback<EMUserBlockCheckResult> _callback) throws ApiException {
+        okhttp3.Call localVarCall = userBlockCheckValidateBeforeCall(emUserBlockCheck, _callback);
+        Type localVarReturnType = new TypeToken<EMUserBlockCheckResult>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
