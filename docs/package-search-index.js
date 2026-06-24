@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"com.easemob.im"},{"l":"com.easemob.im.agora"},{"l":"com.easemob.im.api"},{"l":"com.easemob.im.api.model"},{"l":"com.easemob.im.auth"},{"l":"所有程序包","u":"allpackages-index.html"}];updateSearchResults();
