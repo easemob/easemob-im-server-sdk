@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.message.send;
 
+import com.easemob.im.server.api.message.MessageType;
 import com.easemob.im.server.model.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -136,7 +137,7 @@ public class SendChatroomMessageRequest {
 
     static class Message {
         @JsonProperty("type")
-        private String type;
+        private MessageType type;
 
         @JsonProperty("msg")
         private String text;
@@ -187,7 +188,7 @@ public class SendChatroomMessageRequest {
         private Map<String, Object> customExtensions;
 
         @JsonCreator
-        public Message(@JsonProperty("type") String type,
+        public Message(@JsonProperty("type") MessageType type,
                 @JsonProperty("msg") String text,
                 @JsonProperty("lng") Double longitude,
                 @JsonProperty("lat") Double latitude,
@@ -219,8 +220,16 @@ public class SendChatroomMessageRequest {
             this.customExtensions = customExtensions;
         }
 
-        public Message(String type) {
+        public Message(MessageType type) {
             this.type = type;
+        }
+
+        /**
+         * @deprecated use {@link #Message(MessageType)} instead
+         */
+        @Deprecated
+        public Message(String type) {
+            this(MessageType.from(type));
         }
 
         @SuppressWarnings("unchecked")
@@ -249,13 +258,13 @@ public class SendChatroomMessageRequest {
         }
 
         public static Message of(EMTextMessage msg) {
-            Message send = new Message("text");
+            Message send = new Message(MessageType.TEXT);
             send.text = msg.text();
             return send;
         }
 
         public static Message of(EMImageMessage msg) {
-            Message send = new Message("img");
+            Message send = new Message(MessageType.IMG);
             send.uri = msg.uri() == null ? null : msg.uri().toString();
             send.displayName = msg.displayName();
             send.bytes = msg.bytes();
@@ -267,7 +276,7 @@ public class SendChatroomMessageRequest {
         }
 
         public static Message of(EMVoiceMessage msg) {
-            Message send = new Message("audio");
+            Message send = new Message(MessageType.AUDIO);
             send.uri = msg.uri() == null ? null : msg.uri().toString();
             send.displayName = msg.displayName();
             send.bytes = msg.bytes();
@@ -277,7 +286,7 @@ public class SendChatroomMessageRequest {
         }
 
         public static Message of(EMVideoMessage msg) {
-            Message send = new Message("video");
+            Message send = new Message(MessageType.VIDEO);
             send.uri = msg.uri() == null ? null : msg.uri().toString();
             send.displayName = msg.displayName();
             send.bytes = msg.bytes();
@@ -289,7 +298,7 @@ public class SendChatroomMessageRequest {
         }
 
         public static Message of(EMLocationMessage msg) {
-            Message send = new Message("loc");
+            Message send = new Message(MessageType.LOC);
             send.longitude = msg.longitude();
             send.latitude = msg.latitude();
             send.address = msg.address();
@@ -297,7 +306,7 @@ public class SendChatroomMessageRequest {
         }
 
         public static Message of(EMFileMessage msg) {
-            Message send = new Message("file");
+            Message send = new Message(MessageType.FILE);
             send.uri = msg.uri() == null ? null : msg.uri().toString();
             send.displayName = msg.displayName();
             send.bytes = msg.bytes();
@@ -306,7 +315,7 @@ public class SendChatroomMessageRequest {
         }
 
         public static Message of(EMCommandMessage msg) {
-            Message send = new Message("cmd");
+            Message send = new Message(MessageType.CMD);
             send.action = msg.action();
             if (msg.params() == null) {
                 return send;
@@ -344,7 +353,7 @@ public class SendChatroomMessageRequest {
         }
 
         public static Message of(EMCustomMessage msg) {
-            Message send = new Message("custom");
+            Message send = new Message(MessageType.CUSTOM);
             send.customEvent = msg.customEvent();
             if (msg.customExtensions() == null) {
                 return send;

@@ -1532,7 +1532,7 @@ public class MessageApi {
      * EMService service;
      * try {
      *     NewMessage newMessage = NewMessage.builder()
-     *             .type("txt")
+     *             .type(MessageType.TXT)
      *             .msg("hello world")
      *             .build();
      *

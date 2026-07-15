@@ -1240,7 +1240,7 @@ public class MessageIT extends AbstractIT {
         String messageId = messageIds.getMessageIdsByEntityId().get(randomToUsername);
 
         NewMessage newMessage = NewMessage.builder()
-                .type("txt")
+                .type(MessageType.TXT)
                 .msg("hello world")
                 .build();
 
@@ -1282,7 +1282,7 @@ public class MessageIT extends AbstractIT {
         customExts.put("customKey", "customValue");
 
         NewMessage newMessage = NewMessage.builder()
-                .type("custom")
+                .type(MessageType.CUSTOM)
                 .customEvent("custom_event")
                 .customExts(customExts)
                 .build();
