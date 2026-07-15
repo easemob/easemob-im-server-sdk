@@ -1,6 +1,7 @@
 package com.easemob.im.server.api.message.send.message;
 
 import com.easemob.im.server.api.message.ChatroomMsgLevel;
+import com.easemob.im.server.api.message.MessageType;
 import com.easemob.im.server.model.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -19,7 +20,7 @@ public class MessageSendRequest {
     private String from;
 
     @JsonProperty("type")
-    private String msgType;
+    private MessageType msgType;
 
     /* the server side does not preserve order of targets */
     @JsonProperty("to")
@@ -254,8 +255,16 @@ public class MessageSendRequest {
         return this.tos;
     }
 
-    public String getMsgType(){
+    public MessageType getMsgType(){
         return this.msgType;
+    }
+
+    /**
+     * @deprecated use {@link #getMsgType()} and {@link MessageType#getValue()} instead
+     */
+    @Deprecated
+    public String getMsgTypeAsString(){
+        return this.msgType == null ? null : this.msgType.getValue();
     }
 
     public Message getBody() {
@@ -310,7 +319,7 @@ public class MessageSendRequest {
     static class Message {
 
         @JsonIgnore
-        private String type;
+        private MessageType type;
 
         @JsonProperty("msg")
         private String text;
@@ -376,7 +385,7 @@ public class MessageSendRequest {
                 @JsonProperty("size") MessageSendRequest.Dimensions dimensions,
                 @JsonProperty("customEvent") String customEvent,
                 @JsonProperty("customExts") Map<String, Object> customExtensions) {
-            this.type = type;
+            this.type = type == null ? null : MessageType.from(type);
             this.text = text;
             this.longitude = longitude;
             this.latitude = latitude;
@@ -393,8 +402,16 @@ public class MessageSendRequest {
             this.customExtensions = customExtensions;
         }
 
-        public Message(String type) {
+        public Message(MessageType type) {
             this.type = type;
+        }
+
+        /**
+         * @deprecated use {@link #Message(MessageType)} instead
+         */
+        @Deprecated
+        public Message(String type) {
+            this(MessageType.from(type));
         }
 
         @SuppressWarnings("unchecked")
@@ -423,13 +440,13 @@ public class MessageSendRequest {
         }
 
         public static MessageSendRequest.Message of(EMTextMessage msg) {
-            MessageSendRequest.Message send = new MessageSendRequest.Message("txt");
+            MessageSendRequest.Message send = new MessageSendRequest.Message(MessageType.TXT);
             send.text = msg.text();
             return send;
         }
 
         public static MessageSendRequest.Message of(EMImageMessage msg) {
-            MessageSendRequest.Message send = new MessageSendRequest.Message("img");
+            MessageSendRequest.Message send = new MessageSendRequest.Message(MessageType.IMG);
             send.uri = msg.uri() == null ? null : msg.uri().toString();
             send.displayName = msg.displayName();
             send.bytes = msg.bytes();
@@ -441,7 +458,7 @@ public class MessageSendRequest {
         }
 
         public static MessageSendRequest.Message of(EMVoiceMessage msg) {
-            MessageSendRequest.Message send = new MessageSendRequest.Message("audio");
+            MessageSendRequest.Message send = new MessageSendRequest.Message(MessageType.AUDIO);
             send.uri = msg.uri() == null ? null : msg.uri().toString();
             send.displayName = msg.displayName();
             send.bytes = msg.bytes();
@@ -451,7 +468,7 @@ public class MessageSendRequest {
         }
 
         public static MessageSendRequest.Message of(EMVideoMessage msg) {
-            MessageSendRequest.Message send = new MessageSendRequest.Message("video");
+            MessageSendRequest.Message send = new MessageSendRequest.Message(MessageType.VIDEO);
             send.uri = msg.uri() == null ? null : msg.uri().toString();
             send.displayName = msg.displayName();
             send.bytes = msg.bytes();
@@ -463,7 +480,7 @@ public class MessageSendRequest {
         }
 
         public static MessageSendRequest.Message of(EMLocationMessage msg) {
-            MessageSendRequest.Message send = new MessageSendRequest.Message("loc");
+            MessageSendRequest.Message send = new MessageSendRequest.Message(MessageType.LOC);
             send.longitude = msg.longitude();
             send.latitude = msg.latitude();
             send.address = msg.address();
@@ -471,7 +488,7 @@ public class MessageSendRequest {
         }
 
         public static MessageSendRequest.Message of(EMFileMessage msg) {
-            MessageSendRequest.Message send = new MessageSendRequest.Message("file");
+            MessageSendRequest.Message send = new MessageSendRequest.Message(MessageType.FILE);
             send.uri = msg.uri() == null ? null : msg.uri().toString();
             send.displayName = msg.displayName();
             send.bytes = msg.bytes();
@@ -480,7 +497,7 @@ public class MessageSendRequest {
         }
 
         public static MessageSendRequest.Message of(EMCommandMessage msg) {
-            MessageSendRequest.Message send = new MessageSendRequest.Message("cmd");
+            MessageSendRequest.Message send = new MessageSendRequest.Message(MessageType.CMD);
             send.action = msg.action();
             if (msg.params() == null) {
                 return send;
@@ -518,7 +535,7 @@ public class MessageSendRequest {
         }
 
         public static MessageSendRequest.Message of(EMCustomMessage msg) {
-            MessageSendRequest.Message send = new MessageSendRequest.Message("custom");
+            MessageSendRequest.Message send = new MessageSendRequest.Message(MessageType.CUSTOM);
             send.customEvent = msg.customEvent();
             if (msg.customExtensions() == null) {
                 return send;

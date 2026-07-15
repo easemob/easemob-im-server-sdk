@@ -1,5 +1,6 @@
 package com.easemob.im.server.api.message.modify;
 
+import com.easemob.im.server.api.message.MessageType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 public class NewMessage {
 
     @JsonProperty("type")
-    private String type;
+    private MessageType type;
 
     @JsonProperty("msg")
     private String msg;
@@ -28,7 +29,7 @@ public class NewMessage {
     }
 
     public static class Builder {
-        private String type;
+        private MessageType type;
 
         private String msg;
 
@@ -36,8 +37,17 @@ public class NewMessage {
 
         private Map<String, String> customExts;
 
-        public NewMessage.Builder type(String type) {
+        public NewMessage.Builder type(MessageType type) {
             this.type = type;
+            return this;
+        }
+
+        /**
+         * @deprecated use {@link #type(MessageType)} instead
+         */
+        @Deprecated
+        public NewMessage.Builder type(String type) {
+            this.type = MessageType.from(type);
             return this;
         }
 
