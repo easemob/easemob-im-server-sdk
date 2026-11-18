@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.EMUploadChatFileResult;
-import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ClassLoaderUtils;
 
 import java.io.File;
@@ -40,7 +39,7 @@ public class ChatFileApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void downloadChatFileTest() throws ApiException {
         File _file = new File(Objects.requireNonNull(
                 ClassLoaderUtils.getDefaultClassLoader().getResource("upload/blue.png")).getPath());
@@ -65,7 +64,7 @@ public class ChatFileApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void uploadChatFileTest() throws ApiException {
         File _file = new File(Objects.requireNonNull(
                 ClassLoaderUtils.getDefaultClassLoader().getResource("upload/blue.png")).getPath());

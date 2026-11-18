@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +41,7 @@ public class ContactApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addContactTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -79,7 +78,7 @@ public class ContactApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getAllContactListTest() throws ApiException, InterruptedException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -133,7 +132,7 @@ public class ContactApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getContactListTest() throws ApiException, InterruptedException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -185,7 +184,7 @@ public class ContactApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeContactTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -228,7 +227,7 @@ public class ContactApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setContactNoteTest() throws ApiException, InterruptedException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -274,7 +273,7 @@ public class ContactApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void importContactListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -319,7 +318,7 @@ public class ContactApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userContactCheckTest() throws ApiException, InterruptedException {
         String username1 = randomUserName();
         String username2 = randomUserName();

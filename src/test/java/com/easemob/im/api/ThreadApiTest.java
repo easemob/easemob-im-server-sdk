@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -41,7 +40,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addMultipleUsersToThreadTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -138,7 +137,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void createThreadTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -215,7 +214,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteThreadTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -300,7 +299,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getThreadMemberListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -396,7 +395,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getThreadsUnderAppTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -492,7 +491,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserJoinedThreadsTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -588,7 +587,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserJoinedThreadsUnderGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -685,7 +684,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void modifyThreadTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -773,7 +772,7 @@ public class ThreadApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeMultipleUsersFromThreadTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();

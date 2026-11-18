@@ -2,7 +2,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +27,7 @@ public class CollectionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userCollectionAddSingleTest() throws ApiException {
         String username = randomUserName();
         EMCreateUser createUser = new EMCreateUser();
@@ -39,6 +38,7 @@ public class CollectionApiTest extends AbstractTest {
         EMUserCollectionAddSingle body = new EMUserCollectionAddSingle();
         body.setData("test data");
         body.setType(0);
+        body.setExt("test ext");
 
         EMUserCollectionAddSingleResult response = api.userCollectionAddSingle(username, body);
         assertNotNull(response);
@@ -61,7 +61,7 @@ public class CollectionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userCollectionAddBatchTest() throws ApiException {
         String username = randomUserName();
         EMCreateUser createUser = new EMCreateUser();
@@ -110,7 +110,7 @@ public class CollectionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userCollectionExtModifyTest() throws ApiException {
         String username = randomUserName();
         EMCreateUser createUser = new EMCreateUser();
@@ -121,6 +121,7 @@ public class CollectionApiTest extends AbstractTest {
         EMUserCollectionAddSingle addBody = new EMUserCollectionAddSingle();
         addBody.setData("test data");
         addBody.setType(0);
+        addBody.setExt("test ext");
         EMUserCollectionAddSingleResult addResult = api.userCollectionAddSingle(username, addBody);
         String collectionId = addResult.getCollection().getId();
 
@@ -146,7 +147,7 @@ public class CollectionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userCollectionDeleteTest() throws ApiException {
         String username = randomUserName();
         EMCreateUser createUser = new EMCreateUser();
@@ -157,6 +158,7 @@ public class CollectionApiTest extends AbstractTest {
         EMUserCollectionAddSingle addBody = new EMUserCollectionAddSingle();
         addBody.setData("test data");
         addBody.setType(0);
+        addBody.setExt("test ext");
         EMUserCollectionAddSingleResult addResult = api.userCollectionAddSingle(username, addBody);
         String collectionId = addResult.getCollection().getId();
 
@@ -177,7 +179,7 @@ public class CollectionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userCollectionGetTest() throws ApiException {
         String username = randomUserName();
         EMCreateUser createUser = new EMCreateUser();
@@ -188,6 +190,7 @@ public class CollectionApiTest extends AbstractTest {
         EMUserCollectionAddSingle addBody = new EMUserCollectionAddSingle();
         addBody.setData("test data");
         addBody.setType(0);
+        addBody.setExt("test ext");
         EMUserCollectionAddSingleResult addResult = api.userCollectionAddSingle(username, addBody);
         String collectionId = addResult.getCollection().getId();
 

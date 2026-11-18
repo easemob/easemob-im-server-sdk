@@ -16,7 +16,6 @@ package com.easemob.im.api;
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -41,7 +40,7 @@ public class ReactionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteReactionTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -100,7 +99,7 @@ public class ReactionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getReactionTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -170,7 +169,7 @@ public class ReactionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getReactionDetailTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -238,7 +237,7 @@ public class ReactionApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setReactionTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();

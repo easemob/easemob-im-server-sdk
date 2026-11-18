@@ -21,6 +21,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
@@ -55,6 +58,7 @@ import com.easemob.im.JSON;
 public class EMBatchRecallMessagesResult {
   public static final String SERIALIZED_NAME_DATA = "data";
   @SerializedName(SERIALIZED_NAME_DATA)
+  @JsonAdapter(DataAdapter.class)
   @javax.annotation.Nullable
   private List<EMBatchRecallMessageResource> data = new ArrayList<>();
 
@@ -75,7 +79,7 @@ public class EMBatchRecallMessagesResult {
   }
 
   /**
-   * Get data
+   * Get the message results from either a data array or a data.msgs array.
    * @return data
    */
   @javax.annotation.Nullable
@@ -160,19 +164,50 @@ public class EMBatchRecallMessagesResult {
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if (jsonObj.get("data") != null && !jsonObj.get("data").isJsonNull()) {
-        JsonArray jsonArraydata = jsonObj.getAsJsonArray("data");
+        JsonArray jsonArraydata = getMessagesArray(jsonObj.get("data"));
         if (jsonArraydata != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("data").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `data` to be an array in the JSON string but got `%s`", jsonObj.get("data").toString()));
-          }
-
           // validate the optional field `data` (array)
           for (int i = 0; i < jsonArraydata.size(); i++) {
             EMBatchRecallMessageResource.validateJsonElement(jsonArraydata.get(i));
           };
         }
       }
+  }
+
+  private static JsonArray getMessagesArray(JsonElement dataElement) {
+    if (dataElement.isJsonObject()) {
+      JsonObject dataObject = dataElement.getAsJsonObject();
+      if (!dataObject.has("msgs")) {
+        throw new JsonParseException("Expected the field `data` to contain a `msgs` array");
+      }
+      dataElement = dataObject.get("msgs");
+    }
+    if (dataElement.isJsonNull()) {
+      return null;
+    }
+    if (!dataElement.isJsonArray()) {
+      throw new JsonParseException("Expected the field `data` or `data.msgs` to be an array");
+    }
+    return dataElement.getAsJsonArray();
+  }
+
+  /**
+   * Accept both response formats while retaining the existing list serialization.
+   */
+  public static class DataAdapter implements JsonDeserializer<List<EMBatchRecallMessageResource>>,
+      JsonSerializer<List<EMBatchRecallMessageResource>> {
+    @Override
+    public List<EMBatchRecallMessageResource> deserialize(JsonElement json, Type typeOfT,
+        JsonDeserializationContext context) throws JsonParseException {
+      JsonArray messages = getMessagesArray(json);
+      return messages == null ? null : context.deserialize(messages, typeOfT);
+    }
+
+    @Override
+    public JsonElement serialize(List<EMBatchRecallMessageResource> messages, Type typeOfSrc,
+        JsonSerializationContext context) {
+      return context.serialize(messages, typeOfSrc);
+    }
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {

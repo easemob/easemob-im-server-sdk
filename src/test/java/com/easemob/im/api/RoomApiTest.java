@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -41,7 +40,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addMultipleUserToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -92,7 +91,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addMultipleUserToRoomBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -148,7 +147,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addMultipleUserToRoomWhiteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -204,7 +203,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addRoomAdminTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -260,7 +259,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addRoomSuperAdminTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -293,7 +292,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addUserToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -346,7 +345,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addUserToRoomBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -399,7 +398,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addUserToRoomWhiteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -452,7 +451,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void createRoomTest() {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -499,7 +498,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void customIdCreateRoomTest() {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -549,7 +548,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -602,7 +601,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteRoomCustomAttributesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -671,7 +670,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void forceDeleteRoomCustomAttributesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -741,7 +740,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void forceSetRoomCustomAttributesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -802,7 +801,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getMuteRoomMemberListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -866,7 +865,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomAdminListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -923,7 +922,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomAnnouncementTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -982,7 +981,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1039,7 +1038,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomCustomAttributesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1109,7 +1108,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomInfoTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1162,7 +1161,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1215,7 +1214,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomMemberListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1266,7 +1265,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomSuperAdminListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1323,7 +1322,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomWhiteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1377,7 +1376,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserJoinedRoomListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1429,7 +1428,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void modifyRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1485,7 +1484,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void transferRoomOwnerTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1554,7 +1553,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void modifyRoomAnnouncementTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1613,7 +1612,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void muteAllRoomMemberTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1665,7 +1664,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void muteRoomMemberTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1722,7 +1721,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeRoomAdminTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1778,7 +1777,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeRoomSuperAdminTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1834,7 +1833,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeUserFromRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1886,7 +1885,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeMultipleUsersFromRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1947,7 +1946,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeUserFromRoomBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2001,7 +2000,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeUserFromRoomWhiteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2055,7 +2054,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setRoomCustomAttributesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2125,7 +2124,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void unmuteAllRoomMemberTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2179,7 +2178,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void unmuteRoomMemberTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2237,7 +2236,7 @@ public class RoomApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getRoomMemberCountTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();

@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +41,7 @@ public class BlockApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addUserToBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -88,7 +87,7 @@ public class BlockApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -145,7 +144,7 @@ public class BlockApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeUserFromBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -209,7 +208,7 @@ public class BlockApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userBlockCheckTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();

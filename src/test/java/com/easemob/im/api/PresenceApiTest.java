@@ -24,7 +24,6 @@ import com.easemob.im.api.model.EMSubscribeMultipleUsersPresenceStatus;
 import com.easemob.im.api.model.EMSubscribeMultipleUsersPresenceStatusResult;
 import com.easemob.im.api.model.EMUnsubscribeMultipleUsersPresenceStatusResult;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -47,7 +46,7 @@ public class PresenceApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupOnlineMemberCountTest() throws ApiException {
         String groupId = "123456";
         Integer queryType = 1;
@@ -62,7 +61,7 @@ public class PresenceApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getMultipleUserPresenceStatusTest() throws ApiException {
         String username = "tom";
         String resource = "ios_123456";
@@ -93,7 +92,7 @@ public class PresenceApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserSubscriptionListTest() throws ApiException {
         String username1 = "tom1";
         String username2 = "tom2";
@@ -121,7 +120,7 @@ public class PresenceApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setUserPresenceStatusTest() throws ApiException {
         String username = "tom";
         String resource = "ios_123456";
@@ -142,7 +141,7 @@ public class PresenceApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void subscribeMultipleUsersPresenceStatusTest() throws ApiException {
         String username1 = "tom";
         String username2 = "jack";
@@ -170,7 +169,7 @@ public class PresenceApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void unsubscribeMultipleUsersPresenceStatusTest() throws ApiException {
         String username1 = "tom3";
         String username2 = "jack3";

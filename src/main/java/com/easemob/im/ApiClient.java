@@ -13,11 +13,11 @@
 
 package com.easemob.im;
 
-import com.easemob.im.agora.AccessToken2;
 import com.easemob.im.api.model.EMCreateToken;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.reflect.TypeToken;
+import io.agora.chat.ChatTokenBuilder2;
 import okhttp3.*;
 import okhttp3.Authenticator;
 import okhttp3.internal.http.HttpMethod;
@@ -78,7 +78,7 @@ public class ApiClient {
 
     private String appCert;
 
-    public static String version = "1.0.20";
+    public static String version = "1.0.21";
 
     public static Builder builder() {
         return new Builder().setRealm(Realm.EASEMOB_REALM);
@@ -124,10 +124,16 @@ public class ApiClient {
         this.clientSecret = clientSecret;
         this.appId = appId;
         this.appCert = appCert;
+        String serverBasePath;
+        if (Realm.AGORA_REALM.equals(this.realm)) {
+            serverBasePath = String.format("%s/app-id/%s", basePath, this.appId);
+        } else {
+            String[] appKeyParts = this.appKey.split("#");
+            serverBasePath = String.format("%s/%s/%s", basePath, appKeyParts[0], appKeyParts[1]);
+        }
         this.servers = Collections.singletonList(
                 new ServerConfiguration(
-                        String.format("%s/%s/%s", basePath, this.appKey.split("#")[0],
-                                this.appKey.split("#")[1]),
+                        serverBasePath,
                         "No description provided",
                         new HashMap<String, ServerVariable>()
                 )
@@ -215,6 +221,15 @@ public class ApiClient {
         setAuthorizationToken(getAppToken());
 
         authentications = new HashMap<String, Authentication>();
+    }
+
+    /**
+     * Returns the realm used to initialize this client.
+     *
+     * @return the configured realm
+     */
+    public Realm getRealm() {
+        return realm;
     }
 
     public String getAppToken() throws ApiException {
@@ -328,15 +343,8 @@ public class ApiClient {
     }
 
     private String generateAgoraAppToken() {
-        AccessToken2 accessToken = new AccessToken2(appId, appCert, 86400);
-        AccessToken2.Service serviceChat = new AccessToken2.ServiceChat();
-        serviceChat.addPrivilegeChat(AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP, 86400);
-        accessToken.addService(serviceChat);
-        try {
-            return accessToken.build();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("building agora app token failed");
-        }
+        ChatTokenBuilder2 builder = new ChatTokenBuilder2();
+        return builder.buildAppToken(appId, appCert, 86400);
     }
 
     public static class Builder {
@@ -479,25 +487,24 @@ public class ApiClient {
                 throw new IllegalArgumentException("basePath must not be null");
             }
 
-            if (StringUtils.isBlank(appKey)) {
-                throw new IllegalArgumentException("appKey must not be null");
-            }
-            String[] split = appKey.split("#");
-            if (split.length != 2) {
-                throw new IllegalArgumentException("appKey must contains #");
-            }
-            if (split[0].isEmpty()) {
-                throw new IllegalArgumentException("appKey must contains {org}");
-            }
-            if (split[1].isEmpty()) {
-                throw new IllegalArgumentException("appKey must contains {app}");
-            }
-
             if (this.realm.equals(Realm.EASEMOB_REALM)) {
-                if (this.clientId == null) {
+                if (StringUtils.isBlank(this.appKey)) {
+                    throw new IllegalArgumentException("appKey must not be null");
+                }
+                String[] split = this.appKey.split("#");
+                if (split.length != 2) {
+                    throw new IllegalArgumentException("appKey must contains #");
+                }
+                if (split[0].isEmpty()) {
+                    throw new IllegalArgumentException("appKey must contains {org}");
+                }
+                if (split[1].isEmpty()) {
+                    throw new IllegalArgumentException("appKey must contains {app}");
+                }
+                if (StringUtils.isBlank(this.clientId)) {
                     throw new IllegalArgumentException("clientId not set");
                 }
-                if (this.clientSecret == null) {
+                if (StringUtils.isBlank(this.clientSecret)) {
                     throw new IllegalArgumentException("clientSecret not set");
                 }
                 if (this.appId != null || this.appCert != null) {
@@ -509,10 +516,10 @@ public class ApiClient {
                         this.connectKeepAliveMilliSeconds, this.connectTimeoutMilliSeconds,
                         this.proxy, this.dispatcherMaxRequests, this.dispatcherMaxRequestsPerHost);
             } else if (this.realm.equals(Realm.AGORA_REALM)) {
-                if (this.appId == null) {
+                if (StringUtils.isBlank(this.appId)) {
                     throw new IllegalArgumentException("appId not set");
                 }
-                if (this.appCert == null) {
+                if (StringUtils.isBlank(this.appCert)) {
                     throw new IllegalArgumentException("appCert not set");
                 }
                 if (this.clientId != null || this.clientSecret != null) {

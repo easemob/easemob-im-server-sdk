@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void createUsersTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -86,7 +85,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteUserTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -108,7 +107,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteUsersTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -140,7 +139,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void forceUserLogoutTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -166,7 +165,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void forceUserLogoutFromSingleDeviceTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -195,7 +194,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getAllGloballyMutedUsersTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -245,7 +244,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getOfflineMessageStatusTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -280,7 +279,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -312,7 +311,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserGlobalMuteTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -350,7 +349,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserOfflineMessageCountTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -380,7 +379,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserOnlineLoginDeviceListTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -408,7 +407,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserOnlineStateTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -437,7 +436,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUsersTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -474,7 +473,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUsersOnlineStateTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -514,7 +513,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void modifyUserPasswordTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -543,7 +542,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setUserGlobalMuteTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -576,7 +575,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userActivateTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -605,7 +604,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void userDeactivateTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -632,7 +631,7 @@ public class UserApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void modifyPushNicknamesTest() throws ApiException {
         String username = randomUserName();
         String username1 = randomUserName();

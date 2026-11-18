@@ -4,7 +4,7 @@
   <groupId>com.easemob.im</groupId>
   <artifactId>im-sdk-core</artifactId>
   <name>im-sdk-core</name>
-  <version>1.0.20-SNAPSHOT</version>
+  <version>1.0.21-SNAPSHOT</version>
   <description>OpenAPI Java</description>
   <url>https://github.com/openapitools/openapi-generator</url>
   <developers>
@@ -187,14 +187,14 @@
         <executions>
           <execution>
             <id>attach-javadocs</id>
-            <phase>none</phase>
+            <phase>package</phase>
           </execution>
         </executions>
         <configuration>
           <encoding>UTF-8</encoding>
           <charset>UTF-8</charset>
           <docencoding>UTF-8</docencoding>
-          <skip>true</skip>
+          <skip>false</skip>
           <failOnError>false</failOnError>
         </configuration>
       </plugin>

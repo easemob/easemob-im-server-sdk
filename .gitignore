@@ -39,3 +39,7 @@ pom.xml.versionsBackup
 apidoc/
 apidoc.json
 .kiro/
+/docs/
+
+# Local credentials for Agora integration tests
+.env.agora.local

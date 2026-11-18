@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -43,7 +42,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void batchCustomGroupMemberAttributeTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -123,7 +122,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void customGroupMemberAttributeTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -188,7 +187,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteUserMetadataTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -226,7 +225,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupMemberAllCustomAttributeTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -300,7 +299,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getMultipleGroupMembersAttributesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -374,7 +373,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserMetadataTest() throws ApiException {
         String username1 = randomUserName();
         String password = "123456";
@@ -413,7 +412,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserMetadataCapacityTest() throws ApiException {
         EMGetUserMetadataCapacityResult response =
                 assertDoesNotThrow(() -> api.getUserMetadataCapacity());
@@ -428,7 +427,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setUserMetadataTest() throws ApiException {
         String username1 = randomUserName();
         String password = "123456";
@@ -460,7 +459,7 @@ public class MetadataApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getMultipleUserMetadataTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();

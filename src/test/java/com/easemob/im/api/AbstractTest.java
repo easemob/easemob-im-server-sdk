@@ -1,26 +1,23 @@
 package com.easemob.im.api;
 
 import com.easemob.im.ApiClient;
-import com.easemob.im.ApiException;
 import com.easemob.im.Configuration;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Execution(ExecutionMode.SAME_THREAD)
+@ResourceLock("default-api-client")
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public abstract class AbstractTest {
-    static {
-        try {
-            Configuration.setDefaultApiClient(ApiClient.builder()
-                    .setBasePath(System.getenv("IM_BASE_URI"))
-                    .setAppKey(System.getenv("IM_APPKEY"))
-                    .setClientId(System.getenv("IM_CLIENT_ID"))
-                    .setClientSecret(System.getenv("IM_CLIENT_SECRET"))
-                            .setDispatcherMaxRequests(300)
-                            .setDispatcherMaxRequestsPerHost(60)
-                    .build());
-        } catch (ApiException e) {
-            throw new RuntimeException(e);
-        }
+    protected static String getAppBaseUrl() {
+        ApiClient apiClient = Configuration.getDefaultApiClient();
+        return apiClient.getServers().get(apiClient.getServerIndex())
+                .URL(apiClient.getServerVariables());
     }
 
     protected static String randomUserName() {

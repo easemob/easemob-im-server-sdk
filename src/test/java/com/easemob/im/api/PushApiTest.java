@@ -16,7 +16,6 @@ package com.easemob.im.api;
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void createOfflinePushTemplateTest() throws ApiException {
         String name = "test";
         String title = "标题 {0}";
@@ -72,7 +71,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteOfflinePushTemplateTest() throws ApiException {
         String name = "test1";
         String title = "标题 {0}";
@@ -105,7 +104,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getOfflinePushTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -158,7 +157,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getOfflinePushTemplateTest() throws ApiException {
         String name = "test";
         String title = "标题 {0}";
@@ -188,7 +187,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getPushBindingInfoTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -230,7 +229,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getPushPreferredLanguageTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -263,7 +262,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void receiverConfigurationTemplateNameTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -295,7 +294,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setOfflinePushNewTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -342,7 +341,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setOfflinePushOldTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -383,7 +382,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setPushBindingInfoTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -424,7 +423,7 @@ public class PushApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void setPushPreferredLanguageTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";

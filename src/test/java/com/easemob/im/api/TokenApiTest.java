@@ -13,17 +13,19 @@
 
 package com.easemob.im.api;
 
+import com.easemob.im.ApiClient;
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.EMCreateToken;
 import com.easemob.im.api.model.EMCreateUser;
 import com.easemob.im.api.model.EMGetToken;
-import org.junit.jupiter.api.Test;
+import io.agora.media.AccessToken2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * API tests for TokenApi
@@ -40,12 +42,27 @@ public class TokenApiTest extends AbstractTest {
     /**
      * 获取管理员 Token
      * <p>
+     * AGORA_REALM 使用 SDK 本地生成并缓存的 Agora App Token；EASEMOB_REALM 使用客户端凭证请求管理员 Token。
+     * <p>
      * 管理员权限 Token 可以用来调用环信 Rest API 接口，获取管理员 Token 文档介绍：https://docs-im-beta.easemob.com/document/server-side/easemob_app_token.html
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getTokenTest() throws ApiException {
+        ApiClient apiClient = tokenApi.getApiClient();
+        if (apiClient.getRealm() == ApiClient.Realm.AGORA_REALM) {
+            String appToken = assertDoesNotThrow(apiClient::getAppToken);
+            assertNotNull(appToken);
+            AccessToken2 parsedToken = new AccessToken2();
+            assertTrue(parsedToken.parse(appToken));
+            AccessToken2.Service chat = parsedToken.services.get(AccessToken2.SERVICE_TYPE_CHAT);
+            assertNotNull(chat);
+            assertTrue(chat.getPrivileges().containsKey(
+                    AccessToken2.PrivilegeChat.PRIVILEGE_CHAT_APP.intValue));
+            return;
+        }
+
         EMCreateToken emCreateAppToken = new EMCreateToken();
         emCreateAppToken.setGrantType("client_credentials");
         emCreateAppToken.setClientId(System.getenv("IM_CLIENT_ID"));
@@ -61,7 +78,7 @@ public class TokenApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserTokenWithUsernameAndPasswordTest() throws ApiException {
         String username = randomUserName();
         String password = "123456";
@@ -92,7 +109,7 @@ public class TokenApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserTokenWithUsernameTest() throws ApiException {
         String username = randomUserName();
 

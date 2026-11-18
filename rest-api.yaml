@@ -1462,26 +1462,21 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: array
-                    items:
-                      title: BatchRecallMessageResource
-                      type: object
-                      properties:
-                        msg_id:
-                          type: string
-                          description: 撤回的消息 ID
-                        recalled:
-                          type: string
-                          description: 消息撤回结果，成功为 yes
-                        from:
-                          type: string
-                          description: 消息撤回方的用户 ID
-                        to:
-                          type: string
-                          description: 撤回消息的送达方
-                        chattype:
-                          type: string
-                          description: 撤回消息的会话类型：chat、groupchat 或 chatroom
+                    description: 兼容消息结果数组及包含 msgs 数组的对象，SDK 均以列表返回
+                    oneOf:
+                      - type: array
+                        nullable: true
+                        items:
+                          $ref: '#/components/schemas/BatchRecallMessageResource'
+                      - type: object
+                        properties:
+                          msgs:
+                            type: array
+                            nullable: true
+                            items:
+                              $ref: '#/components/schemas/BatchRecallMessageResource'
+                        required:
+                          - msgs
   '/users/{username}/user_channel':
     parameters:
       - schema:
@@ -5929,6 +5924,25 @@ paths:
                       $ref: '#/components/schemas/CollectionResource'
 components:
   schemas:
+    BatchRecallMessageResource:
+      title: BatchRecallMessageResource
+      type: object
+      properties:
+        msg_id:
+          type: string
+          description: 撤回的消息 ID
+        recalled:
+          type: string
+          description: 消息撤回结果，成功为 yes
+        from:
+          type: string
+          description: 消息撤回方的用户 ID
+        to:
+          type: string
+          description: 撤回消息的送达方
+        chattype:
+          type: string
+          description: 撤回消息的会话类型：chat、groupchat 或 chatroom
     CollectionItem:
       title: CollectionItem
       type: object

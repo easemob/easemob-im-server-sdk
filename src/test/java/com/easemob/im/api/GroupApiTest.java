@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ClassLoaderUtils;
 
 import java.io.File;
@@ -43,7 +42,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addGroupAdminTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -102,7 +101,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addMultipleUserToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -168,7 +167,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addMultipleUserToGroupBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -227,7 +226,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addMultipleUserToGroupWhiteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -286,7 +285,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addUserToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -350,7 +349,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addUserToGroupBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -407,7 +406,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void addUserToGroupWhiteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -464,7 +463,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void checkUserJoinedGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -520,7 +519,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void createGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -600,7 +599,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void customIdCreateGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -683,7 +682,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -740,7 +739,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void deleteGroupShareFileTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -806,7 +805,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void disableGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -862,7 +861,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void downloadGroupShareFileTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -925,7 +924,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void enableGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -980,7 +979,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getAppGroupsTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1046,7 +1045,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupAdminListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1098,7 +1097,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupAnnouncementTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1164,7 +1163,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1223,7 +1222,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupInfoTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1281,7 +1280,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupMemberListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1344,7 +1343,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupMuteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1413,7 +1412,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupShareFileTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1489,7 +1488,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupWhiteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1546,7 +1545,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getUserJoinedGroupsTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1603,7 +1602,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void modifyGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1674,7 +1673,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void modifyGroupAnnouncementTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1733,7 +1732,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void muteAllGroupMembersTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1789,7 +1788,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void muteGroupMemberTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1849,7 +1848,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeGroupAdminTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1910,7 +1909,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeUserFromGroupBlockListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1969,7 +1968,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeUserFromGroupWhiteListTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2027,7 +2026,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeUserToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2084,7 +2083,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void removeUsersToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2147,7 +2146,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void unmuteAllGroupMembersTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2206,7 +2205,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void unmuteGroupMemberTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2280,7 +2279,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void uploadGroupShareFileTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2344,7 +2343,7 @@ public class GroupApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getGroupMemberCountTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();

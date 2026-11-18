@@ -15,7 +15,6 @@ package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
 import com.easemob.im.api.model.*;
-import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ClassLoaderUtils;
 
 import java.io.File;
@@ -49,7 +48,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void importChatGroupMessageTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -112,7 +111,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void importChatUserMessageTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -156,7 +155,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void oneWayDeleteConversationTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -215,7 +214,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void recallMessageTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -270,7 +269,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendTextMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -342,7 +341,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendImageMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -384,10 +383,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadImageChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, imageFile));
         String imageChatFileUuid = uploadImageChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -396,7 +392,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("img.png");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + imageChatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + imageChatFileUuid);
         messageContent.setSize(new EMImageSize().height(192).width(170));
 
         emCreateMessage.setBody(messageContent);
@@ -428,7 +424,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendVoiceMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -471,10 +467,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
         String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -483,7 +476,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("voice.amr");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + chatFileUuid);
         messageContent.length(3);
 
         emCreateMessage.setBody(messageContent);
@@ -515,7 +508,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendVideoMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -563,10 +556,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadVideoChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, videoFile));
         String videoChatFileUuid = uploadVideoChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -574,10 +564,10 @@ public class MessageApiTest extends AbstractTest {
         emCreateMessage.setType("video");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("video.mp4");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + videoChatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + videoChatFileUuid);
         messageContent.setLength(3);
         messageContent.setFileLength(264562);
-        messageContent.setThumb(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + imageChatFileUuid);
+        messageContent.setThumb(appBaseUrl + "/chatfiles/" + imageChatFileUuid);
 
         emCreateMessage.setBody(messageContent);
 
@@ -609,7 +599,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendFileMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -651,10 +641,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, file));
         String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -662,7 +649,7 @@ public class MessageApiTest extends AbstractTest {
         emCreateMessage.setType("file");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("file.txt");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + chatFileUuid);
 
         emCreateMessage.setBody(messageContent);
 
@@ -694,7 +681,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendLocationMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -770,7 +757,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendCmdMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -844,7 +831,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendCustomMessagesToGroupTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -919,7 +906,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendMessagesToGroupDirectionalMemberTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -991,7 +978,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendTextMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1062,7 +1049,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendImageMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1104,10 +1091,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
         String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -1116,7 +1100,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("img.png");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + chatFileUuid);
         messageContent.setSize(new EMImageSize().height(192).width(170));
 
         emCreateMessage.setBody(messageContent);
@@ -1148,7 +1132,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendVoiceMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1190,10 +1174,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
         String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -1202,7 +1183,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("voice.amr");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + chatFileUuid);
         messageContent.setLength(3);
 
         emCreateMessage.setBody(messageContent);
@@ -1234,7 +1215,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendVideoMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1281,10 +1262,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadVideoChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, videoFile));
         String videoChatFileUuid = uploadVideoChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -1293,10 +1271,10 @@ public class MessageApiTest extends AbstractTest {
 
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("video.mp4");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + videoChatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + videoChatFileUuid);
         messageContent.setLength(3);
         messageContent.setFileLength(264562);
-        messageContent.setThumb(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + imageChatFileUuid);
+        messageContent.setThumb(appBaseUrl + "/chatfiles/" + imageChatFileUuid);
 
         emCreateMessage.setBody(messageContent);
 
@@ -1327,7 +1305,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendFileMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1368,10 +1346,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, file));
         String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -1380,7 +1355,7 @@ public class MessageApiTest extends AbstractTest {
 
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("file.txt");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + chatFileUuid);
 
         emCreateMessage.setBody(messageContent);
 
@@ -1411,7 +1386,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendLocationMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1485,7 +1460,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendCmdMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1557,7 +1532,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendCustomMessagesToRoomTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1630,7 +1605,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendMessagesToRoomDirectionalMemberTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1701,7 +1676,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendOnlineUserBroadcastMessagesTest() throws ApiException {
         String username1 = randomUserName();
         String password = "123456";
@@ -1746,7 +1721,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendRoomBroadcastMessagesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1813,7 +1788,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendTextMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1865,7 +1840,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendImageMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1892,10 +1867,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
         String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -1903,7 +1875,7 @@ public class MessageApiTest extends AbstractTest {
         emCreateMessage.setType("img");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("img.png");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + chatFileUuid);
         messageContent.setSize(new EMImageSize().height(192).width(170));
 
         emCreateMessage.setBody(messageContent);
@@ -1931,7 +1903,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendVoiceMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -1958,10 +1930,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(restrictAccess, file));
         String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -1969,7 +1938,7 @@ public class MessageApiTest extends AbstractTest {
         emCreateMessage.setType("audio");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("voice.amr");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + chatFileUuid);
         messageContent.setLength(3);
 
         emCreateMessage.setBody(messageContent);
@@ -1997,7 +1966,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendVideoMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2029,10 +1998,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadVideoChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, videoFile));
         String videoChatFileUuid = uploadVideoChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -2040,10 +2006,10 @@ public class MessageApiTest extends AbstractTest {
         emCreateMessage.setType("video");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("video.mp4");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + videoChatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + videoChatFileUuid);
         messageContent.setLength(3);
         messageContent.setFileLength(264562);
-        messageContent.setThumb(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + imageChatFileUuid);
+        messageContent.setThumb(appBaseUrl + "/chatfiles/" + imageChatFileUuid);
 
         emCreateMessage.setBody(messageContent);
 
@@ -2070,7 +2036,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendFileMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2096,10 +2062,7 @@ public class MessageApiTest extends AbstractTest {
         EMUploadChatFileResult uploadChatFileResult = assertDoesNotThrow(() -> chatFileApi.uploadChatFile(false, file));
         String chatFileUuid = uploadChatFileResult.getEntities().get(0).getUuid();
 
-        String baseUri = System.getenv("IM_BASE_URI");
-        String appKey = System.getenv("IM_APPKEY");
-        String orgName = appKey.split("#")[0];
-        String appName = appKey.split("#")[1];
+        String appBaseUrl = getAppBaseUrl();
 
         EMCreateMessage emCreateMessage = new EMCreateMessage();
         emCreateMessage.setFrom(username1);
@@ -2107,7 +2070,7 @@ public class MessageApiTest extends AbstractTest {
         emCreateMessage.setType("file");
         EMMessageContent messageContent = new EMMessageContent();
         messageContent.setFilename("file.txt");
-        messageContent.setUrl(baseUri + "/" + orgName + "/" + appName + "/chatfiles/" + chatFileUuid);
+        messageContent.setUrl(appBaseUrl + "/chatfiles/" + chatFileUuid);
 
         emCreateMessage.setBody(messageContent);
 
@@ -2134,7 +2097,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendLocationMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2188,7 +2151,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendCmdMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2240,7 +2203,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void sendCustomMessagesToUserTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2293,7 +2256,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void modifyTextOrCustomizeMessageTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2350,7 +2313,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void oneWayClearUserRoamingMessagesByMsgIdTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2398,7 +2361,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void oneWayClearGroupRoamingMessagesByMsgIdTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2466,7 +2429,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void oneWayClearGroupOrRoomRoamingMessagesWithinPeriodTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2533,7 +2496,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void oneWayClearUserRoamingMessagesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2579,7 +2542,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void oneWayClearUserRoamingMessagesWithinPeriodTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2626,7 +2589,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void batchRecallMessagesTest() throws ApiException {
         String username1 = randomUserName();
         String username2 = randomUserName();
@@ -2700,7 +2663,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void translateMessageTest() throws ApiException {
         EMMessageTranslate body = new EMMessageTranslate();
         body.setText("学习");
@@ -2719,7 +2682,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void getTranslateSupportLanguagesTest() throws ApiException {
         List<EMTranslateSupportLanguage> response = messageApi.getTranslateSupportLanguages();
         assertNotNull(response);
@@ -2734,7 +2697,7 @@ public class MessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void detectTranslateLanguageTest() throws ApiException {
         EMDetectTranslateLanguage body = new EMDetectTranslateLanguage();
         body.setText("你好");

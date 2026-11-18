@@ -14,7 +14,6 @@
 package com.easemob.im.api;
 
 import com.easemob.im.ApiException;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertThrows;
 
@@ -35,7 +34,7 @@ public class HistoryMessageApiTest extends AbstractTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Test
+    @RealmTest
     public void historyMessageTest() throws ApiException {
         String time = "2024012415";
         assertThrows(ApiException.class, () -> api.historyMessage(time));
